@@ -7,39 +7,32 @@
     <title>Scandura Homes</title>
 </head>
 <body>
-    <header class="hero">
-        <div class="container hero__container">
-          <!-- Górna belka: logo + burger -->
-          <div class="hero__top">
-            <a href="" class="hero__logo">
-              <img src="Photos/mobile_logo.png" alt="Scandura Homes">
-            </a>
-      
-            <button class="hero__burger" aria-label="Toggle menu" aria-expanded="false">
-                <img src="Photos/burger.svg" alt="Menu">
-            </button>
-          </div>
-      
-          <!-- Menu (ukryte domyślnie) -->
-          <nav class="hero__menu" aria-hidden="true">
-            <ul>
-              <li><a href="/">Home</a></li>
-              <li><a href="/about.html">About</a></li>
-              <li><a href="/projects.html">Projects</a></li>
-              <li><a href="/services.html">Services</a></li>
-              <li><a href="/contact.html">Contact</a></li>
-            </ul>
-          </nav>
-      
-          <!-- Treść nagłówka -->
-          <div class="hero__content">
-            <h1 class="hero__title">Tytuł sekcji</h1>
-            <p class="hero__description">
-              To jest przykładowy opis sekcji. Możesz tutaj dodać więcej treści, tekstu lub innych elementów.
-            </p>
-          </div>
-        </div>
-      </header>
+  <header class="header">
+    <video class="header__video" autoplay muted loop playsinline>
+      <source src="video/background.mp4" type="video/mp4" />
+    </video>
+  
+    <!-- półprzezroczysty overlay -->
+    <div class="header__overlay"></div>
+  
+    <div class="container header__container">
+      <div class="hero__top">
+        <a href="/" class="header__logo">
+          <img src="Photos/mobile_logo.png" alt="Scandura Homes" />
+        </a>
+  
+        <button class="header__burger" aria-label="Toggle menu" aria-expanded="false">
+          <img src="Photos/burger.svg" alt="Menu" />
+        </button>
+      </div>
+  
+      <!-- Treść opcjonalna -->
+      <div class="header__content">
+        <h1 class="header__title">Tytuł sekcji</h1>
+        <p class="header__description">Opis lub slogan firmy</p>
+      </div>
+    </div>
+  </header>
       
 
       <section class="calculator">
