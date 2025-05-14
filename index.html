@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/style.css">
+    <title>Scandura Homes</title>
+</head>
+<body>
+    <header class="hero">
+        <div class="container hero__container">
+          <!-- Górna belka: logo + burger -->
+          <div class="hero__top">
+            <a href="" class="hero__logo">
+              <img src="Photos/mobile_logo.png" alt="Scandura Homes">
+            </a>
+      
+            <button class="hero__burger" aria-label="Toggle menu" aria-expanded="false">
+                <img src="Photos/burger.svg" alt="Menu">
+            </button>
+          </div>
+      
+          <!-- Menu (ukryte domyślnie) -->
+          <nav class="hero__menu" aria-hidden="true">
+            <ul>
+              <li><a href="/">Home</a></li>
+              <li><a href="/about.html">About</a></li>
+              <li><a href="/projects.html">Projects</a></li>
+              <li><a href="/services.html">Services</a></li>
+              <li><a href="/contact.html">Contact</a></li>
+            </ul>
+          </nav>
+      
+          <!-- Treść nagłówka -->
+          <div class="hero__content">
+            <h1 class="hero__title">Tytuł sekcji</h1>
+            <p class="hero__description">
+              To jest przykładowy opis sekcji. Możesz tutaj dodać więcej treści, tekstu lub innych elementów.
+            </p>
+          </div>
+        </div>
+      </header>
+      
+
+      <section class="calculator">
+        <div class="calculator__container">
+          <form action="/calculator.html" method="get" class="calculator__form">
+            <div class="calculator__row">
+              <label>
+                House type
+                <select name="house_type">
+                  <option>Single-storey</option>
+                  <option>Two-storey</option>
+                </select>
+              </label>
+      
+              <label>
+                Foundation
+                <select name="foundation">
+                  <option>Concrete slab</option>
+                  <option>Basement</option>
+                </select>
+              </label>
+            </div>
+      
+            <div class="calculator__row">
+              <label>
+                Turnkey
+                <select name="turnkey">
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </label>
+      
+              <label>
+                Windows and doors
+                <select name="windows_doors">
+                  <option>10</option>
+                  <option>12</option>
+                  <option>15</option>
+                </select>
+              </label>
+            </div>
+      
+            <div class="calculator__row">
+              <label>
+                Size
+                <select name="size">
+                  <option>100</option>
+                  <option>150</option>
+                  <option>200</option>
+                  <option>250</option>
+                </select>
+              </label>
+      
+              <button type="submit" class="calculator__submit">Submit</button>
+            </div>
+          </form>
+        </div>
+      </section>
+      <section class="mission">
+        <div class="container">
+          <div class="mission__content">
+            <div class="mission__image-wrapper">
+              <img 
+                src="your-image.jpg" 
+                alt="Two workers in a timber workshop" 
+                class="mission__image"
+              >
+            </div>
+      
+            <h2 class="mission__title"><em>Our Mission</em></h2>
+      
+            <p class="mission__text">
+              Our mission is to deliver high-quality, energy efficient timber frame homes in Poland using trusted Scandinavian techniques. With 15+ years of experience in Norway, we focus on eco-friendly materials, precision craftsmanship, and clear communication to ensure every home is durable, modern, and built with care — from foundation to final finishing.
+            </p>
+      
+            <a href="/about.html" class="mission__button">
+              Learn More →
+            </a>
+          </div>
+        </div>
+      </section>
+      <section class="why-us">
+        <div class="container">
+          <div class="why-us__grid">
+            <!-- Główna grafika z recenzją -->
+            <div class="why-us__review-card">
+              <img src="review-image.jpg" alt="Client review" class="why-us__review-image">
+              <div class="why-us__review-overlay">
+                <p class="why-us__review-title">Client Review</p>
+                <div class="why-us__stars">
+                  <!-- Gwiazdki i liczba opinii -->
+                  <img src="star-icon.svg" alt="5 stars">
+                  <span>5.0</span>
+                  <p>120+ Review</p>
+                </div>
+              </div>
+            </div>
+      
+            <!-- Liczba projektów i drugie zdjęcie -->
+            <div class="why-us__stats">
+              <div class="why-us__projects">
+                <p class="why-us__projects-number">26+</p>
+                <p class="why-us__projects-label">Project Done</p>
+              </div>
+              <div class="why-us__image-wrapper">
+                <img src="woodworker.jpg" alt="Woodworker" class="why-us__image">
+              </div>
+            </div>
+      
+            <!-- Tekst i lista zalet -->
+            <div class="why-us__text">
+              <h2 class="why-us__heading"><em>Why choose us</em></h2>
+              <p>
+                With over 15 years of experience building high-quality timber homes in Norway and now in Poland, we combine Scandinavian craftsmanship, sustainable materials, and precise project management to deliver long-lasting, energy-efficient wooden houses that feel like home from day one.
+              </p>
+              <p>
+                We don’t just build – we guide, support, and craft each home with care, ensuring a seamless experience from design to delivery.
+              </p>
+      
+              <ul class="why-us__list">
+                <li>✅ Scandinavian Precision</li>
+                <li>✅ 15+ Years of Experience</li>
+                <li>✅ Certified Excellence</li>
+                <li>✅ Premium Materials</li>
+                <li>✅ Client-Centered</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="services">
+        <div class="container">
+          <h2 class="services__title"><em>We Offer Services</em></h2>
+      
+          <div class="services__slider">
+            <div class="services__card">
+              <img 
+                src="timber-house.jpg" 
+                alt="Timber Frame House in the forest" 
+                class="services__image"
+              >
+      
+              <div class="services__icon-wrapper">
+                <img 
+                  src="icon-terrace.svg" 
+                  alt="House icon" 
+                  class="services__icon"
+                >
+              </div>
+      
+              <div class="services__card-body">
+                <h3 class="services__card-title">Timber Frame Houses</h3>
+                <p class="services__card-text">
+                  Construction of ecological, energy-efficient wooden homes from foundation to turnkey
+                </p>
+                <a href="/services/timber-frame-houses.html" class="services__button">Read more</a>
+              </div>
+            </div>
+      
+            <!-- Przykładowe strzałki karuzeli -->
+            <div class="services__nav">
+              <button class="services__arrow services__arrow--prev">←</button>
+              <button class="services__arrow services__arrow--next">→</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="projects">
+        <div class="container">
+          <h2 class="projects__title"><em>Our Recent Projects</em></h2>
+      
+          <div class="projects__slider">
+            <div class="projects__card">
+              <img 
+                src="greenwood-estates.jpg" 
+                alt="Greenwood Estates project" 
+                class="projects__image"
+              >
+      
+              <div class="projects__pagination">
+                <button class="projects__arrow projects__arrow--prev">←</button>
+                <span class="projects__counter">01</span>
+                <span class="projects__divider">—</span>
+                <span class="projects__counter">02</span>
+                <button class="projects__arrow projects__arrow--next">→</button>
+              </div>
+      
+              <h3 class="projects__name"><em>Greenwood Estates</em></h3>
+      
+              <p class="projects__description">
+                Nestled in a tranquil, tree-lined setting, this estate offers elegant homes crafted with sustainability and comfort in mind.
+              </p>
+      
+              <div class="projects__info">
+                <div class="projects__info-item">
+                  <strong>Location</strong>
+                  <span>Downtown City Center</span>
+                </div>
+                <div class="projects__info-item">
+                  <strong>Scope</strong>
+                  <span>Office Complex Development</span>
+                </div>
+              </div>
+      
+              <a href="/projects/greenwood-estates.html" class="projects__button">
+                See Details
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="partners">
+        <div class="container">
+          <h2 class="partners__title">
+            Join our community of<br>
+            <strong>10,000+ Real Estates</strong>
+          </h2>
+      
+          <div class="partners__logos">
+            <div class="partners__logo">
+              <img src="logo-1.svg" alt="Partner 1">
+            </div>
+            <div class="partners__logo">
+              <img src="logo-2.svg" alt="Hues">
+            </div>
+            <div class="partners__logo">
+              <img src="logo-3.svg" alt="Partner 3">
+            </div>
+            <div class="partners__logo">
+              <img src="logo-4.svg" alt="Partner 4">
+            </div>
+            <div class="partners__logo">
+              <img src="logo-5.svg" alt="Invert">
+            </div>
+            <div class="partners__logo">
+              <img src="logo-6.svg" alt="Partner 6">
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="cta">
+        <div class="cta__background">
+          <div class="container">
+            <div class="cta__content">
+              <h2 class="cta__title">
+                <em>Are you ready to get your roofing service?</em>
+              </h2>
+              <p class="cta__text">
+                Our company provides all types of roof repairs, both residential and commercial, regardless of the damage level. We also offer partial tile replacement.
+              </p>
+              <a href="/contact.html" class="cta__button">
+                Book A Free Consultation
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="testimonials">
+        <div class="container">
+          <h2 class="testimonials__title"><em>What our clients says?</em></h2>
+      
+          <div class="testimonials__slider">
+            <!-- Zdjęcie klienta lub domu -->
+            <div class="testimonials__image-wrapper">
+              <img 
+                src="client-house.jpg" 
+                alt="Happy client in front of a wooden house" 
+                class="testimonials__image"
+              >
+            </div>
+      
+            <!-- Treść opinii -->
+            <div class="testimonials__card">
+              <h3 class="testimonials__headline">
+                Thank you so much for the price reduction before Christmas –
+              </h3>
+              <p class="testimonials__text">
+                We were amazed by the professionalism and clarity throughout the project. The team delivered a beautiful wooden house that exceeded our expectations
+              </p>
+      
+              <div class="testimonials__stars">
+                ★ ★ ★ ★ ★
+              </div>
+      
+              <p class="testimonials__author">
+                <strong>Katarzyna M. Warsaw</strong><br>
+                <span>Doctor</span>
+              </p>
+      
+              <div class="testimonials__line"></div>
+            </div>
+      
+            <!-- Nawigacja (slider) -->
+            <div class="testimonials__nav">
+              <button class="testimonials__arrow testimonials__arrow--prev">←</button>
+              <button class="testimonials__arrow testimonials__arrow--next">→</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="contact">
+        <div class="contact__background">
+          <div class="container">
+            <!-- Lewa kolumna z tekstem i socialami -->
+            <div class="contact__intro">
+              <h2 class="contact__title">
+                <em>Start Your <strong>Project</strong> with Us.</em>
+              </h2>
+              <p class="contact__description">
+                With over 15 years of experience building high-quality timber homes in Norway and now in Poland, we combine Scandinavian craftsmanship, sustainable materials, and precise project management to deliver long-lasting, energy-efficient wooden houses that feel like home from day one.
+              </p>
+              <p class="contact__description">
+                We don’t just build — we guide, support, and craft each home with care, ensuring a seamless experience from design to delivery.
+              </p>
+      
+              <div class="contact__socials">
+                <a href="#" aria-label="Facebook"><img src="icon-facebook.svg" alt=""></a>
+                <a href="#" aria-label="Instagram"><img src="icon-instagram.svg" alt=""></a>
+                <a href="#" aria-label="X"><img src="icon-x.svg" alt=""></a>
+                <a href="#" aria-label="LinkedIn"><img src="icon-linkedin.svg" alt=""></a>
+              </div>
+            </div>
+      
+            <!-- Prawa kolumna z formularzem -->
+            <div class="contact__form-wrapper">
+              <form action="/thank-you.html" method="post" class="contact__form">
+                <h3 class="contact__form-title">Send a message</h3>
+                <p class="contact__form-subtitle"><em>Request a call back</em></p>
+      
+                <input type="text" name="name" placeholder="Name" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="tel" name="phone" placeholder="Phone Number" required>
+                <textarea name="message" placeholder="Type your message here" rows="4"></textarea>
+      
+                <label class="contact__checkbox">
+                  <input type="checkbox" name="terms" required>
+                  I agree to the terms of service.
+                </label>
+      
+                <button type="submit" class="contact__submit">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+      <footer class="footer">
+        <div class="container">
+          <!-- Logo i opis -->
+          <div class="footer__top">
+            <img src="logo-scandura.png" alt="Scandura Homes" class="footer__logo">
+      
+            <p class="footer__description">
+              Mountain Soul Vineyard & Winery—Where Each Sip Reflects the Beauty of the Vineyards and Every Celebration Turns Into a Timeless Treasure.
+            </p>
+          </div>
+      
+          <!-- Linki -->
+          <div class="footer__links">
+            <h3 class="footer__heading">Quick Link</h3>
+            <ul>
+              <li><a href="/">Home</a></li>
+              <li><a href="/events">Wedding & Event</a></li>
+              <li><a href="/wine">Wine Tasting & Reservation</a></li>
+              <li><a href="/privacy">Privacy & Policy</a></li>
+            </ul>
+          </div>
+      
+          <!-- Kontakt -->
+          <div class="footer__contact">
+            <h3 class="footer__heading">Contact Us</h3>
+            <p>123 Vineyard Lane, Trail,<br>BC, Canada</p>
+            <p>Call us: (229) 555–0109</p>
+            <p>Whatsapp: (208) 555–0112</p>
+          </div>
+      
+          <!-- Social media -->
+          <div class="footer__socials">
+            <h3 class="footer__heading">Follow Us</h3>
+            <div class="footer__icons">
+              <a href="#" aria-label="Facebook"><img src="icon-facebook.svg" alt=""></a>
+              <a href="#" aria-label="Instagram"><img src="icon-instagram.svg" alt=""></a>
+              <a href="#" aria-label="X"><img src="icon-x.svg" alt=""></a>
+              <a href="#" aria-label="LinkedIn"><img src="icon-linkedin.svg" alt=""></a>
+            </div>
+          </div>
+      
+          <!-- Prawa autorskie -->
+          <div class="footer__bottom">
+            <hr>
+            <p>© 2024 – RI.Wine _ All rights reserved</p>
+          </div>
+        </div>
+      </footer>
+      
+</body>
+</html>
