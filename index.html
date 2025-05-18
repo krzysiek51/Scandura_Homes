@@ -3,33 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
     <title>Scandura Homes</title>
 </head>
 <body>
-  <header class="header">
+   <header class="header">
     <video class="header__video" autoplay muted loop playsinline>
       <source src="Photos/header_video.mp4" type="video/mp4" />
     </video>
-  
-    <!-- półprzezroczysty overlay -->
+
     <div class="header__overlay"></div>
-  
-    <div class="container header__container">
-      <div class="hero__top">
+
+    <!-- 🔧 header__wrap jako tło z logo + burgerem -->
+    <div class="header__wrap">
+      <div class="container header__top">
         <a href="/" class="header__logo">
-          <img src="Photos/mobile_logo.png" alt="Scandura Homes" />
+          <img class="header__logo--img" src="Photos/mobile_logo.png" alt="Scandura Homes" />
         </a>
-  
         <button class="header__burger" aria-label="Toggle menu" aria-expanded="false">
-          <img src="Photos/burger.svg" alt="Menu" />
+          <img class="header__burger--img" src="Photos/burger.svg" alt="Menu" />
         </button>
       </div>
-  
-      <!-- Treść opcjonalna -->
+    </div>
+
+    <div class="container header__container">
       <div class="header__content">
-        <h1 class="header__title">Tytuł sekcji</h1>
-        <p class="header__description">Opis lub slogan firmy</p>
+        <h1 class="header__title">Build Your Dream Timber Home with Scandinavian Excellence</h1>
+        <p class="header__description">15+ Years in Norway  Eco-Friendly Certified Builders</p>
       </div>
     </div>
   </header>
