@@ -1,1 +1,1 @@
-# Scandura_Homes
+https://www.figma.com/design/NbkdSQpb9JhQN9bQ1tXclB/krzysiek51-_FO513C37D7141_Home-page-UI-design-_UI-Geeky_Fiverr_-Client-File-?node-id=3315-2&p=f&t=UTOYUZpPDf0y0gtN-0

@@ -6,8 +6,12 @@
   margin-right: auto;
 }
 
-@mixin grid {
+@mixin grid($cols, $col-width, $gap) {
   display: grid;
-  grid-template-columns: repeat($grid-columns, $column-width);
-  column-gap: $grid-gap;
+  grid-template-columns: repeat($cols, $col-width);
+  column-gap: $gap;
+  padding: 0 20px; // ← padding boczny
+  box-sizing: border-box;
 }
+
+
