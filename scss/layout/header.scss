@@ -6,40 +6,41 @@
 
 .header {
 
-  
 
-    display: grid;
 
-    grid-column: 1 / -1;
-    max-width: 100%;
-   
-    padding: 0;
-    margin: 0 auto;
+  display: grid;
 
-   
-    max-height: 450px;
-    min-height: 450px;
-    overflow: hidden;
+  grid-column: 1 / -1;
+  max-width: 100%;
 
-  
+  padding: 0;
+  margin: 0 auto;
+
+
+  max-height: 450px;
+  min-height: 450px;
+  overflow: hidden;
+
+
   &__video {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      min-width: 100%;
-      min-height: 100%;
-      transform: translate(-50%, -50%);
-      object-fit: cover;
-      z-index: 0;
-      pointer-events: none;
-    }
-  
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none;
+  }
+
   &__overlay {
-      position: absolute; 
-      inset: 0;
-      background: rgba(0, 0, 0, 0.5); // przyciemnienie
-      z-index: 1;
-    }
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5); // przyciemnienie
+    z-index: 1;
+  }
+
   &__wrap {
     position: absolute;
     top: 0;
@@ -50,85 +51,132 @@
     height: 66px; // wysokość top baru
     display: grid;
     align-items: center;
-}
+  }
+
   &__container {
 
-      @include grid(4, 72px, 16px);
-      position: relative;
-      z-index: 2;
-      // height: 100%;
-      display: grid;
-      // flex-direction: column;
-      // justify-content: space-between;
-      padding: 0 20px;
-  
-    }
-  
-  &__top {
-      width: 100%;
-      max-width: 1440px;
-      margin: 0 auto;
-      padding: 0 20px;
+    @include grid(4, 72px, 16px);
+    position: relative;
+    z-index: 2;
+    // height: 100%;
+    display: grid;
+    // flex-direction: column;
+    // justify-content: space-between;
+    padding: 0 20px;
 
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-  
+  }
+
+  &__top {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   &__logo--img {
-      height: 40px
-    }
+    height: 40px
+  }
+
   &__burger {
     display: grid;
     grid-column: 1 / -1;
   }
 
   &__burger--img {
-    
-      height: 14px; 
-    }
-  
-  &__content {
-    display: grid;
-      text-align: center;
-      color: white;
-      margin-top: 92px;
-      margin-bottom: 4rem;
-  
-    }
 
-  
-  &__description {
-display: grid;
-      font-family: 'DM Sans';
-      font-size: 14px;
-      font-weight: 400;
-      text-align: left;
-      vertical-align: top;
-      line-height: auto;
-      letter-spacing: 0;
-      width: calc(100vw - 40px);
-
-    align-content: start;
-      }
-
-  &__title {
-      
-      display: flex;
-      font-family: 'DM Sans';
-      font-size: 32px;
-      font-weight: 600;
-      text-align: left;
-      vertical-align: top;
-      line-height: 34px;
-      letter-spacing: 32px * 0.02;
-      width: calc(100vw - 40px);
-      height: 168px;
-     
-      
-       
-      }
-    
+    height: 14px;
   }
 
+  &__content {
+  display: grid;
+  grid-template-rows: auto auto auto; // 3 wiersze: tytuł, opis, przycisk
+  gap: 0;   
+   align-self: start;                      // odstęp między nimi
+  text-align: left;
+  color: white;
+  margin-top: 92px;
+  margin-bottom: 4rem;
+  align-items: start;                 // pionowo do góry
+  justify-items: start;              // poziomo do lewej
+  max-width: 600px;
+  padding: 0 2px;
+  z-index: 2;
+  }
+
+
+  &__description {
+    display: grid;
+    grid-row: 2;
+    font-family: 'DM Sans';
+    font-size: 14px;
+    font-weight: 400;
+    text-align: left;
+    vertical-align: top;
+    line-height: auto;
+    letter-spacing: 0;
+    width: calc(100vw - 40px);
+    padding-top: 16px;
+    padding-bottom: 24px;
+
+    align-content: start;
+  }
+
+  &__title {
+
+    display: grid;
+    grid-row: 1;
+    font-family: 'DM Sans';
+    font-size: 32px;
+    font-weight: 600;
+    text-align: left;
+    vertical-align: top;
+    line-height: 130%;
+    letter-spacing: 32px * 0.02;
+    width: calc(100vw - 40px);
+    // height: 168px;
+  }
+  &__button {
+   
+ display: grid;
+ grid-row: 3;
+  width: 335px;
+  height: 40px;
   
+  
+  background-color: #DC9B59;
+  color: #000;
+  font-family: sans-serif;
+  font-size: 12px;  
+  line-height: 110%;
+  font-weight: normal;
+  text-align: center;
+  
+  
+  border: none;
+  outline: none;
+  
+ 
+  border-radius: 1px 12px 1px 1px;
+  
+  
+  display: flex;
+  align-items: center;       
+  justify-content: center;  
+  gap: 10px;                
+  
+  
+  
+  
+  
+  cursor: pointer;
+  
+  
+}
+  }
+
+ 
+
