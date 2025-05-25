@@ -44,68 +44,70 @@
   </header>
       
 
-      <section class="calculator">
-        <div class="calculator__container">
-          <form action="/calculator.html" method="get" class="calculator__form">
-            <div class="calculator__row">
-              <label>
-                House type
-                <select name="house_type">
-                  <option>Single-storey</option>
-                  <option>Two-storey</option>
-                </select>
-              </label>
-      
-              <label>
-                Foundation
-                <select name="foundation">
-                  <option>Concrete slab</option>
-                  <option>Basement</option>
-                </select>
-              </label>
-            </div>
-      
-            <div class="calculator__row">
-              <label>
-                Turnkey
-                <select name="turnkey">
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </label>
-      
-              <label>
-                Windows and doors
-                <select name="windows_doors">
-                  <option>10</option>
-                  <option>12</option>
-                  <option>15</option>
-                </select>
-              </label>
-            </div>
-      
-            <div class="calculator__row">
-              <label>
-                Size
-                <select name="size">
-                  <option>100</option>
-                  <option>150</option>
-                  <option>200</option>
-                  <option>250</option>
-                </select>
-              </label>
-      
-              <button type="submit" class="calculator__submit">Submit</button>
-            </div>
-          </form>
-        </div>
-      </section>
+  <!-- 🔽 SEKCJA KALKULATORA 🔽 -->
+<section class="calculator">
+  <form action="/calculator.html" method="get" class="calculator__form">
+
+    <div class="calculator__row">
+      <div class="calculator__field-group">
+        <label class="calculator__label" for="houseType">House type</label>
+        <select id="houseType" name="house_type" class="calculator__select">
+          <option>Single-story</option>
+          <option>Two-story</option>
+        </select>
+      </div>
+      <div class="calculator__field-group">
+        <label class="calculator__label" for="foundation">Foundation</label>
+        <select id="foundation" name="foundation" class="calculator__select">
+          <option>Concrete slab</option>
+          <option>Basement</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="calculator__row">
+      <div class="calculator__field-group">
+        <label class="calculator__label" for="turnkey">Turnkey</label>
+        <select id="turnkey" name="turnkey" class="calculator__select">
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </div>
+      <div class="calculator__field-group">
+        <label class="calculator__label" for="windowsDoors">Windows and doors</label>
+        <select id="windowsDoors" name="windows_doors" class="calculator__select">
+          <option>10</option>
+          <option>12</option>
+          <option>15</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="calculator__row">
+      <div class="calculator__field-group">
+        <label class="calculator__label" for="size">Size</label>
+        <select id="size" name="size" class="calculator__select">
+          <option>2000</option>
+          <option>3000</option>
+        </select>
+      </div>
+      <div class="calculator__field-group">
+        <button type="submit" class="calculator__submit">Submit</button>
+      </div>
+    </div>
+
+  </form>
+</section>
+<!-- 🔼 KONIEC SEKJI KALKULATORA 🔼 -->
+
+
+
       <section class="mission">
         <div class="container">
           <div class="mission__content">
             <div class="mission__image-wrapper">
               <img 
-                src="your-image.jpg" 
+                src="photos/main/Rectangle.jpg" 
                 alt="Two workers in a timber workshop" 
                 class="mission__image"
               >
@@ -128,7 +130,7 @@
           <div class="why-us__grid">
             <!-- Główna grafika z recenzją -->
             <div class="why-us__review-card">
-              <img src="review-image.jpg" alt="Client review" class="why-us__review-image">
+              <img src="review-imag.jpg" alt="Client review" class="why-us__review-image">
               <div class="why-us__review-overlay">
                 <p class="why-us__review-title">Client Review</p>
                 <div class="why-us__stars">

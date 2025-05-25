@@ -1,0 +1,66 @@
+@use '../layout/_grid' as *;
+@use '../utils/_variables' as *;
+@use 'grid' as *;
+
+.mission {
+  /* ogólne odsunięcie sekcji od góry/dół jeśli potrzebne */
+  padding: 40px 0;
+
+  &__content {
+    @include grid(4, 72px, 16px);
+    /* zachowujemy poziome paddingi z dotychczasowego mobile layoutu */
+    // padding: 0 20px;
+    margin: 0 auto;
+    // max-width: 336px; 
+  }
+  &__image {
+    width: 335px;
+  }
+  &__image-wrapper {
+    grid-column: 1 / -1;      // full width
+    margin-bottom: 16px;
+  }
+
+  &__title {
+    grid-column: 1 / -1;      // full width
+    position: relative;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 24px;
+    font-style: italic;
+    font-weight: 500;
+    margin-bottom: 16px;
+    
+    &::before {
+      content: '';
+      display: block;
+      width: 72px;
+      height: 4px;
+      background-color: #DC9B59;
+      margin-bottom: 8px;
+    }
+  }
+
+  &__text {
+    grid-column: 1 / -1;      // full width
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  &__button {
+    grid-column: 1 / -1;      // full width
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 20px;
+    background-color: #DC9B59;
+    color: #000;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+  }
+}

@@ -99,12 +99,11 @@
   text-align: left;
   color: white;
   margin-top: 92px;
-  margin-bottom: 4rem;
+ // margin-bottom: 4rem;
   align-items: start;                 // pionowo do góry
   justify-items: start;              // poziomo do lewej
   max-width: 600px;
-  padding: 0 2px;
-  z-index: 2;
+    z-index: 2;
   }
 
 
@@ -129,7 +128,7 @@
 
     display: grid;
     grid-row: 1;
-    font-family: 'DM Sans';
+    font-family: 'DM Sans', sans-serif;
     font-size: 32px;
     font-weight: 600;
     text-align: left;
@@ -140,42 +139,29 @@
     // height: 168px;
   }
   &__button {
-   
- display: grid;
- grid-row: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
   width: 335px;
   height: 40px;
-  
-  
+
   background-color: #DC9B59;
   color: #000;
-  font-family: sans-serif;
-  font-size: 12px;  
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
   line-height: 110%;
-  font-weight: normal;
+  font-weight: 400;
   text-align: center;
-  
-  
+
   border: none;
   outline: none;
-  
- 
-  border-radius: 1px 12px 1px 1px;
-  
-  
-  display: flex;
-  align-items: center;       
-  justify-content: center;  
-  gap: 10px;                
-  
-  
-  
-  
-  
+  border-radius: 1px 16px 1px 1px;
+
   cursor: pointer;
-  
-  
 }
+
   }
 
  

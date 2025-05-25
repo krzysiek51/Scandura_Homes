@@ -130,11 +130,9 @@ body {
   text-align: left;
   color: white;
   margin-top: 92px;
-  margin-bottom: 4rem;
   align-items: start;
   justify-items: start;
   max-width: 600px;
-  padding: 0 2px;
   z-index: 2;
 }
 .header__description {
@@ -155,7 +153,7 @@ body {
 .header__title {
   display: grid;
   grid-row: 1;
-  font-family: "DM Sans";
+  font-family: "DM Sans", sans-serif;
   font-size: 32px;
   font-weight: 600;
   text-align: left;
@@ -165,29 +163,171 @@ body {
   width: calc(100vw - 40px);
 }
 .header__button {
-  display: grid;
-  grid-row: 3;
-  width: 335px;
-  height: 40px;
-  background-color: #DC9B59;
-  color: #000;
-  font-family: sans-serif;
-  font-size: 12px;
-  line-height: 110%;
-  font-weight: normal;
-  text-align: center;
-  border: none;
-  outline: none;
-  border-radius: 1px 12px 1px 1px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
+  width: 335px;
+  height: 40px;
+  background-color: #DC9B59;
+  color: #000;
+  font-family: "DM Sans", sans-serif;
+  font-size: 12px;
+  line-height: 110%;
+  font-weight: 400;
+  text-align: center;
+  border: none;
+  outline: none;
+  border-radius: 1px 16px 1px 1px;
   cursor: pointer;
 }
 
 body {
   font-family: "DM Sans", sans-serif;
+}
+
+.calculator {
+  /* rozmiar całego kalkulatora */
+  width: 250px;
+  min-height: 247px;
+  /* tło, obramowanie, cień */
+  background-color: #fff;
+  border-radius: 0 48px 0 0;
+  box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.1);
+  /* podniesienie i wyśrodkowanie */
+  margin: -59px auto 0;
+  position: relative;
+  z-index: 4;
+  /* wewnętrzny układ */
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  justify-content: space-between;
+}
+.calculator__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* odstęp między wierszami */
+}
+.calculator__row {
+  display: flex;
+  gap: 16px; /* odstęp między kolumnami */
+}
+.calculator__field-group {
+  flex: 1;
+}
+.calculator__label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 150%;
+  color: #000;
+}
+.calculator__select {
+  /* Usuń domyślną strzałkę przeglądarki */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  /* Krój pisma */
+  font-family: "DM Sans", sans-serif;
+  /* Wymiary pola */
+  width: 96px;
+  height: 40px;
+  /* Padding: 8px z lewej, większy z prawej żeby zrobić miejsce na ikonę */
+  padding: 0 32px 0 8px;
+  /* Tekst */
+  font-size: 8px;
+  font-weight: 400;
+  line-height: 40px; /* wycentrowanie pionowe */
+  color: #000;
+  background-color: #F2F2F2;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  /* Twoja ikona strzałki po prawej, 17.53px od krawędzi */
+  background-image: url("../photos/svg/Icon-Chevron-Left.svg");
+  background-repeat: no-repeat;
+  background-position: right 17.53px center;
+  background-size: 12px 12px;
+}
+.calculator__submit {
+  width: 96px;
+  height: 40px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 110%;
+  text-align: center;
+  background-color: #DC9B59;
+  color: #070707;
+  border: none;
+  cursor: pointer;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  align-self: flex-end;
+  margin-top: 25px;
+}
+
+.mission {
+  /* ogólne odsunięcie sekcji od góry/dół jeśli potrzebne */
+  padding: 40px 0;
+}
+.mission__content {
+  display: grid;
+  grid-template-columns: repeat(4, 72px);
+  column-gap: 16px;
+  padding: 0 20px;
+  box-sizing: border-box;
+  /* zachowujemy poziome paddingi z dotychczasowego mobile layoutu */
+  margin: 0 auto;
+}
+.mission__image {
+  width: 335px;
+}
+.mission__image-wrapper {
+  grid-column: 1/-1;
+  margin-bottom: 16px;
+}
+.mission__title {
+  grid-column: 1/-1;
+  position: relative;
+  font-family: "DM Sans", sans-serif;
+  font-size: 24px;
+  font-style: italic;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+.mission__title::before {
+  content: "";
+  display: block;
+  width: 72px;
+  height: 4px;
+  background-color: #DC9B59;
+  margin-bottom: 8px;
+}
+.mission__text {
+  grid-column: 1/-1;
+  font-family: "DM Sans", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  margin-bottom: 20px;
+}
+.mission__button {
+  grid-column: 1/-1;
+  display: inline-block;
+  font-family: "DM Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 20px;
+  background-color: #DC9B59;
+  color: #000;
+  border-radius: 4px;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=style.css.map */
