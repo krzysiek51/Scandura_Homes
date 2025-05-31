@@ -1,35 +1,37 @@
-/* Box sizing */
+/* base/reset.scss */
+
+/* 1. Box sizing */
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
-/* Reset marginesów i paddingów */
+/* 2. Reset marginesów i paddingów */
 body, h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd {
   margin: 0;
   padding: 0;
 }
 
-/* Usunięcie domyślnych stylów list */
+/* 3. Listy bez wypunktowania */
 ul, ol {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-/* Linki bez podkreślenia */
+/* 4. Linki bez podkreśleń */
 a {
   text-decoration: none;
   color: inherit;
 }
 
-/* Obrazy i media: pełna szerokość i brak marginesów */
+/* 5. Obrazy i media – pełna szerokość i automatyczna wysokość */
 img, video {
   max-width: 100%;
   height: auto;
   display: block;
 }
 
-/* Form elements – reset fontu i marginesów */
+/* 6. Formularzowe elementy – reset fontu i marginesów */
 input, button, textarea, select {
   font: inherit;
   margin: 0;
@@ -39,16 +41,16 @@ input, button, textarea, select {
   color: inherit;
 }
 
-/* Usunięcie domyślnych ramek przy focusie (opcjonalnie, bo lepiej stylować samemu) */
+/* 7. Focus (opcjonalnie – można stylować inaczej) */
 :focus {
   outline: none;
 }
 
-/* Body */
+/* 8. Body */
 body {
   min-height: 100vh;
   line-height: 1.5;
-  font-family: system-ui, sans-serif;
+  font-family: 'DM Sans', sans-serif;
   background-color: #fff;
   color: #000;
 }

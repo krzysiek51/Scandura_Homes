@@ -1,11 +1,12 @@
 // style.scss
 
-@use 'utils/variables';
-@use 'utils/mixins';
 @use 'base/reset';
+@use 'base/base';
+@use 'layout/container';
+@use 'layout/grid';
 @use 'layout/header';
-@use 'layout/footer';
-@use 'components/buttons';
-@use 'base/typography';
-@use 'layout/calculator';
 @use 'layout/mission';
+@use 'layout/calculator';
+@use 'layout/footer';     // jeśli masz footer – dodaj w analogicznej formie
+@use 'components/buttons'; // np. globalne style przycisków
+@use 'base/typography';    // jeśli masz dodatkowe style typograficzne

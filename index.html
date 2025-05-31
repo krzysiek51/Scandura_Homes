@@ -12,37 +12,50 @@
     <title>Scandura Homes</title>
 </head>
 <body>
-   <header class="header">
-    <video class="header__video" autoplay muted loop playsinline>
-      <source src="Photos/header_video.mp4" type="video/mp4" />
-    </video>
+<header class="header">
+  <video class="header__video" autoplay muted loop playsinline>
+    <source src="Photos/header_video.mp4" type="video/mp4" />
+  </video>
 
-    <div class="header__overlay"></div>
+  <div class="header__overlay"></div>
 
-    <!-- 🔧 header__wrap jako tło z logo + burgerem -->
-    <div class="header__wrap">
-      <div class="container header__top">
-        <a href="/" class="header__logo">
-          <img class="header__logo--img" src="Photos/mobile_logo.png" alt="Scandura Homes" />
-        </a>
-        <button class="header__burger" aria-label="Toggle menu" aria-expanded="false">
-          <img class="header__burger--img" src="Photos/svg/burger.svg" alt="Menu" />
-        </button>
-      </div>
+  <!-- Top-bar z logo + burgerem, w ramach "ciemniowanego" kontenera header__wrap -->
+  <div class="header__wrap">
+    <div class="container header__top">
+      <a href="/" class="header__logo">
+        <img
+          class="header__logo--img"
+          src="Photos/mobile_logo.png"
+          alt="Scandura Homes"
+        />
+      </a>
+      <button class="header__burger" aria-label="Toggle menu" aria-expanded="false">
+        <img
+          class="header__burger--img"
+          src="Photos/svg/burger.svg"
+          alt="Menu"
+        />
+      </button>
     </div>
+  </div>
 
-    <div class="container header__container">
-      <div class="header__content">
-        <h1 class="header__title">Build Your Dream Timber Home with Scandinavian Excellence</h1>
-        <p class="header__description">15+ Years in Norway  Eco-Friendly Certified Builders</p>
-        <button class="header__button">
-          Contact
-          <img src="photos/svg/keyboard-arrow-right.svg" alt="" />
-        </button>
-      </div>
-    </div>
-  </header>
-      
+  <!-- Główna treść headera – tytuł, opis, przycisk.
+       Teraz BEZ .container wokół; wyciągamy to pod full-width pod header__wrap -->
+  <div class="header__content">
+    <h1 class="header__title">
+      Build Your Dream Timber Home with Scandinavian Excellence
+    </h1>
+    <p class="header__description">
+      15+ Years in Norway · Eco-Friendly Certified Builders
+    </p>
+    <button class="header__button">
+      Contact
+      <img src="photos/svg/keyboard-arrow-right.svg" alt="" />
+    </button>
+  </div>
+</header>
+
+
 
   <!-- 🔽 SEKCJA KALKULATORA 🔽 -->
 <section class="calculator">
@@ -101,30 +114,40 @@
 <!-- 🔼 KONIEC SEKJI KALKULATORA 🔼 -->
 
 
+<section class="mission">
+  <div class="container">
+    <div class="mission__content">
+      <div class="mission__image-wrapper">
+        <img
+          src="photos/main/Rectangle.jpg"
+          alt="Two workers in a timber workshop"
+          class="mission__image"
+        />
+        <!-- Kropki w środku wrappera -->
+        <img
+          src="photos/svg/kropki.svg"
+          alt=""
+          aria-hidden="true"
+          class="mission__dots"
+        />
+      </div>
 
-      <section class="mission">
-        <div class="container">
-          <div class="mission__content">
-            <div class="mission__image-wrapper">
-              <img 
-                src="photos/main/Rectangle.jpg" 
-                alt="Two workers in a timber workshop" 
-                class="mission__image"
-              >
-            </div>
-      
-            <h2 class="mission__title"><em>Our Mission</em></h2>
-      
-            <p class="mission__text">
-              Our mission is to deliver high-quality, energy efficient timber frame homes in Poland using trusted Scandinavian techniques. With 15+ years of experience in Norway, we focus on eco-friendly materials, precision craftsmanship, and clear communication to ensure every home is durable, modern, and built with care — from foundation to final finishing.
-            </p>
-      
-            <a href="/about.html" class="mission__button">
-              Learn More →
-            </a>
-          </div>
-        </div>
-      </section>
+      <h2 class="mission__title">Our Mission</h2>
+      <p class="mission__text">
+        Our mission is to deliver high‐quality, energy efficient timber frame
+        homes in Poland using trusted Scandinavian techniques. With 15+ years
+        of experience in Norway, we focus on eco‐friendly materials, precision
+        craftsmanship, and clear communication to ensure every home is durable,
+        modern, and built with care — from foundation to final finishing.
+      </p>
+      <a href="/about.html" class="mission__button">Learn More →</a>
+    </div>
+  </div>
+</section>
+
+
+
+
       <section class="why-us">
         <div class="container">
           <div class="why-us__grid">

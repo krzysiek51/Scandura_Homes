@@ -1,0 +1,12 @@
+.container {
+  /* 
+    Mobile‐first: container wypełnia 100% szerokości ekranu (np. 375px),
+    a dzięki padding: 0 20px wewnętrzna przestrzeń to 375 − 2×20 = 335px.
+    Na szerszych ekranach max-width:1200px.
+  */
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;   /* mobilny gutter: 20px od lewej i 20px od prawej */
+  box-sizing: border-box;
+}

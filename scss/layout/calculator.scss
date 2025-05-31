@@ -1,34 +1,37 @@
+// layout/calculator.scss
+
 .calculator {
-  /* rozmiar całego kalkulatora */
-  width: 250px;
+  /* MOBILE-FIRST: 
+     kalkulator w containerze 335px, 
+     ale sam max-width: 250px, wyśrodkowany */
+  width: 100%;
+  max-width: 250px;
   min-height: 247px;
 
-  /* tło, obramowanie, cień */
   background-color: #fff;
   border-radius: 0 48px 0 0;
   box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.1);
 
-  /* podniesienie i wyśrodkowanie */
+  /* Podniesiony nad content i wyśrodkujony */
   margin: -59px auto 0;
   position: relative;
   z-index: 4;
 
-  /* wewnętrzny układ */
   display: flex;
   flex-direction: column;
   padding: 16px;
-  
   justify-content: space-between;
+  box-sizing: border-box;
 
   &__form {
     display: flex;
     flex-direction: column;
-    gap: 16px; /* odstęp między wierszami */
+    gap: 16px;
   }
 
   &__row {
     display: flex;
-    gap: 16px; /* odstęp między kolumnami */
+    gap: 16px;
   }
 
   &__field-group {
@@ -37,63 +40,59 @@
 
   &__label {
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     font-size: 10px;
     font-weight: 500;
-    line-height: 150%;
+    line-height: 1.5;
     color: #000;
   }
 
   &__select {
-      /* Usuń domyślną strzałkę przeglądarki */
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-
-  /* Krój pisma */
-  font-family: 'DM Sans', sans-serif;
-
-  /* Wymiary pola */
-  width: 96px;
-  height: 40px;
-
-  /* Padding: 8px z lewej, większy z prawej żeby zrobić miejsce na ikonę */
-  padding: 0 32px 0 8px;
-
-  /* Tekst */
-  font-size: 8px;
-  font-weight: 400;
-  line-height: 40px;    /* wycentrowanie pionowe */
-
-  color: #000;
-  background-color: #F2F2F2;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-
-  /* Twoja ikona strzałki po prawej, 17.53px od krawędzi */
-  background-image: url('../photos/svg/Icon-Chevron-Left.svg');
-  background-repeat: no-repeat;
-  background-position: right 17.53px center;
-  background-size: 12px 12px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    max-width: 96px;
+    height: 40px;
+    padding: 0 32px 0 8px;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 40px;
+    color: #000;
+    background-color: #F2F2F2;
+    border-radius: 4px;
+    cursor: pointer;
+    background-image: url('../photos/svg/Icon-Chevron-Left.svg');
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 12px 12px;
+    box-sizing: border-box;
   }
 
   &__submit {
-    width: 96px;
+    width: 100%;
+    max-width: 96px;
     height: 40px;
     font-size: 12px;
     font-weight: 400;
-    line-height: 110%;
+    line-height: 1.1;
     text-align: center;
     background-color: #DC9B59;
     color: #070707;
-    border: none;
-    cursor: pointer;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 0;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     align-self: flex-end;
-    margin-top: 25px;
+    margin-top: 16px;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+
+  @media (min-width: 768px) {
+    & {
+      max-width: 300px; /* np. większy kalkulator na tablet/desktop */
+    }
   }
 }

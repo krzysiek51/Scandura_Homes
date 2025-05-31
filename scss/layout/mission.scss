@@ -1,59 +1,102 @@
-@use '../layout/_grid' as *;
-@use '../utils/_variables' as *;
-@use 'grid' as *;
+@use '../layout/grid' as *;
+@use '../utils/variables' as *;
 
 .mission {
-  /* ogólne odsunięcie sekcji od góry/dół jeśli potrzebne */
+  position: relative;
   padding: 40px 0;
+  box-sizing: border-box;
+  overflow-x: hidden;   // <<< zapobiegamy poziomemu scrollowi
 
   &__content {
-    @include grid(4, 72px, 16px);
-    /* zachowujemy poziome paddingi z dotychczasowego mobile layoutu */
-    // padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    width: 100%;
     margin: 0 auto;
-    // max-width: 336px; 
+    box-sizing: border-box;
+
+    @media (min-width: 768px) {
+      @include grid(4, 16px);
+    }
   }
-  &__image {
-    width: 335px;
-  }
+
   &__image-wrapper {
-    grid-column: 1 / -1;      // full width
-    margin-bottom: 16px;
+    position: relative;
+    max-width: 335px;      // 375px viewport − 2×20px gutter
+    width: 100%;
+    aspect-ratio: 335 / 375;
+    overflow: visible;     // <<< pozwalamy kropkom wystawać
+    margin: 0 auto 16px;
+    box-sizing: border-box;
+  }
+
+  &__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    box-sizing: border-box;
+  }
+
+  &__dots {
+    position: absolute;
+    top: -20px;         // 20px powyżej górnej krawędzi obrazka
+    left: 69.3%;        // ~232px / 335px → kropki zawsze przylegają do obrazu proporcjonalnie
+    width: 192px;       // rozmiar kropek
+    height: 220px;      // rozmiar kropek
+    pointer-events: none;
+    z-index: 1;
+    box-sizing: border-box;
   }
 
   &__title {
-    grid-column: 1 / -1;      // full width
-    position: relative;
+    grid-column: 1 / -1;
     font-family: 'DM Sans', sans-serif;
-    font-size: 24px;
+    font-size: 20px;
     font-style: italic;
     font-weight: 500;
-    margin-bottom: 16px;
-    
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box;
+
     &::before {
       content: '';
       display: block;
-      width: 72px;
+      width: 229.6px;
       height: 4px;
-      background-color: #DC9B59;
+      background: linear-gradient(90deg, #DC9B59 0%, #000000 100%);
+      
       margin-bottom: 8px;
+      box-sizing: border-box;
+    }
+
+    margin-bottom: 16px;
+    box-sizing: border-box;
+
+    @media (min-width: 768px) {
+      font-size: 24px;
     }
   }
 
   &__text {
-    grid-column: 1 / -1;      // full width
+    grid-column: 1 / -1;
     font-family: 'DM Sans', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.5;
     color: #333;
-    margin-bottom: 20px;
+    margin: 0 0 20px 0;
+    box-sizing: border-box;
+
+    @media (min-width: 768px) {
+      font-size: 16px;
+    }
   }
 
   &__button {
-    grid-column: 1 / -1;      // full width
+    grid-column: 1 / -1;
     display: inline-block;
     font-family: 'DM Sans', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     padding: 10px 20px;
     background-color: #DC9B59;
@@ -61,6 +104,8 @@
     border-radius: 4px;
     text-decoration: none;
     text-align: center;
+    margin: 0 20px 0 20px; // przycisk 20px od lewej (jak tytuł)
     cursor: pointer;
+    box-sizing: border-box;
   }
 }

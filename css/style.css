@@ -1,36 +1,37 @@
 @charset "UTF-8";
-/* Box sizing */
+/* base/reset.scss */
+/* 1. Box sizing */
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
-/* Reset marginesów i paddingów */
+/* 2. Reset marginesów i paddingów */
 body, h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd {
   margin: 0;
   padding: 0;
 }
 
-/* Usunięcie domyślnych stylów list */
+/* 3. Listy bez wypunktowania */
 ul, ol {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-/* Linki bez podkreślenia */
+/* 4. Linki bez podkreśleń */
 a {
   text-decoration: none;
   color: inherit;
 }
 
-/* Obrazy i media: pełna szerokość i brak marginesów */
+/* 5. Obrazy i media – pełna szerokość i automatyczna wysokość */
 img, video {
   max-width: 100%;
   height: auto;
   display: block;
 }
 
-/* Form elements – reset fontu i marginesów */
+/* 6. Formularzowe elementy – reset fontu i marginesów */
 input, button, textarea, select {
   font: inherit;
   margin: 0;
@@ -40,29 +41,89 @@ input, button, textarea, select {
   color: inherit;
 }
 
-/* Usunięcie domyślnych ramek przy focusie (opcjonalnie, bo lepiej stylować samemu) */
+/* 7. Focus (opcjonalnie – można stylować inaczej) */
 :focus {
   outline: none;
 }
 
-/* Body */
+/* 8. Body */
 body {
   min-height: 100vh;
   line-height: 1.5;
-  font-family: system-ui, sans-serif;
+  font-family: "DM Sans", sans-serif;
   background-color: #fff;
   color: #000;
 }
 
-.header {
-  display: grid;
-  grid-column: 1/-1;
-  max-width: 100%;
+/* base/base.scss */
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: "DM Sans", sans-serif;
+  /* żadnych paddingów na html/body – sterujemy gutterem przez .container */
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  margin: 0;
   padding: 0;
+}
+
+.container {
+  /* 
+    Mobile‐first: container wypełnia 100% szerokości ekranu (np. 375px),
+    a dzięki padding: 0 20px wewnętrzna przestrzeń to 375 − 2×20 = 335px.
+    Na szerszych ekranach max-width:1200px.
+  */
+  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
-  max-height: 450px;
-  min-height: 450px;
+  padding: 0 20px; /* mobilny gutter: 20px od lewej i 20px od prawej */
+  box-sizing: border-box;
+}
+
+.header {
+  /* ---------------------------------------------------
+     1) Sam <header> – full-width, full-bleed, 450px wysokosci
+     --------------------------------------------------- */
+  width: 100%;
+  position: relative;
   overflow: hidden;
+  min-height: 450px;
+  max-height: 450px;
+  box-sizing: border-box;
+  /* ---------------------------------------------------
+     1.1) Wideo lub obraz tła ("pod spodem")
+     --------------------------------------------------- */
+  /* ---------------------------------------------------
+     1.2) Lekko półprzezroczysty overlay przyciemniający wideo
+     --------------------------------------------------- */
+  /* ---------------------------------------------------
+     2) Pasek z logo + burgerem (ciemniowany)
+        – pełna szerokość headera, wysokość 66px
+     --------------------------------------------------- */
+  /* ---------------------------------------------------
+     2.1) .container.header__top – w nim układ flex dla logo i hamburgera
+     --------------------------------------------------- */
+  /* ---------------------------------------------------
+     2.2) Logo (po lewej)
+     --------------------------------------------------- */
+  /* ---------------------------------------------------
+     2.3) Ikona hamburgera (po prawej)
+     --------------------------------------------------- */
+  /* ---------------------------------------------------
+     3) Główna treść headera – tytuł, opis, przycisk
+        (full‐width, bez containera, pod paskiem)
+     --------------------------------------------------- */
+  /* ---------------------------------------------------
+     3.1) Tytuł (w ramach .header__content – zajmuje 100% szerokości kontenera)
+     --------------------------------------------------- */
+  /* ---------------------------------------------------
+     3.2) Opis (pod tytułem, pełna szerokość)
+     --------------------------------------------------- */
+  /* ---------------------------------------------------
+     3.3) Przycisk (pod opisem, pełna szerokość z gutterem)
+     --------------------------------------------------- */
 }
 .header__video {
   position: absolute;
@@ -77,7 +138,7 @@ body {
 }
 .header__overlay {
   position: absolute;
-  inset: 0;
+  inset: 0; /* top:0; right:0; bottom:0; left:0; */
   background: rgba(0, 0, 0, 0.5);
   z-index: 1;
 }
@@ -85,241 +146,217 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 3;
+  width: 100%;
   height: 66px;
-  display: grid;
-  align-items: center;
-}
-.header__container {
-  display: grid;
-  grid-template-columns: repeat(4, 72px);
-  column-gap: 16px;
-  padding: 0 20px;
-  box-sizing: border-box;
-  position: relative;
+  background: rgba(0, 0, 0, 0.4);
   z-index: 2;
-  display: grid;
-  padding: 0 20px;
+  box-sizing: border-box;
 }
 .header__top {
-  width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 0 20px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%; /* rozciąga się na 66px */
+  box-sizing: border-box;
+  /* Uwaga: .container (wrzucane w tym miejscu w HTML) ma już
+     `padding: 0 20px`, więc nie musimy tu powtarzać guttera. */
+}
+.header__logo {
+  display: block;
 }
 .header__logo--img {
-  height: 40px;
+  display: block;
+  height: 40px; /* lub zgodnie z designem */
+  box-sizing: border-box;
 }
 .header__burger {
-  display: grid;
-  grid-column: 1/-1;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
 }
 .header__burger--img {
-  height: 14px;
+  display: block;
+  height: 14px; /* lub zgodnie z designem */
+  box-sizing: border-box;
 }
 .header__content {
-  display: grid;
-  grid-template-rows: auto auto auto;
-  gap: 0;
-  align-self: start;
-  text-align: left;
-  color: white;
-  margin-top: 92px;
-  align-items: start;
-  justify-items: start;
-  max-width: 600px;
-  z-index: 2;
+  position: relative;
+  z-index: 3; /* nad paskiem i nad overlayem */
+  margin: 66px 0 0 0; /* odsuń o 66px, żeby znaleźć się pod .header__wrap */
+  width: 100%;
+  padding: 0 20px; /* gutter 20px po bokach (jak w Figma) */
+  box-sizing: border-box;
+  /* Ustawiamy prosty układ “stack” zamiast grid‐based 4×72px:
+     tytuł, opis i przycisk w pionie, z odstępem 16px. */
+  display: flex;
+  flex-direction: column;
 }
-.header__description {
-  display: grid;
-  grid-row: 2;
-  font-family: "DM Sans";
-  font-size: 14px;
-  font-weight: 400;
-  text-align: left;
-  vertical-align: top;
-  line-height: auto;
-  letter-spacing: 0;
-  width: calc(100vw - 40px);
-  padding-top: 16px;
-  padding-bottom: 24px;
-  align-content: start;
+@media (min-width: 768px) {
+  .header__content {
+    /* Tablet/Desktop: jeżeli chcesz inny układ na większym ekranie, 
+       możesz wrzucić mixina grid tutaj. Na razie zostaje jednokolumnowy stack. */
+    max-width: 600px;
+    margin: 120px auto 0 auto; /* większy odstęp od paska i wycentrowanie */
+    padding: 0; /* ewentualnie inny gutter na desktop */
+  }
 }
 .header__title {
-  display: grid;
-  grid-row: 1;
   font-family: "DM Sans", sans-serif;
-  font-size: 32px;
-  font-weight: 600;
-  text-align: left;
-  vertical-align: top;
+  font-size: 32px; /* mobilnie */
+  font-weight: 500;
   line-height: 130%;
-  letter-spacing: 0.64px;
-  width: calc(100vw - 40px);
+  letter-spacing: 2%;
+  text-align: left;
+  color: #fff;
+  width: 100%;
+  box-sizing: border-box;
+  padding-top: 26px;
+}
+@media (min-width: 768px) {
+  .header__title {
+    font-size: 32px;
+  }
+}
+.header__description {
+  font-family: "DM Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: auto;
+  letter-spacing: 0;
+  text-align: left;
+  color: #fff;
+  width: 100%;
+  box-sizing: border-box;
+  padding-top: 16px;
+  padding-bottom: 24px;
+}
+@media (min-width: 768px) {
+  .header__description {
+    font-size: 16px;
+  }
 }
 .header__button {
+  font-family: "DM Sans", sans-serif;
+  width: 100%;
+  height: 40px;
+  background-color: #DC9B59;
+  color: #000;
+  font-size: 12px;
+  font-weight: 400;
+  border-radius: 1px 16px 1px 1px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  width: 335px;
-  height: 40px;
-  background-color: #DC9B59;
-  color: #000;
-  font-family: "DM Sans", sans-serif;
-  font-size: 12px;
-  line-height: 110%;
-  font-weight: 400;
-  text-align: center;
-  border: none;
-  outline: none;
-  border-radius: 1px 16px 1px 1px;
   cursor: pointer;
+  box-sizing: border-box;
 }
-
-body {
-  font-family: "DM Sans", sans-serif;
-}
-
-.calculator {
-  /* rozmiar całego kalkulatora */
-  width: 250px;
-  min-height: 247px;
-  /* tło, obramowanie, cień */
-  background-color: #fff;
-  border-radius: 0 48px 0 0;
-  box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.1);
-  /* podniesienie i wyśrodkowanie */
-  margin: -59px auto 0;
-  position: relative;
-  z-index: 4;
-  /* wewnętrzny układ */
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
-  justify-content: space-between;
-}
-.calculator__form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px; /* odstęp między wierszami */
-}
-.calculator__row {
-  display: flex;
-  gap: 16px; /* odstęp między kolumnami */
-}
-.calculator__field-group {
-  flex: 1;
-}
-.calculator__label {
-  display: block;
-  margin-bottom: 10px;
-  font-size: 10px;
-  font-weight: 500;
-  line-height: 150%;
-  color: #000;
-}
-.calculator__select {
-  /* Usuń domyślną strzałkę przeglądarki */
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  /* Krój pisma */
-  font-family: "DM Sans", sans-serif;
-  /* Wymiary pola */
-  width: 96px;
-  height: 40px;
-  /* Padding: 8px z lewej, większy z prawej żeby zrobić miejsce na ikonę */
-  padding: 0 32px 0 8px;
-  /* Tekst */
-  font-size: 8px;
-  font-weight: 400;
-  line-height: 40px; /* wycentrowanie pionowe */
-  color: #000;
-  background-color: #F2F2F2;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  /* Twoja ikona strzałki po prawej, 17.53px od krawędzi */
-  background-image: url("../photos/svg/Icon-Chevron-Left.svg");
-  background-repeat: no-repeat;
-  background-position: right 17.53px center;
-  background-size: 12px 12px;
-}
-.calculator__submit {
-  width: 96px;
-  height: 40px;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 110%;
-  text-align: center;
-  background-color: #DC9B59;
-  color: #070707;
-  border: none;
-  cursor: pointer;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 0;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  align-self: flex-end;
-  margin-top: 25px;
+@media (min-width: 768px) {
+  .header__button {
+    width: 200px; /* w desktopową/ tablecie wersję zmień według designu */
+    height: 48px;
+    font-size: 14px;
+  }
 }
 
 .mission {
-  /* ogólne odsunięcie sekcji od góry/dół jeśli potrzebne */
+  position: relative;
   padding: 40px 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 .mission__content {
   display: grid;
-  grid-template-columns: repeat(4, 72px);
-  column-gap: 16px;
-  padding: 0 20px;
-  box-sizing: border-box;
-  /* zachowujemy poziome paddingi z dotychczasowego mobile layoutu */
+  grid-template-columns: 1fr;
+  gap: 16px;
+  width: 100%;
   margin: 0 auto;
+  box-sizing: border-box;
 }
-.mission__image {
-  width: 335px;
+@media (min-width: 768px) {
+  .mission__content {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    box-sizing: border-box;
+  }
 }
 .mission__image-wrapper {
-  grid-column: 1/-1;
-  margin-bottom: 16px;
+  position: relative;
+  max-width: 335px;
+  width: 100%;
+  aspect-ratio: 335/375;
+  overflow: visible;
+  margin: 0 auto 16px;
+  box-sizing: border-box;
+}
+.mission__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  box-sizing: border-box;
+}
+.mission__dots {
+  position: absolute;
+  top: -20px;
+  left: 69.3%;
+  width: 192px;
+  height: 220px;
+  pointer-events: none;
+  z-index: 1;
+  box-sizing: border-box;
 }
 .mission__title {
   grid-column: 1/-1;
-  position: relative;
   font-family: "DM Sans", sans-serif;
-  font-size: 24px;
+  font-size: 20px;
   font-style: italic;
   font-weight: 500;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   margin-bottom: 16px;
+  box-sizing: border-box;
 }
 .mission__title::before {
   content: "";
   display: block;
-  width: 72px;
+  width: 229.6px;
   height: 4px;
-  background-color: #DC9B59;
+  background: linear-gradient(90deg, #DC9B59 0%, #000000 100%);
   margin-bottom: 8px;
+  box-sizing: border-box;
+}
+@media (min-width: 768px) {
+  .mission__title {
+    font-size: 24px;
+  }
 }
 .mission__text {
   grid-column: 1/-1;
   font-family: "DM Sans", sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.5;
   color: #333;
-  margin-bottom: 20px;
+  margin: 0 0 20px 0;
+  box-sizing: border-box;
+}
+@media (min-width: 768px) {
+  .mission__text {
+    font-size: 16px;
+  }
 }
 .mission__button {
   grid-column: 1/-1;
   display: inline-block;
   font-family: "DM Sans", sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   padding: 10px 20px;
   background-color: #DC9B59;
@@ -327,7 +364,100 @@ body {
   border-radius: 4px;
   text-decoration: none;
   text-align: center;
+  margin: 0 20px 0 20px;
   cursor: pointer;
+  box-sizing: border-box;
+}
+
+.calculator {
+  /* MOBILE-FIRST: 
+     kalkulator w containerze 335px, 
+     ale sam max-width: 250px, wyśrodkowany */
+  width: 100%;
+  max-width: 250px;
+  min-height: 247px;
+  background-color: #fff;
+  border-radius: 0 48px 0 0;
+  box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.1);
+  /* Podniesiony nad content i wyśrodkujony */
+  margin: -59px auto 0;
+  position: relative;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+.calculator__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.calculator__row {
+  display: flex;
+  gap: 16px;
+}
+.calculator__field-group {
+  flex: 1;
+}
+.calculator__label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #000;
+}
+.calculator__select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  font-family: "DM Sans", sans-serif;
+  width: 100%;
+  max-width: 96px;
+  height: 40px;
+  padding: 0 32px 0 8px;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 40px;
+  color: #000;
+  background-color: #F2F2F2;
+  border-radius: 4px;
+  cursor: pointer;
+  background-image: url("../photos/svg/Icon-Chevron-Left.svg");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 12px 12px;
+  box-sizing: border-box;
+}
+.calculator__submit {
+  width: 100%;
+  max-width: 96px;
+  height: 40px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.1;
+  text-align: center;
+  background-color: #DC9B59;
+  color: #070707;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  align-self: flex-end;
+  margin-top: 16px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+@media (min-width: 768px) {
+  .calculator {
+    max-width: 300px; /* np. większy kalkulator na tablet/desktop */
+  }
+}
+
+body {
+  font-family: "DM Sans", sans-serif;
 }
 
 /*# sourceMappingURL=style.css.map */

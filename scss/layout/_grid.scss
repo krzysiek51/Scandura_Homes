@@ -6,11 +6,17 @@
   margin-right: auto;
 }
 
-@mixin grid($cols, $col-width, $gap) {
+// layout/grid.scss
+
+// Mixin przyjmujący dwa argumenty:
+//   $cols – liczba kolumn
+//   $gap  – odstęp (gap) między nimi
+//
+// Używamy tego dopiero w breakpointach (tablet/desktop). Na mobile grid definiujemy "na sztywno".
+@mixin grid($cols, $gap) {
   display: grid;
-  grid-template-columns: repeat($cols, $col-width);
-  column-gap: $gap;
-  padding: 0 20px; // ← padding boczny
+  grid-template-columns: repeat($cols, 1fr);
+  gap: $gap;
   box-sizing: border-box;
 }
 

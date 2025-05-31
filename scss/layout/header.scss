@@ -1,27 +1,22 @@
-@use '../layout/_grid' as *;
-@use '../utils/_variables' as *;
-@use 'grid' as *;
+// layout/header.scss
 
-
+@use '../layout/grid' as *;    // mixin grid (używany od szerokości 768px)
+@use '../utils/variables' as *; // zmienne kolorów/fontów (opcjonalnie)
 
 .header {
-
-
-
-  display: grid;
-
-  grid-column: 1 / -1;
-  max-width: 100%;
-
-  padding: 0;
-  margin: 0 auto;
-
-
-  max-height: 450px;
-  min-height: 450px;
+  /* ---------------------------------------------------
+     1) Sam <header> – full-width, full-bleed, 450px wysokosci
+     --------------------------------------------------- */
+  width: 100%;
+  position: relative;
   overflow: hidden;
+  min-height: 450px;
+  max-height: 450px;
+  box-sizing: border-box;
 
-
+  /* ---------------------------------------------------
+     1.1) Wideo lub obraz tła ("pod spodem")
+     --------------------------------------------------- */
   &__video {
     position: absolute;
     top: 50%;
@@ -34,135 +29,169 @@
     pointer-events: none;
   }
 
+  /* ---------------------------------------------------
+     1.2) Lekko półprzezroczysty overlay przyciemniający wideo
+     --------------------------------------------------- */
   &__overlay {
     position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5); // przyciemnienie
+    inset: 0; /* top:0; right:0; bottom:0; left:0; */
+    background: rgba(0, 0, 0, 0.5);
     z-index: 1;
   }
 
+  /* ---------------------------------------------------
+     2) Pasek z logo + burgerem (ciemniowany)
+        – pełna szerokość headera, wysokość 66px
+     --------------------------------------------------- */
   &__wrap {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 3; // musi być powyżej overlayu (który miał 1 lub 2)
-    height: 66px; // wysokość top baru
-    display: grid;
-    align-items: center;
-  }
-
-  &__container {
-
-    @include grid(4, 72px, 16px);
-    position: relative;
-    z-index: 2;
-    // height: 100%;
-    display: grid;
-    // flex-direction: column;
-    // justify-content: space-between;
-    padding: 0 20px;
-
-  }
-
-  &__top {
     width: 100%;
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 0 20px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  &__logo--img {
-    height: 40px
-  }
-
-  &__burger {
-    display: grid;
-    grid-column: 1 / -1;
-  }
-
-  &__burger--img {
-
-    height: 14px;
-  }
-
-  &__content {
-  display: grid;
-  grid-template-rows: auto auto auto; // 3 wiersze: tytuł, opis, przycisk
-  gap: 0;   
-   align-self: start;                      // odstęp między nimi
-  text-align: left;
-  color: white;
-  margin-top: 92px;
- // margin-bottom: 4rem;
-  align-items: start;                 // pionowo do góry
-  justify-items: start;              // poziomo do lewej
-  max-width: 600px;
+    height: 66px;
+    background: rgba(0, 0, 0, 0.4);
     z-index: 2;
+    box-sizing: border-box;
   }
 
+  /* ---------------------------------------------------
+     2.1) .container.header__top – w nim układ flex dla logo i hamburgera
+     --------------------------------------------------- */
+  &__top {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;       /* rozciąga się na 66px */
+    box-sizing: border-box;
+    /* Uwaga: .container (wrzucane w tym miejscu w HTML) ma już
+       `padding: 0 20px`, więc nie musimy tu powtarzać guttera. */
+  }
 
-  &__description {
-    display: grid;
-    grid-row: 2;
-    font-family: 'DM Sans';
-    font-size: 14px;
-    font-weight: 400;
+  /* ---------------------------------------------------
+     2.2) Logo (po lewej)
+     --------------------------------------------------- */
+  &__logo {
+    display: block;
+
+    &--img {
+      display: block;
+      height: 40px;  /* lub zgodnie z designem */
+      box-sizing: border-box;
+    }
+  }
+
+  /* ---------------------------------------------------
+     2.3) Ikona hamburgera (po prawej)
+     --------------------------------------------------- */
+  &__burger {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+
+    &--img {
+      display: block;
+      height: 14px; /* lub zgodnie z designem */
+      box-sizing: border-box;
+    }
+  }
+
+  /* ---------------------------------------------------
+     3) Główna treść headera – tytuł, opis, przycisk
+        (full‐width, bez containera, pod paskiem)
+     --------------------------------------------------- */
+  &__content {
+    position: relative;
+    z-index: 3;             /* nad paskiem i nad overlayem */
+    margin: 66px 0 0 0;     /* odsuń o 66px, żeby znaleźć się pod .header__wrap */
+    width: 100%;
+    padding: 0 20px;        /* gutter 20px po bokach (jak w Figma) */
+    box-sizing: border-box;
+
+    /* Ustawiamy prosty układ “stack” zamiast grid‐based 4×72px:
+       tytuł, opis i przycisk w pionie, z odstępem 16px. */
+    display: flex;
+    flex-direction: column;
+    
+
+    @media (min-width: 768px) {
+      /* Tablet/Desktop: jeżeli chcesz inny układ na większym ekranie, 
+         możesz wrzucić mixina grid tutaj. Na razie zostaje jednokolumnowy stack. */
+      max-width: 600px;
+      margin: 120px auto 0 auto;  /* większy odstęp od paska i wycentrowanie */
+      padding: 0;                  /* ewentualnie inny gutter na desktop */
+    }
+  }
+
+  /* ---------------------------------------------------
+     3.1) Tytuł (w ramach .header__content – zajmuje 100% szerokości kontenera)
+     --------------------------------------------------- */
+  &__title {
+    font-family: 'DM Sans', sans-serif;  
+    font-size: 32px;      /* mobilnie */
+    font-weight: 500;
+    line-height: 130%;
+    letter-spacing: 2%;
     text-align: left;
-    vertical-align: top;
+    color: #fff;
+    width: 100%;
+    box-sizing: border-box;
+    padding-top: 26px;
+
+    @media (min-width: 768px) {
+      font-size: 32px;
+    }
+  }
+
+  /* ---------------------------------------------------
+     3.2) Opis (pod tytułem, pełna szerokość)
+     --------------------------------------------------- */
+  &__description {
+    font-family: 'DM Sans', sans-serif;  
+    font-size: 14px;
+    font-weight: 300;
     line-height: auto;
     letter-spacing: 0;
-    width: calc(100vw - 40px);
+    text-align: left;
+    color: #fff;
+    width: 100%;
+    box-sizing: border-box;
     padding-top: 16px;
     padding-bottom: 24px;
 
-    align-content: start;
+    @media (min-width: 768px) {
+      font-size: 16px;
+    }
   }
 
-  &__title {
-
-    display: grid;
-    grid-row: 1;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 32px;
-    font-weight: 600;
-    text-align: left;
-    vertical-align: top;
-    line-height: 130%;
-    letter-spacing: 32px * 0.02;
-    width: calc(100vw - 40px);
-    // height: 168px;
-  }
+  /* ---------------------------------------------------
+     3.3) Przycisk (pod opisem, pełna szerokość z gutterem)
+     --------------------------------------------------- */
   &__button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+    font-family: 'DM Sans', sans-serif;  
+    width: 100%;
+    height: 40px;
+    background-color: #DC9B59;
+    color: #000;
+    font-size: 12px;
+    font-weight: 400;
+    border-radius: 1px 16px 1px 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-sizing: border-box;
+    
 
-  width: 335px;
-  height: 40px;
-
-  background-color: #DC9B59;
-  color: #000;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  line-height: 110%;
-  font-weight: 400;
-  text-align: center;
-
-  border: none;
-  outline: none;
-  border-radius: 1px 16px 1px 1px;
-
-  cursor: pointer;
-}
-
+    @media (min-width: 768px) {
+      width: 200px;    /* w desktopową/ tablecie wersję zmień według designu */
+      height: 48px;
+      font-size: 14px;
+    }
   }
-
- 
-
+}
