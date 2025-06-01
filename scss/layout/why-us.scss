@@ -1,79 +1,74 @@
-// components/_why-us.scss
-
 @use '../layout/grid' as *;
 @use '../utils/variables' as *;
 
 .why-us {
+    background-color: #FAF7F4;
     position: relative;
     padding: 40px 0; // Przykładowe paddingi dla całej sekcji
     box-sizing: border-box;
     overflow-x: hidden; // Zapobiegamy poziomemu scrollowi
 
-    // Styles for the grid containing the main elements
+    
     &__grid {
         display: grid;
-        // Dokładne odwzorowanie grida z Figmy dla mobile:
-        // 4 kolumny po 72px, z odstępem 16px. Łącznie 336px szerokości.
+        
         grid-template-columns: repeat($grid-columns, $column-width);
         gap: $grid-gap;
 
-        // Wyśrodkowanie grida w kontenerze (który ma 335px wewn. szerokości dla 375px viewportu)
-        // Akceptujemy 1px wystawania, aby zachować stałe wymiary kolumn z Figmy.
+        
         justify-content: center; 
     }
 
-    // Główne style dla karty recenzji (obraz + overlay)
+    
     &__review-card {
-        grid-column: 1 / -1; // Zajmuje całą szerokość grida na mobile (wszystkie 4 kolumny = 336px)
-        position: relative; // Konieczne do pozycjonowania overlayu
-        overflow: hidden; // Ukrywa wszystko, co wychodzi poza zaokrąglone rogi karty
-        // border-radius: 16px; // Przykładowe zaokrąglenie rogów całej karty recenzji (dostosuj z Figmy)
+        grid-column: 1 / -1; 
+        position: relative; 
+        overflow: hidden; 
         
-        width: 100%; // Karta zajmuje 100% szerokości kolumn grida (czyli 336px)
-        height: 267px; // Wysokość obrazka z Figmy (ustawiona na rodzicu)
-        min-height: 200px; // Przykładowa minimalna wysokość, aby obrazek był widoczny
+        
+        width: 100%; 
+        height: 267px;
+        min-height: 200px; 
+        
     }
 
-    // Obrazek w tle karty recenzji
+    
     &__review-image {
-        width: 100%; // Obrazek wypełnia 100% szerokości rodzica (__review-card)
-        height: 100%; // Obrazek wypełnia 100% wysokości rodzica
-        object-fit: cover; // Ważne, aby obrazek wypełniał przestrzeń bez zniekształceń
-        display: block; // Usuwa domyślne marginesy pod obrazkami
+        width: 100%;  
+        height: 100%;  
+        object-fit: cover; 
+        display: block;  
+        box-shadow: 0px 4px 3.5px rgba(205, 205, 205, 0.35);
+
     }
 
-    // Styl dla transparentnego overlayu z zawartością
     &__review-overlay {
-        position: absolute; // Pozycjonowany absolutnie względem `__review-card`
-        bottom: 0;          // Przyklejony do dolnej krawędzi
-        left: 0;            // Przyklejony do lewej krawędzi
-        width: 222px;        // Rozciągnięty na całą szerokość rodzica (__review-card)
-        height: 133px;      // Wysokość z Figmy
+        position: absolute;  
+        bottom: 0;           
+        left: 0;             
+        width: 222px;        
+        height: 133px;       
 
-        background-color: $color-overlay-bg; // Tło z Figmy (5B5A5A z 27% przezroczystości)
-        border: 1px solid $color-overlay-border; // Obramowanie z Figmy (FFFFFF z 25% przezroczystości)
+        background-color: $color-overlay-bg; 
+        border: 1px solid $color-overlay-border; 
         
-        // Zaokrąglenie narożników z Figmy: "Mixed", na obrazku górny prawy róg.
-        border-top-right-radius: 65px; // Ustawiona wartość 65px z Twojego kodu
+        border-top-right-radius: 65px;  
 
-        // Efekt rozmycia tła z Figmy: "Background blur", 3px
-        backdrop-filter: blur(3px); // Zaktualizowana wartość blur na 3px
-        -webkit-backdrop-filter: blur(3px); // Dla kompatybilności z Safari
+        backdrop-filter: blur(3px);  
+        -webkit-backdrop-filter: blur(3px); 
 
-        // Paddingi z Figmy: 24px z każdej strony, ale u Ciebie były rozbite.
-        // Zgodnie z Figmą i jej layoutem, paddingi są 24px (W:222 H:133 z 24px paddingiem)
         padding: 24px; 
         box-sizing: border-box; 
 
-        // Układanie zawartości wewnątrz overlayu za pomocą Flexbox
+         
         display: flex;
-        flex-direction: column; // Elementy ułożone jeden pod drugim
-        justify-content: flex-start; // Wyrównanie do góry kontenera
-        align-items: flex-start;   // Wyrównanie do lewej kontenera
-        gap: 21px; // Odstęp (gap) między głównymi elementami wewnątrz Flexboxa (tytuł, avatary, gwiazdki, count)
+        flex-direction: column;  
+        justify-content: flex-start; 
+        align-items: flex-start;    
+        gap: 21px; 
     }
 
-    // Styl dla tytułu overlayu "Client Review"
+     
     &__review-title {
         font-family: 'DM Sans', sans-serif;
         font-size: 16px; 
@@ -103,41 +98,38 @@
         }
     }
 
-    // Styles for the stars and "5.0" text
+    
     &__stars {
         display: flex; 
-        align-items: center; // Kluczowe dla pionowego wyrównania "5.0" z gwiazdkami
-        gap: 2px; // Odstęp między gwiazdkami i "5.0"
+        align-items: center; 
+        gap: 2px; 
         
-        img { // Styl dla każdej pojedynczej gwiazdki (z HTML: <img class="star-icon">)
+        img {
             width: 11px; 
             height: 10px; 
         }
 
-        span { // Styl dla tekstu "5.0"
+        span { 
             font-family: 'DM Sans', sans-serif;
             font-size: 12px; 
             font-weight: 400; 
-            line-height: 1; // Poprawka: Pomaga w idealnym pionowym wyrównaniu z obrazkami
+            line-height: 1; 
             text-align: center; 
             color: $color-white; 
             margin-left: 10px; 
         }
     }
 
-    // Styles for the "120+ Review" text container
     &__review-count { 
         font-family: 'DM Sans', sans-serif;
         color: $color-white; 
     }
-    // Styles for "120+" number
     &__review-number {
         font-size: 16px; 
         font-weight: 300; 
         line-height: 95%; 
         color: $color-white; 
     }
-    // Styles for "Review" label
     &__review-label {
         font-size: 14px; 
         font-weight: 400; 
@@ -146,14 +138,11 @@
         margin-left: 5px; // Odstęp między "120+" a "Review"
     }
 
-    // === Styles for the '26+ Project Done' and 'Woodworker' image block ===
     &__stats {
-        grid-column: 1 / -1; // Zajmuje całą szerokość grida na mobile (336px)
+        grid-column: 1 / -1; 
         
-        // KLUCZOWA ZMIANA: Układ horyzontalny (obok siebie) z dostosowanymi szerokościami i gapem
         display: flex;
-        flex-direction: row; // Ułożenie obok siebie
-        // Odstęp 17px wynika z: 336px (szerokość grida) - 169px (projects) - 150px (image) = 17px
+        flex-direction: row;  
         gap: 17px; 
         align-items: flex-start; // Wyrównanie do góry, bo bloki mają różne wysokości
     }
@@ -167,8 +156,6 @@
         background-color: $color-beige-bg; 
         box-shadow: 0px 4px 3.5px rgba(205, 205, 205, 0.35);
 
-
-        // Zaokrąglenie tylko dolnego lewego rogu (z Figmy)
         border-top-right-radius: 60px; // Przykładowy promień z Figmy
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
@@ -218,11 +205,8 @@
         display: block;
     }
 
-    // === Twoje istniejące style dla pozostałych elementów sekcji why-us (tekst, lista, button) ===
-
-    // Uwaga: &__content nie jest używany w Twoim HTML, `__text` jest kontenerem dla nagłówka i paragrafów.
-    // Jeśli chcesz użyć `__content` jako kontenera dla tekstu, musisz zaktualizować HTML.
-    &__content { // Domyślne style dla grida w content, jeśli to jest osobny element gridowy
+    
+    &__content { 
         display: grid;
         grid-template-columns: 1fr;
         gap: 0; 
@@ -248,16 +232,15 @@
         font-size: 24px;
         font-style: italic;
         font-weight: 600;
-        line-height: 24px;
+        line-height: 126%;
         letter-spacing: 0.07em;
         color: $color-dark-text; 
-        margin: 0; 
-        padding: 0; 
+        
         box-sizing: border-box;
 
         
-        margin-bottom: 16px; 
-        box-sizing: border-box;
+     
+        
 
     &::before {
         // Gradientowa linia (zaktualizowana o obramowanie i border-radius)
@@ -273,7 +256,20 @@
         }
     }
 
+   &__description {
+        grid-column: 1 / -1;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 160%;
+        color: $color-dark-text; 
+        
+        box-sizing: border-box;
 
+        margin-top: 16px;
+        margin-bottom: 32px;
+
+   }
     &__text { // To jest kontener dla paragrafów w HTML
         grid-column: 1 / -1;
         font-family: 'DM Sans', sans-serif;
@@ -311,4 +307,24 @@
         width: 25px;
         height: 9.63px;
     }
+  &__item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px; // lub według Figmy
+  }
+
+  &__check-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  &__check-text {
+    margin-left: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 126%;
+    color: $color-dark-text;
+  }
 }

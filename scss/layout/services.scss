@@ -1,0 +1,163 @@
+// components/_services.scss
+
+@use '../layout/grid' as *;
+@use '../utils/variables' as *;
+
+.services {
+    background-color: #ffffff;
+    position: relative;
+    padding: 40px 0;
+    box-sizing: border-box;
+    overflow: hidden; 
+    
+    &__title {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 20px; 
+                font-weight: 600;
+        line-height: 140%; 
+        letter-spacing: 0; 
+        color: $color-dark-text; 
+        text-align: left; 
+        margin-bottom: 20px; 
+
+        &::before {
+        // Gradientowa linia (zaktualizowana o obramowanie i border-radius)
+        content: '';
+        display: block;
+        width: 224.98px; // Szerokość z Twojego kodu (a nie 224.98px z Figmy)
+        height: 4px;     
+        background: linear-gradient(90deg, $color-gradient-start 0%, $color-gradient-end 100%);
+       
+        border-radius: 2px; // Zaokrąglenie
+        margin-bottom: 20px; 
+        box-sizing: border-box;
+        }
+    }
+
+    &__slider {
+        display: flex;
+        overflow-x: auto; 
+        scroll-snap-type: x mandatory; 
+        -webkit-overflow-scrolling: touch; 
+        gap: $grid-gap; 
+        padding-bottom: 20px; 
+        
+        &::-webkit-scrollbar {
+            display: none; 
+        }
+        -ms-overflow-style: none;  
+        scrollbar-width: none;     
+    }
+
+    &__card {
+        flex-shrink: 0; 
+        width: 336px; 
+        box-sizing: border-box;
+        background-color: $color-beige-light-bg; 
+        border-radius: 16px; 
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
+        scroll-snap-align: start; 
+    }
+
+    &__image {
+        width: 100%; 
+        height: 218px; 
+        object-fit: cover;
+        border-top-left-radius: 0; 
+        border-top-right-radius: 36px;
+        display: block;
+    }
+
+    &__icon-wrapper {
+        width: 100px; 
+        height: 100px; 
+        border-radius: 50%; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        margin: 0 auto; 
+        transform: translateY(-50%); 
+        z-index: 1; 
+        
+    }
+
+    &__icon {
+        width: 93px; 
+        height: 93px;
+        // box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    &__card-body {
+        
+        padding: 20px; 
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        margin-top: -50px; 
+    }
+
+    &__card-title {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: $color-dark-text;
+        padding-bottom: 25px; 
+        margin: 0 auto;
+    }
+
+    &__card-text {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 126%;
+        letter-spacing: 0.07em;
+      text-align: center;
+        color: $color-dark-text;
+        margin-bottom: 36px; 
+        
+    }
+
+    &__button {
+        width: 174px;
+        height: 56px;
+        display: inline-flex; 
+        justify-content: center;
+        align-items: center;
+        padding: 10px 20px; 
+        background-color: $color-black;
+        color: $color-white;
+        border-radius: 4px; 
+        text-decoration: none;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        box-sizing: border-box;
+    }
+
+    &__nav {
+        display: flex;
+        justify-content: center; 
+        gap: 20px; 
+        margin-top: 20px; 
+    }
+
+    &__arrow {
+        width: 40px; 
+        height: 40px;
+        border-radius: 50%; 
+        background-color: $color-light-grey-text; 
+        color: $color-white; 
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        outline: none;
+
+        &--prev {
+        }
+        &--next {
+        }
+    }
+}
