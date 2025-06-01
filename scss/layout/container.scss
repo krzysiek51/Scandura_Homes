@@ -1,12 +1,14 @@
+// layout/container.scss
+@use '../utils/variables' as *;
+
 .container {
-  /* 
-    Mobile‐first: container wypełnia 100% szerokości ekranu (np. 375px),
-    a dzięki padding: 0 20px wewnętrzna przestrzeń to 375 − 2×20 = 335px.
-    Na szerszych ekranach max-width:1200px.
-  */
-  max-width: 1200px;
-  width: 100%;
+  max-width: 1200px; // To jest dla większych ekranów
+  width: 100%; // Zawsze 100% szerokości dostępnego miejsca
+
+  // Ustawiamy paddingi na stałe 20px z każdej strony
+  padding-left: $container-padding-left; // 20px
+  padding-right: $container-padding-right; // 20px
+
   margin: 0 auto;
-  padding: 0 20px;   /* mobilny gutter: 20px od lewej i 20px od prawej */
   box-sizing: border-box;
 }

@@ -10,7 +10,7 @@
   &__content {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 0;
     width: 100%;
     margin: 0 auto;
     box-sizing: border-box;
@@ -26,7 +26,7 @@
     width: 100%;
     aspect-ratio: 335 / 375;
     overflow: visible;     // <<< pozwalamy kropkom wystawać
-    margin: 0 auto 16px;
+    margin: 0 auto 20px;
     box-sizing: border-box;
   }
 
@@ -36,6 +36,7 @@
     height: 100%;
     object-fit: cover;
     box-sizing: border-box;
+    // padding-bottom: 20px;
   }
 
   &__dots {
@@ -52,9 +53,12 @@
   &__title {
     grid-column: 1 / -1;
     font-family: 'DM Sans', sans-serif;
-    font-size: 20px;
+    font-size: 24px;
     font-style: italic;
-    font-weight: 500;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0.07em;
+    color:#1D1F2C;
     margin: 0; 
     padding: 0; 
     box-sizing: border-box;
@@ -66,7 +70,7 @@
       height: 4px;
       background: linear-gradient(90deg, #DC9B59 0%, #000000 100%);
       
-      margin-bottom: 8px;
+      margin-bottom: 20px;
       box-sizing: border-box;
     }
 
@@ -81,9 +85,11 @@
   &__text {
     grid-column: 1 / -1;
     font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
     font-size: 14px;
-    line-height: 1.5;
-    color: #333;
+    line-height: 150%;
+    letter-spacing: 0.05em;
+    color:#1D1F2C;
     margin: 0 0 20px 0;
     box-sizing: border-box;
 
@@ -94,18 +100,30 @@
 
   &__button {
     grid-column: 1 / -1;
-    display: inline-block;
+     display: flex; // Zmień na flex
+    justify-content: center; // To wyśrodkuje w poziomie, jeśli masz więcej tekstu lub ikon
+    align-items: center; // To wyśrodkuje tekst w pionie
     font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
-    padding: 10px 20px;
-    background-color: #DC9B59;
-    color: #000;
-    border-radius: 4px;
+    // padding: 10px 20px;
+    background-color: #000;;
+    color:   #ffffff;
+    border-radius: 0 18px 0 0;
     text-decoration: none;
     text-align: center;
-    margin: 0 20px 0 20px; // przycisk 20px od lewej (jak tytuł)
+    margin: 0 auto 0; 
     cursor: pointer;
     box-sizing: border-box;
+
+    width: 100%;
+    height: 56px;
+  }
+
+  &__button-arrow {
+    // padding-left: 10px;
+    margin-left: 10px;
+    width: 25px;
+    height: 9.63px;
   }
 }
