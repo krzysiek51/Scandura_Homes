@@ -1,0 +1,163 @@
+
+@use '../utils/variables' as *;
+@use 'sass:math';
+@use 'sass:color'; // Dostęp do zmiennych, np. kolorów, $grid-gap
+
+// --- Blok: project-card (komponent karty) ---
+.project-card {
+  width: 294px; 
+  flex-shrink: 0;                             // Szerokość karty
+  background-color: $color-white;
+  border-radius: 20px;                      // Zaokrąglenie karty
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 20px;                            // Wewnętrzny padding karty
+
+  &__image-wrapper {
+    width: 100%;
+    height: 211px;
+    overflow: hidden;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    border-radius: 15px;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 15px;
+    box-sizing: border-box;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  &__content {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    box-sizing: border-box;
+  }
+
+  &__header-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: $grid-gap;
+    color: $color-light-grey-text;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+  }
+
+  &__header-arrow {
+    margin-right: ($grid-gap / 2);
+    vertical-align: middle;
+    box-sizing: border-box;
+  }
+
+  &__header-number {
+    font-size: 0.85rem;
+    font-weight: 400;
+    vertical-align: middle;
+    &--current {
+      color: $color-dark-text;
+      font-weight: 700;
+    }
+    box-sizing: border-box;
+  }
+
+  &__header-divider-img {
+    vertical-align: middle;
+    margin: 0 ($grid-gap * 0.75);
+    box-sizing: border-box;
+  }
+
+  &__title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0.01em;
+    color: $color-dark-text;
+    margin: 0 0 $grid-gap 0;
+    box-sizing: border-box;
+  }
+
+  &__description {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.6;
+    color: $color-dark-text;
+    margin: 0 0 ($grid-gap * 1.5) 0;
+    box-sizing: border-box;
+  }
+
+  &__meta {
+    margin-top: auto;
+    margin-bottom: ($grid-gap * 1.5);
+    box-sizing: border-box;
+  }
+
+  &__meta-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: ($grid-gap * 0.625) 0;
+    border-bottom: 1px solid $color-stroke-grey;
+    box-sizing: border-box;
+  }
+
+  &__meta-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: $color-light-grey-text;
+    margin-right: $grid-gap;
+    flex-shrink: 0;
+    box-sizing: border-box;
+  }
+
+  &__meta-value {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: $color-dark-text;
+    text-align: right;
+    flex-grow: 1;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  &__button {
+    display: block;
+    width: 100%;
+    padding: 14px $grid-gap;
+    background-color: $color-gradient-start;
+    color: $color-dark-text;
+    text-align: center;
+    text-decoration: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-sizing: border-box;
+    margin-top: ($grid-gap / 2);
+
+    &:hover {
+      background-color: darken($color-gradient-start, 8%);
+      transform: translateY(-2px);
+    }
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}

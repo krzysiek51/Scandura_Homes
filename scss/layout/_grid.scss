@@ -1,3 +1,5 @@
+@use '../utils/variables' as *;
+
 @mixin container {
   max-width: $container-max-width;
   padding-left: $container-padding-left;
