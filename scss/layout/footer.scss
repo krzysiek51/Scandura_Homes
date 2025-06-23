@@ -1,0 +1,109 @@
+@use '../utils/variables' as *;
+
+.footer {
+  background-color: $color-black; // Zakładam, że masz zmienną $color-black
+  color: $color-white;
+  padding: 60px 0 30px 0;
+
+  &__top {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  &__logo {
+    max-width: 180px; // Możesz dostosować rozmiar logo
+    margin-bottom: 24px;
+  }
+
+  &__description {
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba($color-white, 0.8);
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  &__main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 40px; // Odstępy między sekcjami na mobile
+  }
+
+  &__heading {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  &__link, &__address, &__contact p {
+    color: rgba($color-white, 0.8);
+    text-decoration: none;
+    font-style: normal; // Resetuje domyślne kursywy dla <address>
+    line-height: 1.6;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: $color-white;
+    }
+  }
+  
+  &__contact {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  &__social-icons {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  &__social-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+    // Tło ikon takie samo jak w sekcji .contact
+    background-color: $color-white;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  &__bottom {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid rgba($color-white, 0.2);
+    text-align: center;
+  }
+
+  &__copyright {
+    font-size: 14px;
+    color: rgba($color-white, 0.7);
+  }
+
+  // W przyszłości, na desktopie, zrobimy tak:
+  // @include breakpoint-up(desktop) {
+  //   &__top { text-align: left; }
+  //   &__main-content {
+  //     display: grid;
+  //     grid-template-columns: repeat(3, 1fr); // 3 równe kolumny
+  //     gap: 30px;
+  //   }
+  // }
+}
