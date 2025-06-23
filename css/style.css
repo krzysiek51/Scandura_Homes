@@ -1574,7 +1574,7 @@ body {
 }
 .contact__form-title {
   font-family: "DM Sans", sans-serif;
-  font-size: 24px;
+  font-size: 20px;
   font-style: italic;
   line-height: 1.2;
 }
@@ -1623,6 +1623,9 @@ body {
   padding-left: 32px;
 }
 .contact__checkbox-input {
+  font-family: "DM Sans", sans-serif;
+  font-size: 14px;
+  line-height: 150%;
   position: absolute;
   opacity: 0;
   cursor: pointer;

@@ -112,7 +112,7 @@
 
   &__form-title {
     font-family: 'DM Sans', sans-serif;
-    font-size: 24px;
+    font-size: 20px;
     font-style: italic;
     line-height: 1.2; // --- POPRAWKA: Poprawiony line-height
   }
@@ -170,7 +170,9 @@
   }
 
   &__checkbox-input {
-    // Ukrywamy oryginalny checkbox
+  font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    line-height: 150%;
     position: absolute;
     opacity: 0;
     cursor: pointer;
