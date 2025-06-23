@@ -1393,4 +1393,204 @@ body {
   border-color: rgb(208.4545454545, 193.4935064935, 173.5454545455);
 }
 
+.contact {
+  position: relative;
+  padding: 60px 0;
+  background-image: url("../../photos/main/contact.jpg");
+  background-size: cover;
+  background-position: center center;
+  color: #FFFFFF;
+}
+.contact::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.06);
+  z-index: 1;
+}
+.contact .container {
+  position: relative;
+  z-index: 2;
+}
+.contact__main {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+}
+.contact__intro {
+  text-align: center;
+}
+.contact__title {
+  font-size: 24px;
+  font-weight: 600;
+  text-align: left;
+  line-height: 1.2;
+  letter-spacing: 0.06;
+  margin-bottom: 24px;
+}
+.contact__description {
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 32px;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: left;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.contact__socials {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  gap: 18px;
+}
+.contact__social-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+.contact__social-link:hover {
+  transform: scale(1.1);
+}
+.contact__form-wrapper {
+  background-color: rgba(48, 48, 48, 0.4);
+  border: 1px solid #FFFFFF;
+  border-radius: 10px;
+  padding: 24px;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  width: 100%;
+  max-width: 400px;
+}
+.contact__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.contact__form-header {
+  text-align: left;
+  margin-bottom: 24px;
+}
+.contact__form-supertitle {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 10px;
+}
+.contact__form-title {
+  font-family: "DM Sans", sans-serif;
+  font-size: 24px;
+  font-style: italic;
+  line-height: 1.2;
+}
+.contact__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.contact__input, .contact__textarea {
+  width: 100%;
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 16px;
+  color: #FFFFFF;
+  transition: border-color 0.3s ease;
+}
+.contact__input::placeholder, .contact__textarea::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+.contact__input:focus, .contact__textarea:focus {
+  outline: none;
+  border-color: #FFFFFF;
+}
+.contact__textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+.contact__form-group--checkbox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+.contact__checkbox-label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+  padding-left: 32px;
+}
+.contact__checkbox-input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+.contact__checkbox-label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 20px;
+  width: 20px;
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 4px;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.contact__checkbox-input:checked + .contact__checkbox-label::before {
+  background-color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+.contact__checkbox-label::after {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 50%;
+  transform: translateY(-60%) rotate(45deg);
+  width: 5px;
+  height: 10px;
+  border: solid #1D1F2C;
+  border-width: 0 2px 2px 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.contact__checkbox-input:checked + .contact__checkbox-label::after {
+  opacity: 1;
+}
+.contact__submit-button {
+  width: 100%;
+  height: 50px;
+  border-radius: 8px;
+  border: none;
+  background-color: #DC9B59;
+  color: #FFFFFF;
+  font-family: "DM Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 36px;
+}
+.contact__submit-button:hover {
+  background-color: rgb(215.5597014925, 142.3134328358, 67.9402985075);
+}
+
 /*# sourceMappingURL=style.css.map */

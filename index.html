@@ -596,51 +596,74 @@
     </div>
   </div>
 </section>
-      <section class="contact">
-        <div class="contact__background">
-          <div class="container">
-            <!-- Lewa kolumna z tekstem i socialami -->
-            <div class="contact__intro">
-              <h2 class="contact__title">
-                <em>Gotowy na<strong>wymarzony</strong>dom?</em>
-              </h2>
-              <p class="contact__description">
-                Zaufaj ekspertom z 15-letnim doświadczeniem zdobytym w Norwegii. Oferujemy jakość, która trwa pokolenia, i domy, które spełnią Twoje marzenia.  
-              </p>
-              <p class="contact__description">
-                We don’t just build — we guide, support, and craft each home with care, ensuring a seamless experience from design to delivery.
-              </p>
-      
-              <div class="contact__socials">
-                <a href="#" aria-label="Facebook"><img src="icon-facebook.svg" alt=""></a>
-                <a href="#" aria-label="Instagram"><img src="icon-instagram.svg" alt=""></a>
-                <a href="#" aria-label="X"><img src="icon-x.svg" alt=""></a>
-                <a href="#" aria-label="LinkedIn"><img src="icon-linkedin.svg" alt=""></a>
-              </div>
-            </div>
-      
-            <!-- Prawa kolumna z formularzem -->
-            <div class="contact__form-wrapper">
-              <form action="/thank-you.html" method="post" class="contact__form">
-                <h3 class="contact__form-title">Send a message</h3>
-                <p class="contact__form-subtitle"><em>Request a call back</em></p>
-      
-                <input type="text" name="name" placeholder="Name" required>
-                <input type="email" name="email" placeholder="Email" required>
-                <input type="tel" name="phone" placeholder="Phone Number" required>
-                <textarea name="message" placeholder="Type your message here" rows="4"></textarea>
-      
-                <label class="contact__checkbox">
-                  <input type="checkbox" name="terms" required>
-                  I agree to the terms of service.
-                </label>
-      
-                <button type="submit" class="contact__submit">Submit</button>
-              </form>
-            </div>
-          </div>
+     <section class="contact">
+  <div class="container">
+    <div class="contact__main">
+      <div class="contact__intro">
+        <h2 class="contact__title">
+          Start Your Project with Us.
+        </h2>
+        <p class="contact__description">
+          With over 15 years of experience building high-quality timber homes in Norway and now in Poland, we combine Scandinavian craftsmanship, sustainable materials, and precise project management to deliver long-lasting, energy-efficient wooden houses that feel like home from day one.
+        </p>
+        <p class="contact__description">
+          We don’t just build — we guide, support, and craft each home with care, ensuring a seamless experience from design to delivery.
+        </p>
+  
+        <div class="contact__socials">
+          <a href="#" class="contact__social-link" aria-label="Facebook">
+            <img src="photos/svg/socials/fb.svg" alt="Facebook">
+          </a>
+          <a href="#" class="contact__social-link" aria-label="Instagram">
+            <img src="photos/svg/socials/insta.svg" alt="Instagram">
+          </a>
+          <a href="#" class="contact__social-link" aria-label="X (Twitter)">
+            <img src="photos/svg/socials/x.svg" alt="X">
+          </a>
+          <a href="#" class="contact__social-link" aria-label="LinkedIn">
+            <img src="photos/svg/socials/in.svg" alt="LinkedIn">
+          </a>
         </div>
-      </section>
+      </div>
+  
+      <div class="contact__form-wrapper">
+        <form action="/thank-you.html" method="post" class="contact__form">
+          <header class="contact__form-header">
+            <p class="contact__form-supertitle">Send a message</p>
+            <h3 class="contact__form-title"><em>Request a call back</em></h3>
+          </header>
+          
+          <div class="contact__form-group">
+            <label for="name" class="contact__label">Name</label>
+            <input class="contact__input" type="text" id="name" name="name" placeholder="Name" required>
+          </div>
+
+          <div class="contact__form-group">
+            <label for="email" class="contact__label">Email</label>
+            <input class="contact__input" type="email" id="email" name="email" placeholder="Email" required>
+          </div>
+          
+          <div class="contact__form-group">
+            <label for="phone" class="contact__label">Phone Number</label>
+            <input class="contact__input" type="tel" id="phone" name="phone" placeholder="Phone Number" required>
+          </div>
+
+          <div class="contact__form-group">
+            <label for="message" class="contact__label">Message</label>
+            <textarea class="contact__textarea" id="message" name="message" placeholder="Type your message here" rows="4"></textarea>
+          </div>
+  
+          <div class="contact__form-group--checkbox">
+            <input class="contact__checkbox-input" type="checkbox" id="terms" name="terms" required>
+            <label for="terms" class="contact__checkbox-label">I agree to the terms of service.</label>
+          </div>
+  
+          <button type="submit" class="contact__submit-button">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
       <footer class="footer">
         <div class="container">
           <!-- Logo i opis -->
