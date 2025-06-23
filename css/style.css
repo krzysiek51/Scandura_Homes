@@ -1188,4 +1188,77 @@ body {
   animation: scroll-animation 40s linear infinite reverse;
 }
 
+.booking {
+  position: relative;
+  padding: 64px 0;
+  background-image: url(".//../..//photos/main/booking.jpg");
+  background-size: cover;
+  background-position: center;
+  color: #FFFFFF;
+  overflow: hidden;
+}
+.booking::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  border-radius: inherit;
+}
+.booking .container {
+  position: relative;
+  z-index: 2;
+}
+.booking__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 500px;
+  margin: 0 auto;
+}
+.booking__title {
+  font-family: "DM Sans", sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  margin: 20px 0 26px 0;
+}
+.booking__text {
+  font-family: "DM Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+  max-width: 335px;
+  margin: 0 0 42px 0;
+  opacity: 0.9;
+}
+.booking__button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 335px;
+  height: 50px;
+  background-color: #D99D5D;
+  border-radius: 0 20px 0 0;
+  border: none;
+  margin-bottom: 40px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #F7F7F7;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.booking__button:hover {
+  background-color: rgb(212.155, 144.505, 72.345);
+}
+
 /*# sourceMappingURL=style.css.map */
