@@ -11,13 +11,14 @@
   }
 
   &__logo {
-    max-width: 180px; // Możesz dostosować rozmiar logo
+    width: 130px; // Możesz dostosować rozmiar logo
     margin-bottom: 24px;
   }
 
   &__description {
+    font-family: 'DM Sans', sans-serif;
     font-size: 14px;
-    line-height: 1.6;
+    line-height: 1.5;
     color: rgba($color-white, 0.8);
     max-width: 400px;
     margin: 0 auto;
@@ -31,7 +32,9 @@
   }
 
   &__heading {
+    font-family: 'DM Sans', sans-serif;
     font-size: 20px;
+    line-height: 150%;
     font-weight: 600;
     margin-bottom: 20px;
   }
@@ -47,9 +50,10 @@
 
   &__link, &__address, &__contact p {
     color: rgba($color-white, 0.8);
+    font-size: 14px;
     text-decoration: none;
     font-style: normal; // Resetuje domyślne kursywy dla <address>
-    line-height: 1.6;
+    line-height: 1.5;
     transition: color 0.3s ease;
 
     &:hover {
