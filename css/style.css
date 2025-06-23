@@ -1483,7 +1483,7 @@ body {
 .contact {
   position: relative;
   padding: 60px 0;
-  background-image: url("../../photos/main/contact.jpg");
+  background-image: url("/photos/main/contact.jpg");
   background-size: cover;
   background-position: center center;
   color: #FFFFFF;
