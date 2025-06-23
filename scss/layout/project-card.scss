@@ -1,19 +1,21 @@
+// scss/components/_project-card.scss
 
 @use '../utils/variables' as *;
-@use 'sass:math';
-@use 'sass:color'; // Dostęp do zmiennych, np. kolorów, $grid-gap
+@use 'sass:math';  // Dla math.div()
+@use 'sass:color'; // Dla color.adjust()
 
 // --- Blok: project-card (komponent karty) ---
 .project-card {
-  width: 294px; 
-  flex-shrink: 0;                             // Szerokość karty
+  width: 294px;
+  // height: 677px; // Odkomentuj, jeśli chcesz sztywną wysokość, inaczej "hug content"
+  flex-shrink: 0;                           // Ważne, aby karty się nie kurczyły w sliderze
   background-color: $color-white;
-  border-radius: 20px;                      // Zaokrąglenie karty
+  border-radius: 20px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  padding: 20px;                            // Wewnętrzny padding karty
+  padding: 20px;
 
   &__image-wrapper {
     width: 100%;
@@ -31,14 +33,14 @@
     display: block;
     border-radius: 15px;
     box-sizing: border-box;
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out; // Dla efektu hover
   }
 
   &__content {
     text-align: left;
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
+    flex-grow: 1; // Pozwala tej sekcji rosnąć, aby wypełnić dostępną przestrzeń w karcie
     box-sizing: border-box;
   }
 
@@ -52,26 +54,27 @@
     box-sizing: border-box;
   }
 
-  &__header-arrow {
-    margin-right: ($grid-gap / 2);
+  &__header-arrow { // Strzałka "następny" w standardowych kartach
+    margin-right: math.div($grid-gap, 2);
     vertical-align: middle;
     box-sizing: border-box;
+    cursor: pointer;
   }
 
   &__header-number {
     font-size: 0.85rem;
     font-weight: 400;
     vertical-align: middle;
+    box-sizing: border-box; // Przeniesione przed zagnieżdżoną regułę dla &--current
     &--current {
       color: $color-dark-text;
       font-weight: 700;
     }
-    box-sizing: border-box;
   }
 
   &__header-divider-img {
     vertical-align: middle;
-    margin: 0 ($grid-gap * 0.75);
+    margin: 0 ($grid-gap * 0.75); // 12px
     box-sizing: border-box;
   }
 
@@ -92,13 +95,13 @@
     font-weight: 400;
     line-height: 1.6;
     color: $color-dark-text;
-    margin: 0 0 ($grid-gap * 1.5) 0;
+    margin: 0 0 ($grid-gap * 1.5) 0; // 24px
     box-sizing: border-box;
   }
 
   &__meta {
-    margin-top: auto;
-    margin-bottom: ($grid-gap * 1.5);
+    margin-top: auto; // Wypycha sekcję meta na dół
+    margin-bottom: ($grid-gap * 1.5); // 24px
     box-sizing: border-box;
   }
 
@@ -106,7 +109,7 @@
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    padding: ($grid-gap * 0.625) 0;
+    padding: ($grid-gap * 0.625) 0; // 10px
     border-bottom: 1px solid $color-stroke-grey;
     box-sizing: border-box;
   }
@@ -134,7 +137,7 @@
     box-sizing: border-box;
   }
 
-  &__button {
+  &__button { // Przycisk "See Details"
     display: block;
     width: 100%;
     padding: 14px $grid-gap;
@@ -150,14 +153,96 @@
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     box-sizing: border-box;
-    margin-top: ($grid-gap / 2);
+    margin-top: math.div($grid-gap, 2); // Poprawka na math.div
 
     &:hover {
-      background-color: darken($color-gradient-start, 8%);
+      background-color: color.adjust($color-gradient-start, $lightness: -8%); // Poprawka na color.adjust
       transform: translateY(-2px);
     }
     &:active {
       transform: translateY(0);
+    }
+  }
+
+  // --- Style dla Custom CTA Card ---
+  &--custom-cta {
+    // background-color: #f0f0f0; // Przykładowy inny kolor tła, jeśli chcesz
+    border: 2px dashed $color-stroke-grey; // Przykładowe wyróżnienie karty CTA
+    // Upewnij się, że padding z .project-card (20px) jest odpowiedni,
+    // lub dostosuj padding dla .project-card__content--custom-cta
+
+    .project-card__content--custom-cta {
+      display: flex;
+      flex-direction: column;
+      justify-content: center; // Wyśrodkowanie treści w pionie
+      align-items: center;     // Wyśrodkowanie treści w poziomie
+      text-align: center;
+      height: 100%;            // Aby treść wypełniła kartę
+      flex-grow: 1;            // Dodane, aby content rósł
+    }
+
+    .custom-cta__text {
+      font-size: 1.1rem; // Dostosuj rozmiar
+      color: $color-dark-text;
+      margin-bottom: $grid-gap * 1.5; // np. 24px
+      line-height: 1.5;
+      max-width: 95%; // Ograniczenie szerokości tekstu
+    }
+
+    .custom-cta__form {
+      display: none; // JS ustawi display: flex kiedy potrzebne
+      flex-direction: column;
+      align-items: stretch; // Etykieta i input będą pełnej szerokości
+      gap: $grid-gap * 0.5; // Mniejszy odstęp w formularzu (8px)
+      width: 100%;
+      max-width: 230px; // Ograniczenie szerokości formularza
+      margin-bottom: $grid-gap;
+
+      label {
+        font-size: 0.8rem;
+        color: $color-light-grey-text;
+        font-family: 'DM Sans', sans-serif;
+        text-align: left; // Wyrównanie etykiety do lewej
+        margin-bottom: math.div($grid-gap, 4); // Mały odstęp pod etykietą
+      }
+
+      input[type="tel"] {
+        padding: 10px;
+        font-size: 0.9rem;
+        border: 1px solid $color-stroke-grey;
+        border-radius: 6px; // Mniejsze zaokrąglenie
+        width: 100%;
+        box-sizing: border-box;
+        font-family: 'DM Sans', sans-serif;
+      }
+
+      .custom-cta__form-button { // Użycie klasy dla przycisku w formularzu
+        padding: 10px 15px;
+        background-color: $color-gradient-start; // Ten sam kolor co przycisk "See Details"
+        color: $color-dark-text;
+        font-weight: 700;
+        font-size: 0.9rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-family: 'DM Sans', sans-serif;
+        transition: background-color 0.3s ease;
+        margin-top: math.div($grid-gap, 2);
+
+        &:hover {
+          background-color: color.adjust($color-gradient-start, $lightness: -10%);
+        }
+      }
+    }
+
+    .custom-cta__arrow { // Strzałka powrotu na karcie CTA
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out;
+      margin-top: $grid-gap; // Odstęp od formularza lub tekstu
+
+      &:hover {
+        transform: scale(1.15);
+      }
     }
   }
 }

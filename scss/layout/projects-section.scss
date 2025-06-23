@@ -1,7 +1,7 @@
-// layout/_projects-section.scss
 
-@use '../utils/variables' as *; // Dostęp do zmiennych, np. $container-padding-left/right, $grid-gap, kolorów
-@use 'grid' as *;             // Dostęp do miksinu @include container (zakładając, że _grid.scss jest w tym samym folderze layout)
+@use '../utils/variables' as *;
+@use 'grid' as *;             // Dla miksinu @include container
+// @use 'sass:math'; // Nie jest tu potrzebne, jeśli nie ma operacji dzielenia
 
 // --- Blok: projects (otoczka sekcji) ---
 .projects {
@@ -19,8 +19,8 @@
     line-height: 1.2;
     letter-spacing: 0.02em;
     color: $color-dark-text;
-    margin: 0 0 32px 0;
-    text-align: center;
+    margin: 0 0 32px 0;                     // Margines pod tytułem
+    text-align: center;                     // Tytuł wyśrodkowany
     box-sizing: border-box;
   }
 

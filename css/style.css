@@ -946,6 +946,7 @@ body {
   margin-right: 8px;
   vertical-align: middle;
   box-sizing: border-box;
+  cursor: pointer;
 }
 .project-card__header-number {
   font-size: 0.85rem;
@@ -1039,6 +1040,74 @@ body {
 }
 .project-card__button:active {
   transform: translateY(0);
+}
+.project-card--custom-cta {
+  border: 2px dashed #979797;
+}
+.project-card--custom-cta .project-card__content--custom-cta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  flex-grow: 1;
+}
+.project-card--custom-cta .custom-cta__text {
+  font-size: 1.1rem;
+  color: #1D1F2C;
+  margin-bottom: 24px;
+  line-height: 1.5;
+  max-width: 95%;
+}
+.project-card--custom-cta .custom-cta__form {
+  display: none;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  width: 100%;
+  max-width: 230px;
+  margin-bottom: 16px;
+}
+.project-card--custom-cta .custom-cta__form label {
+  font-size: 0.8rem;
+  color: #666;
+  font-family: "DM Sans", sans-serif;
+  text-align: left;
+  margin-bottom: 4px;
+}
+.project-card--custom-cta .custom-cta__form input[type=tel] {
+  padding: 10px;
+  font-size: 0.9rem;
+  border: 1px solid #979797;
+  border-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: "DM Sans", sans-serif;
+}
+.project-card--custom-cta .custom-cta__form .custom-cta__form-button {
+  padding: 10px 15px;
+  background-color: #DC9B59;
+  color: #1D1F2C;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: "DM Sans", sans-serif;
+  transition: background-color 0.3s ease;
+  margin-top: 8px;
+}
+.project-card--custom-cta .custom-cta__form .custom-cta__form-button:hover {
+  background-color: rgb(211.1194029851, 129.6268656716, 46.8805970149);
+}
+.project-card--custom-cta .custom-cta__arrow {
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  margin-top: 16px;
+}
+.project-card--custom-cta .custom-cta__arrow:hover {
+  transform: scale(1.15);
 }
 
 /*# sourceMappingURL=style.css.map */
