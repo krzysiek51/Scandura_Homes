@@ -138,3 +138,73 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
+// ===================================================================
+//  LOGIKA DLA SLIDERA Z OPINIAMI (.testimonials)
+// ===================================================================
+const testimonialsSection = document.querySelector('.testimonials');
+if (testimonialsSection) {
+    console.log('Testimonials Slider INIT: Sekcja .testimonials znaleziona, inicjalizuję.');
+
+    const slider = testimonialsSection.querySelector('.testimonials__slider');
+    const prevButton = testimonialsSection.querySelector('.testimonials__arrow--prev');
+    const nextButton = testimonialsSection.querySelector('.testimonials__arrow--next');
+    const slides = testimonialsSection.querySelectorAll('.testimonials__slide');
+
+    if (slider && prevButton && nextButton && slides.length > 0) {
+        
+        let currentIndex = 0;
+
+        const updateButtons = () => {
+            // Wyłącz przycisk "wstecz" na pierwszym slajdzie
+            prevButton.disabled = currentIndex === 0;
+            // Wyłącz przycisk "dalej" na ostatnim slajdzie
+            nextButton.disabled = currentIndex === slides.length - 1;
+        };
+        
+        const goToSlide = (index) => {
+            const slideWidth = slides[0].offsetWidth;
+            const gap = parseInt(window.getComputedStyle(slider).gap) || 30;
+            const scrollAmount = (slideWidth + gap) * index;
+            slider.scrollTo({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+            currentIndex = index;
+            updateButtons();
+        };
+
+        nextButton.addEventListener('click', () => {
+            if (currentIndex < slides.length - 1) {
+                goToSlide(currentIndex + 1);
+            }
+        });
+
+        prevButton.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                goToSlide(currentIndex - 1);
+            }
+        });
+
+        // Nasłuchuj scrolla, aby zaktualizować stan przycisków, jeśli użytkownik przewija palcem
+        let scrollTimeout;
+        slider.addEventListener('scroll', () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                const slideWidth = slides[0].offsetWidth;
+                const gap = parseInt(window.getComputedStyle(slider).gap) || 30;
+                const newIndex = Math.round(slider.scrollLeft / (slideWidth + gap));
+                if (newIndex !== currentIndex) {
+                    currentIndex = newIndex;
+                    updateButtons();
+                }
+            }, 150);
+        });
+
+        // Ustaw stan początkowy
+        updateButtons();
+
+    } else {
+        console.warn('Testimonials Slider: Brakuje niektórych elementów (slider, przyciski lub slajdy).');
+    }
+}
