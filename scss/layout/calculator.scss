@@ -1,98 +1,81 @@
-// layout/calculator.scss
+@use '../utils/variables' as *;
 
 .calculator {
-  /* MOBILE-FIRST: 
-     kalkulator w containerze 335px, 
-     ale sam max-width: 250px, wyśrodkowany */
-  width: 100%;
-  max-width: 250px;
-  min-height: 247px;
-
-  background-color: #fff;
-  border-radius: 0 48px 0 0;
-  box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.1);
-
-  /* Podniesiony nad content i wyśrodkujony */
-  margin: -59px auto 0;
+  // --- POŁOŻENIE, ROZMIAR I WYGLĄD Z TWOJEGO STAREGO KODU ---
   position: relative;
   z-index: 4;
+  margin: -59px auto 0;
+  width: 100%;
+  max-width: 320px; // Lekko powiększone, aby zmieścić nowy, ładniejszy layout
+  min-height: 247px;
+  padding: 32px 24px; // Dopasowany padding
+  box-sizing: border-box;
+  background-color: #ffffff; // Nowy kolor tła z Twojego projektu
+  border-top-right-radius: 24px; // Bardziej standardowe zaokrąglenie
+  box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.1);
+  
+  // --- Style dla nowej zawartości ---
+  display: flex;
+  justify-content: center; // Centrujemy zawartość, gdyby miała różną szerokość
+  align-items: center;
+}
 
+.calculator__content {
   display: flex;
   flex-direction: column;
-  padding: 16px;
-  justify-content: space-between;
-  box-sizing: border-box;
+  align-items: center;
+  text-align: center;
+}
 
-  &__form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
+.calculator__title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  color: $color-dark-text;
+  margin: 0 0 12px 0;
+  text-align: left;
+}
 
-  &__row {
-    display: flex;
-    gap: 16px;
-  }
+.calculator__subtitle-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
 
-  &__field-group {
-    flex: 1;
-  }
+.calculator__subtitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px;
+  text-align: left;
+  color: lighten($color-dark-text, 30%);
+  margin: 0;
+}
 
-  &__label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 10px;
-    font-weight: 500;
-    line-height: 1.5;
-    color: #000;
-  }
+.calculator__ai-icon {
+  width: 94px;
+  height: auto;
+}
 
-  &__select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    font-family: 'DM Sans', sans-serif;
-    width: 100%;
-    max-width: 96px;
-    height: 40px;
-    padding: 0 32px 0 8px;
-    font-size: 10px;
-    font-weight: 400;
-    line-height: 40px;
-    color: #000;
-    background-color: #F2F2F2;
-    border-radius: 4px;
-    cursor: pointer;
-    background-image: url('../photos/svg/Icon-Chevron-Left.svg');
-    background-repeat: no-repeat;
-    background-position: right 8px center;
-    background-size: 12px 12px;
-    box-sizing: border-box;
-  }
+.calculator__button {
+  display: inline-block;
+  padding: 12px 32px;
+  border-radius: 12px;
+  background-color: $color-dark-text;
+  color: $color-white;
+  border: 2px solid $color-dark-text;
+  align-self: flex-start;
+  
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
 
-  &__submit {
-    width: 100%;
-    max-width: 96px;
-    height: 40px;
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 1.1;
-    text-align: center;
-    background-color: #DC9B59;
-    color: #070707;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 0;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    align-self: flex-end;
-    margin-top: 16px;
-    cursor: pointer;
-    box-sizing: border-box;
-  }
-
-  @media (min-width: 768px) {
-    & {
-      max-width: 300px; /* np. większy kalkulator na tablet/desktop */
-    }
+  &:hover {
+    background-color: transparent;
+    color: $color-dark-text;
   }
 }

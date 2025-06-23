@@ -59,58 +59,16 @@
 
   <!-- 🔽 SEKCJA KALKULATORA 🔽 -->
 <section class="calculator">
-  <form action="/calculator.html" method="get" class="calculator__form">
-<h2>Oblicz koszty budowy</h2>
-<p>Poznaj koszt wymarzonego domu – skorzystaj z kalkulatora i sprawdź możliwości!</p>
-    <div class="calculator__row">
-      <div class="calculator__field-group">
-        <label class="calculator__label" for="houseType">House type</label>
-        <select id="houseType" name="house_type" class="calculator__select">
-          <option>Single-story</option>
-          <option>Two-story</option>
-        </select>
-      </div>
-      <div class="calculator__field-group">
-        <label class="calculator__label" for="foundation">Foundation</label>
-        <select id="foundation" name="foundation" class="calculator__select">
-          <option>Concrete slab</option>
-          <option>Basement</option>
-        </select>
-      </div>
+  <div class="calculator__content">
+    <h2 class="calculator__title">Rozpocznij konfigurację swojego wymarzonego domu</h2>
+    
+    <div class="calculator__subtitle-wrapper">
+      <p class="calculator__subtitle">Napędzane superinteligencją AI</p>
+      <img src="/photos/main/AIStarcCloud.png" alt="Ikona AI" class="calculator__ai-icon">
     </div>
 
-    <div class="calculator__row">
-      <div class="calculator__field-group">
-        <label class="calculator__label" for="turnkey">Turnkey</label>
-        <select id="turnkey" name="turnkey" class="calculator__select">
-          <option>Yes</option>
-          <option>No</option>
-        </select>
-      </div>
-      <div class="calculator__field-group">
-        <label class="calculator__label" for="windowsDoors">Windows and doors</label>
-        <select id="windowsDoors" name="windows_doors" class="calculator__select">
-          <option>10</option>
-          <option>12</option>
-          <option>15</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="calculator__row">
-      <div class="calculator__field-group">
-        <label class="calculator__label" for="size">Size</label>
-        <select id="size" name="size" class="calculator__select">
-          <option>2000</option>
-          <option>3000</option>
-        </select>
-      </div>
-      <div class="calculator__field-group">
-        <button type="submit" class="calculator__submit">Submit</button>
-      </div>
-    </div>
-
-  </form>
+    <a href="/konfigurator.html" class="calculator__button">Rozpocznij</a>
+  </div>
 </section>
 <!-- 🔼 KONIEC SEKJI KALKULATORA 🔼 -->
 
