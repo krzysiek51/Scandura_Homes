@@ -1226,7 +1226,7 @@ body {
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: 0.06em;
-  margin: 20px 0 26px 0;
+  margin: 40px 0 26px 0;
 }
 .booking__text {
   font-family: "DM Sans", sans-serif;
@@ -1248,7 +1248,7 @@ body {
   background-color: #D99D5D;
   border-radius: 0 20px 0 0;
   border: none;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   font-family: "DM Sans", sans-serif;
   font-size: 16px;
   font-weight: 500;
