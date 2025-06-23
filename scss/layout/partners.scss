@@ -38,23 +38,21 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    // Ważne: Zapobiegamy "wylewaniu się" animacji poza główny kontener
+    overflow: hidden;
   }
 
+  // --- ZMIANA #1: Całkowicie nowa logika dla rzędu ---
   &__row {
-    display: flex;
-    overflow-x: auto;
-    gap: 20px;
-    scroll-snap-type: x mandatory;
-    padding-bottom: 8px;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    // Zmieniamy sposób wyświetlania, aby animacja działała poprawnie
+    display: flex; // Używamy flexboxa, aby elementy potomne mogły się rozciągać
+    width: fit-content; // Szerokość dopasowana do zawartości
+    white-space: nowrap; // Zapobiega łamaniu linii
   }
 
+  // --- ZMIANA #2: Dodajemy margines zamiast 'gap' ---
   &__logo {
     flex: 0 0 auto;
-    /* 1. Ustawiamy MAKSYMALNĄ szerokość, zgodną z designem w Figmie */
     max-width: 140px;
     height: 80px;
     background-color: $color-white;
@@ -64,16 +62,39 @@
     justify-content: center;
     align-items: center;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.04);
-    scroll-snap-align: start;
+    // Dodajemy odstęp za pomocą marginesu, co działa lepiej z animacją
+    margin-right: 16px;
   }
 
   &__logo-icon {
-    /* 2. Ikona ma docelowo 60px wysokości... */
     height: 60px;
     width: auto;
-    /* 3. ...ale jeśli jest za szeroka dla kontenera, ma się zmniejszyć, a nie wylać poza niego. */
     max-width: 100%;
     object-fit: contain;
     display: block;
   }
+}
+
+// --- ZMIANA #3: Dodajemy na końcu pliku definicje animacji ---
+
+// Wspólna klatka kluczowa dla animacji
+@keyframes scroll-animation {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    // Przesuwamy o 50%, ponieważ w JS podwoiliśmy liczbę logotypów
+    transform: translateX(-50%);
+  }
+}
+
+// Klasa dla normalnego kierunku animacji, dodawana przez JS
+.animate-scroll-normal {
+  // Czas animacji - im większa wartość, tym wolniej
+  animation: scroll-animation 40s linear infinite;
+}
+
+// Klasa dla odwróconego kierunku animacji, dodawana przez JS
+.animate-scroll-reverse {
+  animation: scroll-animation 40s linear infinite reverse;
 }
