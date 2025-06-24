@@ -95,7 +95,7 @@
         Naszą misją jest dostarczanie wysokiej jakości, energooszczędnych domów drewnianych w technologii szkieletowej. Dzięki 15-letniemu doświadczeniu zdobytemu w Norwegii, wykorzystujemy sprawdzone skandynawskie techniki i ekologiczne materiały. Każda realizacja to precyzja, trwałość i nowoczesność. Od fundamentów po wykończenie pod klucz - dbamy o każdy szczegół.  
       </p>
       <a href="/about.html" class="mission__button">
-        Dowiedz się więcej o naszej misji <img src="/photos/svg/Path.svg" alt="Arrow right icon" class="mission__button-arrow">
+        Dowiedz się więcej o naszej misji <img src="photos/svg/Path.svg" alt="Arrow right icon" class="mission__button-arrow">
     </a>
     </div>
   </div>
@@ -662,24 +662,21 @@
   </div>
 </footer>
 
-
+<!-- konfigurator modalny -->
 <div class="configurator-modal" id="configurator-modal" hidden>
     <div class="configurator-modal__overlay" id="configurator-overlay"></div>
-    
     <div class="configurator-modal__content">
         <button class="configurator-modal__close-button" id="close-configurator-button" aria-label="Zamknij konfigurator">&times;</button>
-        <!-- step II -->
+        
         <div class="configurator-modal__step is-active" id="step-style-selection">
             <header class="configurator-modal__header">
                 <h2 class="configurator-modal__title">Wybierz styl swojego domu</h2>
                 <p class="configurator-modal__subtitle">Zacznijmy od ogólnej wizji. Możesz ją później dowolnie modyfikować.</p>
             </header>
-            
             <div class="style-carousel" id="style-carousel">
                 <button class="style-carousel__arrow style-carousel__arrow--prev" aria-label="Poprzedni styl">‹</button>
                 <div class="style-carousel__track-container">
                     <div class="style-carousel__track" id="style-carousel-track">
-                        
                         <div class="style-carousel__slide">
                             <img src="photos/projects/modern.webp" alt="Dom w stylu Nowoczesny Minimalizm" class="style-carousel__image">
                             <div class="style-carousel__caption">
@@ -712,53 +709,37 @@
                                 <button class="style-carousel__select-button" data-style="custom">Wybierz i kontynuuj →</button>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <button class="style-carousel__arrow style-carousel__arrow--next" aria-label="Następny styl">›</button>
             </div>
         </div>
+        
+       <div class="configurator-modal__step" id="step-area" style="display: none;">
+    <div class="dynamic-sketch-container" id="dynamic-sketch-container">
+        <img src="photos/main/AIStarcCloud.png" alt="Szkic domu generowany przez AI" class="sketch-placeholder">
+    </div>
+    <h3 class="step-title" id="step-area-title">Świetny wybór!</h3>
+    <p class="step-subtitle">Jaka powierzchnia użytkowa Cię interesuje?</p>
 
-          <!-- END Of step II -->
+    <div class="slider-group">
+        <input type="range" class="slider-group__slider" id="area-slider" min="50" max="400" value="50">
+    </div>
+    
+    <div class="area-input-wrapper">
+        <input type="number" class="area-input-wrapper__input" id="area-input" min="50" max="400" value="120">
+        <span class="area-input-wrapper__label">m²</span>
+    </div>
 
-
-        <!-- Step 3 -->
-         <div class="configurator-modal__content">
-    <div id="step-style-selection">
-        </div>
-
-    <div id="step-area" style="display: none;">
-        <div class="dynamic-sketch-container" id="dynamic-sketch-container">
-    <img src="photos/main/AIStarcCloud.png" alt="Szkic domu generowany przez AI" class="sketch-placeholder">
+    <div class="configurator-nav">
+        <button class="configurator-nav__button" id="back-to-style-button">← Wróć</button>
+        <button class="configurator-nav__button" id="area-continue-button" disabled>Kontynuuj →</button>
+    </div>
 </div>
-
-        <h3 class="step-title" id="step-area-title">Świetny wybór!</h3>
-        <p class="step-subtitle">Jaka powierzchnia użytkowa Cię interesuje?</p>
-
-        <div class="area-input-group">
-            <input type="number" class="area-input-group__input" id="area-input" value="150">
-            <span class="area-input-group__label">m²</span>
-        </div>
-
-        <div class="configurator-nav-buttons">
-            <button class="configurator-nav-buttons__button--back" id="back-to-style-button">← Wróć</button>
-            <button class="configurator-nav-buttons__button--continue" id="area-continue-button">Kontynuuj →</button>
-        </div>
     </div>
 </div>
 
-<!-- koniec step 3 -->
-
-
-
-        <div class="configurator-modal__step" id="step-area" style="display: none;">
-            <header class="configurator-modal__header">
-                <h2 class="configurator-modal__title">Świetny wybór!</h2>
-                <p class="configurator-modal__subtitle">Jaka przybliżona powierzchnia użytkowa Cię interesuje?</p>
-            </header>
-            </div>
-    </div>
-</div>
+<!-- End of konfogurator modalny -->
     <script src="js/script.js" defer></script>
      <script src="js/configurator.js" defer></script>
     
