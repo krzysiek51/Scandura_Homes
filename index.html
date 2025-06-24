@@ -58,17 +58,15 @@
 
 
   <!-- 🔽 SEKCJA KALKULATORA 🔽 -->
-<section class="calculator">
-  <div class="calculator__content">
-    <h2 class="calculator__title">Rozpocznij konfigurację swojego wymarzonego domu</h2>
-    
-    <div class="calculator__subtitle-wrapper">
-      <p class="calculator__subtitle">Napędzane superinteligencją AI</p>
-      <img src="photos/main/AIStarcCloud.png" alt="Ikona AI" class="calculator__ai-icon">
+<section class="configurator-prompt" id="configurator-prompt">
+    <div class="configurator-prompt__content">
+        <h2 class="configurator-prompt__title">Rozpocznij konfigurację swojego wymarzonego domu</h2>
+        <div class="configurator-prompt__subtitle-wrapper">
+            <p class="configurator-prompt__subtitle">Napędzane superinteligencją AI</p>
+            <img src="photos/main/AIStarcCloud.png" alt="Ikona AI" class="configurator-prompt__ai-icon">
+        </div>
+        <button class="configurator-prompt__button" id="open-configurator-button">Rozpocznij</button>
     </div>
-
-    <a href="/konfigurator.html" class="calculator__button">Rozpocznij</a>
-  </div>
 </section>
 <!-- 🔼 KONIEC SEKJI KALKULATORA 🔼 -->
 
@@ -665,7 +663,71 @@
 </footer>
 
 
+<div class="configurator-modal" id="configurator-modal" hidden>
+    <div class="configurator-modal__overlay" id="configurator-overlay"></div>
+    
+    <div class="configurator-modal__content">
+        <button class="configurator-modal__close-button" id="close-configurator-button" aria-label="Zamknij konfigurator">&times;</button>
+        
+        <div class="configurator-modal__step is-active" id="step-style-selection">
+            <header class="configurator-modal__header">
+                <h2 class="configurator-modal__title">Wybierz styl swojego domu</h2>
+                <p class="configurator-modal__subtitle">Zacznijmy od ogólnej wizji. Możesz ją później dowolnie modyfikować.</p>
+            </header>
+            
+            <div class="style-carousel" id="style-carousel">
+                <button class="style-carousel__arrow style-carousel__arrow--prev" aria-label="Poprzedni styl">‹</button>
+                <div class="style-carousel__track-container">
+                    <div class="style-carousel__track" id="style-carousel-track">
+                        
+                        <div class="style-carousel__slide">
+                            <img src="photos/projects/modern.webp" alt="Dom w stylu Nowoczesny Minimalizm" class="style-carousel__image">
+                            <div class="style-carousel__caption">
+                                <h3 class="style-carousel__title">Nowoczesny Minimalizm</h3>
+                                <p class="style-carousel__description">Prosta bryła, duże przeszklenia i płaski dach.</p>
+                                <button class="style-carousel__select-button" data-style="modern">Wybierz i kontynuuj →</button>
+                            </div>
+                        </div>
+                        <div class="style-carousel__slide">
+                            <img src="photos/projects/classic.webp" alt="Dom w stylu Klasyczna Elegancja" class="style-carousel__image">
+                            <div class="style-carousel__caption">
+                                <h3 class="style-carousel__title">Klasyczna Elegancja</h3>
+                                <p class="style-carousel__description">Tradycyjna forma z dachem dwuspadowym.</p>
+                                <button class="style-carousel__select-button" data-style="classic">Wybierz i kontynuuj →</button>
+                            </div>
+                        </div>
+                        <div class="style-carousel__slide">
+                            <img src="photos/projects/dworek.webp" alt="Dom w stylu Parterowy Komfort" class="style-carousel__image">
+                            <div class="style-carousel__caption">
+                                <h3 class="style-carousel__title">Parterowy Komfort</h3>
+                                <p class="style-carousel__description">Wygoda życia na jednym poziomie, blisko ogrodu.</p>
+                                <button class="style-carousel__select-button" data-style="bungalow">Wybierz i kontynuuj →</button>
+                            </div>
+                        </div>
+                        <div class="style-carousel__slide">
+                            <img src="photos/projects/custom.webp" alt="Dom w stylu Indywidualny" class="style-carousel__image">
+                            <div class="style-carousel__caption">
+                                <h3 class="style-carousel__title">Indywidualny Projekt</h3>
+                                <p class="style-carousel__description">Unikalne kształty i rozwiązania dla Ciebie.</p>
+                                <button class="style-carousel__select-button" data-style="custom">Wybierz i kontynuuj →</button>
+                            </div>
+                        </div>
 
+                    </div>
+                </div>
+                <button class="style-carousel__arrow style-carousel__arrow--next" aria-label="Następny styl">›</button>
+            </div>
+        </div>
+
+        <div class="configurator-modal__step" id="step-area" style="display: none;">
+            <header class="configurator-modal__header">
+                <h2 class="configurator-modal__title">Świetny wybór!</h2>
+                <p class="configurator-modal__subtitle">Jaka przybliżona powierzchnia użytkowa Cię interesuje?</p>
+            </header>
+            </div>
+    </div>
+</div>
     <script src="js/script.js" defer></script>
+    
 </body>
 </html>

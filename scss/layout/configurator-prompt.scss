@@ -1,0 +1,81 @@
+@use '../utils/variables' as *;
+@use 'sass:color';
+
+.configurator-prompt {
+  // --- KROK 1: Stosujemy kluczowe style pozycjonowania ze starego .calculator ---
+  position: relative;
+  z-index: 4;
+  margin: -80px auto 40px; // Dopasowany ujemny margines dla nowego wyglądu
+  width: 100%;
+  max-width: 420px; // Szerokość dopasowana do nowego designu
+  padding: 0 20px;
+  box-sizing: border-box;
+
+  // Reszta stylów jest już specyficzna dla nowego komponentu
+  &__content {
+    background-color: #F7F4EF;
+    border-radius: 24px;
+    padding: 32px 24px;
+    box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    // Przenosimy efekt hover na wewnętrzny content, aby nie psuć pozycjonowania
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  &__title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: $color-dark-text;
+    margin: 0 0 12px 0;
+  }
+
+  &__subtitle-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  &__subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    color: color.adjust($color-dark-text, $lightness: 30%);
+    margin: 0;
+  }
+
+  &__ai-icon {
+    width: 32px;
+    height: auto;
+  }
+
+  &__button {
+    display: inline-block;
+    padding: 12px 32px;
+    border-radius: 12px;
+    background-color: $color-dark-text;
+    color: $color-white;
+    border: 2px solid $color-dark-text;
+    
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    &:hover {
+      background-color: transparent;
+      color: $color-dark-text;
+    }
+  }
+}
