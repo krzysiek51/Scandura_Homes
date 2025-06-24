@@ -1,0 +1,46 @@
+@use '../../utils/variables' as *;
+
+.floor-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.floor-options__button {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 16px;
+  border: 1px solid #EAEAEA;
+  background-color: #FAFAFA;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease-in-out;
+
+  // Styl dla aktywnego/wybranego przycisku
+  &.is-active {
+    border-color: $color-dark-text;
+    background-color: lighten($color-dark-text, 75%);
+    box-shadow: 0 0 0 3px rgba($color-dark-text, 0.1);
+  }
+
+  &:hover:not(.is-active) {
+    border-color: #ccc;
+    background-color: #f0f0f0;
+  }
+}
+
+.floor-options__icon {
+  width: 32px; // Możesz dostosować rozmiar ikon
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.floor-options__label {
+  font-size: 16px;
+  font-weight: 500;
+  color: $color-dark-text;
+}
