@@ -668,7 +668,7 @@
     
     <div class="configurator-modal__content">
         <button class="configurator-modal__close-button" id="close-configurator-button" aria-label="Zamknij konfigurator">&times;</button>
-        
+        <!-- step II -->
         <div class="configurator-modal__step is-active" id="step-style-selection">
             <header class="configurator-modal__header">
                 <h2 class="configurator-modal__title">Wybierz styl swojego domu</h2>
@@ -719,6 +719,38 @@
             </div>
         </div>
 
+          <!-- END Of step II -->
+
+
+        <!-- Step 3 -->
+         <div class="configurator-modal__content">
+    <div id="step-style-selection">
+        </div>
+
+    <div id="step-area" style="display: none;">
+        <div class="dynamic-sketch-container" id="dynamic-sketch-container">
+    <img src="photos/main/AIStarcCloud.png" alt="Szkic domu generowany przez AI" class="sketch-placeholder">
+</div>
+
+        <h3 class="step-title" id="step-area-title">Świetny wybór!</h3>
+        <p class="step-subtitle">Jaka powierzchnia użytkowa Cię interesuje?</p>
+
+        <div class="area-input-group">
+            <input type="number" class="area-input-group__input" id="area-input" value="150">
+            <span class="area-input-group__label">m²</span>
+        </div>
+
+        <div class="configurator-nav-buttons">
+            <button class="configurator-nav-buttons__button--back" id="back-to-style-button">← Wróć</button>
+            <button class="configurator-nav-buttons__button--continue" id="area-continue-button">Kontynuuj →</button>
+        </div>
+    </div>
+</div>
+
+<!-- koniec step 3 -->
+
+
+
         <div class="configurator-modal__step" id="step-area" style="display: none;">
             <header class="configurator-modal__header">
                 <h2 class="configurator-modal__title">Świetny wybór!</h2>
@@ -728,6 +760,7 @@
     </div>
 </div>
     <script src="js/script.js" defer></script>
+     <script src="js/configurator.js" defer></script>
     
 </body>
 </html>

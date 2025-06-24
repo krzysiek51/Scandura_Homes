@@ -1,0 +1,86 @@
+@use '../utils/variables' as *;
+@use 'sass:color';
+
+.style-carousel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 0 -15px;
+}
+
+.style-carousel__track-container {
+  overflow: hidden;
+  width: 100%;
+}
+
+.style-carousel__track {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.style-carousel__slide {
+  flex: 0 0 100%;
+  padding: 0 15px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.style-carousel__image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+
+.style-carousel__title {
+  font-size: 20px;
+  font-weight: 600;
+  color: $color-dark-text;
+  margin: 0 0 4px 0;
+}
+
+.style-carousel__description {
+  font-size: 14px;
+  color: $color-light-grey-text;
+  margin-bottom: 20px;
+  min-height: 40px;
+}
+
+.style-carousel__select-button {
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 30px;
+  background-color: #DC9B59;
+  color: $color-white;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 16px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  
+  &:hover {
+    background-color: color.adjust(#DC9B59, $lightness: -5%);
+  }
+}
+
+.style-carousel__arrow {
+  background: none;
+  border: none;
+  font-size: 32px;
+  color: #ccc;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.3s ease;
+  
+  &:hover:not(:disabled) {
+    color: $color-dark-text;
+  }
+  
+  &:disabled {
+    opacity: 0.2;
+    cursor: not-allowed;
+  }
+}

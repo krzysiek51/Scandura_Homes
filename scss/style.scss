@@ -19,4 +19,6 @@
 @use 'layout/testimonials';
 @use 'layout/contact';
 @use 'layout/configurator-prompt';
-@use 'layout/_configurator-modal';
+@use 'konfigurator_header/configurator-modal';
+@use 'konfigurator_header/step-style-carousel';
+@use 'konfigurator_header/step-area-selection';

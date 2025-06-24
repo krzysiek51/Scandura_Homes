@@ -1,0 +1,89 @@
+@use '../utils/variables' as *;
+
+.configurator-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s 0.3s;
+
+  &.is-open {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+}
+
+.configurator-modal__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($color-black, 0.7); 
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  cursor: pointer;
+}
+
+.configurator-modal__content {
+  position: relative;
+  background-color: $color-white;
+  border-radius: 16px;
+  padding: 32px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 50px rgba(0,0,0,0.2);
+}
+
+.configurator-modal__close-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 32px;
+  line-height: 1;
+  color: #aaa;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  transition: color 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    color: $color-dark-text;
+    transform: rotate(90deg);
+  }
+}
+
+.configurator-modal__header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.configurator-modal__title {
+  font-size: 28px;
+  font-weight: 600;
+  color: $color-dark-text;
+  margin: 0 0 8px 0;
+}
+
+.configurator-modal__subtitle {
+  font-size: 16px;
+  color: $color-light-grey-text;
+  max-width: 300px;
+  margin: 0 auto;
+}

@@ -92,77 +92,15 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.log('INIT: Sekcja .testimonials nie znaleziona, pomijam.');
     }
-
+    
+    // Na tym etapie, kod konfiguratora jest pusty, czekając na naszą dalszą pracę.
+    // Zostawiam go jako szablon na przyszłość.
     // ===================================================================
     //  LOGIKA GŁÓWNEGO KONFIGURATORA AI (MODAL + KARUZELA)
     // ===================================================================
     const configuratorPrompt = document.getElementById('configurator-prompt');
     if (configuratorPrompt) {
-        console.log("Configurator INIT: Znaleziono. Podpinam listenery.");
-
-        const openBtn = document.getElementById('open-configurator-button');
-        const modal = document.getElementById('configurator-modal');
-        const closeBtn = document.getElementById('close-configurator-button');
-        const overlay = document.getElementById('configurator-overlay');
-        const carouselTrack = document.getElementById('style-carousel-track');
-        const styleSlides = carouselTrack ? Array.from(carouselTrack.children) : [];
-        const carouselContainer = document.getElementById('style-carousel');
-        const nextArrow = carouselContainer ? carouselContainer.querySelector('.style-carousel__arrow--next') : null;
-        const prevArrow = carouselContainer ? carouselContainer.querySelector('.style-carousel__arrow--prev') : null;
-        
-        if (openBtn && modal && closeBtn && overlay && carouselTrack && nextArrow && prevArrow) {
-            let carouselIndex = 0;
-            let slideWidth = 0;
-
-            const updateCarousel = () => {
-                if (slideWidth > 0) {
-                    carouselTrack.style.transform = `translateX(-${carouselIndex * slideWidth}px)`;
-                }
-                prevArrow.disabled = carouselIndex === 0;
-                nextArrow.disabled = carouselIndex >= styleSlides.length - 1;
-            };
-
-            const openModal = () => {
-                modal.removeAttribute('hidden');
-                setTimeout(() => {
-                    modal.classList.add('is-open');
-                    if (styleSlides.length > 0) {
-                        slideWidth = styleSlides[0].getBoundingClientRect().width;
-                    }
-                    carouselIndex = 0;
-                    updateCarousel();
-                }, 20);
-            };
-
-            const closeModal = () => {
-                modal.classList.remove('is-open');
-                setTimeout(() => {
-                    modal.setAttribute('hidden', true);
-                }, 300);
-            };
-
-            openBtn.addEventListener('click', openModal);
-            closeBtn.addEventListener('click', closeModal);
-            overlay.addEventListener('click', closeModal);
-
-            nextArrow.addEventListener('click', () => {
-                if (carouselIndex < styleSlides.length - 1) {
-                    carouselIndex++;
-                    updateCarousel();
-                }
-            });
-
-            prevArrow.addEventListener('click', () => {
-                if (carouselIndex > 0) {
-                    carouselIndex--;
-                    updateCarousel();
-                }
-            });
-        } else {
-            console.error("Błąd krytyczny konfiguratora: Jeden lub więcej kluczowych elementów HTML nie zostało znalezionych. Sprawdź 'id' w pliku HTML.");
-        }
-    } else {
-        console.log('INIT: Sekcja .configurator-prompt nie znaleziona, pomijam.');
+      // Kod dla konfiguratora dodamy tutaj w następnym kroku
     }
 
-}); // <-- KONIEC GŁÓWNEGO LISTNERA DOMContentLoaded
+}); // <-- TEN NAWIAS ZAMYKA GŁÓWNY BLOK DOMContentLoaded
