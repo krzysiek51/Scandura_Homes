@@ -1,0 +1,91 @@
+// --------------------------------------------------
+// KROK 4: WYBÓR DACHU I ELEWACJI
+// --------------------------------------------------
+#step-roof-elevation {
+  .dynamic-sketch-container {
+    margin-bottom: 1rem;
+    text-align: center;
+    .sketch-image {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+  }
+
+  .step-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+  }
+  .step-subtitle {
+    color: #666;
+    margin-bottom: 1rem;
+  }
+
+  // kontener przycisków
+  .roof-options,
+  .elev-options {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    // każdy button ma zajmować tę samą szerokość
+    .roof-options__button,
+    .elev-options__button {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem;
+      background: #f9f9f9;
+      border: 2px solid transparent;
+      border-radius: 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background-color 0.2s;
+
+      // Ikona
+      img {
+        display: block;
+        margin-bottom: 0.5rem;
+        width: 48px;
+        height: 48px;
+      }
+
+      // Label
+      span {
+        font-size: 0.9rem;
+      }
+
+      &:hover {
+        background: #fff;
+        border-color: #ccc;
+      }
+      &.is-active {
+        background: #fff;
+        border-color: #DC9B59;
+      }
+    }
+  }
+
+  // nawigacja
+  .configurator-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    .configurator-nav__button {
+      padding: 0.5rem 1rem;
+      border: none;
+      background: #DC9B59;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+  }
+}

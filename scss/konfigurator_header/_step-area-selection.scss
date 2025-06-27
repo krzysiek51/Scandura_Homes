@@ -177,3 +177,8 @@
     }
   }
 }
+.sketch-image {
+  max-width: 100%;
+  height: auto;
+  transition: opacity 0.3s ease-in-out;
+}
