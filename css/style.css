@@ -2325,4 +2325,167 @@ body {
   justify-content: space-between;
 }
 
+#step-roof-elevation .dynamic-sketch-container {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+#step-roof-elevation .dynamic-sketch-container .sketch-image {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+#step-roof-elevation .step-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+#step-roof-elevation .step-subtitle {
+  color: #666;
+  margin-bottom: 1rem;
+}
+#step-roof-elevation .roof-options,
+#step-roof-elevation .elev-options {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+#step-roof-elevation .roof-options .roof-options__button,
+#step-roof-elevation .roof-options .elev-options__button,
+#step-roof-elevation .elev-options .roof-options__button,
+#step-roof-elevation .elev-options .elev-options__button {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  background: #f9f9f9;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+#step-roof-elevation .roof-options .roof-options__button img,
+#step-roof-elevation .roof-options .elev-options__button img,
+#step-roof-elevation .elev-options .roof-options__button img,
+#step-roof-elevation .elev-options .elev-options__button img {
+  display: block;
+  margin-bottom: 0.5rem;
+  width: 48px;
+  height: 48px;
+}
+#step-roof-elevation .roof-options .roof-options__button span,
+#step-roof-elevation .roof-options .elev-options__button span,
+#step-roof-elevation .elev-options .roof-options__button span,
+#step-roof-elevation .elev-options .elev-options__button span {
+  font-size: 0.9rem;
+}
+#step-roof-elevation .roof-options .roof-options__button:hover,
+#step-roof-elevation .roof-options .elev-options__button:hover,
+#step-roof-elevation .elev-options .roof-options__button:hover,
+#step-roof-elevation .elev-options .elev-options__button:hover {
+  background: #fff;
+  border-color: #ccc;
+}
+#step-roof-elevation .roof-options .roof-options__button.is-active,
+#step-roof-elevation .roof-options .elev-options__button.is-active,
+#step-roof-elevation .elev-options .roof-options__button.is-active,
+#step-roof-elevation .elev-options .elev-options__button.is-active {
+  background: #fff;
+  border-color: #DC9B59;
+}
+#step-roof-elevation .configurator-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+#step-roof-elevation .configurator-nav .configurator-nav__button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #DC9B59;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+#step-roof-elevation .configurator-nav .configurator-nav__button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#step-addons {
+  /* doprecyzowujemy, na które przyciski ma działać styl */
+}
+#step-addons .dynamic-sketch-container {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+#step-addons .dynamic-sketch-container .sketch-image {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+#step-addons .step-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+#step-addons .step-subtitle {
+  color: #666;
+  margin-bottom: 1rem;
+}
+#step-addons .addon-group {
+  margin-bottom: 1rem;
+  /* teraz tylko Twoje customowe przyciski addon */
+}
+#step-addons .addon-group p {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+#step-addons .addon-group .addon-garage__button,
+#step-addons .addon-group .addon-basement__button,
+#step-addons .addon-group .addon-rental__button,
+#step-addons .addon-group .addon-accessibility__button {
+  margin-right: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #f9f9f9;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+#step-addons .addon-group .addon-garage__button:hover,
+#step-addons .addon-group .addon-basement__button:hover,
+#step-addons .addon-group .addon-rental__button:hover,
+#step-addons .addon-group .addon-accessibility__button:hover {
+  background: #fff;
+  border-color: #ccc;
+}
+#step-addons .addon-group .addon-garage__button.is-active,
+#step-addons .addon-group .addon-basement__button.is-active,
+#step-addons .addon-group .addon-rental__button.is-active,
+#step-addons .addon-group .addon-accessibility__button.is-active {
+  background: #fff;
+  border-color: #DC9B59;
+}
+#step-addons .configurator-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+#step-addons .configurator-nav .configurator-nav__button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #DC9B59;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+#step-addons .configurator-nav .configurator-nav__button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /*# sourceMappingURL=style.css.map */
