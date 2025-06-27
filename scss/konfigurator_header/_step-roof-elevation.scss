@@ -1,0 +1,103 @@
+@use '../utils/variables' as *;
+@use 'sass:color';
+
+// Kontener na szkic i opcje kroku 4
+#step-roof-elevation {
+  padding: 2rem;
+
+  .dynamic-sketch-container {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+    
+    .sketch-image {
+      max-width: 200px;
+      border: 2px solid $color-stroke-grey;
+      border-radius: 8px;
+      background: $color-white;
+    }
+  }
+
+  .step-title {
+    margin-bottom: 0.5rem;
+    font-size: 20px;
+    font-weight: 600;
+    color: $color-dark-text;
+    text-align: center;
+  }
+
+  .step-subtitle {
+    margin-bottom: 1.5rem;
+    font-size: 14px;
+    color: $color-light-grey-text;
+    text-align: center;
+  }
+
+  .roof-options,
+  .elev-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 1.5rem;
+
+    .floor-options__button {
+      padding: 12px;
+      border: 2px solid $color-stroke-grey;
+      background: $color-white;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.2s ease;
+
+      .floor-options__icon {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 8px;
+      }
+      .floor-options__label {
+        font-size: 14px;
+        color: $color-dark-text;
+      }
+
+      &:hover:not(.is-active) {
+        border-color: color.scale($color-stroke-grey, $lightness: 20%);
+        background: $color-beige-light-bg;
+      }
+      &.is-active {
+        border-color: $color-gradient-start;
+        background: $color-beige-bg;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      }
+    }
+  }
+
+  .configurator-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+
+    .configurator-nav__button {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      background: $color-gradient-start;
+      color: $color-white;
+      transition: background 0.2s ease;
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background: $color-stroke-grey;
+      }
+
+      &:hover:not(:disabled) {
+        background: color.scale($color-gradient-start, $lightness: -10%);
+      }
+    }
+  }
+}

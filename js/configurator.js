@@ -1,179 +1,218 @@
+// configurator.js
+
 document.addEventListener('DOMContentLoaded', () => {
-    try {
-        const configuratorPrompt = document.getElementById('configurator-prompt');
-        if (!configuratorPrompt) return;
+  console.log('Konfigurator INIT: DOM załadowany…');
 
-        console.log("Configurator Script INIT: Uruchomiono.");
+  // --- ELEMENTY DOM ---
+  const btnOpen    = document.getElementById('open-configurator-button');
+  const modal      = document.getElementById('configurator-modal');
+  const overlay    = document.getElementById('configurator-overlay');
+  const btnClose   = document.getElementById('close-configurator-button');
 
-        // --- BAZA DANYCH i ZMIENNE ---
-        const svgSketches = {
-            modern: `<svg width="120" height="100" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg"><path d="M10 80 L10 40 L100 30 L100 80 Z" fill="none" stroke="#1C1C1C" stroke-width="2" /><rect x="25" y="55" width="15" height="20" fill="none" stroke="#1C1C1C" stroke-width="2"/><rect x="50" y="55" width="15" height="15" fill="none" stroke="#1C1C1C" stroke-width="2"/></svg>`,
-            classic: `<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><polygon points="10,60 60,20 110,60" fill="none" stroke="#1C1C1C" stroke-width="2"/><rect x="10" y="60" width="100" height="50" fill="none" stroke="#1C1C1C" stroke-width="2"/><rect x="50" y="75" width="15" height="30" fill="none" stroke="#1C1C1C" stroke-width="2"/><rect x="25" y="75" width="15" height="15" fill="none" stroke="#1C1C1C" stroke-width="2"/><rect x="75" y="75" width="15" height="15" fill="none" stroke="#1C1C1C" stroke-width="2"/></svg>`,
-            bungalow: `<svg width="140" height="100" viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg"><polygon points="10,50 70,20 130,50" fill="none" stroke="#1C1C1C" stroke-width="2"/><rect x="10" y="50" width="120" height="40" fill="none" stroke="#1C1C1C" stroke-width="2"/><rect x="35" y="65" width="15" height="15" fill="none" stroke="#1C1C1C" stroke-width="2"/><rect x="90" y="65" width="15" height="15" fill="none" stroke="#1C1C1C" stroke-width="2"/><rect x="60" y="65" width="20" height="25" fill="none" stroke="#1C1C1C" stroke-width="2"/></svg>`,
-            custom: `<svg width="150" height="110" viewBox="0 0 150 110" xmlns="http://www.w3.org/2000/svg"><polygon points="10,60 50,30 90,60" fill="none" stroke="#1C1C1C" stroke-width="2"/><rect x="10" y="60" width="80" height="40" fill="none" stroke="#1C1C1C" stroke-width="2"/><polygon points="60,70 90,50 120,70" fill="none" stroke="#1C1C1C" stroke-width="2"/><rect x="60" y="70" width="60" height="30" fill="none" stroke="#1C1C1C" stroke-width="2"/></svg>`
-        };
-        const friendlyStyleNames = {
-            modern: 'Nowoczesny Minimalizm', classic: 'Klasyczna Elegancja',
-            bungalow: 'Parterowy Komfort', custom: 'Indywidualny Projekt'
-        };
-        const placeholderImageHTML = `<img src="photos/main/AIStarcCloud.png" alt="Szkic domu generowany przez AI" class="sketch-placeholder">`;
-        let userSelections = {};
-        let carouselIndex = 0;
-        let slideWidth = 0;
+  // kroki
+  const steps = {
+    style:   document.getElementById('step-style-selection'),
+    area:    document.getElementById('step-area'),
+    floors:  document.getElementById('step-floors'),
+    roof:    document.getElementById('step-roof-elevation'),
+    addons:  document.getElementById('step-addons'),
+    summary: document.getElementById('step-summary'),
+  };
 
-        // --- POBIERANIE WSZYSTKICH ELEMENTÓW DOM ---
-        const openBtn = document.getElementById('open-configurator-button');
-        const modal = document.getElementById('configurator-modal');
-        const closeBtn = document.getElementById('close-configurator-button');
-        const overlay = document.getElementById('configurator-overlay');
-        const step1 = document.getElementById('step-style-selection');
-        const step2 = document.getElementById('step-area');
-        const step3 = document.getElementById('step-floors');
-        const sketchContainerStep2 = document.getElementById('dynamic-sketch-container');
-        const sketchContainerStep3 = document.getElementById('floors-sketch-container');
-        const step2Title = document.getElementById('step-area-title');
-        const step3Title = document.getElementById('step-floors-title');
-        const areaInput = document.getElementById('area-input');
-        const areaSlider = document.getElementById('area-slider');
-        const areaContinueButton = document.getElementById('area-continue-button');
-        const backToStyleButton = document.getElementById('back-to-style-button');
-        const backToAreaButton = document.getElementById('back-to-area-button');
-        const selectStyleButtons = document.querySelectorAll('.style-carousel__select-button');
-        const floorOptionButtons = document.querySelectorAll('.floor-options__button');
-        const carouselTrack = document.getElementById('style-carousel-track');
-        const styleSlides = carouselTrack ? Array.from(carouselTrack.children) : [];
-        const nextArrow = modal.querySelector('.style-carousel__arrow--next');
-        const prevArrow = modal.querySelector('.style-carousel__arrow--prev');
-            
-        // --- DEKLARACJE FUNKCJI (muszą być przed ich użyciem w listenerach) ---
+  // przyciski nawigacji
+  const nav = {
+    toArea:    document.getElementById('area-continue-button'),
+    toFloors:  document.getElementById('floors-continue-button'),
+    toRoof:    document.getElementById('roof-elev-continue-button'),
+    toAddons:  document.getElementById('addons-continue-button'),
+    toSummary: document.getElementById('generate-visualization'), // tu może być inny id
+    backStyle: document.getElementById('back-to-style-button'),
+    backArea:  document.getElementById('back-to-area-button'),
+    backFloors:document.getElementById('back-to-floors-button'),
+    backRoof:  document.getElementById('back-to-roof-button'),
+  };
 
-        const updateCarousel = () => {
-            if (styleSlides.length > 0 && styleSlides[0].getBoundingClientRect().width > 0) {
-                slideWidth = styleSlides[0].getBoundingClientRect().width;
-                carouselTrack.style.transform = `translateX(-${carouselIndex * slideWidth}px)`;
-            }
-            if(prevArrow && nextArrow) {
-                prevArrow.disabled = carouselIndex === 0;
-                nextArrow.disabled = carouselIndex >= styleSlides.length - 1;
-            }
-        };
-        
-        const updateSliderProgress = () => {
-            if (!areaSlider) return;
-            const min = parseFloat(areaSlider.min);
-            const max = parseFloat(areaSlider.max);
-            const value = parseFloat(areaSlider.value);
-            const percentage = ((value - min) / (max - min)) * 100;
-            areaSlider.style.background = `linear-gradient(to right, #DC9B59 ${percentage}%, #e9e9e9 ${percentage}%)`;
-        };
+  // pola formularza
+  let user = {
+    style:        null,
+    area:         null,
+    floors:       null,
+    roof:         null,
+    elev:         null,
+    garage:       null,
+    basement:     null,
+    rental:       null,
+    accessibility:null,
+  };
 
-        const updateSketch = () => {
-            const style = userSelections.style || 'classic';
-            let baseSketch = svgSketches[style] || svgSketches.classic;
-            if (userSelections.floors === 'pietrowy') {
-                baseSketch = baseSketch.replace(/height="(\d+)"/, (match, height) => `height="${parseInt(height) + 40}"`);
-            }
-            if (sketchContainerStep2) sketchContainerStep2.innerHTML = baseSketch;
-            if (sketchContainerStep3) sketchContainerStep3.innerHTML = baseSketch;
-        };
+  // helper: pokazuje tylko zadany krok
+  function showStep(stepKey) {
+    Object.values(steps).forEach(el => el && (el.style.display = 'none'));
+    steps[stepKey].style.display = 'block';
+  }
 
-        const handleAreaUpdate = (newArea) => {
-            const area = parseInt(newArea, 10) || 0;
-            if (area > 50) {
-                updateSketch();
-                if (areaContinueButton) areaContinueButton.disabled = false;
-            } else {
-                if (sketchContainerStep2) sketchContainerStep2.innerHTML = placeholderImageHTML;
-                if (areaContinueButton) areaContinueButton.disabled = true;
-            }
-            if (sketchContainerStep2) {
-                const minArea = 50, maxArea = 400, minScale = 0.6, maxScale = 1.1;
-                let scale = 1.0;
-                if (area > 50) {
-                    const progress = Math.max(0, (area - minArea)) / (maxArea - minArea);
-                    scale = minScale + (progress * (maxScale - minScale));
-                }
-                sketchContainerStep2.style.transform = `scale(${Math.min(scale, maxScale)})`;
-            }
-        };
+  // otwórz / zamknij
+  function openModal() {
+    showStep('style');
+    modal.removeAttribute('hidden');
+    setTimeout(() => modal.classList.add('is-open'), 10);
+  }
+  function closeModal() {
+    modal.classList.remove('is-open');
+    setTimeout(() => modal.setAttribute('hidden', true), 300);
+  }
 
-        const changeStep = (stepToShow) => {
-            [step1, step2, step3].forEach(step => {
-                if(step) step.style.display = 'none';
-            });
-            if (stepToShow) stepToShow.style.display = 'block';
-        };
-        
-        const goToStep1 = () => {
-            changeStep(step1);
-            setTimeout(updateCarousel, 50);
-        };
-        
-        const goToStep2 = (selectedStyle) => {
-            userSelections.style = selectedStyle;
-            if (areaInput) areaInput.value = '';
-            if (areaSlider) { areaSlider.value = areaSlider.min; updateSliderProgress(); }
-            handleAreaUpdate(0);
-            if (step2Title && friendlyStyleNames[selectedStyle]) {
-                step2Title.textContent = `Świetny wybór! (${friendlyStyleNames[selectedStyle]})`;
-            }
-            changeStep(step2);
-        };
+  // --- KROK 1: STYL ---
+  document.querySelectorAll('.style-carousel__select-button')
+    .forEach(btn => {
+      btn.addEventListener('click', () => {
+        user.style = btn.dataset.style;
+        // reset dalszych kroków
+        user.area = user.floors = user.roof = user.elev = null;
+        nav.toArea.disabled = true;
+        showStep('area');
+      });
+    });
 
-        const goToStep3 = () => {
-            userSelections.area = areaInput.value;
-            if (step3Title) step3Title.textContent = `Dobrze, dom ${userSelections.area} m². Ile kondygnacji ma mieć?`;
-            updateSketch();
-            changeStep(step3);
-        };
+  // --- KROK 2: POWIERZCHNIA ---
+  const slider = document.getElementById('area-slider');
+  const inputN = document.getElementById('area-input');
+  function syncArea(val) {
+    user.area = +val;
+    nav.toFloors.disabled = user.area <= 50;
+    // aktualizacja placeholderu
+    document.getElementById('step-floors-title').textContent =
+      `Dobrze, dom ${user.area} m².`;
+  }
+  slider.addEventListener('input', e => {
+    inputN.value = e.target.value;
+    syncArea(e.target.value);
+  });
+  inputN.addEventListener('input', e => {
+    const v = e.target.value;
+    slider.value = v;
+    syncArea(v);
+  });
+  nav.toArea.addEventListener('click', () => showStep('floors'));
 
-        const openModal = () => {
-            goToStep1();
-            modal.removeAttribute('hidden');
-            setTimeout(() => modal.classList.add('is-open'), 50);
-        };
+  // back
+  nav.backStyle.addEventListener('click', () => showStep('style'));
 
-        const closeModal = () => {
-            modal.classList.remove('is-open');
-            setTimeout(() => modal.setAttribute('hidden', true), 300);
-        };
-        
-        // --- PODPIĘCIE ZDARZEŃ (EVENT LISTENERS) ---
-        openBtn.addEventListener('click', openModal);
-        if (closeBtn) closeBtn.addEventListener('click', closeModal);
-        if (overlay) overlay.addEventListener('click', closeModal);
-        if (backToStyleButton) backToStyleButton.addEventListener('click', goToStep1);
-        if (backToAreaButton) backToAreaButton.addEventListener('click', () => goToStep2(userSelections.style));
-        if (areaContinueButton) areaContinueButton.addEventListener('click', () => { if (!areaContinueButton.disabled) goToStep3(); });
-        
-        if (nextArrow && prevArrow) {
-            nextArrow.addEventListener('click', () => { if (carouselIndex < styleSlides.length - 1) { carouselIndex++; updateCarousel(); }});
-            prevArrow.addEventListener('click', () => { if (carouselIndex > 0) { carouselIndex--; updateCarousel(); }});
-        }
+  // --- KROK 3: KONDYGNACJE ---
+  document.querySelectorAll('.floor-options__button')
+    .forEach(btn => {
+      btn.addEventListener('click', () => {
+        // odznacz wszystkich, zaznacz tylko tego
+        document.querySelectorAll('.floor-options__button')
+          .forEach(x => x.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        user.floors = btn.dataset.floors;
+        nav.toRoof.disabled = !user.floors;
+      });
+    });
+  nav.toFloors.addEventListener('click', () => showStep('roof'));
+  nav.backArea.addEventListener('click', () => showStep('area'));
 
-        selectStyleButtons.forEach(button => button.addEventListener('click', () => goToStep2(button.dataset.style)));
-        
-        floorOptionButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                floorOptionButtons.forEach(btn => btn.classList.remove('is-active'));
-                button.classList.add('is-active');
-                userSelections.floors = button.dataset.floors;
-                updateSketch();
-            });
+  // --- KROK 4: DACH + ELEWACJA ---
+  // dach
+  document.querySelectorAll('.roof-options .floor-options__button')
+    .forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.roof-options .floor-options__button')
+          .forEach(x => x.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        user.roof = btn.dataset.roof;
+        nav.toAddons.disabled = !(user.roof && user.elev);
+      });
+    });
+  // elewacja
+  document.querySelectorAll('.elev-options .floor-options__button')
+    .forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.elev-options .floor-options__button')
+          .forEach(x => x.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        user.elev = btn.dataset.elev;
+        nav.toAddons.disabled = !(user.roof && user.elev);
+      });
+    });
+
+  nav.toRoof.addEventListener('click', () => showStep('addons'));
+  nav.backFloors.addEventListener('click', () => showStep('floors'));
+
+  // --- KROK 5: DODATKI ---
+  function initSingleGroup(selector, key) {
+    document.querySelectorAll(selector)
+      .forEach(btn => {
+        btn.addEventListener('click', () => {
+          // odznacz tylko w tej grupie
+          document.querySelectorAll(selector)
+            .forEach(x => x.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          user[key] = btn.dataset[key];
+          // włącz przycisk tylko gdy wszystkie cztery są wybrane
+          nav.toSummary.disabled = !( user.garage && user.basement 
+                                     && user.rental && user.accessibility );
         });
-        
-        if (areaSlider && areaInput) {
-            const syncAndUpdate = (value) => {
-                areaSlider.value = value;
-                areaInput.value = value;
-                updateSliderProgress();
-                handleAreaUpdate(value);
-            };
-            areaSlider.addEventListener('input', () => syncAndUpdate(areaSlider.value));
-            areaInput.addEventListener('input', () => syncAndUpdate(areaInput.value));
-        }
+      });
+  }
+  initSingleGroup('.addon-garage__button',       'garage');
+  initSingleGroup('.addon-basement__button',     'basement');
+  initSingleGroup('.addon-rental__button',       'rental');
+  initSingleGroup('.addon-accessibility__button','accessibility');
 
-    } catch (error) {
-        console.error("BŁĄD KRYTYCZNY W KONFIGURATORZE:", error);
+  nav.toAddons.addEventListener('click', () => showStep('summary'));
+  nav.backRoof.addEventListener('click', () => showStep('roof'));
+
+  // --- KROK 6: PODSUMOWANIE i AI ---
+  // uzupełnij podsumowanie
+  function updateSummary() {
+    document.getElementById('sum-style').textContent = user.style;
+    document.getElementById('sum-area').textContent  = user.area;
+    document.getElementById('sum-floors').textContent= user.floors;
+    document.getElementById('sum-roof').textContent  = user.roof;
+    document.getElementById('sum-elev').textContent  = user.elev;
+    // dodatki:
+    document.getElementById('sum-garage')?.textContent       = user.garage;
+    document.getElementById('sum-basement')?.textContent     = user.basement;
+    document.getElementById('sum-rental')?.textContent       = user.rental;
+    document.getElementById('sum-accessibility')?.textContent= user.accessibility;
+  }
+
+  nav.toSummary.addEventListener('click', () => {
+    updateSummary();
+    showStep('summary');
+  });
+
+  // tutaj generacja AI (wizualizacja + koszt)
+  nav.toSummary /* czyli generate-visualization */.addEventListener('click', async () => {
+    const btn = nav.toSummary;
+    const out = document.getElementById('ai-result');
+    btn.disabled = true;
+    btn.textContent = 'Generuję…';
+    out.innerHTML = '';
+
+    try {
+      const resp = await fetch('/api/generate-visualization', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(user)
+      });
+      const { imageUrl, costEstimate } = await resp.json();
+      out.innerHTML = `<img src="${imageUrl}" alt="Wizualizacja"><p>Szacunkowy koszt: ${costEstimate} PLN</p>`;
+    } catch (e) {
+      out.textContent = 'Błąd przy generowaniu wizualizacji.';
+      console.error(e);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Generuj wizualizację i kosztorys';
     }
+  });
+
+  // podpinamy open/close
+  btnOpen  .addEventListener('click', openModal);
+  btnClose .addEventListener('click', closeModal);
+  overlay  .addEventListener('click', closeModal);
+
+  console.log('Konfigurator gotowy.');
 });
