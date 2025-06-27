@@ -802,141 +802,105 @@
       </div>
       <div class="configurator-nav">
         <button class="configurator-nav__button" id="back-to-area-button">← Wróć</button>
-        <button class="configurator-nav__button" id="floors-continue-button">Kontynuuj →</button>
+        <button class="configurator-nav__button" id="floors-continue-button" disabled>Kontynuuj →</button>
       </div>
     </div>
 
     <!-- KROK 4: WYBÓR DACHU I ELEWACJI -->
-    <div class="configurator-modal__step" id="step-roof-elevation" style="display: none;">
-      <div class="dynamic-sketch-container" id="roof-elev-sketch-container">
-        <img src="photos/icons/sketch-placeholder.png" alt="Podgląd domu" class="sketch-image">
-      </div>
-      <h3 class="step-title">Super! A jak wykończymy Twój dom?</h3>
-      <p class="step-subtitle">Wybierz pokrycie dachowe i elewację</p>
-      <div class="roof-options">
-        <button class="floor-options__button" data-roof="tiles">
-          <img src="photos/icons/roof_tiles.png" alt="Blachodachówka" class="floor-options__icon">
-          <span class="floor-options__label">Blachodachówka</span>
-        </button>
-        <button class="floor-options__button" data-roof="ceramic">
-          <img src="photos/icons/roof_ceramic.png" alt="Dachówka ceramiczna" class="floor-options__icon">
-          <span class="floor-options__label">Dachówka ceramiczna</span>
-        </button>
-      </div>
-      <div class="elev-options">
-        <button class="floor-options__button" data-elev="wood">
-          <img src="photos/icons/facade_wood.png" alt="Deska elewacyjna" class="floor-options__icon">
-          <span class="floor-options__label">Deska elew.</span>
-        </button>
-        <button class="floor-options__button" data-elev="plaster">
-          <img src="photos/icons/facade_plaster.png" alt="Tynk" class="floor-options__icon">
-          <span class="floor-options__label">Tynk</span>
-        </button>
-      </div>
-      <div class="configurator-nav">
-        <button class="configurator-nav__button" id="back-to-floors-button">← Wróć</button>
-        <button class="configurator-nav__button" id="roof-elev-continue-button" disabled>
-          Zobacz estymację →
-        </button>
-      </div>
-    </div>
+<div class="configurator-modal__step" id="step-roof-elevation" style="display: none;">
+  <div class="dynamic-sketch-container" id="roof-elev-sketch-container">
+    <img src="photos/icons/sketch-placeholder.png" alt="Podgląd domu" class="sketch-image">
+  </div>
+  <h3 class="step-title">Super! A jak wykończymy Twój dom?</h3>
+  <p class="step-subtitle">Wybierz pokrycie dachowe i elewację</p>
+  <div class="roof-options">
+    <button class="floor-options__button" data-roof="tiles">
+      <img src="photos/icons/roof_tiles.png" alt="Blachodachówka" class="floor-options__icon">
+      <span class="floor-options__label">Blachodachówka</span>
+    </button>
+    <button class="floor-options__button" data-roof="ceramic">
+      <img src="photos/icons/roof_ceramic.png" alt="Dachówka ceramiczna" class="floor-options__icon">
+      <span class="floor-options__label">Dachówka ceramiczna</span>
+    </button>
+  </div>
+  <div class="elev-options">
+    <button class="floor-options__button" data-elev="wood">
+      <img src="photos/icons/facade_wood.png" alt="Deska elewacyjna" class="floor-options__icon">
+      <span class="floor-options__label">Deska elew.</span>
+    </button>
+    <button class="floor-options__button" data-elev="plaster">
+      <img src="photos/icons/facade_plaster.png" alt="Tynk" class="floor-options__icon">
+      <span class="floor-options__label">Tynk</span>
+    </button>
+  </div>
+  <div class="configurator-nav">
+    <button class="configurator-nav__button" id="back-to-floors-button">← Wróć</button>
+    <button class="configurator-nav__button" id="roof-elev-continue-button" disabled>Zobacz estymację →</button>
+  </div>
+</div>
     
-    <!-- Krok 5: Kluczowe dodatki -->
+   
+
+ <!-- KROK 5: KLUCZOWE DODATKI -->
 <div class="configurator-modal__step" id="step-addons" style="display: none;">
   <div class="dynamic-sketch-container" id="addons-sketch-container">
-    <img src="photos/icons/sketch-placeholder.png"
-         alt="Podgląd domu z wykończeniem"
-         class="sketch-image">
+    <img src="photos/icons/sketch-placeholder.png" alt="Podgląd domu z dodatkami" class="sketch-image">
   </div>
-  <h3 class="step-title">Ostatnie detale.</h3>
+  <h3 class="step-title">Ostatnie detale – dodatkowe funkcje</h3>
   <p class="step-subtitle">Jakie dodatkowe funkcje Cię interesują?</p>
 
-  <div class="addons-group">
-    <!-- Garaż -->
-    <div class="addons-section">
-      <p class="addons-label"><strong>Garaż</strong></p>
-      <button class="addons-option" data-addon="garage-none">
-        Brak
-      </button>
-      <button class="addons-option" data-addon="garage-attached">
-        Zintegrowany z domem
-      </button>
-      <button class="addons-option" data-addon="garage-detached">
-        Wolnostojący
-      </button>
-    </div>
-    <!-- Piwnica -->
-    <div class="addons-section">
-      <p class="addons-label"><strong>Piwnica</strong></p>
-      <button class="addons-option" data-addon="basement-no">
-        Nie
-      </button>
-      <button class="addons-option" data-addon="basement-yes">
-        Tak
-      </button>
-    </div>
-    <!-- Krok 5: Kluczowe Dodatki -->
-<div class="configurator-modal__step" id="step-addons" style="display:none;">
-  <h3 class="step-title">Ostatnie detale – dodatkowe funkcje</h3>
-
   <div class="addon-group">
-    <p>Garaż</p>
+    <p><strong>Garaż</strong></p>
     <button class="addon-garage__button" data-garage="none">Brak</button>
     <button class="addon-garage__button" data-garage="attached">Zintegrowany</button>
     <button class="addon-garage__button" data-garage="detached">Wolnostojący</button>
   </div>
-
   <div class="addon-group">
-    <p>Piwnica</p>
+    <p><strong>Piwnica</strong></p>
     <button class="addon-basement__button" data-basement="no">Brak</button>
     <button class="addon-basement__button" data-basement="yes">Jest</button>
   </div>
-
   <div class="addon-group">
-    <p>Część na wynajem</p>
+    <p><strong>Część na wynajem</strong></p>
     <button class="addon-rental__button" data-rental="no">Nie</button>
     <button class="addon-rental__button" data-rental="yes">Tak</button>
   </div>
-
   <div class="addon-group">
-    <p>Dostępność (Livsløpsstandard)</p>
+    <p><strong>Dostępność (Livsløpsstandard)</strong></p>
     <button class="addon-accessibility__button" data-accessibility="no">Nie</button>
     <button class="addon-accessibility__button" data-accessibility="yes">Tak</button>
   </div>
 
   <div class="configurator-nav">
     <button class="configurator-nav__button" id="back-to-roof-button">← Wróć</button>
-    <button class="configurator-nav__button" id="addons-continue-button" disabled>
-      Zobacz podsumowanie →
-    </button>
+    <button class="configurator-nav__button" id="addons-continue-button" disabled>Zobacz podsumowanie →</button>
   </div>
 </div>
 
 
     <!-- KROK 6: PODSUMOWANIE -->
-    <div class="configurator-modal__step" id="step-summary" style="display: none;">
-      <h2 class="configurator-modal__title">Podsumowanie konfiguracji</h2>
-      <div class="configurator-summary">
-        <img
-          id="summary-img"
-          src="photos/icons/sketch-placeholder.png"
-          alt="Wybrany szkic"
-          class="sketch-image"
-        >
-        <ul class="configurator-summary__list">
-          <li><strong>Styl:</strong> <span id="sum-style"></span></li>
-          <li><strong>Powierzchnia:</strong> <span id="sum-area"></span> m²</li>
-          <li><strong>Kondygnacje:</strong> <span id="sum-floors"></span></li>
-          <li><strong>Dach:</strong> <span id="sum-roof"></span></li>
-          <li><strong>Elewacja:</strong> <span id="sum-elev"></span></li>
-        </ul>
-        <button class="configurator-nav__button" id="generate-visualization">
-          Generuj wizualizację i kosztorys
-        </button>
-        <div id="ai-result"></div>
-
-      </div>
+<div class="configurator-modal__step" id="step-summary" style="display: none;">
+  <h2 class="configurator-modal__title">Podsumowanie konfiguracji</h2>
+  <div class="configurator-summary">
+    <img id="summary-img" src="photos/icons/sketch-placeholder.png" alt="Wybrany szkic" class="sketch-image">
+    <ul class="configurator-summary__list">
+      <li><strong>Styl:</strong> <span id="sum-style"></span></li>
+      <li><strong>Powierzchnia:</strong> <span id="sum-area"></span> m²</li>
+      <li><strong>Kondygnacje:</strong> <span id="sum-floors"></span></li>
+      <li><strong>Dach:</strong> <span id="sum-roof"></span></li>
+      <li><strong>Elewacja:</strong> <span id="sum-elev"></span></li>
+      <li><strong>Garaż:</strong> <span id="sum-garage"></span></li>
+      <li><strong>Piwnica:</strong> <span id="sum-basement"></span></li>
+      <li><strong>Część na wynajem:</strong> <span id="sum-rental"></span></li>
+      <li><strong>Dostępność:</strong> <span id="sum-accessibility"></span></li>
+    </ul>
+    <div class="configurator-nav">
+      <button class="configurator-nav__button" id="back-to-addons-button">← Wróć</button>
+      <button class="configurator-nav__button" id="generate-visualization">Generuj wizualizację i kosztorys</button>
     </div>
+    <div id="ai-result"></div>
+  </div>
+</div>
 
   </div> <!-- /.configurator-modal__content -->
 </div> <!-- /#configurator-modal -->
