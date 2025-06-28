@@ -667,7 +667,7 @@
 
 <!-- KONFIGURATOR MODALNY -->
 
-<!-- KONFIGURATOR MODALNY -->
+
 <div class="configurator-modal" id="configurator-modal" >
   <div class="configurator-modal__overlay" id="configurator-overlay"></div>
   <div class="configurator-modal__content">
@@ -718,11 +718,11 @@
     </div>
 
     <!-- Krok 2: Powierzchnia -->
-      <div class="step-area-selection" id="step-area">
-    <div class="step-area-selection__dynamic-sketch">
-      <img src="photos/main/AIStarcCloud.png"
-          alt="Szkic domu generowany przez AI"
-          class="step-area-selection__sketch-image">
+   <div class="configurator-modal__step step-area-selection" id="step-area">
+      <div class="step-area-selection__dynamic-sketch">
+        <img src="photos/main/AIStarcCloud.png"
+            alt="Szkic domu generowany przez AI"
+            class="step-area-selection__sketch-image">
     </div>
     <h3 class="step-area-selection__title">Określ powierzchnięeee</h3>
     <p class="step-area-selection__subtitle">
@@ -751,7 +751,7 @@
         Kontynuuj →
       </button>
     </div>
-      </div>
+    </div>
 
 
     <!-- Krok 3a: Warianty dla stylu Nowoczesny -->
@@ -809,14 +809,90 @@
       </div>
     </div>
 
+    <!-- Krok 4: Ilość kondygnacji -->
+    <div
+      class="configurator-modal__step step-floor-count"
+      id="step-floor-count"
+      style="display:none;"
+    >
+      <h3 class="step-floor-count__title">Ile kondygnacji ma Twój dom?</h3>
+
+      <div class="step-floor-count__options">
+        <!-- przyciski generowane dynamicznie w JS -->
+        <!-- przykładowo: -->
+        <button
+          class="step-floor-count__option"
+          data-floors="1"
+        >
+          1 kondygnacja
+        </button>
+        <button
+          class="step-floor-count__option"
+          data-floors="1.5"
+        >
+          1½ kondygnacji
+        </button>
+        <button
+          class="step-floor-count__option"
+          data-floors="2"
+        >
+          2 kondygnacje
+        </button>
+      </div>
+
+      <div class="step-floor-count__nav">
+        <button
+          class="step-floor-count__nav-button step-floor-count__nav-button--back"
+          data-back-to="step-options"
+        >
+          ← Wróć
+        </button>
+        <button
+          class="step-floor-count__nav-button step-floor-count__nav-button--continue"
+          id="floor-count-continue"
+          disabled
+        >
+          Kontynuuj →
+        </button>
+      </div>
+    </div>
+ <!-- Krok 5: elewacja i dach -->
+    <div class="configurator-modal__step step-roof-elev" id="step-roof-elevation" style="display:none;">
+  <h3 class="step-roof-elev__title">Wybierz dach i elewację</h3>
+
+  <div class="step-roof-elev__roof-options">
+    <button class="step-roof-elev__roof-option" data-roof="gable">Dach dwuspadowy</button>
+    <button class="step-roof-elev__roof-option" data-roof="hip">Dach wielospadowy</button>
+    <button class="step-roof-elev__roof-option" data-roof="flat">Płaski dach</button>
+  </div>
+
+  <div class="step-roof-elev__facade-options">
+    <button class="step-roof-elev__facade-option" data-facade="wood">Drewniana deska skandynawska</button>
+    <button class="step-roof-elev__facade-option" data-facade="plaster">Tynk mineralny + styropian</button>
+  </div>
+
+  <div class="step-roof-elev__nav">
+    <button class="step-roof-elev__nav-button step-roof-elev__nav-button--back" data-back-to="step-floors">
+      ← Wróć
+    </button>
+    <button class="step-roof-elev__nav-button step-roof-elev__nav-button--continue"
+      id="roof-elev-continue-button" disabled>
+      Kontynuuj →
+    </button>
   </div>
 </div>
-<!-- /#configurator-modal -->
+
+
+  </div>
+</div>
 
 <!-- /#configurator-modal -->
 
     <script src="js/script.js" defer></script>
      <script src="js/configurator.js" defer></script>
+     <script src="js/step-4-floor-count.js" defer></script>
+     <script src="js/step-roof-elevation.js" defer></script>
+
     
 </body>
 </html>
