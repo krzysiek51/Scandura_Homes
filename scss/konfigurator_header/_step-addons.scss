@@ -1,58 +1,41 @@
 @use '../utils/variables' as *;
 
-// Kontener i tytuły
 #step-addons {
-  .step-title {
-    margin-bottom: 8px;
-  }
-  .step-subtitle {
-    margin-bottom: 24px;
-  }
+    .addon-group {
+        margin-bottom: 20px;
 
-  .dynamic-sketch-container {
-    margin-bottom: 24px;
-  }
-
-  .addons-group {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-bottom: 32px;
-
-    .addons-section {
-      text-align: center;
-
-      .addons-label {
-        margin-bottom: 8px;
-        font-weight: 600;
-        color: $color-dark-text;
-      }
-
-      .addons-option {
-        display: block;
-        width: 100%;
-        padding: 12px;
-        margin-bottom: 8px;
-        border: 2px solid #EAEAEA;
-        border-radius: 8px;
-        background: $color-white;
-        cursor: pointer;
-        transition: all 0.2s ease;
-
-        &.is-active {
-          border-color: $color-gradient-start;
-          background: $color-beige-bg;
+        p {
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: $color-dark-text;
+            text-align: center;
         }
 
-        &:hover:not(.is-active) {
-          border-color: $color-gradient-start;
+        .addon-options {
+             display: grid;
+             grid-template-columns: repeat(3, 1fr);
+             gap: 10px;
         }
-      }
+        
+        .addon-group__button {
+            padding: 12px 8px;
+            border: 2px solid #EAEAEA;
+            background-color: #FAFAFA;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease-in-out;
+            font-size: 14px;
+            font-weight: 500;
+
+            &.is-active {
+                border-color: $color-dark-text;
+                background-color: #F0F3F5;
+            }
+
+            &:hover:not(.is-active) {
+                border-color: #ccc;
+            }
+        }
     }
-  }
-
-  .configurator-nav {
-    display: flex;
-    justify-content: space-between;
-  }
 }
