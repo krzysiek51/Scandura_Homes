@@ -1669,14 +1669,20 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: none;
-  align-items: center;
-  justify-content: center;
   z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s 0.3s;
 }
 .configurator-modal.is-open {
-  display: flex;
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
 }
 
 .configurator-modal__overlay {
@@ -1686,172 +1692,261 @@ body {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   cursor: pointer;
 }
 
 .configurator-modal__content {
-  background-color: #fff;
+  position: relative;
+  z-index: 10;
+  background-color: #FFFFFF;
   border-radius: 16px;
-  padding: 2rem;
-  max-width: 800px;
-  width: 90%;
+  padding: 32px;
+  width: 100%;
+  max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
 }
 
-.step-style-carousel {
+.configurator-modal__close-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 15;
+}
+
+.style-carousel {
   position: relative;
-  margin-bottom: 2rem;
-}
-.step-style-carousel .style-carousel__track-container {
-  overflow: hidden;
-}
-.step-style-carousel .style-carousel__track {
   display: flex;
-  transition: transform 0.5s ease-in-out;
+  align-items: center;
+  justify-content: center;
+  margin: 0 -20px;
+  padding: 1.5rem 0;
+  background-color: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
-.step-style-carousel .style-carousel__slide {
+
+.style-carousel__track-container {
+  overflow: hidden;
+  width: 100%;
+}
+
+.style-carousel__track {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.style-carousel__slide {
   flex: 0 0 100%;
-  text-align: center;
   padding: 0 1rem;
+  box-sizing: border-box;
+  text-align: center;
 }
-.step-style-carousel .style-carousel__image {
+
+.style-carousel__image {
   width: 100%;
   border-radius: 12px;
   object-fit: cover;
-}
-.step-style-carousel .style-carousel__title {
-  margin-top: 1rem;
-  font-size: 1.25rem;
-  font-weight: 600;
-}
-.step-style-carousel .style-carousel__select-button {
-  margin-top: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background-color: #DC9B59;
-  color: #fff;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-.step-style-carousel .style-carousel__select-button:hover {
-  background-color: rgb(215.5597014925, 142.3134328358, 67.9402985075);
-}
-.step-style-carousel .style-carousel__arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  font-size: 2rem;
-  color: #ccc;
-  cursor: pointer;
-}
-.step-style-carousel .style-carousel__arrow:hover:not(:disabled) {
-  color: #333;
-}
-.step-style-carousel .style-carousel__arrow:disabled {
-  opacity: 0.3;
-}
-.step-style-carousel .style-carousel__arrow--prev {
-  left: 1rem;
-}
-.step-style-carousel .style-carousel__arrow--next {
-  right: 1rem;
+  margin-bottom: 1rem;
 }
 
-.step-area-selection {
+.style-carousel__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1D1F2C;
+  margin: 0.5rem 0 0.75rem;
+}
+
+.style-carousel__description {
+  font-size: 0.9375rem;
+  color: #666;
+  margin-bottom: 1.25rem;
+}
+
+.style-carousel__select-button {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  border-radius: 30px;
+  background: linear-gradient(to right, #DC9B59, #000000);
+  color: #FFFFFF;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.style-carousel__select-button:hover {
+  background: rgb(211.1194029851, 129.6268656716, 46.8805970149);
+}
+
+.style-carousel__arrow {
+  background: none;
+  border: none;
+  font-size: 1.75rem;
+  color: #979797;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.style-carousel__arrow:hover:not(:disabled) {
+  color: #1D1F2C;
+}
+.style-carousel__arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.step-area-selection__dynamic-sketch {
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto 24px;
+  padding: 20px;
+  border: 1px dashed #ddd;
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 150px;
+  background-color: #fdfdfd;
+  transition: transform 0.3s ease;
+}
+.step-area-selection__sketch-image {
+  max-width: 100%;
+  height: auto;
+}
+.step-area-selection__title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1D1F2C;
+  margin: 0 0 0.5rem;
   text-align: center;
 }
-.step-area-selection .dynamic-sketch-container {
-  margin-bottom: 2rem;
-}
-.step-area-selection .step-title {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-.step-area-selection .step-subtitle {
+.step-area-selection__subtitle {
+  font-size: 1rem;
   color: #666;
-  margin-bottom: 1.5rem;
+  margin: 0 auto 1.5rem;
+  text-align: center;
+  max-width: 300px;
 }
-.step-area-selection .area-input-group {
+.step-area-selection__input-group {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin: 0 auto 2rem;
+  width: 100%;
+  max-width: 400px;
 }
-.step-area-selection .area-input-group input[type=range] {
-  flex: 1;
+.step-area-selection__slider {
   -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
   height: 8px;
   background: #e9e9e9;
   border-radius: 4px;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
-.step-area-selection .area-input-group input[type=range]::-webkit-slider-thumb {
+.step-area-selection__slider:focus {
+  outline: none;
+}
+.step-area-selection__slider::-webkit-slider-thumb {
   -webkit-appearance: none;
+  appearance: none;
   width: 24px;
   height: 24px;
   background: #DC9B59;
-  border: 3px solid #fff;
+  border: 3px solid #FFFFFF;
   border-radius: 50%;
   margin-top: -8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 }
-.step-area-selection .area-input-group input[type=range]::-moz-range-thumb {
+.step-area-selection__slider::-moz-range-thumb {
   width: 24px;
   height: 24px;
   background: #DC9B59;
-  border: 3px solid #fff;
+  border: 3px solid #FFFFFF;
   border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 }
-.step-area-selection .area-input-group .area-input-wrapper {
+.step-area-selection__input-wrapper {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-}
-.step-area-selection .area-input-group .area-input-wrapper input {
-  width: 60px;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  text-align: right;
-  appearance: none;
-}
-.step-area-selection .area-input-group .area-input-wrapper .area-input-wrapper__label {
-  font-weight: 500;
-}
-
-.step-floors .step-title {
-  margin-bottom: 0.5rem;
-  font-size: 1.5rem;
-}
-.step-floors .step-subtitle {
-  color: #666;
-  margin-bottom: 1rem;
-}
-.step-floors .floor-options {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-.step-floors .floor-options .floor-options__button {
-  padding: 1rem;
-  background: #FAFAFA;
-  border: 2px solid #EAEAEA;
+  border: 1px solid #eaeaea;
+  background-color: #fafafa;
   border-radius: 12px;
+  padding: 8px 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.step-area-selection__input-wrapper:focus-within {
+  border-color: #1D1F2C;
+  box-shadow: 0 0 0 3px rgba(29, 31, 44, 0.1);
+}
+.step-area-selection__number-input {
+  border: none;
+  background: none;
+  font-size: 1.25rem;
+  font-weight: 500;
   text-align: center;
+  width: 60px;
+  -moz-appearance: textfield;
+}
+.step-area-selection__number-input::-webkit-outer-spin-button, .step-area-selection__number-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.step-area-selection__number-input:focus {
+  outline: none;
+}
+.step-area-selection__input-unit {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #666;
+  margin-left: 0.5rem;
+}
+.step-area-selection__nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.step-area-selection__nav-button {
+  flex: 1;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 12px;
   cursor: pointer;
-  transition: border-color 0.2s, background-color 0.2s;
+  transition: all 0.3s ease;
+  background-color: #1D1F2C;
+  border: 1px solid #1D1F2C;
+  color: #FFFFFF;
 }
-.step-floors .floor-options .floor-options__button:hover:not(.is-active) {
-  border-color: #ccc;
+.step-area-selection__nav-button:hover:not(:disabled) {
+  background-color: rgb(49.2602739726, 52.6575342466, 74.7397260274);
 }
-.step-floors .floor-options .floor-options__button.is-active {
-  border-color: #DC9B59;
-  background-color: #FFF4E3;
+.step-area-selection__nav-button:disabled {
+  background-color: #eaeaea;
+  border-color: #eaeaea;
+  color: #b0b0b0;
+  cursor: not-allowed;
+}
+.step-area-selection__nav-button:first-child {
+  background-color: #FFFFFF;
+  color: #1D1F2C;
+  border-color: #eaeaea;
+}
+.step-area-selection__nav-button:first-child:hover:not(:disabled) {
+  background-color: #f5f5f5;
+  border-color: #ddd;
+}
+@media (max-width: 768px) {
+  .step-area-selection__input-group {
+    flex-direction: column;
+  }
+  .step-area-selection__input-wrapper {
+    width: 100%;
+    justify-content: space-between;
+  }
 }
 
 .step-roof-elevation .step-title {
@@ -1957,6 +2052,146 @@ body {
     display: flex;
     flex-direction: column;
   }
+}
+.configurator-modal__step {
+  display: none;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+.configurator-modal__step.is-open {
+  display: block;
+}
+.configurator-modal__step .step-title {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: #333;
+  text-align: center;
+}
+.configurator-modal__step .step-subtitle {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  color: #666;
+  text-align: center;
+}
+
+#step-options-modern,
+#step-options-classic,
+#step-options-dworek,
+#step-custom-prompt {
+  padding: 1.5rem 2rem;
+}
+#step-options-modern .floor-options,
+#step-options-classic .floor-options,
+#step-options-dworek .floor-options,
+#step-custom-prompt .floor-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+#step-options-modern .floor-options__button,
+#step-options-modern .floor-options .floor-options__button,
+#step-options-classic .floor-options__button,
+#step-options-classic .floor-options .floor-options__button,
+#step-options-dworek .floor-options__button,
+#step-options-dworek .floor-options .floor-options__button,
+#step-custom-prompt .floor-options__button,
+#step-custom-prompt .floor-options .floor-options__button {
+  flex: 1 1 30%;
+  min-width: 8rem;
+  padding: 0.75rem 1rem;
+  background: #f5f5f5;
+  border: 2px solid transparent;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  color: #333;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+#step-options-modern .floor-options__button.is-active,
+#step-options-modern .floor-options .floor-options__button.is-active,
+#step-options-classic .floor-options__button.is-active,
+#step-options-classic .floor-options .floor-options__button.is-active,
+#step-options-dworek .floor-options__button.is-active,
+#step-options-dworek .floor-options .floor-options__button.is-active,
+#step-custom-prompt .floor-options__button.is-active,
+#step-custom-prompt .floor-options .floor-options__button.is-active {
+  background: #fff;
+  border-color: #DC9B59;
+}
+#step-options-modern .floor-options__button:hover,
+#step-options-modern .floor-options .floor-options__button:hover,
+#step-options-classic .floor-options__button:hover,
+#step-options-classic .floor-options .floor-options__button:hover,
+#step-options-dworek .floor-options__button:hover,
+#step-options-dworek .floor-options .floor-options__button:hover,
+#step-custom-prompt .floor-options__button:hover,
+#step-custom-prompt .floor-options .floor-options__button:hover {
+  background: #eee;
+}
+#step-options-modern .configurator-nav,
+#step-options-classic .configurator-nav,
+#step-options-dworek .configurator-nav,
+#step-custom-prompt .configurator-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+#step-options-modern .configurator-nav__button,
+#step-options-modern .configurator-nav .configurator-nav__button,
+#step-options-classic .configurator-nav__button,
+#step-options-classic .configurator-nav .configurator-nav__button,
+#step-options-dworek .configurator-nav__button,
+#step-options-dworek .configurator-nav .configurator-nav__button,
+#step-custom-prompt .configurator-nav__button,
+#step-custom-prompt .configurator-nav .configurator-nav__button {
+  padding: 0.75rem 1.25rem;
+  background: #1b1f3b;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#step-options-modern .configurator-nav__button:disabled,
+#step-options-modern .configurator-nav .configurator-nav__button:disabled,
+#step-options-classic .configurator-nav__button:disabled,
+#step-options-classic .configurator-nav .configurator-nav__button:disabled,
+#step-options-dworek .configurator-nav__button:disabled,
+#step-options-dworek .configurator-nav .configurator-nav__button:disabled,
+#step-custom-prompt .configurator-nav__button:disabled,
+#step-custom-prompt .configurator-nav .configurator-nav__button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+#step-options-modern .configurator-nav__button:hover:not(:disabled),
+#step-options-modern .configurator-nav .configurator-nav__button:hover:not(:disabled),
+#step-options-classic .configurator-nav__button:hover:not(:disabled),
+#step-options-classic .configurator-nav .configurator-nav__button:hover:not(:disabled),
+#step-options-dworek .configurator-nav__button:hover:not(:disabled),
+#step-options-dworek .configurator-nav .configurator-nav__button:hover:not(:disabled),
+#step-custom-prompt .configurator-nav__button:hover:not(:disabled),
+#step-custom-prompt .configurator-nav .configurator-nav__button:hover:not(:disabled) {
+  background: #151830;
+}
+
+#step-custom-prompt .custom-prompt-group {
+  margin-bottom: 1.5rem;
+}
+#step-custom-prompt .custom-prompt-group__textarea {
+  width: 100%;
+  min-height: 6rem;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  resize: vertical;
+  font-size: 1rem;
+  font-family: inherit;
 }
 
 /*# sourceMappingURL=style.css.map */

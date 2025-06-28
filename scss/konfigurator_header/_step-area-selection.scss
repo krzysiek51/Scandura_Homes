@@ -1,67 +1,184 @@
 @use '../utils/variables' as *;
 @use 'sass:color';
 
-// =============================
-// _step-area-selection.scss
-// =============================
+// Używamy & jako odniesienia do klasy .step-area-selection
+// zdefiniowanej w HTML, ale nie tworzymy tu dodatkowego zagnieżdżenia.
 
 .step-area-selection {
-  text-align: center;
-  .dynamic-sketch-container {
-    margin-bottom: 2rem;
-  }
-  .step-title {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-  }
-  .step-subtitle {
-    color: #666;
-    margin-bottom: 1.5rem;
-  }
-  .area-input-group {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
-    input[type="range"] {
-      flex: 1;
-      -webkit-appearance: none;
-      height: 8px;
-      background: #e9e9e9;
-      border-radius: 4px;
-      cursor: pointer;
-      &::-webkit-slider-thumb {
+    // Kontener szkicu
+    &__dynamic-sketch {
+        width: 100%;
+        max-width: 280px;
+        margin: 0 auto 24px;
+        padding: 20px;
+        border: 1px dashed #ddd;
+        border-radius: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 150px;
+        background-color: #fdfdfd;
+        transition: transform 0.3s ease;
+    }
+
+    &__sketch-image {
+        max-width: 100%;
+        height: auto;
+    }
+
+    // Nagłówki
+    &__title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: $color-dark-text;
+        margin: 0 0 0.5rem;
+        text-align: center;
+    }
+
+    &__subtitle {
+        font-size: 1rem;
+        color: $color-light-grey-text;
+        margin: 0 auto 1.5rem;
+        text-align: center;
+        max-width: 300px;
+    }
+
+    // Grupa wejść: suwak + pole numeryczne
+    &__input-group {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 0 auto 2rem;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    // Suwak
+    &__slider {
         -webkit-appearance: none;
-        width: 24px;
-        height: 24px;
-        background: #DC9B59;
-        border: 3px solid #fff;
-        border-radius: 50%;
-        margin-top: -8px;
-      }
-      &::-moz-range-thumb {
-        width: 24px;
-        height: 24px;
-        background: #DC9B59;
-        border: 3px solid #fff;
-        border-radius: 50%;
-      }
-    }
-    .area-input-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      input {
-        width: 60px;
-        padding: 0.5rem;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        text-align: right;
         appearance: none;
-      }
-      .area-input-wrapper__label {
-        font-weight: 500;
-      }
+        flex: 1;
+        height: 8px;
+        background: #e9e9e9;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+
+        &:focus { outline: none; }
+
+        &::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #DC9B59;
+            border: 3px solid $color-white;
+            border-radius: 50%;
+            margin-top: -8px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+        }
+
+        &::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: #DC9B59;
+            border: 3px solid $color-white;
+            border-radius: 50%;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+        }
     }
-  }
+
+    // Pole numeryczne + jednostka
+    &__input-wrapper {
+        display: flex;
+        align-items: center;
+        border: 1px solid #eaeaea;
+        background-color: #fafafa;
+        border-radius: 12px;
+        padding: 8px 16px;
+        transition: border-color 0.2s, box-shadow 0.2s;
+
+        &:focus-within {
+            border-color: $color-dark-text;
+            box-shadow: 0 0 0 3px rgba($color-dark-text, 0.1);
+        }
+    }
+
+    &__number-input {
+        border: none;
+        background: none;
+        font-size: 1.25rem;
+        font-weight: 500;
+        text-align: center;
+        width: 60px;
+        -moz-appearance: textfield;
+
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        &:focus { outline: none; }
+    }
+
+    &__input-unit {
+        font-size: 1.125rem;
+        font-weight: 500;
+        color: $color-light-grey-text;
+        margin-left: 0.5rem;
+    }
+
+    // Nawigacja kroków
+    &__nav {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    &__nav-button {
+        flex: 1;
+        padding: 0.75rem;
+        font-size: 1rem;
+        font-weight: 500;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        background-color: $color-dark-text;
+        border: 1px solid $color-dark-text;
+        color: $color-white;
+
+        &:hover:not(:disabled) {
+            background-color: color.adjust($color-dark-text, $lightness: 10%);
+        }
+        &:disabled {
+            background-color: #eaeaea;
+            border-color: #eaeaea;
+            color: #b0b0b0;
+            cursor: not-allowed;
+        }
+
+        &:first-child {
+            background-color: $color-white;
+            color: $color-dark-text;
+            border-color: #eaeaea;
+
+            &:hover:not(:disabled) {
+                background-color: #f5f5f5;
+                border-color: #ddd;
+            }
+        }
+    }
+
+    // Media query
+    @media (max-width: 768px) {
+        &__input-group {
+            flex-direction: column;
+        }
+        &__input-wrapper {
+            width: 100%;
+            justify-content: space-between;
+        }
+    }
 }

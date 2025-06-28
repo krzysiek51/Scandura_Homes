@@ -1,36 +1,67 @@
 @use '../utils/variables' as *;
 
-// =============================
-// _configurator-modal.scss
-// =============================
-
 .configurator-modal {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: none;
-  align-items: center;
-  justify-content: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s 0.3s;
+
   &.is-open {
-    display: flex;
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
   }
 }
+
 .configurator-modal__overlay {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0,0,0,0.4);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($color-black, 0.4); // Lekko jaśniejsze tło
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   cursor: pointer;
+  // Ten element jest TŁEM, więc nie potrzebuje z-index
 }
+
 .configurator-modal__content {
-  background-color: #fff;
+  // --- KLUCZOWA POPRAWKA JEST TUTAJ ---
+  position: relative; // Pozycjonowanie względem rodzica
+  z-index: 10;       // Zawsze na wierzchu, PONAD szarym tłem
+  // ------------------------------------
+
+  background-color: $color-white;
   border-radius: 16px;
-  padding: 2rem;
-  max-width: 800px;
-  width: 90%;
+  padding: 32px;
+  width: 100%;
+  max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 10px 50px rgba(0,0,0,0.2);
+}
+
+// Reszta stylów (dla przycisku zamykania, nagłówków etc.) pozostaje bez zmian
+.configurator-modal__close-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 15; // Przycisk zamykania musi być na samym wierzchu
+  // ... reszta stylów
+}
+
+.configurator-modal__header {
+    // ...
 }

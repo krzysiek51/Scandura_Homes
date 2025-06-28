@@ -677,35 +677,35 @@
     <div class="configurator-modal__step" id="step-style-selection">
       <header class="configurator-modal__header">
         <h2 class="configurator-modal__title">Wybierz styl swojego domu</h2>
-        <p class="configurator-modal__subtitle">Zacznijmy od ogólnej wizji. Możesz ją później dowolnie modyfikować.</p>
+        <p class="configurator-modal__subtitle">Zacznijmy od ogólnej wizji. Możesz ją później dowolnie modyfikować.....</p>
       </header>
       <div class="style-carousel" id="style-carousel">
         <button class="style-carousel__arrow style-carousel__arrow--prev" aria-label="Poprzedni styl">‹</button>
         <div class="style-carousel__track-container">
           <div class="style-carousel__track" id="style-carousel-track">
             <div class="style-carousel__slide">
-              <img src="photos/styles/modern.webp" alt="Dom w stylu Nowoczesny" class="style-carousel__image">
+              <img src="photos/projects/modern.webp" alt="Dom w stylu Nowoczesny" class="style-carousel__image">
               <div class="style-carousel__caption">
                 <h3 class="style-carousel__title">Nowoczesny Minimalizm</h3>
                 <button class="style-carousel__select-button" data-style="modern">Wybierz i kontynuuj →</button>
               </div>
             </div>
             <div class="style-carousel__slide">
-              <img src="photos/styles/classic.webp" alt="Dom w stylu Klasyczny" class="style-carousel__image">
+              <img src="photos/projects/classic.webp" alt="Dom w stylu Klasyczny" class="style-carousel__image">
               <div class="style-carousel__caption">
                 <h3 class="style-carousel__title">Klasyczna Elegancja</h3>
                 <button class="style-carousel__select-button" data-style="classic">Wybierz i kontynuuj →</button>
               </div>
             </div>
             <div class="style-carousel__slide">
-              <img src="photos/styles/dworek.webp" alt="Dom w stylu Dworek" class="style-carousel__image">
+              <img src="photos/projects/dworek.webp" alt="Dom w stylu Dworek" class="style-carousel__image">
               <div class="style-carousel__caption">
                 <h3 class="style-carousel__title">Dworek</h3>
                 <button class="style-carousel__select-button" data-style="dworek">Wybierz i kontynuuj →</button>
               </div>
             </div>
             <div class="style-carousel__slide">
-              <img src="photos/styles/custom.webp" alt="Dom w stylu Indywidualny" class="style-carousel__image">
+              <img src="photos/projects/custom.webp" alt="Dom w stylu Indywidualny" class="style-carousel__image">
               <div class="style-carousel__caption">
                 <h3 class="style-carousel__title">Indywidualny Projekt</h3>
                 <button class="style-carousel__select-button" data-style="custom">Wybierz i kontynuuj →</button>
@@ -718,24 +718,41 @@
     </div>
 
     <!-- Krok 2: Powierzchnia -->
-    <div class="configurator-modal__step" id="step-area" style="display:none;">
-      <div class="dynamic-sketch-container">
-        <img src="photos/main/AIStarcCloud.png" alt="Szkic domu generowany przez AI" class="sketch-placeholder">
-      </div>
-      <h3 class="step-title">Określ powierzchnię</h3>
-      <p class="step-subtitle">Jaka powierzchnia użytkowa Cię interesuje?</p>
-      <div class="area-input-group">
-        <input type="range" class="slider-group__slider" id="area-slider" min="50" max="400" value="120">
-        <div class="area-input-wrapper">
-          <input type="number" class="area-input-wrapper__input" id="area-input" min="50" max="400" value="120">
-          <span class="area-input-wrapper__label">m²</span>
-        </div>
-      </div>
-      <div class="configurator-nav">
-        <button class="configurator-nav__button" data-back-to="step-style-selection">← Wróć</button>
-        <button class="configurator-nav__button" id="area-continue-button">Kontynuuj →</button>
+      <div class="step-area-selection" id="step-area">
+    <div class="step-area-selection__dynamic-sketch">
+      <img src="photos/main/AIStarcCloud.png"
+          alt="Szkic domu generowany przez AI"
+          class="step-area-selection__sketch-image">
+    </div>
+    <h3 class="step-area-selection__title">Określ powierzchnięeee</h3>
+    <p class="step-area-selection__subtitle">
+      Jaka powierzchnia użytkowa Cię interesuje?
+    </p>
+    <div class="step-area-selection__input-group">
+      <input  type="range"
+              id="area-slider"
+              class="step-area-selection__slider"
+              min="50" max="400" value="120">
+      <div class="step-area-selection__input-wrapper">
+        <input  type="number"
+                id="area-input"
+                class="step-area-selection__number-input"
+                min="50" max="400" value="120">
+        <span class="step-area-selection__input-unit">m²</span>
       </div>
     </div>
+    <div class="step-area-selection__nav">
+      <button class="step-area-selection__nav-button"
+              data-back-to="step-style-selection">
+        ← Wróć
+      </button>
+      <button class="step-area-selection__nav-button"
+              id="area-continue-button">
+        Kontynuuj →
+      </button>
+    </div>
+      </div>
+
 
     <!-- Krok 3a: Warianty dla stylu Nowoczesny -->
     <div class="configurator-modal__step" id="step-options-modern" style="display:none;">
