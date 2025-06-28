@@ -1,184 +1,184 @@
 @use '../utils/variables' as *;
 @use 'sass:color';
 
-// --- UZUPEŁNIONE STYLE ---
-.step-title {
-  font-size: 24px;
-  font-weight: 600;
-  color: $color-dark-text;
-  margin: 0 0 8px 0;
-  text-align: center;
-}
+// Używamy & jako odniesienia do klasy .step-area-selection
+// zdefiniowanej w HTML, ale nie tworzymy tu dodatkowego zagnieżdżenia.
 
-.step-subtitle {
-  font-size: 16px;
-  color: $color-light-grey-text;
-  margin: 0 auto 24px auto;
-  text-align: center;
-  max-width: 300px;
-}
-
-.dynamic-sketch-container {
-  width: 100%;
-  max-width: 280px;
-  margin: 0 auto 24px auto;
-  padding: 20px;
-  border: 1px dashed #ddd;
-  border-radius: 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 150px;
-  background-color: #fdfdfd;
-
-  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 01);
-
-  svg {
-    max-width: 100%;
-    height: auto;
-  }
-
-  .sketch-placeholder {
-    max-width: 100px;
-    opacity: 0.8;
-  }
-}
-// --- KONIEC UZUPEŁNIANIA ---
-
-.slider-group {
-  width: 100%;
-  margin-bottom: 16px;
-}
-
-.slider-group__slider {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 8px;
-  background: #EFEFEF;
-  border-radius: 4px;
-  outline: none;
-  cursor: pointer;
-
-  &::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 24px;
-    height: 24px;
-    background: #DC9B59;
-    border-radius: 50%;
-    border: 3px solid $color-white;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-    margin-top: -8px; 
-  }
-
-  &::-moz-range-thumb {
-    width: 24px;
-    height: 24px;
-    background: #DC9B59;
-    border-radius: 50%;
-    border: 3px solid $color-white;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-  }
-}
-
-.area-input-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #EAEAEA;
-  background-color: #FAFAFA;
-  border-radius: 12px;
-  padding: 8px 16px;
-  width: 150px;
-  margin: 0 auto 32px auto;
-  transition: border-color 0.2s, box-shadow 0.2s;
-
-  &:focus-within {
-    border-color: $color-dark-text;
-    box-shadow: 0 0 0 3px rgba($color-dark-text, 0.1);
-  }
-}
-
-.area-input-wrapper__input {
-  border: none;
-  background: none;
-  font-size: 20px;
-  font-weight: 500;
-  text-align: center;
-  width: 100%;
-
-  // --- POPRAWKA TUTAJ ---
-  // Dodajemy standardową właściwość, aby zapewnić kompatybilność
-  // i usunąć ostrzeżenie z edytora.
-  appearance: none;
-  -webkit-appearance: none; // Dla Chrome/Safari/Edge
-  -moz-appearance: textfield; // Specjalna reguła dla Firefoxa
-  
-  // Ta reguła ukrywa strzałki w przeglądarkach opartych na WebKit
-  &::-webkit-outer-spin-button, 
-  &::-webkit-inner-spin-button { 
-    -webkit-appearance: none; 
-    margin: 0; 
-  }
-
-  // Usuwamy domyślną ramkę po kliknięciu
-  &:focus { 
-    outline: none; 
-  }
-}
-
-.area-input-wrapper__label {
-  font-size: 18px;
-  font-weight: 500;
-  color: $color-light-grey-text;
-  padding-left: 8px;
-}
-
-.configurator-nav {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.configurator-nav__button {
-  flex: 1;
-  padding: 14px;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  background-color: $color-dark-text;
-  border: 1px solid $color-dark-text;
-  color: $color-white;
-  
-  &:hover:not(:disabled) {
-    // POPRAWKA: Użycie nowoczesnej funkcji
-    background-color: color.adjust($color-dark-text, $lightness: 10%);
-    border-color: color.adjust($color-dark-text, $lightness: 10%);
-  }
-
-  &:disabled {
-    background-color: #EAEAEA;
-    border-color: #EAEAEA;
-    color: #B0B0B0;
-    cursor: not-allowed;
-  }
-
-  &:first-child {
-    background-color: $color-white;
-    color: $color-dark-text;
-    border-color: #EAEAEA;
-
-    &:hover:not(:disabled) {
-      background-color: #f5f5f5;
-      border-color: #ddd;
+.step-area-selection {
+    // Kontener szkicu
+    &__dynamic-sketch {
+        width: 100%;
+        max-width: 280px;
+        margin: 0 auto 24px;
+        padding: 20px;
+        border: 1px dashed #ddd;
+        border-radius: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 150px;
+        background-color: #fdfdfd;
+        transition: transform 0.3s ease;
     }
-  }
-}
-.sketch-image {
-  max-width: 100%;
-  height: auto;
-  transition: opacity 0.3s ease-in-out;
+
+    &__sketch-image {
+        max-width: 100%;
+        height: auto;
+    }
+
+    // Nagłówki
+    &__title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: $color-dark-text;
+        margin: 0 0 0.5rem;
+        text-align: center;
+    }
+
+    &__subtitle {
+        font-size: 1rem;
+        color: $color-light-grey-text;
+        margin: 0 auto 1.5rem;
+        text-align: center;
+        max-width: 300px;
+    }
+
+    // Grupa wejść: suwak + pole numeryczne
+    &__input-group {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 0 auto 2rem;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    // Suwak
+    &__slider {
+        -webkit-appearance: none;
+        appearance: none;
+        flex: 1;
+        height: 8px;
+        background: #e9e9e9;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+
+        &:focus { outline: none; }
+
+        &::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #DC9B59;
+            border: 3px solid $color-white;
+            border-radius: 50%;
+            margin-top: -8px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+        }
+
+        &::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: #DC9B59;
+            border: 3px solid $color-white;
+            border-radius: 50%;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+        }
+    }
+
+    // Pole numeryczne + jednostka
+    &__input-wrapper {
+        display: flex;
+        align-items: center;
+        border: 1px solid #eaeaea;
+        background-color: #fafafa;
+        border-radius: 12px;
+        padding: 8px 16px;
+        transition: border-color 0.2s, box-shadow 0.2s;
+
+        &:focus-within {
+            border-color: $color-dark-text;
+            box-shadow: 0 0 0 3px rgba($color-dark-text, 0.1);
+        }
+    }
+
+    &__number-input {
+        border: none;
+        background: none;
+        font-size: 1.25rem;
+        font-weight: 500;
+        text-align: center;
+        width: 60px;
+        -moz-appearance: textfield;
+
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        &:focus { outline: none; }
+    }
+
+    &__input-unit {
+        font-size: 1.125rem;
+        font-weight: 500;
+        color: $color-light-grey-text;
+        margin-left: 0.5rem;
+    }
+
+    // Nawigacja kroków
+    &__nav {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    &__nav-button {
+        flex: 1;
+        padding: 0.75rem;
+        font-size: 1rem;
+        font-weight: 500;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        background-color: $color-dark-text;
+        border: 1px solid $color-dark-text;
+        color: $color-white;
+
+        &:hover:not(:disabled) {
+            background-color: color.adjust($color-dark-text, $lightness: 10%);
+        }
+        &:disabled {
+            background-color: #eaeaea;
+            border-color: #eaeaea;
+            color: #b0b0b0;
+            cursor: not-allowed;
+        }
+
+        &:first-child {
+            background-color: $color-white;
+            color: $color-dark-text;
+            border-color: #eaeaea;
+
+            &:hover:not(:disabled) {
+                background-color: #f5f5f5;
+                border-color: #ddd;
+            }
+        }
+    }
+
+    // Media query
+    @media (max-width: 768px) {
+        &__input-group {
+            flex-direction: column;
+        }
+        &__input-wrapper {
+            width: 100%;
+            justify-content: space-between;
+        }
+    }
 }

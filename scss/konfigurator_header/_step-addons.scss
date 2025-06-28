@@ -1,41 +1,23 @@
 @use '../utils/variables' as *;
+// =============================
+// _step-addons.scss
+// =============================
 
-#step-addons {
-    .addon-group {
-        margin-bottom: 20px;
-
-        p {
-            margin-bottom: 10px;
-            font-weight: 600;
-            color: $color-dark-text;
-            text-align: center;
-        }
-
-        .addon-options {
-             display: grid;
-             grid-template-columns: repeat(3, 1fr);
-             gap: 10px;
-        }
-        
-        .addon-group__button {
-            padding: 12px 8px;
-            border: 2px solid #EAEAEA;
-            background-color: #FAFAFA;
-            border-radius: 12px;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.2s ease-in-out;
-            font-size: 14px;
-            font-weight: 500;
-
-            &.is-active {
-                border-color: $color-dark-text;
-                background-color: #F0F3F5;
-            }
-
-            &:hover:not(.is-active) {
-                border-color: #ccc;
-            }
-        }
+.step-addons {
+  .step-title { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .step-subtitle { color: #666; margin-bottom: 1rem; }
+  .addon-group {
+    margin-bottom: 1.5rem;
+    &__button {
+      padding: 1rem;
+      background: #FAFAFA;
+      border: 2px solid #EAEAEA;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-right: 0.5rem;
+      transition: border-color 0.2s;
+      &:hover:not(.is-active) { border-color: #ccc; }
+      &.is-active { border-color: #DC9B59; background-color: #FFF4E3; }
     }
+  }
 }

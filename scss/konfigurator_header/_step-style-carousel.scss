@@ -1,11 +1,22 @@
-@use '../utils/variables' as *;
+// scss/konfigurator_header/_step-style-carousel.scss
+
+@use '../utils/variables' as vars;
 @use 'sass:color';
 
+// Karuzela stylów w kroku 1
 .style-carousel {
   position: relative;
   display: flex;
   align-items: center;
-  margin: 0 -15px;
+  justify-content: center;
+  // NEGATYWNY margines z wykorzystaniem zmiennej:
+  margin: 0 -#{vars.$container-padding-left};
+  padding: 1.5rem 0;
+
+  // opcjonalnie tło/obramowanie
+  background-color: vars.$color-white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
 }
 
 .style-carousel__track-container {
@@ -20,67 +31,62 @@
 
 .style-carousel__slide {
   flex: 0 0 100%;
-  padding: 0 15px;
+  padding: 0 1rem;
   box-sizing: border-box;
   text-align: center;
 }
 
 .style-carousel__image {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  border-radius: 12px;
   object-fit: cover;
-  border-radius: 16px;
-  margin-bottom: 20px;
-  background-color: #f0f0f0;
+  margin-bottom: 1rem;
 }
 
 .style-carousel__title {
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 600;
-  color: $color-dark-text;
-  margin: 0 0 4px 0;
+  color: vars.$color-dark-text;
+  margin: 0.5rem 0 0.75rem;
 }
 
 .style-carousel__description {
-  font-size: 14px;
-  color: $color-light-grey-text;
-  margin-bottom: 20px;
-  min-height: 40px;
+  font-size: 0.9375rem;
+  color: vars.$color-light-grey-text;
+  margin-bottom: 1.25rem;
 }
 
 .style-carousel__select-button {
   display: inline-block;
-  padding: 12px 28px;
+  padding: 0.75rem 2rem;
   border-radius: 30px;
-  background-color: #DC9B59;
-  color: $color-white;
+  background: linear-gradient(
+    to right,
+    vars.$color-gradient-start,
+    vars.$color-gradient-end
+  );
+  color: vars.$color-white;
   border: none;
-  cursor: pointer;
   font-weight: 500;
-  font-size: 16px;
-  text-decoration: none;
-  transition: background-color 0.3s ease;
-  
+  cursor: pointer;
+  transition: background 0.3s ease;
   &:hover {
-    background-color: color.adjust(#DC9B59, $lightness: -5%);
+    background: color.adjust(vars.$color-gradient-start, $lightness: -10%);
   }
 }
 
 .style-carousel__arrow {
   background: none;
   border: none;
-  font-size: 32px;
-  color: #ccc;
+  font-size: 1.75rem;
+  color: vars.$color-stroke-grey;
   cursor: pointer;
-  padding: 0;
   transition: color 0.3s ease;
-  
   &:hover:not(:disabled) {
-    color: $color-dark-text;
+    color: vars.$color-dark-text;
   }
-  
   &:disabled {
-    opacity: 0.2;
+    opacity: 0.3;
     cursor: not-allowed;
   }
 }

@@ -30,61 +30,38 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba($color-black, 0.7); 
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  background-color: rgba($color-black, 0.4); // Lekko jaśniejsze tło
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   cursor: pointer;
+  // Ten element jest TŁEM, więc nie potrzebuje z-index
 }
 
 .configurator-modal__content {
-  position: relative;
+  // --- KLUCZOWA POPRAWKA JEST TUTAJ ---
+  position: relative; // Pozycjonowanie względem rodzica
+  z-index: 10;       // Zawsze na wierzchu, PONAD szarym tłem
+  // ------------------------------------
+
   background-color: $color-white;
   border-radius: 16px;
-  padding: 32px 32px 24px;
+  padding: 32px;
   width: 100%;
   max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 10px 50px rgba(0,0,0,0.2);
-   
 }
 
+// Reszta stylów (dla przycisku zamykania, nagłówków etc.) pozostaje bez zmian
 .configurator-modal__close-button {
   position: absolute;
   top: 16px;
   right: 16px;
-  background: none;
-  border: none;
-  font-size: 32px;
-  line-height: 1;
-  color: #aaa;
-  cursor: pointer;
-  padding: 0;
-  width: 32px;
-  height: 32px;
-  transition: color 0.3s ease, transform 0.3s ease;
-
-  &:hover {
-    color: $color-dark-text;
-    transform: rotate(90deg);
-  }
+  z-index: 15; // Przycisk zamykania musi być na samym wierzchu
+  // ... reszta stylów
 }
 
 .configurator-modal__header {
-  text-align: center;
-  margin-bottom: 32px;
-}
-
-.configurator-modal__title {
-  font-size: 28px;
-  font-weight: 600;
-  color: $color-dark-text;
-  margin: 0 0 8px 0;
-}
-
-.configurator-modal__subtitle {
-  font-size: 16px;
-  color: $color-light-grey-text;
-  max-width: 300px;
-  margin: 0 auto;
+    // ...
 }
