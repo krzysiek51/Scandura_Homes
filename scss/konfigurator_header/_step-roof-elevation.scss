@@ -1,61 +1,27 @@
 @use '../utils/variables' as *;
 @use 'sass:color';
+// =============================
+// _step-roof-elevation.scss
+// =============================
 
-#step-roof-elevation {
-    .exterior-options-group {
-        margin-bottom: 24px;
-    }
-
-    .exterior-options-group__title {
-        font-size: 14px;
-        font-weight: 600;
-        text-align: center;
-        color: $color-light-grey-text;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-bottom: 12px;
-    }
-
-    .exterior-options {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-    }
-
+.step-roof-elevation {
+  .step-title { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .step-subtitle { color: #666; margin-bottom: 1.5rem; }
+  .exterior-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
     .exterior-options__button {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-        padding: 16px 10px;
-        border: 2px solid #EAEAEA;
-        background-color: #FAFAFA;
-        border-radius: 16px;
-        cursor: pointer;
-        text-align: center;
-        transition: all 0.2s ease-in-out;
-
-        &.is-active {
-            border-color: #DC9B59;
-            background-color: #FFF4E3;
-            transform: translateY(-3px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
-        }
-
-        &:hover:not(.is-active) {
-            border-color: #ccc;
-        }
-
-        .exterior-options__icon {
-            width: 48px;
-            height: 48px;
-        }
-
-        .exterior-options__label {
-            font-size: 14px;
-            font-weight: 500;
-            color: $color-dark-text;
-            line-height: 1.4;
-        }
+      padding: 1rem;
+      background: #FAFAFA;
+      border: 2px solid #EAEAEA;
+      border-radius: 12px;
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.2s, background-color 0.2s;
+      &:hover:not(.is-active) { border-color: #ccc; }
+      &.is-active { border-color: #DC9B59; background-color: #FFF4E3; }
     }
+  }
 }

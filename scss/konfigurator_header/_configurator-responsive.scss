@@ -1,0 +1,10 @@
+@use '../utils/variables' as *;
+// =============================
+// Responsywność wspólna
+// =============================
+@media (max-width: 768px) {
+  .configurator-modal__content { width: 95%; padding: 1rem; }
+  .step-floors .floor-options { grid-template-columns: 1fr; }
+  .step-roof-elevation .exterior-options { grid-template-columns: 1fr; }
+  .step-addons .addon-group { display: flex; flex-direction: column; }
+}

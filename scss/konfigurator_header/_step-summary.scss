@@ -1,47 +1,31 @@
 @use '../utils/variables' as *;
 
-#step-summary {
-    .configurator-summary {
-        text-align: left;
+
+// =============================
+// _step-summary.scss
+// =============================
+
+.step-summary {
+  .configurator-summary__list {
+    list-style: none;
+    padding: 1rem;
+    background: #FAFAFA;
+    border: 1px solid #EAEAEA;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    li {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+      &:last-child { margin-bottom: 0; }
+      strong { color: #666; }
+      span { font-weight: 600; }
     }
-
-    .configurator-summary__list {
-        list-style: none;
-        padding: 0;
-        margin: 24px 0;
-        background-color: #FAFAFA;
-        border: 1px solid #EAEAEA;
-        border-radius: 12px;
-        padding: 16px;
-
-        li {
-            margin-bottom: 12px;
-            font-size: 16px;
-            display: flex;
-            justify-content: space-between;
-
-            &:last-child {
-                margin-bottom: 0;
-            }
-
-            strong {
-                color: $color-light-grey-text;
-                margin-right: 8px;
-            }
-            
-            span {
-                font-weight: 600;
-                color: $color-dark-text;
-            }
-        }
-    }
-
-    #ai-result {
-        text-align: center;
-        padding: 16px;
-        border-radius: 12px;
-        background-color: #F0F3F5;
-        margin-top: 24px;
-        font-weight: 500;
-    }
+  }
+  #ai-result {
+    text-align: center;
+    padding: 1rem;
+    background: #F0F3F5;
+    border-radius: 8px;
+  }
 }

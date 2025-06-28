@@ -1,86 +1,66 @@
-@use '../utils/variables' as *;
-@use 'sass:color';
+// =============================
+// _step-style-carousel.scss
+// =============================
 
-.style-carousel {
+// Karuzela stylów
+.step-style-carousel {
   position: relative;
-  display: flex;
-  align-items: center;
-  margin: 0 -15px;
-}
-
-.style-carousel__track-container {
-  overflow: hidden;
-  width: 100%;
-}
-
-.style-carousel__track {
-  display: flex;
-  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.style-carousel__slide {
-  flex: 0 0 100%;
-  padding: 0 15px;
-  box-sizing: border-box;
-  text-align: center;
-}
-
-.style-carousel__image {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  border-radius: 16px;
-  margin-bottom: 20px;
-  background-color: #f0f0f0;
-}
-
-.style-carousel__title {
-  font-size: 20px;
-  font-weight: 600;
-  color: $color-dark-text;
-  margin: 0 0 4px 0;
-}
-
-.style-carousel__description {
-  font-size: 14px;
-  color: $color-light-grey-text;
-  margin-bottom: 20px;
-  min-height: 40px;
-}
-
-.style-carousel__select-button {
-  display: inline-block;
-  padding: 12px 28px;
-  border-radius: 30px;
-  background-color: #DC9B59;
-  color: $color-white;
-  border: none;
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 16px;
-  text-decoration: none;
-  transition: background-color 0.3s ease;
-  
-  &:hover {
-    background-color: color.adjust(#DC9B59, $lightness: -5%);
+  margin-bottom: 2rem;
+  .style-carousel__track-container {
+    overflow: hidden;
   }
-}
-
-.style-carousel__arrow {
-  background: none;
-  border: none;
-  font-size: 32px;
-  color: #ccc;
-  cursor: pointer;
-  padding: 0;
-  transition: color 0.3s ease;
-  
-  &:hover:not(:disabled) {
-    color: $color-dark-text;
+  .style-carousel__track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
   }
-  
-  &:disabled {
-    opacity: 0.2;
-    cursor: not-allowed;
+  .style-carousel__slide {
+    flex: 0 0 100%;
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .style-carousel__image {
+    width: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+  .style-carousel__title {
+    margin-top: 1rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  .style-carousel__select-button {
+    margin-top: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background-color: #DC9B59;
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    &:hover {
+      background-color: darken(#DC9B59, 5%);
+    }
+  }
+  .style-carousel__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #ccc;
+    cursor: pointer;
+    &:hover:not(:disabled) {
+      color: #333;
+    }
+    &:disabled {
+      opacity: 0.3;
+    }
+  }
+  .style-carousel__arrow--prev {
+    left: 1rem;
+  }
+  .style-carousel__arrow--next {
+    right: 1rem;
   }
 }
