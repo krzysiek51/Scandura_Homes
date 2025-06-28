@@ -1,103 +1,61 @@
 @use '../utils/variables' as *;
 @use 'sass:color';
 
-// Kontener na szkic i opcje kroku 4
 #step-roof-elevation {
-  padding: 2rem;
-
-  .dynamic-sketch-container {
-    margin-bottom: 1.5rem;
-    display: flex;
-    justify-content: center;
-    
-    .sketch-image {
-      max-width: 200px;
-      border: 2px solid $color-stroke-grey;
-      border-radius: 8px;
-      background: $color-white;
+    .exterior-options-group {
+        margin-bottom: 24px;
     }
-  }
 
-  .step-title {
-    margin-bottom: 0.5rem;
-    font-size: 20px;
-    font-weight: 600;
-    color: $color-dark-text;
-    text-align: center;
-  }
-
-  .step-subtitle {
-    margin-bottom: 1.5rem;
-    font-size: 14px;
-    color: $color-light-grey-text;
-    text-align: center;
-  }
-
-  .roof-options,
-  .elev-options {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    margin-bottom: 1.5rem;
-
-    .floor-options__button {
-      padding: 12px;
-      border: 2px solid $color-stroke-grey;
-      background: $color-white;
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transition: all 0.2s ease;
-
-      .floor-options__icon {
-        width: 40px;
-        height: 40px;
-        margin-bottom: 8px;
-      }
-      .floor-options__label {
+    .exterior-options-group__title {
         font-size: 14px;
-        color: $color-dark-text;
-      }
-
-      &:hover:not(.is-active) {
-        border-color: color.scale($color-stroke-grey, $lightness: 20%);
-        background: $color-beige-light-bg;
-      }
-      &.is-active {
-        border-color: $color-gradient-start;
-        background: $color-beige-bg;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      }
+        font-weight: 600;
+        text-align: center;
+        color: $color-light-grey-text;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 12px;
     }
-  }
 
-  .configurator-nav {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 1rem;
-
-    .configurator-nav__button {
-      padding: 0.6rem 1.2rem;
-      border: none;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      background: $color-gradient-start;
-      color: $color-white;
-      transition: background 0.2s ease;
-
-      &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        background: $color-stroke-grey;
-      }
-
-      &:hover:not(:disabled) {
-        background: color.scale($color-gradient-start, $lightness: -10%);
-      }
+    .exterior-options {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
     }
-  }
+
+    .exterior-options__button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 16px 10px;
+        border: 2px solid #EAEAEA;
+        background-color: #FAFAFA;
+        border-radius: 16px;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.2s ease-in-out;
+
+        &.is-active {
+            border-color: #DC9B59;
+            background-color: #FFF4E3;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+        }
+
+        &:hover:not(.is-active) {
+            border-color: #ccc;
+        }
+
+        .exterior-options__icon {
+            width: 48px;
+            height: 48px;
+        }
+
+        .exterior-options__label {
+            font-size: 14px;
+            font-weight: 500;
+            color: $color-dark-text;
+            line-height: 1.4;
+        }
+    }
 }
