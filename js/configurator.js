@@ -1,5 +1,8 @@
 // js/configurator.js
 // Full configurator script with custom-prompt step support for style 'custom'
+import { initStepSummary } from './Konfigurator AI/steps/step-summary.js';
+
+
 
 document.addEventListener('DOMContentLoaded', () => {
   try {
@@ -352,11 +355,10 @@ window.initStepCustomPrompt = initStepCustomPrompt;
 
     // --- KROK 7: PODSUMOWANIE (Summary) ---
     function initStep7() {
-      changeStep(step7);
-      // Here you can render a summary based on userSelections
-      console.log('Podsumowanie (Summary):', userSelections);
-      // e.g., display summary info in the modal...
-    }
+  initStepSummary(); // <-- teraz import będzie użyty
+}
+window.initStep7 = initStep7;
+
     window.initStep7 = initStep7;
 
   } catch (e) {
