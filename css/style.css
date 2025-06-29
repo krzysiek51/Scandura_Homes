@@ -1914,13 +1914,13 @@ body {
 .step-area-selection__nav-button {
   flex: 1;
   padding: 0.75rem;
-  font-size: 1rem;
+  font-size: 14px;
   font-weight: 500;
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
-  background-color: #1D1F2C;
-  border: 1px solid #1D1F2C;
+  background-color: #DC9B59;
+  border: 1px solid #DC9B59;
   color: #FFFFFF;
 }
 .step-area-selection__nav-button:hover:not(:disabled) {
@@ -1933,9 +1933,9 @@ body {
   cursor: not-allowed;
 }
 .step-area-selection__nav-button:first-child {
-  background-color: #FFFFFF;
-  color: #1D1F2C;
-  border-color: #eaeaea;
+  background-color: #DC9B59;
+  border: 1px solid #DC9B59;
+  color: #FFFFFF;
 }
 .step-area-selection__nav-button:first-child:hover:not(:disabled) {
   background-color: #f5f5f5;
@@ -1983,8 +1983,6 @@ body {
   text-align: center;
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s;
-  -webkit-appearance: none;
-  -moz-appearance: none;
   appearance: none;
 }
 .step-roof-elev__roof-option:hover, .step-roof-elev__facade-option:hover {
@@ -2001,15 +1999,13 @@ body {
 }
 .step-roof-elev__nav-button {
   padding: 0.75rem 1.25rem;
-  background: #1b1f3b;
-  color: #fff;
-  border: none;
+  background-color: #FAF7F4;
+  color: #1D1F2C;
+  border: 2px solid transparent;
   border-radius: 0.5rem;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.2s;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+  transition: background 0.2s, border-color 0.2s;
   appearance: none;
 }
 .step-roof-elev__nav-button:disabled {
@@ -2017,7 +2013,15 @@ body {
   cursor: not-allowed;
 }
 .step-roof-elev__nav-button:hover:not(:disabled) {
-  background: #151830;
+  background-color: #DC9B59;
+  color: #fff;
+}
+.step-roof-elev__nav-button.is-selected {
+  background-color: #DC9B59;
+  color: #fff;
+}
+.step-roof-elev__nav-button:active:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 .step-summary .configurator-summary__list {
@@ -2093,33 +2097,15 @@ body {
     flex-direction: column;
   }
 }
-.configurator-modal__step {
-  display: none;
-  padding: 1.5rem;
-  background: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-}
-.configurator-modal__step.is-open {
-  display: block;
-}
-.configurator-modal__step .step-title {
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
-  color: #333;
-  text-align: center;
-}
-.configurator-modal__step .step-subtitle {
-  font-size: 1rem;
-  margin-bottom: 1.5rem;
-  color: #666;
-  text-align: center;
-}
-
+/*
+ * scss/konfigurator_header/_step-options.scss
+ * Krok 3: Wybór typu domu (warianty styli: nowoczesny, klasyczny, dworek, custom prompt)
+ */
 #step-options-modern,
 #step-options-classic,
 #step-options-dworek,
 #step-custom-prompt {
+  /* kontener kroku 3 - display kontrolowane w JS */
   padding: 1.5rem 2rem;
 }
 #step-options-modern .floor-options,
@@ -2131,6 +2117,7 @@ body {
   gap: 1rem;
   justify-content: center;
   margin-bottom: 1.5rem;
+  /* przyciski wariantów domu */
 }
 #step-options-modern .floor-options__button,
 #step-options-modern .floor-options .floor-options__button,
@@ -2179,7 +2166,8 @@ body {
 #step-custom-prompt .configurator-nav {
   display: flex;
   justify-content: space-between;
-  margin-top: 1rem;
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 #step-options-modern .configurator-nav__button,
 #step-options-modern .configurator-nav .configurator-nav__button,
@@ -2189,77 +2177,101 @@ body {
 #step-options-dworek .configurator-nav .configurator-nav__button,
 #step-custom-prompt .configurator-nav__button,
 #step-custom-prompt .configurator-nav .configurator-nav__button {
+  flex: 1;
   padding: 0.75rem 1.25rem;
-  background: #1b1f3b;
-  color: #fff;
   border: none;
   border-radius: 0.5rem;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background-color 0.2s;
+  /* przycisk Wróć */
+  /* przycisk Kontynuuj */
+  /* efekt hover dla aktywnych */
 }
-#step-options-modern .configurator-nav__button:disabled,
-#step-options-modern .configurator-nav .configurator-nav__button:disabled,
-#step-options-classic .configurator-nav__button:disabled,
-#step-options-classic .configurator-nav .configurator-nav__button:disabled,
-#step-options-dworek .configurator-nav__button:disabled,
-#step-options-dworek .configurator-nav .configurator-nav__button:disabled,
-#step-custom-prompt .configurator-nav__button:disabled,
-#step-custom-prompt .configurator-nav .configurator-nav__button:disabled {
+#step-options-modern .configurator-nav__button[data-back-to],
+#step-options-modern .configurator-nav .configurator-nav__button[data-back-to],
+#step-options-classic .configurator-nav__button[data-back-to],
+#step-options-classic .configurator-nav .configurator-nav__button[data-back-to],
+#step-options-dworek .configurator-nav__button[data-back-to],
+#step-options-dworek .configurator-nav .configurator-nav__button[data-back-to],
+#step-custom-prompt .configurator-nav__button[data-back-to],
+#step-custom-prompt .configurator-nav .configurator-nav__button[data-back-to] {
+  background-color: #DC9B59;
+  color: #fff;
+}
+#step-options-modern .configurator-nav__button[data-continue-from],
+#step-options-modern .configurator-nav .configurator-nav__button[data-continue-from],
+#step-options-classic .configurator-nav__button[data-continue-from],
+#step-options-classic .configurator-nav .configurator-nav__button[data-continue-from],
+#step-options-dworek .configurator-nav__button[data-continue-from],
+#step-options-dworek .configurator-nav .configurator-nav__button[data-continue-from],
+#step-custom-prompt .configurator-nav__button[data-continue-from],
+#step-custom-prompt .configurator-nav .configurator-nav__button[data-continue-from] {
+  background-color: #DC9B59;
+  color: #fff;
+  /* stan wyłączony */
+}
+#step-options-modern .configurator-nav__button[data-continue-from][disabled], #step-options-modern .configurator-nav__button[data-continue-from]:disabled,
+#step-options-modern .configurator-nav .configurator-nav__button[data-continue-from][disabled],
+#step-options-modern .configurator-nav .configurator-nav__button[data-continue-from]:disabled,
+#step-options-classic .configurator-nav__button[data-continue-from][disabled],
+#step-options-classic .configurator-nav__button[data-continue-from]:disabled,
+#step-options-classic .configurator-nav .configurator-nav__button[data-continue-from][disabled],
+#step-options-classic .configurator-nav .configurator-nav__button[data-continue-from]:disabled,
+#step-options-dworek .configurator-nav__button[data-continue-from][disabled],
+#step-options-dworek .configurator-nav__button[data-continue-from]:disabled,
+#step-options-dworek .configurator-nav .configurator-nav__button[data-continue-from][disabled],
+#step-options-dworek .configurator-nav .configurator-nav__button[data-continue-from]:disabled,
+#step-custom-prompt .configurator-nav__button[data-continue-from][disabled],
+#step-custom-prompt .configurator-nav__button[data-continue-from]:disabled,
+#step-custom-prompt .configurator-nav .configurator-nav__button[data-continue-from][disabled],
+#step-custom-prompt .configurator-nav .configurator-nav__button[data-continue-from]:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  pointer-events: none;
 }
-#step-options-modern .configurator-nav__button:hover:not(:disabled),
-#step-options-modern .configurator-nav .configurator-nav__button:hover:not(:disabled),
-#step-options-classic .configurator-nav__button:hover:not(:disabled),
-#step-options-classic .configurator-nav .configurator-nav__button:hover:not(:disabled),
-#step-options-dworek .configurator-nav__button:hover:not(:disabled),
-#step-options-dworek .configurator-nav .configurator-nav__button:hover:not(:disabled),
-#step-custom-prompt .configurator-nav__button:hover:not(:disabled),
-#step-custom-prompt .configurator-nav .configurator-nav__button:hover:not(:disabled) {
-  background: #151830;
-}
-
-#step-custom-prompt .custom-prompt-group {
-  margin-bottom: 1.5rem;
-}
-#step-custom-prompt .custom-prompt-group__textarea {
-  width: 100%;
-  min-height: 6rem;
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
-  resize: vertical;
-  font-size: 1rem;
-  font-family: inherit;
+#step-options-modern .configurator-nav__button:hover:not([disabled]):not(:disabled),
+#step-options-modern .configurator-nav .configurator-nav__button:hover:not([disabled]):not(:disabled),
+#step-options-classic .configurator-nav__button:hover:not([disabled]):not(:disabled),
+#step-options-classic .configurator-nav .configurator-nav__button:hover:not([disabled]):not(:disabled),
+#step-options-dworek .configurator-nav__button:hover:not([disabled]):not(:disabled),
+#step-options-dworek .configurator-nav .configurator-nav__button:hover:not([disabled]):not(:disabled),
+#step-custom-prompt .configurator-nav__button:hover:not([disabled]):not(:disabled),
+#step-custom-prompt .configurator-nav .configurator-nav__button:hover:not([disabled]):not(:disabled) {
+  filter: brightness(0.9);
 }
 
-.step-floor-count {
-  display: none;
+/*
+ * scss/konfigurator_header/_step-floor-count.scss
+ * Krok 4: Wybór ilości kondygnacji
+ */
+#step-floor-count {
+  display: none; /* kontrolowane JS */
   padding: 1.5rem 2rem;
   background: #fff;
   border-radius: 1rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  /* Tytuł kroku */
+  /* Opcje kondygnacji */
+  /* Pojedyncza opcja kondygnacji */
+  /* Nawigacja: przyciski Wróć i Kontynuuj */
 }
-.step-floor-count__title {
+#step-floor-count .step-floor-count__title {
   font-size: 1.25rem;
   margin-bottom: 1rem;
   color: #333;
   text-align: center;
 }
-.step-floor-count__options {
+#step-floor-count .step-floor-count__options {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 1rem;
-  justify-content: center;
   margin-bottom: 1.5rem;
 }
-.step-floor-count__option {
-  flex: 1 1 30%;
-  min-width: 8rem;
+#step-floor-count .step-floor-count__option {
   padding: 0.75rem 1rem;
-  background: #f5f5f5;
-  border: 2px solid transparent;
+  background-color: #FAF7F4;
+  border: 1px solid #979797;
   border-radius: 0.5rem;
   font-size: 1rem;
   color: #333;
@@ -2267,35 +2279,56 @@ body {
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s;
 }
-.step-floor-count__option.is-active {
-  background: #fff;
+#step-floor-count .step-floor-count__option:hover {
+  filter: brightness(0.95);
+}
+#step-floor-count .step-floor-count__option.is-active {
+  background-color: #DC9B59;
+  color: #fff;
   border-color: #DC9B59;
 }
-.step-floor-count__option:hover {
-  background: #eee;
-}
-.step-floor-count__nav {
+#step-floor-count .step-floor-count__nav {
   display: flex;
   justify-content: space-between;
-  margin-top: 1rem;
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
-.step-floor-count__nav-button {
+#step-floor-count .step-floor-count__nav .step-floor-count__nav-button--back {
+  flex: 1;
   padding: 0.75rem 1.25rem;
-  background: #1b1f3b;
+  background-color: #DC9B59;
   color: #fff;
   border: none;
   border-radius: 0.5rem;
   font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: filter 0.2s;
 }
-.step-floor-count__nav-button:disabled {
+#step-floor-count .step-floor-count__nav .step-floor-count__nav-button--back:hover {
+  filter: brightness(0.9);
+}
+#step-floor-count .step-floor-count__nav .step-floor-count__nav-button--continue {
+  flex: 1;
+  padding: 0.75rem 1.25rem;
+  background-color: #DC9B59;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: filter 0.2s;
+}
+#step-floor-count .step-floor-count__nav .step-floor-count__nav-button--continue:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  pointer-events: none;
 }
-.step-floor-count__nav-button:hover:not(:disabled) {
-  background: #151830;
+#step-floor-count .step-floor-count__nav .step-floor-count__nav-button--continue:hover:not(:disabled) {
+  filter: brightness(0.9);
 }
+
 .step-garage {
   padding: 24px 16px;
 }
@@ -2322,10 +2355,16 @@ body {
   transition: background-color 0.2s, color 0.2s, border-color 0.2s;
   user-select: none;
 }
-.step-garage__button:focus, .step-garage__button:active {
+.step-garage__button:focus:not(.is-active), .step-garage__button:active:not(.is-active) {
   outline: none;
+  background-color: #DC9B59;
 }
-.step-garage__button.is-active, .step-garage__button.is-active:focus, .step-garage__button.is-active:active {
+.step-garage__button.is-active {
+  background-color: #DC9B59;
+  color: #fff;
+  border-color: #DC9B59;
+}
+.step-garage__button.is-active:hover, .step-garage__button.is-active:focus, .step-garage__button.is-active:active {
   background-color: #DC9B59;
   color: #fff;
   border-color: #DC9B59;
@@ -2343,17 +2382,179 @@ body {
   font-weight: 500;
   cursor: pointer;
 }
-.step-garage__nav-button--continue {
-  background-color: #FAF7F4;
-  color: #fff;
-}
-.step-garage__nav-button--continue:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
 .step-garage__nav-button:first-child {
   background-color: #DC9B59;
   color: #fff;
+}
+.step-garage__nav-button--continue {
+  background-color: #DC9B59;
+  color: #FFFFFF;
+  border: 1px solid #DC9B59;
+}
+.step-garage__nav-button--continue[disabled], .step-garage__nav-button--continue:disabled, .step-garage__nav-button--continue.disabled, .step-garage__nav-button--continue.is-disabled {
+  background-color: #DC9B59;
+  color: #fff;
+  border: 1px solid #979797;
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.step-floor-count__nav-button--back,
+.step-roof-elev__nav-button--back,
+.step-garage__nav-button--back {
+  /* wspólne style back */
+}
+
+.step-floor-count__nav-button--continue,
+.step-roof-elev__nav-button--continue,
+.step-garage__nav-button--continue {
+  /* wspólne style continue */
+}
+
+#step-custom-prompt {
+  /* Istniejące style kontenera kroku */
+  display: none;
+  padding: 1.5rem 2rem;
+  background: #FFFFFF;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  /* NOWE STYLE: sekcja wyniku wygenerowanego obrazu */
+}
+#step-custom-prompt .step-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1D1F2C;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+#step-custom-prompt .step-subtitle {
+  font-size: 0.95rem;
+  color: #666;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+#step-custom-prompt .custom-prompt-group {
+  margin-bottom: 1.5rem;
+}
+#step-custom-prompt .custom-prompt-group__textarea {
+  width: 100%;
+  min-height: 6rem;
+  padding: 0.75rem;
+  border: 1px solid #979797;
+  border-radius: 0.5rem;
+  resize: vertical;
+  font-size: 1rem;
+  line-height: 1.4;
+  margin-top: 0.5rem;
+}
+#step-custom-prompt .custom-prompt-group__textarea:focus {
+  outline: none;
+  border-color: #DC9B59;
+}
+#step-custom-prompt .custom-prompt-result {
+  display: none; /* początkowo ukryte, sterowane JS */
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+#step-custom-prompt .custom-prompt-result__image-container {
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto 1rem;
+  padding: 1.25rem;
+  border: 1px dashed #979797;
+  border-radius: 1rem;
+  background-color: #FAFAFA;
+  /* centrowanie zawartości (obraz lub spinner) */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 150px;
+  position: relative;
+}
+#step-custom-prompt .custom-prompt-result__image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  /* Obraz na starcie niewidoczny (pokazywany po załadowaniu) */
+  display: block;
+}
+#step-custom-prompt .custom-prompt-result__regen-button {
+  background-color: #EAEAEA;
+  color: #1D1F2C;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-block;
+  /* Umieszczenie przycisku poniżej obrazka */
+  margin: 0 auto;
+  transition: filter 0.2s;
+}
+#step-custom-prompt .custom-prompt-result__regen-button:hover {
+  filter: brightness(0.9);
+}
+#step-custom-prompt .configurator-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+#step-custom-prompt .configurator-nav .configurator-nav__button {
+  flex: 1;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  transition: filter 0.2s;
+}
+#step-custom-prompt .configurator-nav .configurator-nav__button--back {
+  background-color: #DC9B59;
+  color: #FFFFFF;
+  text-align: center;
+}
+#step-custom-prompt .configurator-nav .configurator-nav__button--back:hover {
+  filter: brightness(0.9);
+}
+#step-custom-prompt .configurator-nav .configurator-nav__button--continue {
+  background-color: #FAF7F4;
+  color: #1D1F2C;
+  text-align: center;
+  /* Gdy przycisk jest nieaktywny (brak tekstu w prompt) */
+  /* Spinner (loader) w przycisku "Wygeneruj" */
+}
+#step-custom-prompt .configurator-nav .configurator-nav__button--continue:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+#step-custom-prompt .configurator-nav .configurator-nav__button--continue:hover:not(:disabled) {
+  filter: brightness(0.95);
+}
+#step-custom-prompt .configurator-nav .configurator-nav__button--continue .spinner {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #FFFFFF;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: none; /* domyślnie ukryty; pojawi się w trakcie ładowania */
+}
+
+/* Animacja obrotowego spinnera */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /*# sourceMappingURL=style.css.map */

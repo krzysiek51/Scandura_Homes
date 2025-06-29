@@ -28,14 +28,19 @@
     transition: background-color 0.2s, color 0.2s, border-color 0.2s;
     user-select: none;
 
-    // Usuń nadpisywanie tła w stanie focus/active
-    &:focus,
-    &:active {
+    &:focus:not(.is-active),
+    &:active:not(.is-active) {
       outline: none;
+      background-color: $color-gradient-start;
     }
 
-    // Wyższy priorytet dla aktywnego stanu, także podczas focus/active
-    &.is-active,
+    &.is-active {
+      background-color: $color-gradient-start;
+      color: #fff;
+      border-color: $color-gradient-start;
+    }
+
+    &.is-active:hover,
     &.is-active:focus,
     &.is-active:active {
       background-color: $color-gradient-start;
@@ -57,20 +62,29 @@
       font-weight: 500;
       cursor: pointer;
 
-      &--continue {
-        background-color: $color-beige-light-bg;
-        color: #fff;
-
-        &:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
-      }
-
       &:first-child {
         background-color: $color-gradient-start;
         color: #fff;
       }
+
+      &--continue {
+        background-color: $color-gradient-start;
+        color: $color-white;
+        border: 1px solid $color-gradient-start;
+
+        &[disabled],
+        &:disabled,
+        &.disabled,
+        &.is-disabled {
+          background-color: $color-gradient-start;
+          color: #fff;
+          border: 1px solid $color-stroke-grey;
+          opacity: 0.5;
+          cursor: not-allowed;
+          pointer-events: none;
+        }
+      }
+      }
     }
   }
-}
+

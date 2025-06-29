@@ -147,14 +147,14 @@
     &__nav-button {
         flex: 1;
         padding: 0.75rem;
-        font-size: 1rem;
+        font-size: 14px;
         font-weight: 500;
         border-radius: 12px;
         cursor: pointer;
         transition: all 0.3s ease;
 
-        background-color: $color-dark-text;
-        border: 1px solid $color-dark-text;
+        background-color: $color-gradient-start;
+        border: 1px solid $color-gradient-start;
         color: $color-white;
 
         &:hover:not(:disabled) {
@@ -168,9 +168,9 @@
         }
 
         &:first-child {
-            background-color: $color-white;
-            color: $color-dark-text;
-            border-color: #eaeaea;
+            background-color: $color-gradient-start;
+            border: 1px solid $color-gradient-start;
+            color: $color-white;
 
             &:hover:not(:disabled) {
                 background-color: #f5f5f5;

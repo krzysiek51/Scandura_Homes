@@ -1,0 +1,153 @@
+@use '../utils/variables' as *;
+@use 'sass:color';
+
+#step-custom-prompt {
+  /* Istniejące style kontenera kroku */
+  display: none; // kontrolowane przez JS
+  padding: 1.5rem 2rem;
+  background: $color-white;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  
+  .step-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $color-dark-text;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+  .step-subtitle {
+    font-size: 0.95rem;
+    color: $color-light-grey-text;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
+  }
+
+  .custom-prompt-group {
+    margin-bottom: 1.5rem;
+    &__textarea {
+      width: 100%;
+      min-height: 6rem;
+      padding: 0.75rem;
+      border: 1px solid $color-stroke-grey;
+      border-radius: 0.5rem;
+      resize: vertical;
+      font-size: 1rem;
+      line-height: 1.4;
+      margin-top: 0.5rem;
+      &:focus {
+        outline: none;
+        border-color: $color-gradient-start;
+      }
+    }
+  }
+
+  /* NOWE STYLE: sekcja wyniku wygenerowanego obrazu */
+  .custom-prompt-result {
+    display: none; /* początkowo ukryte, sterowane JS */
+    text-align: center;
+    margin-bottom: 1.5rem;
+    
+    &__image-container {
+      width: 100%;
+      max-width: 280px;
+      margin: 0 auto 1rem;
+      padding: 1.25rem;
+      border: 1px dashed $color-stroke-grey;
+      border-radius: 1rem;
+      background-color: #FAFAFA;
+      /* centrowanie zawartości (obraz lub spinner) */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 150px;
+      position: relative;
+    }
+    &__image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 0.5rem;
+      /* Obraz na starcie niewidoczny (pokazywany po załadowaniu) */
+      display: block;
+    }
+    &__regen-button {
+      background-color: $color-light-grey;
+      color: $color-dark-text;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.5rem 1.25rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-block;
+      /* Umieszczenie przycisku poniżej obrazka */
+      margin: 0 auto;
+      transition: filter 0.2s;
+      &:hover {
+        filter: brightness(0.9);
+      }
+    }
+  }
+
+  .configurator-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+
+    .configurator-nav__button {
+      flex: 1;
+      padding: 0.75rem 1.25rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      position: relative;
+      transition: filter 0.2s;
+
+      &--back {
+        background-color: $color-gradient-start;
+        color: $color-white;
+        text-align: center;
+        &:hover {
+          filter: brightness(0.9);
+        }
+      }
+      &--continue {
+        background-color: $color-beige-light-bg;
+        color: $color-dark-text;
+        text-align: center;
+        /* Gdy przycisk jest nieaktywny (brak tekstu w prompt) */
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+        &:hover:not(:disabled) {
+          filter: brightness(0.95);
+        }
+        /* Spinner (loader) w przycisku "Wygeneruj" */
+        .spinner {
+          position: absolute;
+          right: 1rem;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 1.2rem;
+          height: 1.2rem;
+          border: 2px solid rgba(255, 255, 255, 0.4);
+          border-top-color: $color-white;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+          display: none; /* domyślnie ukryty; pojawi się w trakcie ładowania */
+        }
+      }
+    }
+  }
+
+}
+
+/* Animacja obrotowego spinnera */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
