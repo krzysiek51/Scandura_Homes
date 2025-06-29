@@ -1,7 +1,7 @@
-// _step-roof-elevation.scss
+@use '../utils/variables' as *;
 
 .step-roof-elev {
-  display: none; // pokazuje JS przez changeStep()
+  display: none;
   padding: 1.5rem 2rem;
   background: #fff;
   border-radius: 1rem;
@@ -36,9 +36,7 @@
     text-align: center;
     cursor: pointer;
     transition: background 0.2s, border-color 0.2s;
-    -webkit-appearance: none;
-       -moz-appearance: none;
-            appearance: none;
+    appearance: none;
 
     &:hover {
       background: #eee;
@@ -57,16 +55,14 @@
 
     &-button {
       padding: 0.75rem 1.25rem;
-      background: #1b1f3b;
-      color: #fff;
-      border: none;
+      background-color: $color-beige-light-bg; // Domyślnie nieaktywny
+      color: $color-dark-text;
+      border: 2px solid transparent;
       border-radius: 0.5rem;
       font-size: 1rem;
       cursor: pointer;
-      transition: background 0.2s;
-      -webkit-appearance: none;
-         -moz-appearance: none;
-              appearance: none;
+      transition: background 0.2s, border-color 0.2s;
+      appearance: none;
 
       &:disabled {
         opacity: 0.5;
@@ -74,7 +70,19 @@
       }
 
       &:hover:not(:disabled) {
-        background: #151830;
+        background-color: $color-gradient-start;
+        color: #fff;
+      }
+
+      // Gdy opcje są wybrane (klasa aktywna dodawana z JS)
+      &.is-selected {
+        background-color: $color-gradient-start;
+        color: #fff;
+      }
+
+      // Po kliknięciu (aktywny stan na moment kliknięcia)
+      &:active:not(:disabled) {
+        border-color: $color-overlay-border;
       }
     }
   }

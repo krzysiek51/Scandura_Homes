@@ -1,46 +1,52 @@
-window.goToStepGarage = function () {
-  console.log('🚗 Przechodzę do kroku GARAŻ');
-  const step = document.getElementById('step-garage');
-  if (!step) return;
+// js/step-garage.js
+// Logic for the Garage selection step (Step 6) with proper disabled attribute handling
 
-  // Nie resetuj userSelections.garage — zachowujemy wybór użytkownika
-  const buttons = step.querySelectorAll('.step-garage__button');
-  const btnContinue = document.getElementById('garage-continue-button');
-  const btnBack = step.querySelector('[data-back-to="step-roof-elev-garage"]');
+function initStepGarage() {
+  // Pokaż krok garażu
+  window.changeStep('step-garage');
 
-  // PRZYWRÓĆ WCZEŚNIEJSZY WYBÓR jeśli istnieje
-  buttons.forEach(b => {
-    b.classList.toggle('is-active', b.dataset.garage === window.userSelections.garage);
-  });
-
-  btnContinue.disabled = !window.userSelections.garage;
-
-  // Zabezpiecz, żeby nie dublować eventów
-  if (!step.dataset.initialized) {
-    console.log('🔁 Inicjalizuję eventy w kroku GARAŻ');
-
-    buttons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        buttons.forEach(b => b.classList.remove('is-active'));
-        btn.classList.add('is-active');
-        window.userSelections.garage = btn.dataset.garage;
-        btnContinue.disabled = false;
-      });
-    });
-
-    btnContinue?.addEventListener('click', () => {
-      console.log('➡ Użytkownik kontynuuje po wyborze garażu');
-      window.goToStep7?.(); // <- może jeszcze nie istnieć
-    });
-
-    btnBack?.addEventListener('click', () => {
-      window.goToStepRoofElev?.();
-    });
-
-    // Flaga: eventy już ustawione
-    step.dataset.initialized = 'true';
+  const container = document.getElementById('step-garage');
+  if (!container) {
+    console.error('Krok garażu nie znaleziony');
+    return;
   }
 
-  // Wyświetl krok
-  changeStep(step);
-};
+  // Pobierz opcje i przycisk kontynuuj
+  const options = Array.from(container.querySelectorAll('.step-garage__button'));
+  const continueBtn = container.querySelector('.step-garage__nav-button--continue');
+
+  if (!continueBtn) {
+    console.error('Nie znaleziono przycisku „Dalej” w kroku garażu');
+    return;
+  }
+
+  // Ustaw type i atrybut disabled przy starcie
+  continueBtn.type = 'button';
+  continueBtn.setAttribute('disabled', '');
+
+  // Podłącz eventy do opcji
+  options.forEach(btn => {
+    btn.type = 'button';
+    btn.addEventListener('click', event => {
+      event.preventDefault();
+      options.forEach(x => x.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      window.userSelections = window.userSelections || {};
+      window.userSelections.garage = btn.dataset.value;
+      // Usuń disabled z atrybutu
+      continueBtn.removeAttribute('disabled');
+    });
+  });
+
+  // Handler przycisku Dalej
+  continueBtn.addEventListener('click', event => {
+    event.preventDefault();
+    if (continueBtn.hasAttribute('disabled')) {
+      return;
+    }
+    window.changeStep('step-summary');
+  });
+}
+
+// Udostępnij globalnie
+window.initStepGarage = initStepGarage;

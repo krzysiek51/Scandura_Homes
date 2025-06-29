@@ -1,46 +1,14 @@
 @use '../utils/variables' as *;
-@use 'sass:color';
 
-
-// _configurator-steps.scss
-
-// Base for all steps
-.configurator-modal__step {
-  display: none;
-  padding: 1.5rem;
-  background: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
-
-  &.is-open {
-    display: block;
-  }
-
-  .step-title {
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
-    color: #333;
-    text-align: center;
-  }
-
-  .step-subtitle {
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
-    color: #666;
-    text-align: center;
-  }
-}
-
-// Krok 1: (nie zmieniamy — już jest gdzie indziej)
-// Krok 2: (przyjmujemy, że jest w osobnym pliku)
-
-// Krok 3: Warianty
-// Wybieramy kontener wg stylu:
+/*
+ * scss/konfigurator_header/_step-options.scss
+ * Krok 3: Wybór typu domu (warianty styli: nowoczesny, klasyczny, dworek, custom prompt)
+ */
 #step-options-modern,
 #step-options-classic,
 #step-options-dworek,
 #step-custom-prompt {
-  // override display via JS .style.display
+  /* kontener kroku 3 - display kontrolowane w JS */
   padding: 1.5rem 2rem;
 
   .floor-options {
@@ -50,6 +18,7 @@
     justify-content: center;
     margin-bottom: 1.5rem;
 
+    /* przyciski wariantów domu */
     &__button,
     .floor-options__button {
       flex: 1 1 30%;
@@ -66,9 +35,8 @@
 
       &.is-active {
         background: #fff;
-        border-color: #DC9B59;
+        border-color: $color-gradient-start;
       }
-
       &:hover {
         background: #eee;
       }
@@ -78,46 +46,43 @@
   .configurator-nav {
     display: flex;
     justify-content: space-between;
-    margin-top: 1rem;
+    gap: 1rem;
+    margin-top: 1.5rem;
 
     &__button,
     .configurator-nav__button {
+      flex: 1;
       padding: 0.75rem 1.25rem;
-      background: #1b1f3b;
-      color: #fff;
       border: none;
       border-radius: 0.5rem;
       font-size: 1rem;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: background-color 0.2s;
 
-      &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
+      /* przycisk Wróć */
+      &[data-back-to] {
+        background-color: $color-gradient-start;
+        color: #fff;
       }
 
-      &:hover:not(:disabled) {
-        background: #151830;
+      /* przycisk Kontynuuj */
+      &[data-continue-from] {
+        background-color: $color-gradient-start;
+        color: #fff;
+
+        /* stan wyłączony */
+        &[disabled],
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+          pointer-events: none;
+        }
       }
-    }
-  }
-}
 
-// Krok 3c i 3b reuse powyższe
-// Krok 3d (custom prompt) dodatkowo:
-#step-custom-prompt {
-  .custom-prompt-group {
-    margin-bottom: 1.5rem;
-
-    &__textarea {
-      width: 100%;
-      min-height: 6rem;
-      padding: 0.75rem;
-      border: 1px solid #ccc;
-      border-radius: 0.5rem;
-      resize: vertical;
-      font-size: 1rem;
-      font-family: inherit;
+      /* efekt hover dla aktywnych */
+      &:hover:not([disabled]):not(:disabled) {
+        filter: brightness(0.9);
+      }
     }
   }
 }
