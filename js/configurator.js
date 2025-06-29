@@ -8,12 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBtn  = document.getElementById('close-configurator-button');
     const overlay   = document.getElementById('configurator-overlay');
 
-    const step1     = document.getElementById('step-style-selection');
-    const step2     = document.getElementById('step-area');
-    // Krok 3: dynamiczne kontenery step-options-*
-    const step4     = document.getElementById('step-roof-elevation');
-    const step5     = document.getElementById('step-addons');
-    const step6     = document.getElementById('step-summary');
+    const step1 = document.getElementById('step-style-selection');
+    const step2 = document.getElementById('step-area');
+    const step5 = document.getElementById('step-roof-elevation');
+    const step6 = document.getElementById('step-garage');
+    const step7 = document.getElementById('step-summary'); // Placeholder na przyszłość
 
     // --- STANY UŻYTKOWNIKA ---
     const userSelections = {
@@ -157,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function goToStep4() {
       changeStep(document.getElementById('step-floor-count'));
-      window.goToStep4?.(); // external logic
+      window.goToStep4?.(); // External logic (optional)
     }
     window.goToStep4 = goToStep4;
 
@@ -167,19 +166,20 @@ document.addEventListener('DOMContentLoaded', () => {
     window.goToStep5 = goToStep5;
 
     function goToStep6() {
-      document.getElementById('sum-style').textContent  = userSelections.style || 'N/A';
-      document.getElementById('sum-area').textContent   = userSelections.area ? `${userSelections.area} m²` : 'N/A';
-      document.getElementById('sum-floors').textContent = userSelections.floors || 'N/A';
       changeStep(step6);
     }
     window.goToStep6 = goToStep6;
+
+    function goToStep7() {
+      changeStep(step7);
+    }
+    window.goToStep7 = goToStep7;
 
     function closeModal() {
       modal.classList.remove('is-open');
       setTimeout(() => modal.hidden = true, 300);
     }
-  }
-  catch (e) {
+  } catch (e) {
     console.error("BŁĄD KRYTYCZNY W KONFIGURATORZE:", e);
   }
 });

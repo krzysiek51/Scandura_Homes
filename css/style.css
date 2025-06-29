@@ -2296,5 +2296,65 @@ body {
 .step-floor-count__nav-button:hover:not(:disabled) {
   background: #151830;
 }
+.step-garage {
+  padding: 24px 16px;
+}
+.step-garage__title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.step-garage__options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.step-garage__button {
+  padding: 12px 16px;
+  background-color: #FAF7F4;
+  border: 1px solid #979797;
+  border-radius: 8px;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  user-select: none;
+}
+.step-garage__button:focus, .step-garage__button:active {
+  outline: none;
+  background-color: #FAF7F4;
+}
+.step-garage__button.is-active {
+  background-color: #DC9B59;
+  color: #fff;
+  border-color: #DC9B59;
+}
+.step-garage__nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.step-garage__nav-button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.step-garage__nav-button--continue {
+  background-color: #FAF7F4;
+  color: #fff;
+}
+.step-garage__nav-button--continue:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.step-garage__nav-button:first-child {
+  background-color: #DC9B59;
+  color: #fff;
+}
 
 /*# sourceMappingURL=style.css.map */

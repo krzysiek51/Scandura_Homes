@@ -881,6 +881,21 @@
     </button>
   </div>
 </div>
+<!-- Krok 6: Garaż -->
+<div class="configurator-modal__step step-garage" id="step-garage" style="display: none;">
+  <h3 class="step-garage__title">Czy chcesz garaż?</h3>
+
+  <div class="step-garage__options">
+    <button class="step-garage__button" data-garage="none">Brak garażu</button>
+    <button class="step-garage__button" data-garage="single">Garaż jednostanowiskowy</button>
+    <button class="step-garage__button" data-garage="double">Garaż dwustanowiskowy</button>
+  </div>
+
+  <div class="step-garage__nav">
+    <button class="step-garage__nav-button" data-back-to="step-roof-elev-garage">← Wróć</button>
+    <button class="step-garage__nav-button step-garage__nav-button--continue" id="garage-continue-button" disabled>Kontynuuj →</button>
+  </div>
+</div>
 
 
   </div>
@@ -889,9 +904,10 @@
 <!-- /#configurator-modal -->
 
     <script src="js/script.js" defer></script>
-     <script src="js/configurator.js" defer></script>
-     <script src="js/step-4-floor-count.js" defer></script>
-     <script src="js/step-roof-elevation.js" defer></script>
+    <script src="js/configurator.js" defer></script>
+    <script src="js/step-4-floor-count.js" defer></script>
+    <script src="js/step-roof-elevation.js" defer></script>
+    <script src="js/step-garage.js" defer></script>
 
     
 </body>
