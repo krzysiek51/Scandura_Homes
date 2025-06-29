@@ -104,23 +104,31 @@
         }
     }
 
-    &__number-input {
-        border: none;
-        background: none;
-        font-size: 1.25rem;
-        font-weight: 500;
-        text-align: center;
-        width: 60px;
-        -moz-appearance: textfield;
+   .step-area-selection {
+  &__number-input {
+    border: none;
+    background: none;
+    font-size: 1.25rem;
+    font-weight: 500;
+    text-align: center;
+    width: 60px;
 
-        &::-webkit-outer-spin-button,
-        &::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
+    -webkit-appearance: none;
+       -moz-appearance: textfield;
+            appearance: textfield;
 
-        &:focus { outline: none; }
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
 
     &__input-unit {
         font-size: 1.125rem;
