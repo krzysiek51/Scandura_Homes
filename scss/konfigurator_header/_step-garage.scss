@@ -28,14 +28,16 @@
     transition: background-color 0.2s, color 0.2s, border-color 0.2s;
     user-select: none;
 
-    // Zabezpieczenie przed odklikaniem przez focus/active
+    // Usuń nadpisywanie tła w stanie focus/active
     &:focus,
     &:active {
       outline: none;
-      background-color: $color-beige-light-bg;
     }
 
-    &.is-active {
+    // Wyższy priorytet dla aktywnego stanu, także podczas focus/active
+    &.is-active,
+    &.is-active:focus,
+    &.is-active:active {
       background-color: $color-gradient-start;
       color: #fff;
       border-color: $color-gradient-start;

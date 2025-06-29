@@ -2324,9 +2324,8 @@ body {
 }
 .step-garage__button:focus, .step-garage__button:active {
   outline: none;
-  background-color: #FAF7F4;
 }
-.step-garage__button.is-active {
+.step-garage__button.is-active, .step-garage__button.is-active:focus, .step-garage__button.is-active:active {
   background-color: #DC9B59;
   color: #fff;
   border-color: #DC9B59;
