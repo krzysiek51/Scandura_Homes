@@ -16,40 +16,49 @@
 </head>
 
 <body>
-  <header class="header">
+<header class="header">
     <video class="header__video" autoplay muted loop playsinline>
-      <source src="photos/header_video.mp4" type="video/mp4" />
+        <source src="photos/header_video.mp4" type="video/mp4" />
     </video>
-
     <div class="header__overlay"></div>
 
-    <!-- Top-bar z logo + burgerem, w ramach "ciemniowanego" kontenera header__wrap -->
     <div class="header__wrap">
-      <div class="container header__top">
-        <a href="/" class="header__logo">
-          <img class="header__logo--img" src="photos/mobile_logo.png" alt="Scandura Homes" />
-        </a>
-        <button class="header__burger" aria-label="Toggle menu" aria-expanded="false">
-          <img class="header__burger--img" src="photos/svg/burger.svg" alt="Menu" />
-        </button>
-      </div>
+        <div class="container header__top">
+            <a href="/" class="header__logo">
+                <img class="header__logo--img" src="photos/mobile_logo.png" alt="Scandura Homes" />
+            </a>
+            <button class="header__burger" id="burger-toggle" aria-label="Otwórz menu" aria-expanded="false" aria-controls="mobile-menu">
+                <span class="header__burger-box">
+                    <span class="header__burger-inner"></span>
+                </span>
+            </button>
+        </div>
     </div>
 
-    <!-- Główna treść headera – tytuł, opis, przycisk.
-       Teraz BEZ .container wokół; wyciągamy to pod full-width pod header__wrap -->
+    <nav class="header__nav" id="mobile-menu" aria-hidden="true">
+        <ul class="header__nav-list">
+            <li class="header__nav-item"><a href="/" class="header__nav-link">Home</a></li>
+            <li class="header__nav-item"><a href="/about.html" class="header__nav-link">O nas</a></li>
+            <li class="header__nav-item"><a href="/services.html" class="header__nav-link">Usługi</a></li>
+            <li class="header__nav-item"><a href="/blog.html" class="header__nav-link">Blog</a></li>
+            <li class="header__nav-item"><a href="/projects.html" class="header__nav-link">Projekty</a></li>
+            <li class="header__nav-item"><a href="/contact.html" class="header__nav-link">Kontakt</a></li>
+        </ul>
+    </nav>
+
     <div class="header__content">
-      <h1 class="header__title">
-        Zbuduj wymarzony drewniany dom w skandynawskim stylu
-      </h1>
-      <p class="header__description">
-        15 lat doświadczenia w Norwegii, domy energooszczędne i przyjazne środowisku.
-      </p>
-      <button class="header__button">
-        Umów bezpłatną wizytę
-        <img src="photos/svg/keyboard-arrow-right.svg" alt="" />
-      </button>
+        <h1 class="header__title">
+            Zbuduj wymarzony drewniany dom w skandynawskim stylu
+        </h1>
+        <p class="header__description">
+            15 lat doświadczenia w Norwegii, domy energooszczędne i przyjazne środowisku.
+        </p>
+        <button class="header__button">
+            Umów bezpłatną wizytę
+            <img src="photos/svg/keyboard-arrow-right.svg" alt="" />
+        </button>
     </div>
-  </header>
+</header>
 
 
   <!-- 🔽 PRZYCISK WYWOŁANIA KONFIGURATORA 🔽 -->
@@ -922,20 +931,78 @@
         </div>
       </div>
 
+  
+   <!-- krok podsumowania i generowania wizualizacji -->
+      <div class="configurator-modal__step step-section step-summary" id="step-summary" style="display: none">
+  <div class="summary__container">
+    <h2 class="summary__title">Podsumowanie konfiguracji</h2>
+
+    <div class="summary__selections configurator-summary__list" id="summary-selections">
+      <!-- tutaj JS wstawi listę wyborów -->
+    </div>
+
+    <div class="summary__image-container">
+      <div class="summary__loader" id="summary-loader" style="display: none">
+        <div class="loader-spinner"></div>
+        <p>AI generuje wizualizację domu i wycenę...</p>
+      </div>
+      <img id="summary-image" class="summary__image" src="" alt="Wizualizacja domu" style="display: none" />
+    </div>
+
+    <div class="summary__price" id="summary-price" style="display: none">
+      <h3>Szacunkowa cena budowy:</h3>
+      <p><strong><span id="summary-cost"></span> NOK</strong></p>
+    </div>
+
+    <div class="configurator-nav">
+      <button id="summary-back-button" class="configurator-nav__button configurator-nav__button--back">
+        🔙 Wstecz
+      </button>
+      <button id="summary-generate-button" class="configurator-nav__button configurator-nav__button--continue">
+        🎨 Generuj wizualizację i wycenę
+      </button>
+    </div>
+  </div>
+</section>
+
+
 
     </div>
   </div>
 
-  <!-- /#configurator-modal -->
+  <!-- Główne pliki -->
+<script src="js/navigation.js" defer></script>
+<script src="js/script.js" defer></script>
 
-  <script src="js/script.js" defer></script>
-  <script src="js/configurator.js" defer></script>
-  <script src="js/step-4-floor-count.js" defer></script>
-  <script src="js/step-roof-elevation.js" defer></script>
-  <script src="js/step-garage.js" defer></script>
-  <script src="js/step-custom-prompt.js" defer></script>
+<!-- Starsze kroki -->
+<script src="js/step-4-floor-count.js" defer></script>
+<script src="js/step-roof-elevation.js" defer></script>
+<script src="js/step-garage.js" defer></script>
+<script src="js/step-custom-prompt.js" defer></script>
+
+<!-- NOWE pliki (z folderu "Konfigurator AI/steps") -->
+<script type="module" src="js/Konfigurator AI/configurator-data.js"></script>
+<script type="module" src="js/Konfigurator AI/configurator-api-client.js"></script>
+<script type="module" src="js/Konfigurator AI/configurator-api.js"></script>
+<script type="module" src="js/Konfigurator AI/configurator-image-handler.js"></script>
+<script type="module" src="js/Konfigurator AI/steps/step-summary.js"></script>
 
 
+<!-- główny plik konfiguratora (musi być po wszystkich zależnościach) -->
+<script src="js/configurator.js" defer></script>
+
+<!-- Burger menu -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const burgerButton = document.querySelector('.header__burger');
+    const bodyElement = document.body;
+    if (burgerButton) {
+      burgerButton.addEventListener('click', function () {
+        bodyElement.classList.toggle('is-menu-active');
+      });
+    }
+  });
+</script>
 </body>
 
 </html>

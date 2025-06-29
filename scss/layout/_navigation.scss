@@ -1,0 +1,172 @@
+// Plik: scss/layout/_navigation.scss
+// Wersja: POPRAWIONA I KOMPLETNA
+
+// Import zmiennych (upewnij się, że ta ścieżka jest poprawna dla Twojego projektu)
+@use '../utils/variables' as *;
+
+// Definicja zmiennych lokalnych dla łatwiejszej konfiguracji
+$burger-width: 30px;
+$burger-height: 24px;
+$burger-line-height: 3px;
+$burger-line-spacing: 8px; // Odstęp między liniami
+$burger-color: $color-white; // Kolor ikony (zakładając, że masz zmienną $color-white)
+$transition-speed: 0.3s;
+
+// =========================================================================
+// IKONA HAMBURGERA
+// =========================================================================
+
+.header__burger {
+  position: relative;
+  z-index: 110; // Musi być nad panelem menu i potencjalną warstwą.header__overlay
+  padding: 15px; // Zwiększony padding dla łatwiejszego klikania
+  display: inline-block;
+  cursor: pointer;
+  background-color: transparent;
+  border: 0;
+  margin: 0;
+  overflow: visible;
+
+ .header__burger-box {
+    width: $burger-width;
+    height: $burger-height;
+    position: relative;
+  }
+
+ .header__burger-inner {
+    // Środkowa linia - staje się niewidoczna w stanie aktywnym
+    // Pozycjonowanie jest dziedziczone z pseudo-elementów
+    transition: background-color $transition-speed ease-in-out;
+
+    // Wspólne style dla wszystkich 3 linii
+    &,
+    &::before,
+    &::after {
+      position: absolute;
+      width: 100%;
+      height: $burger-line-height;
+      border-radius: 3px;
+      background-color: $burger-color;
+      transition: transform $transition-speed ease-in-out, top $transition-speed ease-in-out, bottom $transition-speed ease-in-out;
+    }
+
+    &::before,
+    &::after {
+      content: '';
+    }
+
+    // Pozycjonowanie linii górnej i dolnej
+    &::before {
+      top: 0;
+    }
+    &::after {
+      bottom: 0;
+    }
+  }
+}
+
+// =========================================================================
+// PANEL NAWIGACYJNY (WIDOK MOBILNY)
+// =========================================================================
+
+.header__nav {
+  visibility: hidden;
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100; // Pod ikoną hamburgera
+  background-color: rgba($color-dark-text, 0.98); // Upewnij się, że zmienna $color-dark-text istnieje
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity $transition-speed ease, visibility $transition-speed ease;
+}
+
+.header__nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.header__nav-link {
+  display: block;
+  padding: 15px 20px;
+  font-size: 24px;
+  font-weight: 500;
+  color: $color-white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover,
+  &:focus {
+    color: $color-accent; // Upewnij się, że zmienna $color-accent istnieje
+  }
+}
+
+// =========================================================================
+// STAN AKTYWNY (PO KLIKNIĘCIU)
+// =========================================================================
+
+body.is-menu-active {
+  // Blokowanie przewijania strony, gdy menu jest otwarte
+  overflow: hidden;
+
+  // NAPRAWA: Prawidłowa animacja ikony do "X"
+ .header__burger-inner {
+    // Środkowa linia znika
+    background-color: transparent;
+
+    &::before {
+      // Górna linia przesuwa się na środek i obraca
+      top: calc(($burger-height - $burger-line-height) / 2);
+      transform: rotate(45deg);
+    }
+    &::after {
+      // Dolna linia przesuwa się na środek i obraca
+      bottom: calc(($burger-height - $burger-line-height) / 2);
+      transform: rotate(-45deg);
+    }
+  }
+
+  // Pokazanie panelu nawigacyjnego
+ .header__nav {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+// =========================================================================
+// WERSJA NA DESKTOP (POWYŻEJ 1024px)
+// =========================================================================
+
+@media (min-width: 1024px) {
+ .header__burger {
+    display: none;
+  }
+
+ .header__nav {
+    visibility: visible;
+    opacity: 1;
+    position: static;
+    width: auto;
+    height: auto;
+    background-color: transparent;
+    transition: none;
+    display: block;
+  }
+
+ .header__nav-list {
+    display: flex;
+    gap: 30px;
+  }
+
+ .header__nav-link {
+    font-size: 16px;
+    padding: 10px 5px;
+    color: $color-white; // Dostosuj kolor linków na desktopie, jeśli jest inny
+  }
+}
