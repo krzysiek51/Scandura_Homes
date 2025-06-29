@@ -691,285 +691,236 @@
       </div>
     </div>
   </footer>
+<!-- KONFIGURATOR MODALNY -->
+<div class="configurator-modal" id="configurator-modal">
+  <div class="configurator-modal__overlay" id="configurator-overlay"></div>
+  <div class="configurator-modal__content">
 
-  <!-- KONFIGURATOR MODALNY -->
-
-
-  <div class="configurator-modal" id="configurator-modal">
-    <div class="configurator-modal__overlay" id="configurator-overlay"></div>
-    <div class="configurator-modal__content">
-      <button class="configurator-modal__close-button" id="close-configurator-button"
-        aria-label="Zamknij konfigurator">&times;</button>
-
-      <!-- Krok 1: Wybór stylu -->
-      <div class="configurator-modal__step" id="step-style-selection">
-        <header class="configurator-modal__header">
-          <h2 class="configurator-modal__title">Wybierz styl swojego domu</h2>
-          <p class="configurator-modal__subtitle">Zacznijmy od ogólnej wizji. Możesz ją później dowolnie
-            modyfikować.....</p>
-        </header>
-        <div class="style-carousel" id="style-carousel">
-          <button class="style-carousel__arrow style-carousel__arrow--prev" aria-label="Poprzedni styl">‹</button>
-          <div class="style-carousel__track-container">
-            <div class="style-carousel__track" id="style-carousel-track">
-              <div class="style-carousel__slide">
-                <img src="photos/projects/modern.webp" alt="Dom w stylu Nowoczesny" class="style-carousel__image">
-                <div class="style-carousel__caption">
-                  <h3 class="style-carousel__title">Nowoczesny Minimalizm</h3>
-                  <button class="style-carousel__select-button" data-style="modern">Wybierz i kontynuuj →</button>
-                </div>
+    <!-- Krok 1: Wybór stylu -->
+    <div class="configurator-modal__step" id="step-style-selection">
+      <header class="configurator-modal__header">
+        <h2 class="configurator-modal__title">Wybierz styl swojego domu</h2>
+        <p class="configurator-modal__subtitle">Zacznijmy od ogólnej wizji. Możesz ją później dowolnie
+          modyfikować.....</p>
+      </header>
+      <div class="style-carousel" id="style-carousel">
+        <button class="style-carousel__arrow style-carousel__arrow--prev" aria-label="Poprzedni styl">‹</button>
+        <div class="style-carousel__track-container">
+          <div class="style-carousel__track" id="style-carousel-track">
+            <div class="style-carousel__slide">
+              <img src="photos/projects/modern.webp" alt="Dom w stylu Nowoczesny" class="style-carousel__image">
+              <div class="style-carousel__caption">
+                <h3 class="style-carousel__title">Nowoczesny Minimalizm</h3>
+                <button class="style-carousel__select-button" data-style="modern">Wybierz i kontynuuj →</button>
               </div>
-              <div class="style-carousel__slide">
-                <img src="photos/projects/classic.webp" alt="Dom w stylu Klasyczny" class="style-carousel__image">
-                <div class="style-carousel__caption">
-                  <h3 class="style-carousel__title">Klasyczna Elegancja</h3>
-                  <button class="style-carousel__select-button" data-style="classic">Wybierz i kontynuuj →</button>
-                </div>
+            </div>
+            <div class="style-carousel__slide">
+              <img src="photos/projects/classic.webp" alt="Dom w stylu Klasyczny" class="style-carousel__image">
+              <div class="style-carousel__caption">
+                <h3 class="style-carousel__title">Klasyczna Elegancja</h3>
+                <button class="style-carousel__select-button" data-style="classic">Wybierz i kontynuuj →</button>
               </div>
-              <div class="style-carousel__slide">
-                <img src="photos/projects/dworek.webp" alt="Dom w stylu Dworek" class="style-carousel__image">
-                <div class="style-carousel__caption">
-                  <h3 class="style-carousel__title">Dworek</h3>
-                  <button class="style-carousel__select-button" data-style="dworek">Wybierz i kontynuuj →</button>
-                </div>
+            </div>
+            <div class="style-carousel__slide">
+              <img src="photos/projects/dworek.webp" alt="Dom w stylu Dworek" class="style-carousel__image">
+              <div class="style-carousel__caption">
+                <h3 class="style-carousel__title">Dworek</h3>
+                <button class="style-carousel__select-button" data-style="dworek">Wybierz i kontynuuj →</button>
               </div>
-              <div class="style-carousel__slide">
-                <img src="photos/projects/custom.webp" alt="Dom w stylu Indywidualny" class="style-carousel__image">
-                <div class="style-carousel__caption">
-                  <h3 class="style-carousel__title">Indywidualny Projekt</h3>
-                  <button class="style-carousel__select-button" data-style="custom">Wybierz i kontynuuj →</button>
-                </div>
+            </div>
+            <div class="style-carousel__slide">
+              <img src="photos/projects/custom.webp" alt="Dom w stylu Indywidualny" class="style-carousel__image">
+              <div class="style-carousel__caption">
+                <h3 class="style-carousel__title">Indywidualny Projekt</h3>
+                <button class="style-carousel__select-button" data-style="custom">Wybierz i kontynuuj →</button>
               </div>
             </div>
           </div>
-          <button class="style-carousel__arrow style-carousel__arrow--next" aria-label="Następny styl">›</button>
+        </div>
+        <button class="style-carousel__arrow style-carousel__arrow--next" aria-label="Następny styl">›</button>
+      </div>
+    </div>
+
+    <!-- Krok 2: Powierzchnia -->
+    <div class="configurator-modal__step step-area-selection" id="step-area">
+      <div class="step-area-selection__dynamic-sketch">
+        <img src="photos/main/AIStarcCloud.png" alt="Szkic domu generowany przez AI" class="step-area-selection__sketch-image">
+      </div>
+      <h3 class="step-area-selection__title">Określ powierzchnięeee</h3>
+      <p class="step-area-selection__subtitle">
+        Jaka powierzchnia użytkowa Cię interesuje?
+      </p>
+      <div class="step-area-selection__input-group">
+        <input type="range" id="area-slider" class="step-area-selection__slider" min="50" max="400" value="120">
+        <div class="step-area-selection__input-wrapper">
+          <input type="number" id="area-input" class="step-area-selection__number-input" min="50" max="400" value="120">
+          <span class="step-area-selection__input-unit">m²</span>
         </div>
       </div>
+      <div class="step-area-selection__nav">
+        <button class="step-area-selection__nav-button" data-back-to="step-style-selection">
+          ← Wróć
+        </button>
+        <button class="step-area-selection__nav-button" id="area-continue-button">
+          Kontynuuj →
+        </button>
+      </div>
+    </div>
 
-      <!-- Krok 2: Powierzchnia -->
-      <div class="configurator-modal__step step-area-selection" id="step-area">
-        <div class="step-area-selection__dynamic-sketch">
-          <img src="photos/main/AIStarcCloud.png" alt="Szkic domu generowany przez AI"
-            class="step-area-selection__sketch-image">
+    <!-- Krok 3a: Warianty dla stylu Nowoczesny -->
+    <div class="configurator-modal__step" id="step-options-modern" style="display:none;">
+      <h3 class="step-title">Wybierz typ domu nowoczesnego</h3>
+      <div class="floor-options">
+        <button class="floor-options__button" data-variant="a-frame">A-Frame</button>
+        <button class="floor-options__button" data-variant="box">Płaski Dach (Box)</button>
+        <button class="floor-options__button" data-variant="barn">Nowoczesna Stodoła</button>
+      </div>
+      <div class="configurator-nav">
+        <button class="configurator-nav__button" data-back-to="step-area">← Wróć</button>
+        <button class="configurator-nav__button" data-continue-from="options">Kontynuuj →</button>
+      </div>
+    </div>
+
+    <!-- Krok 3b: Warianty dla stylu Klasyczny -->
+    <div class="configurator-modal__step" id="step-options-classic" style="display:none;">
+      <h3 class="step-title">Wybierz typ domu klasycznego</h3>
+      <div class="floor-options">
+        <button class="floor-options__button" data-variant="torpet">Torpet</button>
+        <button class="floor-options__button" data-variant="rorbu">Rorbu</button>
+        <button class="floor-options__button" data-variant="langhus">Langhus</button>
+      </div>
+      <div class="configurator-nav">
+        <button class="configurator-nav__button" data-back-to="step-area">← Wróć</button>
+        <button class="configurator-nav__button" data-continue-from="options">Kontynuuj →</button>
+      </div>
+    </div>
+
+    <!-- Krok 3c: Warianty dla stylu Dworek -->
+    <div class="configurator-modal__step" id="step-options-dworek" style="display:none;">
+      <h3 class="step-title">Wybierz typ dworku</h3>
+      <div class="floor-options">
+        <button class="floor-options__button" data-variant="gustavian">Gustawiański</button>
+        <button class="floor-options__button" data-variant="baroque">Rokoko-Barokowy</button>
+        <button class="floor-options__button" data-variant="empire">Empire</button>
+      </div>
+      <div class="configurator-nav">
+        <button class="configurator-nav__button" data-back-to="step-area">← Wróć</button>
+        <button class="configurator-nav__button" data-continue-from="options">Kontynuuj →</button>
+      </div>
+    </div>
+
+    <!-- Krok 3d: Indywidualny projekt (custom prompt) -->
+    <div class="configurator-modal__step" id="step-custom-prompt" style="display:none;">
+      <h3 class="step-title">Opisz swój wymarzony dom</h3>
+      <p class="step-subtitle">
+        Twój opis zostanie użyty przez AI do stworzenia unikalnej wizualizacji.
+      </p>
+      <div class="custom-prompt-group">
+        <textarea id="custom-prompt-textarea" class="custom-prompt-group__textarea" placeholder="np. Dom w lesie z dużym, szklanym salonem i dachem pokrytym mchem..."></textarea>
+      </div>
+      <div class="custom-prompt-result" id="custom-prompt-result" style="display: none;">
+        <div class="custom-prompt-result__image-container">
+          <img src="" alt="Wygenerowany obraz domu" id="custom-prompt-image" class="custom-prompt-result__image" style="display:none;">
+          <div class="spinner" id="custom-prompt-spinner"></div>
         </div>
-        <h3 class="step-area-selection__title">Określ powierzchnięeee</h3>
-        <p class="step-area-selection__subtitle">
-          Jaka powierzchnia użytkowa Cię interesuje?
-        </p>
-        <div class="step-area-selection__input-group">
-          <input type="range" id="area-slider" class="step-area-selection__slider" min="50" max="400" value="120">
-          <div class="step-area-selection__input-wrapper">
-            <input type="number" id="area-input" class="step-area-selection__number-input" min="50" max="400"
-              value="120">
-            <span class="step-area-selection__input-unit">m²</span>
+        <button type="button" class="custom-prompt-result__regen-button" id="regen-button">
+          Generuj ponownie
+        </button>
+      </div>
+      <div class="configurator-nav">
+        <button class="configurator-nav__button configurator-nav__button--back" id="custom-prompt-back-button">← Wróć</button>
+        <button class="configurator-nav__button configurator-nav__button--continue" id="custom-prompt-continue-button" disabled>
+          Wygeneruj →
+          <span class="spinner"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Krok 4: Ilość kondygnacji -->
+    <div class="configurator-modal__step step-floor-count" id="step-floor-count" style="display:none;">
+      <h3 class="step-floor-count__title">Ile kondygnacji ma Twój dom?</h3>
+      <div class="step-floor-count__options">
+        <button class="step-floor-count__option" data-floors="1">1 kondygnacja</button>
+        <button class="step-floor-count__option" data-floors="1.5">1½ kondygnacji</button>
+        <button class="step-floor-count__option" data-floors="2">2 kondygnacje</button>
+      </div>
+      <div class="step-floor-count__nav">
+        <button class="step-floor-count__nav-button step-floor-count__nav-button--back" data-back-to="step-options">
+          ← Wróć
+        </button>
+        <button class="step-floor-count__nav-button step-floor-count__nav-button--continue" id="floor-count-continue" disabled>
+          Kontynuuj →
+        </button>
+      </div>
+    </div>
+
+    <!-- Krok 5: elewacja i dach -->
+    <div class="configurator-modal__step step-roof-elev" id="step-roof-elevation" style="display:none;">
+      <h3 class="step-roof-elev__title">Wybierz dach i elewację</h3>
+      <div class="step-roof-elev__roof-options">
+        <button class="step-roof-elev__roof-option" data-roof="gable">Dach dwuspadowy</button>
+        <button class="step-roof-elev__roof-option" data-roof="hip">Dach wielospadowy</button>
+        <button class="step-roof-elev__roof-option" data-roof="flat">Płaski dach</button>
+      </div>
+      <div class="step-roof-elev__facade-options">
+        <button class="step-roof-elev__facade-option" data-facade="wood">Drewniana deska skandynawska</button>
+        <button class="step-roof-elev__facade-option" data-facade="plaster">Tynk mineralny + styropian</button>
+      </div>
+      <div class="step-roof-elev__nav">
+        <button class="step-roof-elev__nav-button step-roof-elev__nav-button--back" data-back-to="step-floors">← Wróć</button>
+        <button class="step-roof-elev__nav-button step-roof-elev__nav-button--continue" id="roof-elev-continue-button" disabled>
+          Kontynuuj →
+        </button>
+      </div>
+    </div>
+
+    <!-- Krok 6: Garaż -->
+    <div class="configurator-modal__step step-garage" id="step-garage" style="display: none;">
+      <h3 class="step-garage__title">Czy chcesz garaż?</h3>
+      <div class="step-garage__options">
+        <button class="step-garage__button" data-garage="none">Brak garażu</button>
+        <button class="step-garage__button" data-garage="single">Garaż jednostanowiskowy</button>
+        <button class="step-garage__button" data-garage="double">Garaż dwustanowiskowy</button>
+      </div>
+      <div class="step-garage__nav">
+        <button class="step-garage__nav-button" data-back-to="step-roof-elev-garage">← Wróć</button>
+        <button class="step-garage__nav-button step-garage__nav-button--continue" id="garage-continue-button" disabled>
+          Kontynuuj →
+        </button>
+      </div>
+    </div>
+
+    <!-- krok podsumowania i generowania wizualizacji -->
+    <div class="configurator-modal__step step-section step-summary" id="step-summary" style="display: none">
+      <div class="summary__container">
+        <h2 class="summary__title">Podsumowanie konfiguracji</h2>
+        <div class="summary__selections configurator-summary__list" id="summary-selections"></div>
+        <div class="summary__image-container">
+          <div class="summary__loader" id="summary-loader" style="display: none">
+            <div class="loader-spinner"></div>
+            <p>AI generuje wizualizację domu i wycenę...</p>
           </div>
+          <img id="summary-image" class="summary__image" src="" alt="Wizualizacja domu" style="display: none" />
         </div>
-        <div class="step-area-selection__nav">
-          <button class="step-area-selection__nav-button" data-back-to="step-style-selection">
-            ← Wróć
-          </button>
-          <button class="step-area-selection__nav-button" id="area-continue-button">
-            Kontynuuj →
-          </button>
-        </div>
-      </div>
-
-
-      <!-- Krok 3a: Warianty dla stylu Nowoczesny -->
-      <div class="configurator-modal__step" id="step-options-modern" style="display:none;">
-        <h3 class="step-title">Wybierz typ domu nowoczesnego</h3>
-        <div class="floor-options">
-          <button class="floor-options__button" data-variant="a-frame">A-Frame</button>
-          <button class="floor-options__button" data-variant="box">Płaski Dach (Box)</button>
-          <button class="floor-options__button" data-variant="barn">Nowoczesna Stodoła</button>
+        <div class="summary__price" id="summary-price" style="display: none">
+          <h3>Szacunkowa cena budowy:</h3>
+          <p><strong><span id="summary-cost"></span> NOK</strong></p>
         </div>
         <div class="configurator-nav">
-          <button class="configurator-nav__button" data-back-to="step-area">← Wróć</button>
-          <button class="configurator-nav__button" data-continue-from="options">Kontynuuj →</button>
-        </div>
-      </div>
-
-      <!-- Krok 3b: Warianty dla stylu Klasyczny -->
-      <div class="configurator-modal__step" id="step-options-classic" style="display:none;">
-        <h3 class="step-title">Wybierz typ domu klasycznego</h3>
-        <div class="floor-options">
-          <button class="floor-options__button" data-variant="torpet">Torpet</button>
-          <button class="floor-options__button" data-variant="rorbu">Rorbu</button>
-          <button class="floor-options__button" data-variant="langhus">Langhus</button>
-        </div>
-        <div class="configurator-nav">
-          <button class="configurator-nav__button" data-back-to="step-area">← Wróć</button>
-          <button class="configurator-nav__button" data-continue-from="options">Kontynuuj →</button>
-        </div>
-      </div>
-
-      <!-- Krok 3c: Warianty dla stylu Dworek -->
-      <div class="configurator-modal__step" id="step-options-dworek" style="display:none;">
-        <h3 class="step-title">Wybierz typ dworku</h3>
-        <div class="floor-options">
-          <button class="floor-options__button" data-variant="gustavian">Gustawiański</button>
-          <button class="floor-options__button" data-variant="baroque">Rokoko-Barokowy</button>
-          <button class="floor-options__button" data-variant="empire">Empire</button>
-        </div>
-        <div class="configurator-nav">
-          <button class="configurator-nav__button" data-back-to="step-area">← Wróć</button>
-          <button class="configurator-nav__button" data-continue-from="options">Kontynuuj →</button>
-        </div>
-      </div>
-
-      <!-- Krok 3d: Indywidualny projekt (custom prompt) -->
-      <div class="configurator-modal__step" id="step-custom-prompt" style="display:none;">
-        <h3 class="step-title">Opisz swój wymarzony dom</h3>
-        <p class="step-subtitle">
-          Twój opis zostanie użyty przez AI do stworzenia unikalnej wizualizacji.
-        </p>
-        
-        <!-- Sekcja prompt (opis tekstowy) -->
-        <div class="custom-prompt-group">
-          <textarea
-            id="custom-prompt-textarea"
-            class="custom-prompt-group__textarea"
-            placeholder="np. Dom w lesie z dużym, szklanym salonem i dachem pokrytym mchem..."
-          ></textarea>
-        </div>
-        
-        <!-- **NOWY**: Sekcja wyniku generowania obrazu (początkowo ukryta) -->
-        <div class="custom-prompt-result" id="custom-prompt-result" style="display: none;">
-          <div class="custom-prompt-result__image-container">
-            <!-- Obraz wygenerowany przez AI; wstawiany dynamicznie po zakończeniu generowania -->
-            <img src="" alt="Wygenerowany obraz domu" id="custom-prompt-image" class="custom-prompt-result__image" style="display:none;">
-            <!-- Element loader (spinner) widoczny w trakcie generowania -->
-            <div class="spinner" id="custom-prompt-spinner"></div>
-          </div>
-          <!-- Przycisk ponownego generowania obrazu -->
-          <button type="button" class="custom-prompt-result__regen-button" id="regen-button">
-            Generuj ponownie
+          <button id="summary-back-button" class="configurator-nav__button configurator-nav__button--back">
+            🔙 Wstecz
           </button>
-        </div>
-        
-        <div class="configurator-nav">
-          <button class="configurator-nav__button configurator-nav__button--back" 
-                  id="custom-prompt-back-button">← Wróć</button>
-          <!-- Zmieniono tekst przycisku Kontynuuj na Wygeneruj (lub podobny) -->
-          <button class="configurator-nav__button configurator-nav__button--continue" 
-                  id="custom-prompt-continue-button" disabled>
-            Wygeneruj →
-            <!-- Spinner wewnątrz przycisku (początkowo ukryty poprzez CSS/JS) -->
-            <span class="spinner"></span>
+          <button id="summary-generate-button" class="configurator-nav__button configurator-nav__button--continue">
+            🎨 Generuj wizualizację i wycenę
           </button>
         </div>
       </div>
+    </div>
 
-
-      <!-- Krok 4: Ilość kondygnacji -->
-      <div class="configurator-modal__step step-floor-count" id="step-floor-count" style="display:none;">
-        <h3 class="step-floor-count__title">Ile kondygnacji ma Twój dom?</h3>
-
-        <div class="step-floor-count__options">
-          <!-- przyciski generowane dynamicznie w JS -->
-          <!-- przykładowo: -->
-          <button class="step-floor-count__option" data-floors="1">
-            1 kondygnacja
-          </button>
-          <button class="step-floor-count__option" data-floors="1.5">
-            1½ kondygnacji
-          </button>
-          <button class="step-floor-count__option" data-floors="2">
-            2 kondygnacje
-          </button>
-        </div>
-
-        <div class="step-floor-count__nav">
-          <button class="step-floor-count__nav-button step-floor-count__nav-button--back" data-back-to="step-options">
-            ← Wróć
-          </button>
-          <button class="step-floor-count__nav-button step-floor-count__nav-button--continue" id="floor-count-continue"
-            disabled>
-            Kontynuuj →
-          </button>
-        </div>
-      </div>
-      <!-- Krok 5: elewacja i dach -->
-      <div class="configurator-modal__step step-roof-elev" id="step-roof-elevation" style="display:none;">
-        <h3 class="step-roof-elev__title">Wybierz dach i elewację</h3>
-
-        <div class="step-roof-elev__roof-options">
-          <button class="step-roof-elev__roof-option" data-roof="gable">Dach dwuspadowy</button>
-          <button class="step-roof-elev__roof-option" data-roof="hip">Dach wielospadowy</button>
-          <button class="step-roof-elev__roof-option" data-roof="flat">Płaski dach</button>
-        </div>
-
-        <div class="step-roof-elev__facade-options">
-          <button class="step-roof-elev__facade-option" data-facade="wood">Drewniana deska skandynawska</button>
-          <button class="step-roof-elev__facade-option" data-facade="plaster">Tynk mineralny + styropian</button>
-        </div>
-
-        <div class="step-roof-elev__nav">
-          <button class="step-roof-elev__nav-button step-roof-elev__nav-button--back" data-back-to="step-floors">
-            ← Wróć
-          </button>
-          <button class="step-roof-elev__nav-button step-roof-elev__nav-button--continue" id="roof-elev-continue-button"
-            disabled>
-            Kontynuuj →
-          </button>
-        </div>
-      </div>
-      <!-- Krok 6: Garaż -->
-      <div class="configurator-modal__step step-garage" id="step-garage" style="display: none;">
-        <h3 class="step-garage__title">Czy chcesz garaż?</h3>
-
-        <div class="step-garage__options">
-          <button class="step-garage__button" data-garage="none">Brak garażu</button>
-          <button class="step-garage__button" data-garage="single">Garaż jednostanowiskowy</button>
-          <button class="step-garage__button" data-garage="double">Garaż dwustanowiskowy</button>
-        </div>
-
-        <div class="step-garage__nav">
-          <button class="step-garage__nav-button" data-back-to="step-roof-elev-garage">← Wróć</button>
-          <button class="step-garage__nav-button step-garage__nav-button--continue" id="garage-continue-button"
-            disabled>Kontynuuj →</button>
-        </div>
-      </div>
-
+  </div>
+</div>
+<!--koniec  KONFIGURATOR MODALNY -->
   
-   <!-- krok podsumowania i generowania wizualizacji -->
-      <div class="configurator-modal__step step-section step-summary" id="step-summary" style="display: none">
-  <div class="summary__container">
-    <h2 class="summary__title">Podsumowanie konfiguracji</h2>
-
-    <div class="summary__selections configurator-summary__list" id="summary-selections">
-      <!-- tutaj JS wstawi listę wyborów -->
-    </div>
-
-    <div class="summary__image-container">
-      <div class="summary__loader" id="summary-loader" style="display: none">
-        <div class="loader-spinner"></div>
-        <p>AI generuje wizualizację domu i wycenę...</p>
-      </div>
-      <img id="summary-image" class="summary__image" src="" alt="Wizualizacja domu" style="display: none" />
-    </div>
-
-    <div class="summary__price" id="summary-price" style="display: none">
-      <h3>Szacunkowa cena budowy:</h3>
-      <p><strong><span id="summary-cost"></span> NOK</strong></p>
-    </div>
-
-    <div class="configurator-nav">
-      <button id="summary-back-button" class="configurator-nav__button configurator-nav__button--back">
-        🔙 Wstecz
-      </button>
-      <button id="summary-generate-button" class="configurator-nav__button configurator-nav__button--continue">
-        🎨 Generuj wizualizację i wycenę
-      </button>
-    </div>
-  </div>
-</section>
-
-
-
-    </div>
-  </div>
-
   <!-- Główne pliki -->
 <script src="js/navigation.js" defer></script>
 <script src="js/script.js" defer></script>
@@ -981,15 +932,16 @@
 <script src="js/step-custom-prompt.js" defer></script>
 
 <!-- NOWE pliki (z folderu "Konfigurator AI/steps") -->
-<script type="module" src="js/Konfigurator AI/configurator-data.js"></script>
-<script type="module" src="js/Konfigurator AI/configurator-api-client.js"></script>
-<script type="module" src="js/Konfigurator AI/configurator-api.js"></script>
-<script type="module" src="js/Konfigurator AI/configurator-image-handler.js"></script>
-<script type="module" src="js/Konfigurator AI/steps/step-summary.js"></script>
+<script type="module" src="js/Konfigurator-AI/configurator-data.js"></script>
+<script type="module" src="js/Konfigurator-AI/configurator-api-client.js"></script>
+<script type="module" src="js/Konfigurator-AI/configurator-api.js"></script>
+<script type="module" src="js/Konfigurator-AI/configurator-image-handler.js"></script>
+<script type="module" src="js/Konfigurator-AI/steps/step-summary.js"></script>
 
 
 <!-- główny plik konfiguratora (musi być po wszystkich zależnościach) -->
-<script src="js/configurator.js" defer></script>
+<script type="module" src="js/configurator.js"></script>
+
 
 <!-- Burger menu -->
 <script>

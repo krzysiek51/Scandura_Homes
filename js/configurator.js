@@ -1,6 +1,7 @@
 // js/configurator.js
 // Full configurator script with custom-prompt step support for style 'custom'
-import { initStepSummary } from './Konfigurator AI/steps/step-summary.js';
+import { initStepSummary } from './Konfigurator-AI/steps/step-summary.js';
+
 
 
 
@@ -287,42 +288,47 @@ window.initStepCustomPrompt = initStepCustomPrompt;
     window.initStep4 = initStep4;
 
     // --- KROK 5: DACH I ELEWACJA (Roof and Facade) ---
-    function initStep5() {
-      changeStep(step5);
-      const roofOpts   = step5.querySelectorAll('.step-roof-elev__roof-option');
-      const elevOpts   = step5.querySelectorAll('.step-roof-elev__facade-option');
-      const btnBack    = step5.querySelector('[data-back-to="step-floor-count"]');
-      const btnCont    = step5.querySelector('.step-roof-elev__nav-button--continue');
-      let roofSel = false, elevSel = false;
+   function initStep5() {
+  changeStep(step5);
+  const roofOpts = step5.querySelectorAll('.step-roof-elev__roof-option');
+  const elevOpts = step5.querySelectorAll('.step-roof-elev__facade-option');
+  const btnBack = step5.querySelector('[data-back-to="step-floor-count"]');
+  const btnCont = step5.querySelector('.step-roof-elev__nav-button--continue');
+  let roofSel = false, elevSel = false;
 
-      btnCont.disabled = true;
-      roofOpts.forEach(b => {
-        b.type = 'button';
-        b.addEventListener('click', () => {
-          roofOpts.forEach(x => x.classList.remove('is-active'));
-          b.classList.add('is-active');
-          roofSel = true;
-          userSelections.roof = b.dataset.value;
-          if (roofSel && elevSel) btnCont.disabled = false;
-        });
-      });
-      elevOpts.forEach(b => {
-        b.type = 'button';
-        b.addEventListener('click', () => {
-          elevOpts.forEach(x => x.classList.remove('is-active'));
-          b.classList.add('is-active');
-          elevSel = true;
-          userSelections.elev = b.dataset.value;
-          if (roofSel && elevSel) btnCont.disabled = false;
-        });
-      });
+  btnCont.disabled = true;
 
-      btnBack?.addEventListener('click', () => initStep4());
-      btnCont?.addEventListener('click', () => {
-        changeStep(step6);
-        initStep6();
-      });
-    }
+  roofOpts.forEach(b => {
+    b.type = 'button';
+    b.addEventListener('click', () => {
+      roofOpts.forEach(x => x.classList.remove('is-active'));
+      b.classList.add('is-active');
+      roofSel = true;
+      userSelections.roof = b.dataset.roof; // Upewnij się że tu jest .roof
+      console.log('✅ Dach wybrany:', userSelections.roof);
+      if (roofSel && elevSel) btnCont.disabled = false;
+    });
+  });
+
+  elevOpts.forEach(b => {
+    b.type = 'button';
+    b.addEventListener('click', () => {
+      elevOpts.forEach(x => x.classList.remove('is-active'));
+      b.classList.add('is-active');
+      elevSel = true;
+      userSelections.elev = b.dataset.facade; // Upewnij się że tu jest .facade
+      console.log('✅ Elewacja wybrana:', userSelections.elev);
+      if (roofSel && elevSel) btnCont.disabled = false;
+    });
+  });
+
+  btnBack?.addEventListener('click', () => initStep4());
+  btnCont?.addEventListener('click', () => {
+    changeStep(step6);
+    initStep6();
+  });
+}
+
     window.initStep5 = initStep5;
 
     // --- KROK 6: GARAŻ (Garage Selection) ---
@@ -339,7 +345,7 @@ window.initStepCustomPrompt = initStepCustomPrompt;
         b.addEventListener('click', () => {
           opts.forEach(x => x.classList.remove('is-active'));
           b.classList.add('is-active');
-          sel = b.dataset.value;
+          sel = b.dataset.garage;
           userSelections.garage = sel;
           btnCont.disabled = false;
         });

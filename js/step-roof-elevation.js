@@ -1,7 +1,11 @@
-// js/step-roof-elevation.js
-
 document.addEventListener('DOMContentLoaded', () => {
   function goToStepRoofElev() {
+    console.log('🔍 goToStepRoofElev uruchomione');
+
+    if (!window.userSelections) {
+      window.userSelections = {};
+    }
+
     const stepEl = document.getElementById('step-roof-elevation');
     if (!stepEl) {
       console.error('Brak kroku „Wybierz dach i elewację”');
@@ -14,8 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnContinue   = stepEl.querySelector('#roof-elev-continue-button');
     const btnBack       = stepEl.querySelector('[data-back-to="step-floors"]');
 
-    window.userSelections.roof = null;
-    window.userSelections.elev = null;
     roofButtons.forEach(b => b.classList.remove('is-active'));
     facadeButtons.forEach(b => b.classList.remove('is-active'));
     btnContinue.disabled = true;
@@ -25,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         roofButtons.forEach(x => x.classList.remove('is-active'));
         btn.classList.add('is-active');
         window.userSelections.roof = btn.dataset.roof;
+        console.log('✅ Wybrano dach:', window.userSelections.roof);
         if (window.userSelections.elev) {
           btnContinue.disabled = false;
         }
@@ -36,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         facadeButtons.forEach(x => x.classList.remove('is-active'));
         btn.classList.add('is-active');
         window.userSelections.elev = btn.dataset.facade;
+        console.log('✅ Wybrano elewację:', window.userSelections.elev);
         if (window.userSelections.roof) {
           btnContinue.disabled = false;
         }
