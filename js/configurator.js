@@ -1,8 +1,7 @@
 // js/configurator.js
 // Full configurator script with custom-prompt step support for style 'custom'
-import { initStepSummary } from './Konfigurator-AI/steps/step-summary.js';
-
-
+// nowa wersja: oba wywalamy z jednego modułu, który ma już pełne tłumaczenia
+import { initStepSummary, populateSummary } from './Konfigurator-AI/step-summary.js';
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -25,16 +24,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const step7         = document.getElementById('step-summary');
 
     // --- STANY UŻYTKOWNIKA ---
-    const userSelections = {
-      style:        null,
-      area:         null,
-      floors:       null,
-      roof:         null,
-      elev:         null,
-      garage:       null,
-      customPrompt: null    // stores the custom prompt text for style 'custom'
-    };
-    window.userSelections = userSelections;
+   const userSelections = {
+  style:        null,
+  area:         null,
+  floors:       null,
+  roof:         null,
+  elev:         null,
+  garage:       null,
+  basement:     null,   // ← nowe pole, zawsze zdefiniowane
+  rent:         null,   // ← nowe pole, zawsze zdefiniowane
+  availability: null,   // ← nowe pole, zawsze zdefiniowane
+  customPrompt: null
+};
+window.userSelections = userSelections;
+
 
     // --- FUNKCJA PRZEŁĄCZANIA KROKÓW ---
     function changeStep(target) {
@@ -331,35 +334,106 @@ window.initStepCustomPrompt = initStepCustomPrompt;
 
     window.initStep5 = initStep5;
 
-    // --- KROK 6: GARAŻ (Garage Selection) ---
-    function initStep6() {
-      changeStep(step6);
-      const opts    = step6.querySelectorAll('.step-garage__button');
-      const btnCont = step6.querySelector('.step-garage__nav-button--continue');
-      const btnBack = step6.querySelector('.step-garage__nav-button--back');
-      let sel = null;
+   // === Krok 6: Garaż ===
+function initStep6() {
+  // step6 masz już zdefiniowane wyżej: const step6 = document.getElementById('step-garage');
+  changeStep(step6);
 
-      btnCont.disabled = true;
-      opts.forEach(b => {
-        b.type = 'button';
-        b.addEventListener('click', () => {
-          opts.forEach(x => x.classList.remove('is-active'));
-          b.classList.add('is-active');
-          sel = b.dataset.garage;
-          userSelections.garage = sel;
-          btnCont.disabled = false;
-        });
-      });
+  const opts    = step6.querySelectorAll('.step-garage__button');
+  const btnCont = step6.querySelector('.step-garage__nav-button--continue');
+  const btnBack = step6.querySelector('.step-garage__nav-button--back');
+  let sel = null;
 
-      btnBack?.addEventListener('click', () => initStep5());
-      btnCont?.addEventListener('click', () => {
-        changeStep(step7);
-        initStep7();
-      });
-    }
-    window.initStep6 = initStep6;
+  // zablokuj przycisk kontynuuj do czasu wyboru
+  btnCont.disabled = true;
 
-    // --- KROK 7: PODSUMOWANIE (Summary) ---
+  // obsługa wyboru garażu
+  opts.forEach(b => {
+    b.type = 'button';
+    b.addEventListener('click', () => {
+      opts.forEach(x => x.classList.remove('is-active'));
+      b.classList.add('is-active');
+      sel = b.dataset.garage;
+      userSelections.garage = sel;
+      btnCont.disabled = false;
+    });
+  });
+
+  // wstecz do kroku 5
+  btnBack?.addEventListener('click', () => initStep5());
+
+  // przejdź do dodatkowego kroku (new)
+  btnCont?.addEventListener('click', () => {
+    initStepAdditional();
+  });
+}
+window.initStep6 = initStep6;
+ // --- Krok 7: Dodatkowe opcje (piwnica, wynajem/własność, dostępność) ---
+function initStepAdditional() {
+  const stepAdd      = document.getElementById('step-additional-options');
+  const backBtn      = document.getElementById('additional-back-button');
+  const contBtn      = document.getElementById('additional-continue-button');
+  const chkBasement  = document.getElementById('opt-basement');
+  const radRent      = document.getElementById('opt-rent');
+  const radOwn       = document.getElementById('opt-own');
+  const inputAvail   = document.getElementById('opt-availability');
+
+  // Domyślne wartości
+  userSelections.basement     = false;
+  userSelections.rent         = null;
+  userSelections.availability = null;
+
+  // Pokaż sekcję
+  changeStep(stepAdd);
+
+  // Funkcja odblokowująca "Kontynuuj" - wymaga rent/own oraz daty
+  const updateContinue = () => {
+    const modeChosen = radRent.checked || radOwn.checked;
+    const dateChosen = inputAvail.value.trim() !== '';
+    contBtn.disabled = !(modeChosen && dateChosen);
+  };
+
+  // Początkowy stan
+  contBtn.disabled = true;
+
+  // Obsługa checkboxa piwnicy
+  chkBasement.addEventListener('change', () => {
+    userSelections.basement = chkBasement.checked;
+  });
+
+  // Obsługa wyboru rent/own
+  radRent.addEventListener('change', () => {
+    userSelections.rent = true;
+    updateContinue();
+  });
+  radOwn.addEventListener('change', () => {
+    userSelections.rent = false;
+    updateContinue();
+  });
+
+  // Obsługa wyboru daty
+  inputAvail.addEventListener('change', () => {
+    userSelections.availability = inputAvail.value;
+    updateContinue();
+  });
+
+  // Wstecz do kroku Garaż
+  backBtn.addEventListener('click', () => {
+    initStep6();
+  });
+
+  // Dalej do Podsumowania
+  contBtn.addEventListener('click', () => {
+    const stepSummary = document.getElementById('step-summary');
+    changeStep(stepSummary);
+    populateSummary(userSelections);
+    initStepSummary();
+  });
+}
+window.initStepAdditional = initStepAdditional;
+
+
+    // --- KROK 8: PODSUMOWANIE (Summary) ---
     function initStep7() {
   initStepSummary(); // <-- teraz import będzie użyty
 }

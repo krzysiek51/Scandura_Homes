@@ -889,33 +889,74 @@
         </button>
       </div>
     </div>
+    
+<!-- Krok 7: Dodatkowe opcje (piwnica, wynajem/własność, dostępność) -->
+<div class="configurator-modal__step" id="step-additional-options" style="display: none">
+  <h3 class="step-title">Dodatkowe opcje</h3>
+  <form class="additional-options-form">
+    <label>
+      <input type="checkbox" id="opt-basement">
+      Z piwnicą
+    </label>
+    <label>
+      <input type="radio" name="rent-or-own" value="rent" id="opt-rent">
+      Wynajem
+    </label>
+    <label>
+      <input type="radio" name="rent-or-own" value="own" id="opt-own">
+      Własność
+    </label>
+    <label>
+      Dostępność od:
+      <input type="date" id="opt-availability">
+    </label>
+  </form>
+  <div class="configurator-nav">
+    <button type="button" class="configurator-nav__button" id="additional-back-button">
+      ← Wróć
+    </button>
+    <button type="button" class="configurator-nav__button" id="additional-continue-button" disabled>
+      Kontynuuj →
+    </button>
+  </div>
+</div>
 
-    <!-- krok podsumowania i generowania wizualizacji -->
-    <div class="configurator-modal__step step-section step-summary" id="step-summary" style="display: none">
-      <div class="summary__container">
-        <h2 class="summary__title">Podsumowanie konfiguracji</h2>
-        <div class="summary__selections configurator-summary__list" id="summary-selections"></div>
-        <div class="summary__image-container">
-          <div class="summary__loader" id="summary-loader" style="display: none">
-            <div class="loader-spinner"></div>
-            <p>AI generuje wizualizację domu i wycenę...</p>
-          </div>
-          <img id="summary-image" class="summary__image" src="" alt="Wizualizacja domu" style="display: none" />
-        </div>
-        <div class="summary__price" id="summary-price" style="display: none">
-          <h3>Szacunkowa cena budowy:</h3>
-          <p><strong><span id="summary-cost"></span> NOK</strong></p>
-        </div>
-        <div class="configurator-nav">
-          <button id="summary-back-button" class="configurator-nav__button configurator-nav__button--back">
-            🔙 Wstecz
-          </button>
-          <button id="summary-generate-button" class="configurator-nav__button configurator-nav__button--continue">
-            🎨 Generuj wizualizację i wycenę
-          </button>
-        </div>
+  <!-- krok podsumowania i generowania wizualizacji -->
+<div class="configurator-modal__step step-section step-summary" id="step-summary" style="display: none">
+  <div class="summary__container">
+    <h2 class="summary__title">Podsumowanie konfiguracji</h2>
+
+    <!-- tutaj JS wstrzyknie ul#summary-details -->
+    <div class="summary__selections configurator-summary__list" id="summary-selections"></div>
+
+    <!-- tu wyświetlamy ewentualny błąd -->
+    <div id="summary-error" class="summary__error" style="color: red; margin: 8px 0;"></div>
+
+    <div class="summary__image-container">
+      <div class="summary__loader" id="summary-loader" style="display: none">
+        <div class="loader-spinner"></div>
+        <p>AI generuje wizualizację domu i wycenę...</p>
       </div>
+      <img id="summary-image" class="summary__image" src="" alt="Wizualizacja domu" style="display: none" />
     </div>
+
+    <div class="summary__price" id="summary-price" style="display: none">
+      <h3>Szacunkowa cena budowy:</h3>
+      <p><strong><span id="summary-cost"></span> NOK</strong></p>
+    </div>
+
+    <div class="configurator-nav">
+      <button id="summary-back-button" class="configurator-nav__button configurator-nav__button--back">
+        🔙 Wstecz
+      </button>
+      <button id="summary-generate-button" class="configurator-nav__button configurator-nav__button--continue">
+        🎨 Generuj wizualizację i wycenę
+      </button>
+    </div>
+  </div>
+</div>
+
+
 
   </div>
 </div>

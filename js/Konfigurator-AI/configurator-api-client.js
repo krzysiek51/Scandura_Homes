@@ -1,32 +1,42 @@
-// public/js/Konfigurator AI/configurator-api-client.js
+// js/Konfigurator-AI/configurator-api-client.js
 
 /**
  * Wysyła dane konfiguracyjne do backendu w celu:
  * 1. Wygenerowania wizualizacji (obraz AI)
  * 2. Obliczenia szacunkowej ceny
- * 
+ *
  * @param {object} configData - Obiekt zawierający wszystkie dane z konfiguratora.
  * @returns {Promise<object>} - Obiekt z imageUrl i costEstimate
  */
 export async function sendConfigToAI(configData) {
-  try {
-    const response = await fetch('http://localhost:4000/api/generate-visualization', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(configData)
-    });
+  // zbuduj payload ze wszystkimi wymaganymi polami
+  const payload = {
+    style:        configData.style,
+    elev:         configData.elev,
+    roof:         configData.roof,
+    floors:       configData.floors,
+    area:         configData.area,
+    garage:       configData.garage,
+    basement:     configData.basement,
+    rent:         configData.rent,
+    availability: configData.availability,
+    customPrompt: configData.customPrompt
+  };
 
-    if (!response.ok) {
-      const errorDetails = await response.json();
-      throw new Error(errorDetails.details || 'Nieznany błąd serwera');
-    }
+  // dla pewności zobacz payload w konsoli
+  console.log('📤 Wysyłam do serwera:', payload);
 
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Błąd komunikacji z serwerem AI:', error);
-    throw error;
+  const response = await fetch('/api/generate-visualization', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(payload)
+  });
+
+  if (!response.ok) {
+    // spróbuj odczytać szczegóły błędu
+    const details = await response.json().catch(() => ({}));
+    throw new Error(details.details || response.statusText || 'Nieznany błąd serwera');
   }
+
+  return response.json();
 }
