@@ -931,6 +931,24 @@
 
     <!-- tu wyświetlamy ewentualny błąd -->
     <div id="summary-error" class="summary__error" style="color: red; margin: 8px 0;"></div>
+<!-- formularz kontaktowy -->
+<div class="summary__contact-form" style="margin: 16px 0; display: flex; flex-direction: column; gap: 8px;">
+  <div class="form-group">
+    <label for="user-name">Imię i nazwisko</label>
+    <input type="text" id="user-name" name="user-name" placeholder="Imię i nazwisko" required style="padding:8px; border:1px solid #ccc; border-radius:4px;">
+  </div>
+  <div class="form-group">
+    <label for="user-phone">Numer telefonu</label>
+    <input type="tel" id="user-phone" name="user-phone" placeholder="Numer telefonu" required style="padding:8px; border:1px solid #ccc; border-radius:4px;">
+  </div>
+  <div class="form-group">
+    <label for="user-email">Adres e-mail</label>
+    <input type="email" id="user-email" name="user-email" placeholder="Adres e-mail" required style="padding:8px; border:1px solid #ccc; border-radius:4px;">
+  </div>
+</div>
+
+<!-- komunikat sukcesu (opcjonalnie) -->
+<div id="summary-success" class="summary__success" style="display:none; color:green; margin-bottom:16px;"></div>
 
     <div class="summary__image-container">
       <div class="summary__loader" id="summary-loader" style="display: none">

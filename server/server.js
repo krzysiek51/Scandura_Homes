@@ -1,323 +1,467 @@
+// server.js
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { OpenAI } from 'openai';
-import axios from 'axios';
+import nodemailer from 'nodemailer';
 
-// Wczytywanie zmiennych środowiskowych z pliku .env
 dotenv.config();
 
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+const port = process.env.PORT || 4000;
+
+// Inicjalizacja OpenAI
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
-const app = express();
-// Użycie CORS do zezwalania na żądania z różnych domen (np. z Twojego frontendu na innym porcie/domenie)
-app.use(cors());
-// Middleware do parsowania JSON z body requestu (zastępuje body-parser dla JSON)
-app.use(express.json());
-
-const port = 4000; // Port, na którym działa serwer backendu
-
-// ====================================================================
-// MAPY DLA PROMPTÓW DALL-E:
-// KLUCZE W TYCH MAPACH MUSZĄ DOKŁADNIE ODPOWIADAĆ WARTOŚCIOM
-// data-style, data-elev, data-roof, data-floors, data-garage
-// Z TWOJEGO FRONTENDU (configurator.js / HTML)!
-// ====================================================================
-
-// 🔶 Mapa stylów dla promptu DALL-E i ich opisów
+// Mapowania stylów, elewacji i dachów dla promptów AI
 const styleMap = {
-    // KLUCZE TUTAJ MUSZĄ ODPOWIADAĆ WARTOSCIOM data-style Z FRONTENDU
-    'nowoczesny_minimalizm': 'nowoczesny minimalizm, prosta, geometryczna bryła, duże przeszklenia, płaski dach',
-    'klasyczna_elegancja': 'klasyczny styl, elegancka i tradycyjna forma, symetryczna fasada',
-    'dworek': 'klasyczny dworek polski, z kolumnami, gankiem',
-    // Dodatkowe klucze, jeśli używane w frontendzie:
-    'modern': 'nowoczesny styl, prosta, geometryczna bryła, duże przeszklenia, płaski dach',
-    'traditional': 'klasyczny styl, tradycyjna forma, symetryczna fasada',
-    'mansion': 'klasyczny dworek polski, z kolumnami, gankiem'
+  nowoczesny_minimalizm: 'nowoczesny minimalizm, prosta, geometryczna bryła, duże przeszklenia, płaski dach',
+  klasyczna_elegancja:   'klasyczny styl, elegancka i tradycyjna forma, symetryczna fasada',
+  dworek:               'klasyczny dworek polski, z kolumnami i gankiem'
 };
-
-// 🔶 Mapa elewacji dla promptu DALL-E
 const elevMap = {
-    // KLUCZE TUTAJ MUSZĄ ODPOWIADAĆ WARTOSCIOM data-elev Z FRONTENDU (np. 'Deska elewacyjna', 'Tynk mineralny')
-    'Deska elewacyjna': 'elewacja WYŁĄCZNIE ze skandynawskiej deski elewacyjnej (ciemnobrązowy dąb), wąskie pionowe panele LUB poziome, wyraźne usłojenie, BEZ TYNKU CZY BETONU',
-    'Tynk mineralny': 'elewacja WYŁĄCZNIE otynkowana na biało, gładka powierzchnia',
-    // Dodatkowe klucze, jeśli używane w frontendzie:
-    'wood': 'elewacja WYŁĄCZNIE ze skandynawskiej deski elewacyjnej (ciemnobrązowy dąb), wąskie pionowe panele LUB poziome, wyraźne usłojenie, BEZ TYNKU CZY BETONU',
-    'tynk': 'elewacja WYŁĄCZNIE otynkowana na biało, gładka powierzchnia'
+  wood:  'elewacja WYŁĄCZNIE ze skandynawskiej deski elewacyjnej (ciemny dąb)',
+  tynk:  'elewacja WYŁĄCZNIE otynkowana na biało'
 };
-
-// 🔶 Mapa dachów dla promptu DALL-E
 const roofMap = {
-    // KLUCZE TUTAJ MUSZĄ ODPOWIADAĆ WARTOSCIOM data-roof Z FRONTENDU (np. 'blachodachowka', 'dachowka_ceramiczna', 'tiles')
-    'blachodachowka': 'dach pokryty nowoczesną, modułową blachodachówką w kolorze antracytowym',
-    'dachowka_ceramiczna': 'dach pokryty tradycyjną dachówką ceramiczną (czerwoną lub czarną)',
-    'papa': 'dach pokryty papą (bitumiczna), płaski', // Dodana opcja dla papy
-    // Dodatkowe klucze, jeśli używane w frontendzie:
-    'blacha': 'dach pokryty nowoczesną, modułową blachodachówką w kolorze antracytowym',
-    'dachowka': 'dach pokryty tradycyjną dachówką ceramiczną (czerwoną lub czarną)',
-    'tiles': 'dach pokryty tradycyjną dachówką ceramiczną (czerwoną lub czarną)'
+  flat:   'płaski dach pokryty papą bitumiczną',
+  gabled: 'dach dwuspadowy pokryty dachówką ceramiczną',
+  multi:  'dach wielospadowy pokryty dachówką ceramiczną'
 };
 
-
-// =========================================================
-// LOGIKA WYCENY:
-// DOSTOSUJ TE WARTOŚCI DO REALNYCH KOSZTÓW W TWOIM REGIONIE (Trondheim, Norwegia)!
-// KLUCZE W TYCH MAPACH MUSZĄ ODPOWIADAĆ WARTOŚCIOM Z FRONTENDU.
-// =========================================================
-
-// Bazowa cena za metr kwadratowy w NOK (przykładowa dla nowej budowy w Trondheim)
-// Pamiętaj: to jest orientacyjna wartość, którą należy zweryfikować z lokalnymi cenami rynkowymi.
-const BASE_COST_PER_SQM = 55000; // NOK/m²
-
-// Modyfikatory kosztów dla różnych wyborów (procentowe lub stałe kwoty w NOK)
+// Kosztorys
+const BASE_COST_PER_SQM = 4200;
 const COST_MODIFIERS = {
-    // Style (procentowe modyfikatory od bazowego kosztu za m²)
-    style: {
-        'nowoczesny_minimalizm': 1.12, // Wyższe koszty za skomplikowane detale, duże przeszklenia
-        'klasyczna_elegancja': 1.00,   // Koszt bazowy
-        'dworek': 1.25,                // Więcej detali architektonicznych, złożoność
-        'modern': 1.12, // Jeśli używane są stare klucze
-        'traditional': 1.00,
-        'mansion': 1.25
-    },
-    // Kondygnacje (procentowe modyfikatory od bazowego kosztu za m²)
-    floors: {
-        'parterowy': 0.95,     // Brak schodów, ale większa powierzchnia dachu/fundamentów
-        'poddasze': 1.05,      // Koszty adaptacji poddasza, okna dachowe
-        'pietrowy': 1.15       // Skomplikowana konstrukcja piętra, schody, więcej ścian
-    },
-    // Dach (procentowe modyfikatory od bazowego kosztu za m²)
-    roof: {
-        'blachodachowka': 1.00,
-        'dachowka_ceramiczna': 1.07, // Dachówka ceramiczna jest zazwyczaj droższa w materiale i montażu
-        'papa': 0.98, // Papa może być nieco tańsza niż blachodachówka
-        'blacha': 1.00, // Jeśli używane są stare klucze
-        'dachowka': 1.07,
-        'ceramic': 1.07
-    },
-    // Elewacja (procentowe modyfikatory od bazowego kosztu za m²)
-    elev: {
-        'Deska elewacyjna': 1.18, // Elewacja drewniana jest droższa niż tynk
-        'Tynk mineralny': 1.00,
-        'wood': 1.18, // Jeśli używane są stare klucze
-        'tynk': 1.00
-    },
-    // Dodatki (stałe kwoty w NOK) - upewnij się, że klucze (np. 'attached', 'detached', 'none') pasują do frontendu
-    garage: {
-        'attached': 300000,   // Garaż zintegrowany z bryłą domu
-        'detached': 150000,     // Garaż wolnostojący
-        'none': 0               // Brak garażu
-    },
-    basement: {
-        'yes': 400000,          // Piwnica (kopanie, wzmocnione fundamenty, hydroizolacja)
-        'no': 0
-    },
-    rental: {
-        'yes': 200000,          // Część na wynajem (dodatkowa kuchnia, łazienka, instalacje, osobne wejście)
-        'no': 0
-    },
-    accessibility: {
-        'yes': 100000,          // Dostosowanie do standardów dostępności (szersze drzwi, brak progów, rampy, ewentualnie winda)
-        'no': 0
-    }
+  style:   { nowoczesny_minimalizm: 1.1, klasyczna_elegancja: 1.0, dworek: 1.2 },
+  floors:  { '1': 1.0, '2': 1.3 },
+  roof:    { flat: 0.9, gabled: 1.0, multi: 1.2 },
+  elev:    { wood: 1.15, tynk: 1.0 },
+  garage:  { none: 0, single: 40000, double: 50000 },
+  basement:{ yes: 1500, no: 0 }
 };
-
-/**
- * Oblicza szacunkowy koszt budowy domu na podstawie wybranych parametrów.
- * @param {object} options - Obiekt zawierający wybory użytkownika.
- * @param {string} options.style - Wybrany styl domu.
- * @param {number} options.area - Powierzchnia domu w m².
- * @param {string} options.floors - Rodzaj kondygnacji (parterowy, poddasze, pietrowy).
- * @param {string} options.roof - Rodzaj dachu.
- * @param {string} options.elev - Rodzaj elewacji.
- * @param {string} options.garage - Typ garażu (integrated, detached, none).
- * @param {string} options.basement - Czy jest piwnica (yes, no).
- * @param {string} options.rental - Czy jest część na wynajem (yes, no).
- * @param {string} options.accessibility - Czy jest dostosowanie dostępności (yes, no).
- * @returns {number} Szacunkowy całkowity koszt w NOK.
- */
-function calculateCost({ style, area, floors, roof, elev, garage, basement, rental, accessibility }) {
-    let currentCost = area * BASE_COST_PER_SQM;
-
-    // Aplikacja modyfikatorów procentowych na podstawie stylu, kondygnacji, dachu, elewacji
-    // Użyto || 1, aby uniknąć NaN, jeśli klucz nie zostanie znaleziony
-    currentCost *= (COST_MODIFIERS.style[style] || 1);
-    currentCost *= (COST_MODIFIERS.floors[floors] || 1);
-
-    // Specjalna logika dla dachu w zależności od stylu
-    let effectiveRoof = roof;
-    if (style === 'modern' || style === 'nowoczesny_minimalizm') {
-        // Jeśli styl jest nowoczesny, a użytkownik wybrał coś innego niż blachodachówkę (która może być płaska),
-        // to wymuszamy papę jako pokrycie płaskiego dachu.
-        if (roof !== 'blachodachowka' && roof !== 'blacha') { // 'blacha' to stary klucz dla blachodachówki
-            effectiveRoof = 'papa';
-        }
-    }
-    currentCost *= (COST_MODIFIERS.roof[effectiveRoof] || 1);
-
-
-    currentCost *= (COST_MODIFIERS.elev[elev] || 1);
-
-    // Dodatki - stałe kwoty
-    // Użyto || 0, aby uniknąć NaN, jeśli klucz nie zostanie znaleziony
-    currentCost += (COST_MODIFIERS.garage[garage] || 0);
-    currentCost += (COST_MODIFIERS.basement[basement] || 0);
-    currentCost += (COST_MODIFIERS.rental[rental] || 0);
-    currentCost += (COST_MODIFIERS.accessibility[accessibility] || 0);
-
-    // Zaokrągl do pełnych jednostek (NOK)
-    return Math.round(currentCost);
+function calculateCost({ area, style, floors, roof, elev, garage, basement }) {
+  let cost = BASE_COST_PER_SQM * area;
+  cost *= COST_MODIFIERS.style[style]   ?? 1;
+  cost *= COST_MODIFIERS.floors[floors] ?? 1;
+  cost *= COST_MODIFIERS.roof[roof]     ?? 1;
+  cost *= COST_MODIFIERS.elev[elev]     ?? 1;
+  cost += COST_MODIFIERS.garage[garage] ?? 0;
+  if (basement) cost += area * COST_MODIFIERS.basement.yes;
+  return Math.round(cost);
 }
 
-// =========================================================
-// KONIEC LOGIKI WYCENY
-// =========================================================
-
-
-// =========================================================
-// GENERATOR PROMPTÓW DLA DALL-E:
-// Ta funkcja buduje prompt tekstowy, który DALL-E użyje do wygenerowania obrazu.
-// =========================================================
-
-/**
- * Generuje prompt tekstowy dla DALL-E na podstawie wybranych parametrów wizualnych.
- * @param {object} options - Obiekt zawierający wybory użytkownika wpływające na wizualizację.
- * @param {string} options.style - Styl domu.
- * @param {string} options.elev - Rodzaj elewacji.
- * @param {string} options.roof - Rodzaj dachu.
- * @param {string} options.floors - Rodzaj kondygnacji.
- * @param {string} options.garage - Typ garażu.
- * @returns {string} Gotowy prompt dla DALL-E.
- */
-function generatePrompt({ style, elev, roof, floors, garage }) {
-    let floorsDescription = '';
-    // Wzmocnione opisy kondygnacji, aby DALL-E lepiej rozumiał bryłę
-    if (floors === 'parterowy') {
-        floorsDescription = 'dom JEDNOKONDYGNACYJNY, parterowy, BEZ ŻADNYCH PIĘTER I WYSTĄPIEŃ NAD PARTEREM';
-    } else if (floors === 'pietrowy') {
-        floorsDescription = 'dom DWUKONDYGNACYJNY, z pełnym piętrem (parter + piętro)';
-    } else if (floors === 'poddasze') {
-        let kukulkaShape = '';
-        // Jeśli styl jest nowoczesny, kukułka też powinna być nowoczesna (prostokątna z płaskim dachem)
-        if (style === 'modern' || style === 'nowoczesny_minimalizm') {
-            kukulkaShape = 'prostokątna "kukułka" z płaskim dachem w nowoczesnym stylu';
-        } else {
-            kukulkaShape = 'charakterystyczna "kukułka" na dachu';
-        }
-        // USUNIĘTO "ze skośnymi ścianami na najwyższej kondygnacji"
-        floorsDescription = `dom z parterem i UŻYTKOWYM PODDASZEM (${kukulkaShape})`;
-    } else {
-        floorsDescription = 'dom'; // Domyślny, awaryjny opis
-    }
-
-    let styleSpecifics = '';
-    // Dodatkowe wzmocnienia dla stylów, które implikują parterową budowę lub mają specyficzne cechy
-    // Ważne: Usunięto 'modern' i 'nowoczesny_minimalizm' z tego warunku,
-    // ponieważ ich płaski dach jest już w styleMap, a kondygnacje są obsługiwane przez floorsDescription.
-    if (style === 'bungalow' || style === 'parterowy_styl') {
-        styleSpecifics += ', WYŁĄCZNIE JEDNOKONDYGNACYJNA BRYŁA, niska zabudowa';
-    }
-
-    // Opis garażu dla DALL-E
-    let garageDescription = '';
-    // Upewnij się, że klucze (np. 'attached', 'detached', 'none') pasują do frontendu
-    if (garage === 'attached') { // Przykład: 'attached' -> zintegrowany
-        garageDescription = 'z wbudowanym garażem zintegrowanym z główną bryłą domu';
-    } else if (garage === 'detached') { // Przykład: 'detached' -> wolnostojący
-        garageDescription = 'z wolnostojącym garażem oddzielonym od głównego budynku';
-    } else if (garage === 'none') {
-        garageDescription = 'BEZ GARAŻU, BRAK JAKIEGOKOLWIEK GARAŻU W WIZUALIZACJI'; // Podwójne wzmocnienie negacji
-    }
-
-    // Logika wyboru dachu dla promptu DALL-E
-    let roofDescription = '';
-    if (style === 'modern' || style === 'nowoczesny_minimalizm') {
-        // Jeśli styl jest nowoczesny, zawsze płaski dach. Pokrycie: papa, chyba że wybrano blachodachówkę.
-        if (roof === 'blachodachowka' || roof === 'blacha') { // 'blacha' to stary klucz dla blachodachówki
-            roofDescription = 'płaski dach pokryty nowoczesną blachodachówką w kolorze antracytowym';
-        } else {
-            roofDescription = 'płaski dach pokryty papą (bitumiczna)';
-        }
-    } else {
-        // Dla pozostałych stylów, użyj wybranego dachu
-        roofDescription = roofMap[roof];
-    }
-
-
-    // Finalny, bardziej precyzyjny prompt dla DALL-E
-    // Użyto kropek jako separatorów dla większej klarowności dla AI
-    return `Fotorealistyczna wizualizacja domu jednorodzinnego. Styl: ${styleMap[style]}${styleSpecifics}. Typ: ${floorsDescription} dom. Dach: ${roofDescription}. Elewacja: ${elevMap[elev]}. ${garageDescription}. Otoczenie: zielona trawa, drzewa. Oświetlenie naturalne. Widok z zewnątrz.`;
+// Generowanie promptu dla DALL·E
+function generatePrompt({ style, elev, roof }) {
+  return `Fotorealistyczna wizualizacja domu. Styl: ${styleMap[style]}. Dach: ${roofMap[roof]}. Elewacja: ${elevMap[elev]}.`;
 }
 
-// =========================================================
-// KONIEC GENERATORA PROMPTÓW
-// =========================================================
-
-
-// 🧠 GŁÓWNY ENDPOINT AI: Generowanie wizualizacji i wyceny
+// POST /api/generate-visualization
 app.post('/api/generate-visualization', async (req, res) => {
-  console.log('Otrzymane req.body na serwerze:', req.body); // Log, co serwer otrzymał
-
-  // Destrukturyzacja WSZYSTKICH potrzebnych danych z req.body dla obu operacji
-  const { style, elev, roof, floors, area, garage, basement, rental, accessibility } = req.body;
-
-  // Rozszerzona walidacja: Sprawdza, czy wszystkie wymagane pola są obecne i nie są 'undefined'
-  if (!style || !elev || !roof || !floors || area === undefined || garage === undefined || basement === undefined || rental === undefined || accessibility === undefined) {
-    console.error('Serwer: Błąd - Brak wymaganych danych wejściowych w req.body dla generacji i wyceny.');
-    console.error(`Brakujące dane: Style: ${style}, Elewacja: ${elev}, Dach: ${roof}, Kondygnacje: ${floors}, Powierzchnia: ${area}, Garaż: ${garage}, Piwnica: ${basement}, Wynajem: ${rental}, Dostępność: ${accessibility}`);
-    return res.status(400).json({ error: 'Brak danych wejściowych.', details: 'Wymagane: style, elev, roof, floors, area, garage, basement, rental, accessibility.' });
+  const { style, elev, roof, floors, area, garage, basement } = req.body;
+  if (!style || !elev || !roof || !floors || !area || !garage) {
+    return res.status(400).json({ error: 'Brakuje wymaganych danych wejściowych.' });
   }
 
-  // Generowanie promptu tekstowego dla DALL-E na podstawie wizualnych parametrów
-  const prompt = generatePrompt({ style, elev, roof, floors, garage });
-  console.log('📤 PROMPT wysłany do DALL-E:', prompt); // <--- TA LINIJA POKAŻE CI PROMPT W TERMINALU SERWERA!
-
-    // Obliczanie szacunkowego kosztu na podstawie WSZYSTKICH danych
-    const costEstimate = calculateCost({ style, area, floors, roof, elev, garage, basement, rental, accessibility });
-    console.log('💰 Szacunkowy koszt:', costEstimate, 'NOK'); // Log kosztu na serwerze
+  const prompt      = generatePrompt({ style, elev, roof });
+  const costEstimate = calculateCost({ style, elev, roof, floors, area, garage, basement });
 
   try {
-    // Wywołanie API DALL-E do generowania obrazu
-    const response = await openai.images.generate({
-      model: 'dall-e-3', // Model DALL-E 3
-      prompt,            // Wygenerowany prompt
-      n: 1,               // Generuj 1 obraz
-      size: '1024x1024'   // Rozmiar obrazu
+    const aiResp = await openai.images.generate({
+      model: 'dall-e-3',
+      prompt,
+      n: 1,
+      size: '1024x1024'
     });
-
-    const imageUrl = response.data[0].url; // Pobierz URL wygenerowanego obrazu
-    console.log('✅ AI image URL (z OpenAI):', imageUrl); // Log URL obrazu
-    // Zwróć URL obrazu i szacunkowy koszt do frontendu
-    res.json({ imageUrl, costEstimate });
+    const imageUrl = aiResp.data[0].url;
+    return res.json({ imageUrl, costEstimate });
   } catch (err) {
-    console.error('❌ Błąd przy generowaniu obrazu (OpenAI API):', err.message);
-    // Zwróć szczegółowy błąd do frontendu
-    res.status(500).json({ error: 'Błąd generowania obrazu AI.', details: err.message });
+    console.error('❌ Błąd AI:', err);
+    return res.status(500).json({ error: 'Błąd generowania obrazu AI.', details: err.message });
   }
 });
 
-// 🖼️ PROXY OBRAZKÓW: Endpoint do omijania problemów z CORS przy wyświetlaniu obrazów z OpenAI
-app.get('/api/image-proxy', async (req, res) => {
-  const { url } = req.query; // Pobierz URL obrazka do proxy
-  if (!url) {
-        return res.status(400).send('Brak parametru URL w żądaniu proxy.');
-    }
+// Konfiguracja Nodemailer (Gmail)
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_FROM,
+    pass: process.env.EMAIL_PASS
+  }
+});
+
+// Weryfikacja połączenia SMTP
+transporter.verify()
+  .then(() => console.log('✔ SMTP transporter zweryfikowany.'))
+  .catch(err => console.error('❌ Błąd weryfikacji SMTP:', err));
+
+// POST /api/send-offer
+app.post('/api/send-offer', async (req, res) => {
+  const { name, phone, email, imageUrl, estimate } = req.body;
+  if (!name || !phone || !email || !imageUrl || !estimate) {
+    return res.status(400).json({ error: 'Brakuje danych do wysłania oferty.' });
+  }
+
+  console.log('✉ Przygotowuję mail do:', email);
+
+  const mailOptions = {
+    from:    `"Scandura Homes" <${process.env.EMAIL_FROM}>`,
+    to:      email,
+    subject: 'Twoja oferta Scandura Homes',
+    html: `
+      <p>Cześć ${name},</p>
+      <p>Dziękujemy za skorzystanie z konfiguratora. Oto Twoja wizualizacja i wycena:</p>
+      <img src="${imageUrl}" alt="Wizualizacja domu" style="width:100%;max-width:600px;border-radius:8px;"/>
+      <p><strong>Szacunkowy koszt budowy: ${estimate} NOK</strong></p>
+      <p>Skontaktujemy się wkrótce telefonicznie: ${phone}</p>
+    `
+  };
+
   try {
-    // Pobierz obraz jako arraybuffer (dane binarne)
-    const response = await axios.get(url, { responseType: 'arraybuffer' });
-    // Ustaw nagłówek Content-Type na podstawie odpowiedzi z zewnętrznego serwera (lub domyślnie png)
-    res.set('Content-Type', response.headers['content-type'] || 'image/png');
-    // Wyślij dane obrazu do klienta
-    res.send(response.data);
+    const info = await transporter.sendMail(mailOptions);
+    console.log('✔ Mail wysłany, messageId=', info.messageId);
+    console.log('✔ SMTP response:', info.response);
+    return res.json({ success: true });
   } catch (err) {
-    console.error('❌ Błąd proxy obrazka:', err.message);
-    res.status(500).send('Błąd proxy. Nie udało się pobrać obrazka z zewnętrznego źródła.');
+    console.error('❌ Błąd sendMail():', err);
+    return res.status(500).json({ error: 'Nie udało się wysłać maila.', details: err.message });
+  }
+});
+
+// Start serwera
+app.listen(port, () => {
+  console.log(`🚀 Serwer działa na http://localhost:${port}`);
+});
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { OpenAI } from 'openai';
+import axios from 'axios';  // Dodano import axios do proxy obrazków
+import nodemailer from 'nodemailer';
+
+dotenv.config();
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+const port = process.env.PORT || 4000;
+
+// Inicjalizacja OpenAI
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
+
+// ====================================================================
+// Mapowania stylów, elewacji i dachów dla promptów DALL-E
+// Klucze muszą odpowiadać wartościom z frontendu (np. data-style, data-elev, data-roof, itp.)
+// ====================================================================
+const styleMap = {
+  nowoczesny_minimalizm: 'nowoczesny minimalizm, prosta, geometryczna bryła, duże przeszklenia, płaski dach',
+  klasyczna_elegancja:   'klasyczny styl, elegancka i tradycyjna forma, symetryczna fasada',
+  dworek:                'klasyczny dworek polski, z kolumnami, gankiem',
+  // Dodatkowe klucze (synonimy) jeśli używane w frontendzie:
+  modern:                'nowoczesny minimalizm, prosta geometryczna bryła, duże przeszklenia, płaski dach',
+  traditional:           'klasyczny styl, elegancka tradycyjna forma, symetryczna fasada',
+  mansion:               'klasyczny dworek polski, z kolumnami, gankiem',
+  bungalow:              'parterowy dom w stylu bungalow, rozłożysta niska bryła',   // jeśli taka opcja występuje
+  parterowy_styl:        'parterowy dom jednorodzinny, rozłożysta bryła'            // jeśli taka opcja występuje
+};
+const elevMap = {
+  'Deska elewacyjna': 'elewacja WYŁĄCZNIE ze skandynawskiej deski elewacyjnej (ciemnobrązowy dąb), wąskie panele, wyraźne usłojenie',
+  'Tynk mineralny':   'elewacja WYŁĄCZNIE otynkowana na biało, gładka powierzchnia',
+  // Synonimy (np. gdy frontend używa skrótowych angielskich kluczy):
+  wood:               'elewacja WYŁĄCZNIE ze skandynawskiej deski elewacyjnej (ciemnobrązowy dąb), wąskie panele, wyraźne usłojenie',
+  tynk:               'elewacja WYŁĄCZNIE otynkowana na biało, gładka powierzchnia'
+};
+const roofMap = {
+  blachodachowka:      'dach pokryty nowoczesną, modułową blachodachówką w kolorze antracytowym',
+  dachowka_ceramiczna: 'dach pokryty tradycyjną dachówką ceramiczną (czerwoną lub czarną)',
+  papa:                'dach pokryty papą (bitumiczną), dach płaski',
+  // Dodatkowe klucze/aliasy:
+  blacha:              'dach pokryty nowoczesną, modułową blachodachówką w kolorze antracytowym',   // alias blachodachówki
+  dachowka:            'dach pokryty tradycyjną dachówką ceramiczną (czerwoną lub czarną)',         // alias dachówki ceramicznej
+  tiles:               'dach pokryty tradycyjną dachówką ceramiczną (czerwoną lub czarną)',         // alias dachówki ceramicznej
+  // Jeśli frontend używał ogólnych typów dachu:
+  flat:                'płaski dach pokryty papą (bitumiczną)',
+  gabled:              'dach dwuspadowy pokryty dachówką ceramiczną',
+  multi:               'dach wielospadowy pokryty dachówką ceramiczną'
+};
+
+// ====================================================================
+// Kosztorys – parametry kosztowe (przykładowe wartości dla Trondheim, Norwegia)
+// ====================================================================
+const BASE_COST_PER_SQM = 55000;  // bazowy koszt za m² (NOK)
+const COST_MODIFIERS = {
+  // Modyfikatory kosztów w zależności od wybranego stylu
+  style: {
+    nowoczesny_minimalizm: 1.12,   // nowoczesny styl nieco droższy (duże przeszklenia, niestandardowe rozwiązania)
+    klasyczna_elegancja:   1.00,   // styl klasyczny bazowy koszt
+    dworek:                1.25,   // dworek bardziej kosztowny (detale architektoniczne)
+    // ewentualne aliasy stylów:
+    modern:                1.12,
+    traditional:           1.00,
+    mansion:               1.25
+  },
+  // Modyfikatory kosztów dla kondygnacji (parterowy, z poddaszem, piętrowy)
+  floors: {
+    parterowy: 0.95,  // dom parterowy: brak schodów, ale większy fundament i dach
+    poddasze:  1.05,  // poddasze użytkowe: okna dachowe, lukarny, itd.
+    pietrowy:  1.15,  // dom piętrowy: dodatkowe ściany, strop, schody (drożej)
+    // Jeśli frontend wysyła liczby jako string (zabezpieczenie na wypadek innego formatu):
+    '1':      0.95,
+    '2':      1.15
+  },
+  // Modyfikatory kosztów dla dachu (rodzaj pokrycia/konstrukcji)
+  roof: {
+    blachodachowka:      1.00,  // blachodachówka (modułowa, metalowa) – bazowy koszt
+    dachowka_ceramiczna: 1.07,  // dachówka ceramiczna – droższa zarówno materiał, jak i montaż
+    papa:                0.98,  // papa na dachu płaskim – nieco tańsza opcja
+    // aliasy:
+    blacha:              1.00,
+    dachowka:            1.07,
+    ceramic:             1.07,
+    // jeżeli używane są klucze ogólne od kształtu dachu:
+    flat:                0.98,  // płaski dach (pokrycie papą)
+    gabled:              1.00,  // dach dwuspadowy (pokrycie dachówką ceramiczną)
+    multi:               1.20   // dach wielospadowy (bardziej skomplikowana więźba)
+  },
+  // Modyfikatory kosztów dla elewacji
+  elev: {
+    'Deska elewacyjna': 1.18,  // drewniana elewacja droższa niż tynk
+    'Tynk mineralny':   1.00,  // tynk jako baza
+    wood:               1.18,
+    tynk:               1.00
+  },
+  // Dodatkowe koszty stałe (niezależne od powierzchni)
+  garage: {
+    attached: 300000,  // garaż w bryle budynku (zintegrowany)
+    detached: 150000,  // garaż wolnostojący
+    none:          0,  // brak garażu
+    // jeśli frontend pozostał przy 'single' / 'double':
+    single:   200000,  // (przybliżony koszt garażu jednostanowiskowego)
+    double:   300000   // (przybliżony koszt garażu dwustanowiskowego)
+  },
+  basement: {
+    yes: 400000,  // piwnica: znaczny koszt dodatkowy (wykop, izolacja, itd.)
+    no:       0
+  },
+  rental: {
+    yes: 200000,  // dodatkowa część na wynajem: dodatkowe wyposażenie, osobne wejście itp.
+    no:       0
+  },
+  accessibility: {
+    yes: 100000,  // dostosowanie domu dla osób niepełnosprawnych (np. szersze drzwi, podjazdy)
+    no:       0
+  }
+};
+
+/**
+ * Oblicza szacunkowy koszt budowy domu na podstawie wybranych opcji.
+ * Zwraca całkowity koszt w NOK.
+ */
+function calculateCost({ style, area, floors, roof, elev, garage, basement, rental, accessibility }) {
+  let totalCost = area * BASE_COST_PER_SQM;
+
+  // Zastosowanie modyfikatorów procentowych
+  totalCost *= (COST_MODIFIERS.style[style] || 1);
+  totalCost *= (COST_MODIFIERS.floors[floors] || 1);
+
+  // Specjalna logika dla dachu przy stylu nowoczesnym – wymuszenie dachu płaskiego
+  let effectiveRoof = roof;
+  if (style === 'modern' || style === 'nowoczesny_minimalizm') {
+    // Jeśli wybrany styl jest nowoczesny, a użytkownik nie wybrał blachodachówki (która może być stosowana na dachach płaskich),
+    // to zakładamy dach płaski kryty papą.
+    if (roof !== 'blachodachowka' && roof !== 'blacha') {
+      effectiveRoof = 'papa';
+    }
+  }
+  totalCost *= (COST_MODIFIERS.roof[effectiveRoof] || 1);
+  totalCost *= (COST_MODIFIERS.elev[elev] || 1);
+
+  // Dodanie kosztów stałych za dodatkowe elementy
+  totalCost += (COST_MODIFIERS.garage[garage] || 0);
+  totalCost += (COST_MODIFIERS.basement[basement] || 0);
+  totalCost += (COST_MODIFIERS.rental[rental] || 0);
+  totalCost += (COST_MODIFIERS.accessibility[accessibility] || 0);
+
+  return Math.round(totalCost);
+}
+
+/**
+ * Generuje opisowy prompt dla DALL-E na podstawie wybranych parametrów domu.
+ */
+function generatePrompt({ style, elev, roof, floors, garage }) {
+  // Opis kondygnacji / bryły budynku
+  let floorsDescription = '';
+  if (floors === 'parterowy') {
+    floorsDescription = 'dom JEDNOKONDYGNACYJNY, parterowy (bez piętra)';
+  } else if (floors === 'pietrowy') {
+    floorsDescription = 'dom DWUKONDYGNACYJNY, z pełnym piętrem (parter + piętro)';
+  } else if (floors === 'poddasze') {
+    // Opis lukarny ("kukułki") w zależności od stylu
+    const dormer = (style === 'modern' || style === 'nowoczesny_minimalizm')
+      ? 'prostokątna nowoczesna lukarna z płaskim dachem'
+      : 'tradycyjna lukarna na dachu';
+    floorsDescription = \`dom z parterem i UŻYTKOWYM PODDASZEM (\${dormer})\`;
+  } else {
+    floorsDescription = 'dom';  // domyślny opis, gdy brak dopasowania
+  }
+
+  // Dodatkowe cechy stylu – np. wymuszenie parterowej bryły dla bungalow
+  let styleSpecifics = '';
+  if (style === 'bungalow' || style === 'parterowy_styl') {
+    styleSpecifics = ', wyłącznie jednokondygnacyjna bryła (tylko parter)';
+  }
+
+  // Opis garażu
+  let garageDescription = '';
+  if (garage === 'attached' || garage === 'single' || garage === 'double') {
+    garageDescription = 'z wbudowanym garażem w bryle budynku';
+  } else if (garage === 'detached') {
+    garageDescription = 'z wolnostojącym garażem obok domu';
+  } else if (garage === 'none' || garage === 'brak') {
+    garageDescription = 'bez garażu';
+  }
+
+  // Opis dachu (uwzględnia styl nowoczesny = dach płaski)
+  let roofDescription = '';
+  if (style === 'modern' || style === 'nowoczesny_minimalizm') {
+    // Dla nowoczesnego stylu zawsze stosujemy dach płaski:
+    if (roof === 'blachodachowka' || roof === 'blacha') {
+      roofDescription = 'płaski dach pokryty nowoczesną blachodachówką (antracyt)';
+    } else {
+      roofDescription = 'płaski dach pokryty papą (bitumiczną)';
+    }
+  } else {
+    roofDescription = roofMap[roof] || '';  // dla innych stylów używamy zdefiniowanego opisu dachu
+  }
+
+  // Złożenie pełnego promptu
+  return \`Fotorealistyczna wizualizacja domu jednorodzinnego. Styl: \${styleMap[style]}\${styleSpecifics}. Typ: \${floorsDescription}. Dach: \${roofDescription}. Elewacja: \${elevMap[elev]}. \${garageDescription.charAt(0).toUpperCase() + garageDescription.slice(1)}. Otoczenie: zielony trawnik, drzewa w tle. Naturalne oświetlenie, widok z zewnątrz.\`;
+}
+
+// Endpoint: Generowanie wizualizacji i wyceny
+app.post('/api/generate-visualization', async (req, res) => {
+  console.log('▶ Otrzymano żądanie /api/generate-visualization z danymi:', req.body);
+
+  // Pobranie wszystkich wymaganych danych z requestu
+  const { style, elev, roof, floors, area, garage, basement, rental, accessibility } = req.body;
+
+  // Walidacja wejścia – sprawdzamy czy wszystkie pola są uzupełnione
+  if (style === undefined || elev === undefined || roof === undefined || 
+      floors === undefined || area === undefined || garage === undefined || 
+      basement === undefined || rental === undefined || accessibility === undefined) {
+    console.error('❌ Brak wymaganych danych wejściowych:', { style, elev, roof, floors, area, garage, basement, rental, accessibility });
+    return res.status(400).json({ 
+      error: 'Brak danych wejściowych.', 
+      details: 'Wymagane pola: style, elev, roof, floors, area, garage, basement, rental, accessibility.' 
+    });
+  }
+
+  // Generowanie promptu dla DALL-E na podstawie parametrów
+  const prompt = generatePrompt({ style, elev, roof, floors, garage });
+  console.log('📤 Wygenerowany prompt dla DALL-E:', prompt);
+
+  // Obliczanie szacunkowego kosztu budowy
+  const costEstimate = calculateCost({ style, area, floors, roof, elev, garage, basement, rental, accessibility });
+  console.log('💰 Szacunkowy koszt budowy:', costEstimate, 'NOK');
+
+  try {
+    // Wywołanie API OpenAI (DALL-E) do wygenerowania obrazu
+    const response = await openai.images.generate({
+      model: 'dall-e-3',
+      prompt: prompt,
+      n: 1,
+      size: '1024x1024'
+    });
+    const imageUrl = response.data[0].url;
+    console.log('✅ URL wygenerowanego obrazu:', imageUrl);
+
+    // Zwrócenie URL-a obrazu oraz kosztorysu do frontendu
+    return res.json({ imageUrl, costEstimate });
+  } catch (err) {
+    console.error('❌ Błąd podczas generowania obrazu:', err);
+    return res.status(500).json({ 
+      error: 'Błąd generowania obrazu AI.', 
+      details: err.message 
+    });
+  }
+});
+
+// Endpoint: Proxy obrazków (rozwiązuje ewentualne problemy CORS przy ładowaniu obrazów bezpośrednio z URL)
+app.get('/api/image-proxy', async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).send('Brak parametru URL w żądaniu.');
+  }
+  try {
+    // Pobieramy obraz z zewnętrznego URL (OpenAI) jako dane binarne
+    const imageResponse = await axios.get(url, { responseType: 'arraybuffer' });
+    // Ustawiamy odpowiedni Content-Type i zwracamy obraz
+    res.set('Content-Type', imageResponse.headers['content-type'] || 'image/png');
+    res.send(imageResponse.data);
+  } catch (err) {
+    console.error('❌ Błąd podczas proxy obrazka:', err);
+    res.status(500).send('Nie udało się pobrać obrazka z podanego URL.');
+  }
+});
+
+// Konfiguracja Nodemailer (Gmail SMTP)
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_FROM,
+    pass: process.env.EMAIL_PASS
+  }
+});
+
+// Weryfikacja połączenia SMTP
+transporter.verify()
+  .then(() => console.log('✔ SMTP transporter poprawnie zweryfikowany.'))
+  .catch(err => console.error('❌ Błąd weryfikacji SMTP:', err));
+
+// Endpoint: Wysyłanie oferty (wiadomość e-mail z wizualizacją i wyceną)
+app.post('/api/send-offer', async (req, res) => {
+  const { name, phone, email, imageUrl, estimate } = req.body;
+  if (!name || !phone || !email || !imageUrl || !estimate) {
+    return res.status(400).json({ error: 'Brakuje danych do wysłania oferty.' });
+  }
+
+  console.log('✉ Przygotowanie wiadomości e-mail do:', email);
+
+  const mailOptions = {
+    from: `"Scandura Homes" <${process.env.EMAIL_FROM}>`,
+    to: email,
+    subject: 'Twoja oferta - Scandura Homes',
+    html: `
+      <p>Cześć ${name},</p>
+      <p>Dziękujemy za skorzystanie z naszego konfiguratora domu. Poniżej przesyłamy Twoją spersonalizowaną wizualizację oraz wstępną wycenę:</p>
+      <img src="${imageUrl}" alt="Wizualizacja domu" style="width:100%;max-width:600px;border-radius:8px;"/>
+      <p><strong>Szacunkowy koszt budowy: ${estimate} NOK</strong></p>
+      <p>Wkrótce skontaktujemy się z Tobą telefonicznie pod numerem: ${phone}</p>
+      <p>Pozdrawiamy,<br>Zespół Scandura Homes</p>
+    `
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log('✔ E-mail wysłany, messageId:', info.messageId);
+    return res.json({ success: true });
+  } catch (err) {
+    console.error('❌ Błąd sendMail():', err);
+    return res.status(500).json({ 
+      error: 'Nie udało się wysłać maila.', 
+      details: err.message 
+    });
   }
 });
 
 // Uruchomienie serwera
 app.listen(port, () => {
-  console.log(`🚀 Server listening on http://localhost:${port}`);
+  console.log(`🚀 Serwer uruchomiony na http://localhost:${port}`);
 });

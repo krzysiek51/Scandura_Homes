@@ -1,5 +1,5 @@
 // konfigurator/configurator-data.js
-// Tu przechowujemy dane konfiguracyjne i ceny
+// Dane konfiguracyjne i ceny
 
 export const CONFIG_OPTIONS = {
   styles: {
@@ -19,7 +19,7 @@ export const CONFIG_OPTIONS = {
         { id: "langhus", label: "Langhus" },
       ],
     },
-    manor: {
+    dworek: {  // Zmiana z 'manor' na 'dworek' dla spójności
       label: "Dworek",
       substyles: [
         { id: "gustavian", label: "Gustawiański" },
@@ -28,7 +28,7 @@ export const CONFIG_OPTIONS = {
       ],
     },
     custom: {
-      label: "Custom",
+      label: "Własny projekt",
       substyles: [],
     },
   },
@@ -41,7 +41,7 @@ export const CONFIG_OPTIONS = {
 
   elevations: [
     { id: "wood", label: "Drewniana", modifier: 0.12 },
-    { id: "stucco", label: "Tynk (bazowy)", modifier: 0 },
+    { id: "stucco", label: "Tynk", modifier: 0 },
   ],
 
   garages: [
@@ -62,18 +62,25 @@ export function calculatePrice(config) {
   const roof = CONFIG_OPTIONS.roofs.find(r => r.id === config.roof);
   if (roof) price *= 1 + roof.modifier;
 
-  // Elewacja (modifier)
-  const elevation = CONFIG_OPTIONS.elevations.find(e => e.id === config.elevation);
+  // Elewacja (modifier) - używamy 'elevation' lub 'elev'
+  const elevKey = config.elevation || config.elev;
+  const elevation = CONFIG_OPTIONS.elevations.find(e => e.id === elevKey);
   if (elevation) price *= 1 + elevation.modifier;
 
   // Garaż (fixed)
   const garage = CONFIG_OPTIONS.garages.find(g => g.id === config.garage);
   if (garage) price += garage.cost;
 
-  // Druga kondygnacja = więcej powierzchni
-  if (config.floors > 1) {
-    const additional = config.area * (config.floors - 1);
+  // Druga kondygnacja
+  const floorCount = parseInt(config.floors) || 1;
+  if (floorCount > 1) {
+    const additional = config.area * (floorCount - 1) * 0.7; // 70% powierzchni na piętrze
     price += additional * CONFIG_OPTIONS.basePricePerM2;
+  }
+
+  // Piwnica
+  if (config.basement) {
+    price += config.area * 1500; // 1500 NOK/m² za piwnicę
   }
 
   return Math.round(price);

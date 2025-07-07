@@ -1,0 +1,187 @@
+@use '../utils/variables' as *;
+
+// Krok 7: Opcje dodatkowe (piwnica, wynajem, data)
+#step-additional-options {
+  display: none; // kontrolowane przez JS
+  padding: 1.5rem 2rem;
+  background: $color-white;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+
+  .configurator-modal__title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: $color-dark-text;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .additional-options-container {
+    margin-bottom: 2rem;
+  }
+
+  .additional-option {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: #fafafa;
+    border-radius: 0.5rem;
+    border: 1px solid $color-stroke-grey;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    // Checkbox dla piwnicy
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+
+      .checkbox-input {
+        width: 20px;
+        height: 20px;
+        margin-right: 0.75rem;
+        cursor: pointer;
+        accent-color: $color-gradient-start;
+      }
+
+      .checkbox-text {
+        font-size: 1rem;
+        color: $color-dark-text;
+      }
+    }
+
+    // Tytuł sekcji
+    .option-subtitle {
+      font-size: 1rem;
+      font-weight: 600;
+      color: $color-dark-text;
+      margin-bottom: 0.75rem;
+    }
+
+    // Radio group dla wynajem/własne
+    .radio-group {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+
+      .radio-label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+
+        .radio-input {
+          width: 18px;
+          height: 18px;
+          margin-right: 0.5rem;
+          cursor: pointer;
+          accent-color: $color-gradient-start;
+        }
+
+        .radio-text {
+          font-size: 0.95rem;
+          color: $color-dark-text;
+        }
+      }
+    }
+
+    // Data input
+    .date-label {
+      display: block;
+      font-size: 1rem;
+      font-weight: 600;
+      color: $color-dark-text;
+      margin-bottom: 0.5rem;
+    }
+
+    .date-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border: 1px solid $color-stroke-grey;
+      border-radius: 0.5rem;
+      background-color: $color-white;
+      color: $color-dark-text;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+
+      &:focus {
+        outline: none;
+        border-color: $color-gradient-start;
+        box-shadow: 0 0 0 3px rgba($color-gradient-start, 0.1);
+      }
+
+      // Stylowanie dla różnych przeglądarek
+      &::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+        filter: invert(0.5);
+      }
+    }
+  }
+
+  // Nawigacja
+  .configurator-modal__nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+
+    #additional-back-button,
+    .configurator-modal__nav-button {
+      flex: 1;
+      padding: 0.875rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      
+      // Przycisk wstecz
+      background-color: $color-gradient-start;
+      color: $color-white;
+      
+      &:hover {
+        filter: brightness(0.9);
+      }
+    }
+
+    #additional-continue-button,
+    .configurator-modal__nav-button--primary {
+      background: linear-gradient(
+        to right,
+        $color-gradient-start,
+        $color-gradient-end
+      );
+      color: $color-white;
+      
+      &:hover:not(:disabled) {
+        filter: brightness(0.9);
+      }
+      
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  // Responsywność
+  @media (max-width: 768px) {
+    padding: 1rem;
+
+    .radio-group {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .configurator-modal__nav {
+      flex-direction: column;
+      
+      .configurator-modal__nav-button {
+        width: 100%;
+      }
+    }
+  }
+}
