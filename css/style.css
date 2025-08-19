@@ -1663,904 +1663,482 @@ body {
   color: #1D1F2C;
 }
 
-.configurator-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  box-sizing: border-box;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0s 0.3s;
-}
-.configurator-modal.is-open {
-  opacity: 1;
-  visibility: visible;
-  transition-delay: 0s;
-}
-
-.configurator-modal__overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  cursor: pointer;
-}
-
-.configurator-modal__content {
-  position: relative;
-  z-index: 10;
-  background-color: #FFFFFF;
-  border-radius: 16px;
-  padding: 32px;
-  width: 100%;
-  max-width: 500px;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
-}
-
-.configurator-modal__close-button {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  z-index: 15;
-}
-
-.style-carousel {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 -20px;
-  padding: 1.5rem 0;
-  background-color: #FFFFFF;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-}
-
-.style-carousel__track-container {
-  overflow: hidden;
-  width: 100%;
-}
-
-.style-carousel__track {
-  display: flex;
-  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.style-carousel__slide {
-  flex: 0 0 100%;
-  padding: 0 1rem;
-  box-sizing: border-box;
-  text-align: center;
-}
-
-.style-carousel__image {
-  width: 100%;
-  border-radius: 12px;
-  object-fit: cover;
-  margin-bottom: 1rem;
-}
-
-.style-carousel__title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1D1F2C;
-  margin: 0.5rem 0 0.75rem;
-}
-
-.style-carousel__description {
-  font-size: 0.9375rem;
-  color: #666;
-  margin-bottom: 1.25rem;
-}
-
-.style-carousel__select-button {
-  display: inline-block;
-  padding: 0.75rem 2rem;
-  border-radius: 30px;
-  background: linear-gradient(to right, #DC9B59, #000000);
-  color: #FFFFFF;
-  border: none;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-.style-carousel__select-button:hover {
-  background: rgb(211.1194029851, 129.6268656716, 46.8805970149);
-}
-
-.style-carousel__arrow {
-  background: none;
-  border: none;
-  font-size: 1.75rem;
-  color: #979797;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-.style-carousel__arrow:hover:not(:disabled) {
-  color: #1D1F2C;
-}
-.style-carousel__arrow:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.step-area-selection__dynamic-sketch {
-  width: 100%;
-  max-width: 280px;
-  margin: 0 auto 24px;
-  padding: 20px;
-  border: 1px dashed #ddd;
-  border-radius: 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 150px;
-  background-color: #fdfdfd;
-  transition: transform 0.3s ease;
-}
-.step-area-selection__sketch-image {
-  max-width: 100%;
-  height: auto;
-}
-.step-area-selection__title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #1D1F2C;
-  margin: 0 0 0.5rem;
-  text-align: center;
-}
-.step-area-selection__subtitle {
-  font-size: 1rem;
-  color: #666;
-  margin: 0 auto 1.5rem;
-  text-align: center;
-  max-width: 300px;
-}
-.step-area-selection__input-group {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin: 0 auto 2rem;
-  width: 100%;
-  max-width: 400px;
-}
-.step-area-selection__slider {
-  -webkit-appearance: none;
-  appearance: none;
-  flex: 1;
-  height: 8px;
-  background: #e9e9e9;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-.step-area-selection__slider:focus {
-  outline: none;
-}
-.step-area-selection__slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 24px;
-  height: 24px;
-  background: #DC9B59;
-  border: 3px solid #FFFFFF;
-  border-radius: 50%;
-  margin-top: -8px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-}
-.step-area-selection__slider::-moz-range-thumb {
-  width: 24px;
-  height: 24px;
-  background: #DC9B59;
-  border: 3px solid #FFFFFF;
-  border-radius: 50%;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-}
-.step-area-selection__input-wrapper {
-  display: flex;
-  align-items: center;
-  border: 1px solid #eaeaea;
-  background-color: #fafafa;
-  border-radius: 12px;
-  padding: 8px 16px;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-.step-area-selection__input-wrapper:focus-within {
-  border-color: #1D1F2C;
-  box-shadow: 0 0 0 3px rgba(29, 31, 44, 0.1);
-}
-.step-area-selection .step-area-selection__number-input {
-  border: none;
-  background: none;
-  font-size: 1.25rem;
-  font-weight: 500;
-  text-align: center;
-  width: 60px;
-  -webkit-appearance: none;
-  -moz-appearance: textfield;
-  appearance: textfield;
-}
-.step-area-selection .step-area-selection__number-input::-webkit-outer-spin-button, .step-area-selection .step-area-selection__number-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-.step-area-selection .step-area-selection__number-input:focus {
-  outline: none;
-}
-.step-area-selection__input-unit {
-  font-size: 1.125rem;
-  font-weight: 500;
-  color: #666;
-  margin-left: 0.5rem;
-}
-.step-area-selection__nav {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-}
-.step-area-selection__nav-button {
-  flex: 1;
-  padding: 0.75rem;
-  font-size: 14px;
-  font-weight: 500;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  background-color: #DC9B59;
-  border: 1px solid #DC9B59;
-  color: #FFFFFF;
-}
-.step-area-selection__nav-button:hover:not(:disabled) {
-  background-color: rgb(49.2602739726, 52.6575342466, 74.7397260274);
-}
-.step-area-selection__nav-button:disabled {
-  background-color: #eaeaea;
-  border-color: #eaeaea;
-  color: #b0b0b0;
-  cursor: not-allowed;
-}
-.step-area-selection__nav-button:first-child {
-  background-color: #DC9B59;
-  border: 1px solid #DC9B59;
-  color: #FFFFFF;
-}
-.step-area-selection__nav-button:first-child:hover:not(:disabled) {
-  background-color: #f5f5f5;
-  border-color: #ddd;
+/* === _tokens.scss (kompletny) — zmienne projektu === */
+/* Kolory */
+/* Border radius */
+/* Breakpointy */
+/* Cienie */
+/* Typografia */
+/* Inne */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
 }
 @media (max-width: 768px) {
-  .step-area-selection__input-group {
-    flex-direction: column;
-  }
-  .step-area-selection__input-wrapper {
-    width: 100%;
-    justify-content: space-between;
+  .grid {
+    grid-template-columns: 1fr;
   }
 }
 
-.step-roof-elev {
-  display: none;
-  padding: 1.5rem 2rem;
-  background: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-}
-.step-roof-elev__title {
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
-  text-align: center;
-  color: #333;
-}
-.step-roof-elev__roof-options, .step-roof-elev__facade-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-}
-.step-roof-elev__roof-option, .step-roof-elev__facade-option {
-  flex: 1 1 30%;
-  min-width: 8rem;
-  padding: 0.75rem 1rem;
-  background: #f5f5f5;
-  border: 2px solid transparent;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  color: #333;
-  text-align: center;
-  cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
-  appearance: none;
-}
-.step-roof-elev__roof-option:hover, .step-roof-elev__facade-option:hover {
-  background: #eee;
-}
-.step-roof-elev__roof-option.is-active, .step-roof-elev__facade-option.is-active {
-  background: #fff;
-  border-color: #DC9B59;
-}
-.step-roof-elev__nav {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
-}
-.step-roof-elev__nav-button {
-  padding: 0.75rem 1.25rem;
-  background-color: #FAF7F4;
-  color: #1D1F2C;
-  border: 2px solid transparent;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
-  appearance: none;
-}
-.step-roof-elev__nav-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-.step-roof-elev__nav-button:hover:not(:disabled) {
-  background-color: #DC9B59;
-  color: #fff;
-}
-.step-roof-elev__nav-button.is-selected {
-  background-color: #DC9B59;
-  color: #fff;
-}
-.step-roof-elev__nav-button:active:not(:disabled) {
-  border-color: rgba(255, 255, 255, 0.25);
+/* Pełna szerokość dla wybranych pól */
+.full {
+  grid-column: 1/-1;
 }
 
-.step-summary .configurator-nav {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 2rem;
-}
-.step-summary .configurator-nav .configurator-nav__button {
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+/* Inputy i selecty */
+label {
+  display: block;
   font-weight: 600;
-  text-transform: uppercase;
+  margin-bottom: 6px;
 }
-.step-summary .configurator-nav .configurator-nav__button--back {
-  background-color: #e0e0e0;
-  color: #333;
-}
-.step-summary .configurator-nav .configurator-nav__button--back:hover {
-  background-color: #d5d5d5;
-}
-.step-summary .configurator-nav .configurator-nav__button--continue {
-  background-color: #007aff;
-  color: #fff;
-}
-.step-summary .configurator-nav .configurator-nav__button--continue:hover {
-  background-color: #005fcc;
-}
-.step-summary .configurator-nav .configurator-nav__button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.step-addons .step-title {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-.step-addons .step-subtitle {
-  color: #666;
-  margin-bottom: 1rem;
-}
-.step-addons .addon-group {
-  margin-bottom: 1.5rem;
-}
-.step-addons .addon-group__button {
-  padding: 1rem;
-  background: #FAFAFA;
-  border: 2px solid #EAEAEA;
-  border-radius: 12px;
-  cursor: pointer;
-  margin-right: 0.5rem;
-  transition: border-color 0.2s;
-}
-.step-addons .addon-group__button:hover:not(.is-active) {
-  border-color: #ccc;
-}
-.step-addons .addon-group__button.is-active {
-  border-color: #DC9B59;
-  background-color: #FFF4E3;
-}
-
-@media (max-width: 768px) {
-  .configurator-modal__content {
-    width: 95%;
-    padding: 1rem;
-  }
-  .step-floors .floor-options {
-    grid-template-columns: 1fr;
-  }
-  .step-roof-elevation .exterior-options {
-    grid-template-columns: 1fr;
-  }
-  .step-addons .addon-group {
-    display: flex;
-    flex-direction: column;
-  }
-}
-/*
- * scss/konfigurator_header/_step-options.scss
- * Krok 3: Wybór typu domu (warianty styli: nowoczesny, klasyczny, dworek, custom prompt)
- */
-#step-options-modern,
-#step-options-classic,
-#step-options-dworek,
-#step-custom-prompt {
-  /* kontener kroku 3 - display kontrolowane w JS */
-  padding: 1.5rem 2rem;
-}
-#step-options-modern .floor-options,
-#step-options-classic .floor-options,
-#step-options-dworek .floor-options,
-#step-custom-prompt .floor-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-  /* przyciski wariantów domu */
-}
-#step-options-modern .floor-options__button,
-#step-options-modern .floor-options .floor-options__button,
-#step-options-classic .floor-options__button,
-#step-options-classic .floor-options .floor-options__button,
-#step-options-dworek .floor-options__button,
-#step-options-dworek .floor-options .floor-options__button,
-#step-custom-prompt .floor-options__button,
-#step-custom-prompt .floor-options .floor-options__button {
-  flex: 1 1 30%;
-  min-width: 8rem;
-  padding: 0.75rem 1rem;
-  background: #f5f5f5;
-  border: 2px solid transparent;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  color: #333;
-  text-align: center;
-  cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
-}
-#step-options-modern .floor-options__button.is-active,
-#step-options-modern .floor-options .floor-options__button.is-active,
-#step-options-classic .floor-options__button.is-active,
-#step-options-classic .floor-options .floor-options__button.is-active,
-#step-options-dworek .floor-options__button.is-active,
-#step-options-dworek .floor-options .floor-options__button.is-active,
-#step-custom-prompt .floor-options__button.is-active,
-#step-custom-prompt .floor-options .floor-options__button.is-active {
-  background: #fff;
-  border-color: #DC9B59;
-}
-#step-options-modern .floor-options__button:hover,
-#step-options-modern .floor-options .floor-options__button:hover,
-#step-options-classic .floor-options__button:hover,
-#step-options-classic .floor-options .floor-options__button:hover,
-#step-options-dworek .floor-options__button:hover,
-#step-options-dworek .floor-options .floor-options__button:hover,
-#step-custom-prompt .floor-options__button:hover,
-#step-custom-prompt .floor-options .floor-options__button:hover {
-  background: #eee;
-}
-#step-options-modern .configurator-nav,
-#step-options-classic .configurator-nav,
-#step-options-dworek .configurator-nav,
-#step-custom-prompt .configurator-nav {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-#step-options-modern .configurator-nav__button,
-#step-options-modern .configurator-nav .configurator-nav__button,
-#step-options-classic .configurator-nav__button,
-#step-options-classic .configurator-nav .configurator-nav__button,
-#step-options-dworek .configurator-nav__button,
-#step-options-dworek .configurator-nav .configurator-nav__button,
-#step-custom-prompt .configurator-nav__button,
-#step-custom-prompt .configurator-nav .configurator-nav__button {
-  flex: 1;
-  padding: 0.75rem 1.25rem;
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  /* przycisk Wróć */
-  /* przycisk Kontynuuj */
-  /* efekt hover dla aktywnych */
-}
-#step-options-modern .configurator-nav__button[data-back-to],
-#step-options-modern .configurator-nav .configurator-nav__button[data-back-to],
-#step-options-classic .configurator-nav__button[data-back-to],
-#step-options-classic .configurator-nav .configurator-nav__button[data-back-to],
-#step-options-dworek .configurator-nav__button[data-back-to],
-#step-options-dworek .configurator-nav .configurator-nav__button[data-back-to],
-#step-custom-prompt .configurator-nav__button[data-back-to],
-#step-custom-prompt .configurator-nav .configurator-nav__button[data-back-to] {
-  background-color: #DC9B59;
-  color: #fff;
-}
-#step-options-modern .configurator-nav__button[data-continue-from],
-#step-options-modern .configurator-nav .configurator-nav__button[data-continue-from],
-#step-options-classic .configurator-nav__button[data-continue-from],
-#step-options-classic .configurator-nav .configurator-nav__button[data-continue-from],
-#step-options-dworek .configurator-nav__button[data-continue-from],
-#step-options-dworek .configurator-nav .configurator-nav__button[data-continue-from],
-#step-custom-prompt .configurator-nav__button[data-continue-from],
-#step-custom-prompt .configurator-nav .configurator-nav__button[data-continue-from] {
-  background-color: #DC9B59;
-  color: #fff;
-  /* stan wyłączony */
-}
-#step-options-modern .configurator-nav__button[data-continue-from][disabled], #step-options-modern .configurator-nav__button[data-continue-from]:disabled,
-#step-options-modern .configurator-nav .configurator-nav__button[data-continue-from][disabled],
-#step-options-modern .configurator-nav .configurator-nav__button[data-continue-from]:disabled,
-#step-options-classic .configurator-nav__button[data-continue-from][disabled],
-#step-options-classic .configurator-nav__button[data-continue-from]:disabled,
-#step-options-classic .configurator-nav .configurator-nav__button[data-continue-from][disabled],
-#step-options-classic .configurator-nav .configurator-nav__button[data-continue-from]:disabled,
-#step-options-dworek .configurator-nav__button[data-continue-from][disabled],
-#step-options-dworek .configurator-nav__button[data-continue-from]:disabled,
-#step-options-dworek .configurator-nav .configurator-nav__button[data-continue-from][disabled],
-#step-options-dworek .configurator-nav .configurator-nav__button[data-continue-from]:disabled,
-#step-custom-prompt .configurator-nav__button[data-continue-from][disabled],
-#step-custom-prompt .configurator-nav__button[data-continue-from]:disabled,
-#step-custom-prompt .configurator-nav .configurator-nav__button[data-continue-from][disabled],
-#step-custom-prompt .configurator-nav .configurator-nav__button[data-continue-from]:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-#step-options-modern .configurator-nav__button:hover:not([disabled]):not(:disabled),
-#step-options-modern .configurator-nav .configurator-nav__button:hover:not([disabled]):not(:disabled),
-#step-options-classic .configurator-nav__button:hover:not([disabled]):not(:disabled),
-#step-options-classic .configurator-nav .configurator-nav__button:hover:not([disabled]):not(:disabled),
-#step-options-dworek .configurator-nav__button:hover:not([disabled]):not(:disabled),
-#step-options-dworek .configurator-nav .configurator-nav__button:hover:not([disabled]):not(:disabled),
-#step-custom-prompt .configurator-nav__button:hover:not([disabled]):not(:disabled),
-#step-custom-prompt .configurator-nav .configurator-nav__button:hover:not([disabled]):not(:disabled) {
-  filter: brightness(0.9);
-}
-
-/*
- * scss/konfigurator_header/_step-floor-count.scss
- * Krok 4: Wybór ilości kondygnacji
- */
-#step-floor-count {
-  display: none; /* kontrolowane JS */
-  padding: 1.5rem 2rem;
-  background: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-  /* Tytuł kroku */
-  /* Opcje kondygnacji */
-  /* Pojedyncza opcja kondygnacji */
-  /* Nawigacja: przyciski Wróć i Kontynuuj */
-}
-#step-floor-count .step-floor-count__title {
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
-  color: #333;
-  text-align: center;
-}
-#step-floor-count .step-floor-count__options {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-#step-floor-count .step-floor-count__option {
-  padding: 0.75rem 1rem;
-  background-color: #FAF7F4;
-  border: 1px solid #979797;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  color: #333;
-  text-align: center;
-  cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
-}
-#step-floor-count .step-floor-count__option:hover {
-  filter: brightness(0.95);
-}
-#step-floor-count .step-floor-count__option.is-active {
-  background-color: #DC9B59;
-  color: #fff;
-  border-color: #DC9B59;
-}
-#step-floor-count .step-floor-count__nav {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-#step-floor-count .step-floor-count__nav .step-floor-count__nav-button--back {
-  flex: 1;
-  padding: 0.75rem 1.25rem;
-  background-color: #DC9B59;
-  color: #fff;
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: filter 0.2s;
-}
-#step-floor-count .step-floor-count__nav .step-floor-count__nav-button--back:hover {
-  filter: brightness(0.9);
-}
-#step-floor-count .step-floor-count__nav .step-floor-count__nav-button--continue {
-  flex: 1;
-  padding: 0.75rem 1.25rem;
-  background-color: #DC9B59;
-  color: #fff;
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: filter 0.2s;
-}
-#step-floor-count .step-floor-count__nav .step-floor-count__nav-button--continue:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-#step-floor-count .step-floor-count__nav .step-floor-count__nav-button--continue:hover:not(:disabled) {
-  filter: brightness(0.9);
-}
-
-.step-garage {
-  padding: 24px 16px;
-}
-.step-garage__title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 16px;
-  text-align: center;
-}
-.step-garage__options {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-.step-garage__button {
-  padding: 12px 16px;
-  background-color: #FAF7F4;
-  border: 1px solid #979797;
+label > input,
+label > select {
+  width: 100%;
+  min-width: 0; /* zapobiega zawijaniu i ucinaniu */
+  height: 42px;
+  border: 1px solid #e6e6e6;
   border-radius: 8px;
-  font-size: 16px;
-  text-align: center;
-  cursor: pointer;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
-  user-select: none;
+  padding: 0 12px;
+  font-weight: 400;
 }
-.step-garage__button:focus:not(.is-active), .step-garage__button:active:not(.is-active) {
-  outline: none;
-  background-color: #DC9B59;
+label > textarea {
+  width: 100%;
+  min-height: 120px;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  padding: 10px 12px;
+  resize: vertical;
 }
-.step-garage__button.is-active {
-  background-color: #DC9B59;
-  color: #fff;
-  border-color: #DC9B59;
+
+/* Dodatkowy margines na dole, żeby sticky przyciski nic nie zasłaniały */
+.cfg-step:last-child {
+  padding-bottom: 80px;
 }
-.step-garage__button.is-active:hover, .step-garage__button.is-active:focus, .step-garage__button.is-active:active {
-  background-color: #DC9B59;
-  color: #fff;
-  border-color: #DC9B59;
+
+/* === _nav.scss (fixed for Dart Sass 1.88+) === */
+/* ===== Pasek postępu / stepper (góra) ===== */
+.cfg-stepper {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  padding: 12px 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
-.step-garage__nav {
-  display: flex;
-  justify-content: space-between;
+
+.cfg-steps {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  align-items: center;
   gap: 8px;
 }
-.step-garage__nav-button {
-  flex: 1;
-  padding: 12px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-}
-.step-garage__nav-button:first-child {
-  background-color: #DC9B59;
-  color: #fff;
-}
-.step-garage__nav-button--continue {
-  background-color: #DC9B59;
-  color: #FFFFFF;
-  border: 1px solid #DC9B59;
-}
-.step-garage__nav-button--continue[disabled], .step-garage__nav-button--continue:disabled, .step-garage__nav-button--continue.disabled, .step-garage__nav-button--continue.is-disabled {
-  background-color: #DC9B59;
-  color: #fff;
-  border: 1px solid #979797;
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
-}
 
-.step-floor-count__nav-button--back,
-.step-roof-elev__nav-button--back,
-.step-garage__nav-button--back {
-  /* wspólne style back */
-}
-
-.step-floor-count__nav-button--continue,
-.step-roof-elev__nav-button--continue,
-.step-garage__nav-button--continue {
-  /* wspólne style continue */
-}
-
-#step-custom-prompt {
-  /* Istniejące style kontenera kroku */
-  display: none;
-  padding: 1.5rem 2rem;
-  background: #FFFFFF;
-  border-radius: 1rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-  /* NOWE STYLE: sekcja wyniku wygenerowanego obrazu */
-}
-#step-custom-prompt .step-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1D1F2C;
-  text-align: center;
-  margin-bottom: 0.5rem;
-}
-#step-custom-prompt .step-subtitle {
-  font-size: 0.95rem;
-  color: #666;
-  text-align: center;
-  margin-bottom: 1.5rem;
-  line-height: 1.4;
-}
-#step-custom-prompt .custom-prompt-group {
-  margin-bottom: 1.5rem;
-}
-#step-custom-prompt .custom-prompt-group__textarea {
-  width: 100%;
-  min-height: 6rem;
-  padding: 0.75rem;
-  border: 1px solid #979797;
-  border-radius: 0.5rem;
-  resize: vertical;
-  font-size: 1rem;
-  line-height: 1.4;
-  margin-top: 0.5rem;
-}
-#step-custom-prompt .custom-prompt-group__textarea:focus {
-  outline: none;
-  border-color: #DC9B59;
-}
-#step-custom-prompt .custom-prompt-result {
-  display: none; /* początkowo ukryte, sterowane JS */
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-#step-custom-prompt .custom-prompt-result__image-container {
-  width: 100%;
-  max-width: 280px;
-  margin: 0 auto 1rem;
-  padding: 1.25rem;
-  border: 1px dashed #979797;
-  border-radius: 1rem;
-  background-color: #FAFAFA;
-  /* centrowanie zawartości (obraz lub spinner) */
+.cfg-step-item {
   display: flex;
-  justify-content: center;
   align-items: center;
-  min-height: 150px;
-  position: relative;
+  gap: 8px;
+  min-width: 0;
+  color: #666;
+  font-size: 14px;
 }
-#step-custom-prompt .custom-prompt-result__image {
-  max-width: 100%;
-  height: auto;
-  border-radius: 0.5rem;
-  /* Obraz na starcie niewidoczny (pokazywany po załadowaniu) */
-  display: block;
+.cfg-step-item__bullet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  background: #fff;
+  font-weight: 600;
 }
-#step-custom-prompt .custom-prompt-result__regen-button {
-  background-color: #EAEAEA;
-  color: #1D1F2C;
-  border: none;
-  border-radius: 0.5rem;
-  padding: 0.5rem 1.25rem;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  display: inline-block;
-  /* Umieszczenie przycisku poniżej obrazka */
-  margin: 0 auto;
-  transition: filter 0.2s;
+.cfg-step-item__label {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-#step-custom-prompt .custom-prompt-result__regen-button:hover {
-  filter: brightness(0.9);
+.cfg-step-item.is-active {
+  color: #222;
 }
-#step-custom-prompt .configurator-nav {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1rem;
+.cfg-step-item.is-active .cfg-step-item__bullet {
+  border-color: #c79549;
+  box-shadow: 0 0 0 3px rgba(199, 149, 73, 0.18); /* rgba of $accent */
 }
-#step-custom-prompt .configurator-nav .configurator-nav__button {
-  flex: 1;
-  padding: 0.75rem 1.25rem;
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  position: relative;
-  transition: filter 0.2s;
+.cfg-step-item.is-done {
+  color: #222;
 }
-#step-custom-prompt .configurator-nav .configurator-nav__button--back {
-  background-color: #DC9B59;
-  color: #FFFFFF;
-  text-align: center;
-}
-#step-custom-prompt .configurator-nav .configurator-nav__button--back:hover {
-  filter: brightness(0.9);
-}
-#step-custom-prompt .configurator-nav .configurator-nav__button--continue {
-  background-color: #FAF7F4;
-  color: #1D1F2C;
-  text-align: center;
-  /* Gdy przycisk jest nieaktywny (brak tekstu w prompt) */
-  /* Spinner (loader) w przycisku "Wygeneruj" */
-}
-#step-custom-prompt .configurator-nav .configurator-nav__button--continue:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-#step-custom-prompt .configurator-nav .configurator-nav__button--continue:hover:not(:disabled) {
-  filter: brightness(0.95);
-}
-#step-custom-prompt .configurator-nav .configurator-nav__button--continue .spinner {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 1.2rem;
-  height: 1.2rem;
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  border-top-color: #FFFFFF;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  display: none; /* domyślnie ukryty; pojawi się w trakcie ładowania */
+.cfg-step-item.is-done .cfg-step-item__bullet {
+  background: #c79549;
+  border-color: #c79549;
+  color: #fff;
 }
 
-/* Animacja obrotowego spinnera */
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
+.cfg-progress {
+  margin-top: 10px;
+  height: 6px;
+  border-radius: 999px;
+  background: #eee;
+  overflow: hidden;
+}
+.cfg-progress__value {
+  height: 100%;
+  width: 0%;
+  background: #c79549;
+  transition: width 0.25s ease;
+}
+
+@media (max-width: 768px) {
+  .cfg-stepper {
+    padding: 10px 12px;
+  }
+  .cfg-step-item__label {
+    display: none;
   }
 }
+/* ===== Pasek nawigacji (dół) ===== */
+.cfg-nav {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  background: #fff;
+  border-top: 1px solid #eee;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
+  padding: 12px 16px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+}
+
+.cfg-nav__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cfg-nav__spacer {
+  flex: 1 1 auto;
+}
+
+.btn {
+  height: 44px;
+  border-radius: 8px;
+}
+
+.btn--primary {
+  background: #c79549;
+  color: #fff;
+  border: none;
+}
+.btn--primary:hover {
+  background: rgb(183.08, 137.08, 67.16);
+}
+.btn--primary:disabled {
+  background: rgb(221.4, 191.4, 145.8);
+  cursor: not-allowed;
+}
+
+.btn--secondary {
+  background: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+}
+.btn--secondary:hover {
+  background: #eee;
+}
+
+@media (max-width: 768px) {
+  .cfg-nav {
+    padding: 10px 12px;
+  }
+  .cfg-nav__row {
+    gap: 8px;
+  }
+}
+/* Dodatki */
+.cfg-step {
+  padding: 16px;
+}
+
+.cfg-step:last-child {
+  padding-bottom: 80px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cfg-progress__value {
+    transition: none;
+  }
+}
+/* === _popup.scss (fixed) — domyślnie ukryty backdrop + scroll całego panelu === */
+/* Domyślnie ukryj popup; pokaż przez klasę .is-open (albo usuń .is-hidden – patrz JS) */
+.cfg__backdrop {
+  display: none;
+}
+
+.cfg__backdrop.is-open {
+  display: flex;
+}
+
+.cfg__backdrop.is-hidden {
+  display: none;
+} /* kompatybilnie z obecnym JS */
+/* Backdrop */
+.cfg__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto; /* fallback scroll jeśli panel wyższy niż ekran */
+  padding: 20px;
+}
+
+/* Panel popupu — przewija się cały jako jedna całość */
+.cfg__panel {
+  position: relative;
+  width: min(1100px, 96vw);
+  max-height: 90dvh;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Krok */
+.cfg-step {
+  flex: none;
+  padding: 20px;
+  overflow: visible;
+}
+
+/* Ikona zamknięcia */
+.cfg__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: 0;
+  font-size: 22px;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.2s;
+  z-index: 30;
+}
+.cfg__close:hover {
+  color: #000;
+}
+
+@media (max-width: 768px) {
+  .cfg__backdrop {
+    padding: 0;
+  }
+  .cfg__panel {
+    width: 100%;
+    max-height: 100dvh;
+    border-radius: 0;
+  }
+  .cfg-step {
+    padding: 16px;
+  }
+}
+/* Blokada scrolla tła przy aktywnym modalu */
+body.no-scroll {
+  overflow: hidden;
+}
+
+/* === _stepper.scss (kompletny) — pasek kroków konfiguratora === */
+/*
+  Zakres pliku:
+  - Stylowanie steppera (numery kroków + etykiety).
+  - Progres liniowy pod listą kroków.
+  - Stany: normalny, aktywny, zakończony.
+  - Responsywność (skracanie etykiet / ukrywanie na mobile).
+
+  Uwaga: zachowanie sticky dla paska u góry możesz trzymać w _nav.scss,
+  ale poniżej dodano opcjonalny blok (odkomentuj jeśli wolisz trzymać tu).
+*/
+/* Opcjonalnie: odkomentuj, jeśli chcesz sticky tutaj */
+/* Wrapper na kroki */
+.cfg-steps {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Pojedynczy krok */
+.cfg-step-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0; /* pozwala labelce użyć ellipsis */
+  color: #666;
+  font-size: 14px;
+  /* Aktywny krok */
+  /* Ukończony krok */
+}
+.cfg-step-item__bullet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  background: #fff;
+  font-weight: 700;
+  line-height: 1;
+}
+.cfg-step-item__label {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cfg-step-item.is-active {
+  color: #222;
+}
+.cfg-step-item.is-active .cfg-step-item__bullet {
+  border-color: #c79549;
+  box-shadow: 0 0 0 3px rgba(199, 149, 73, 0.18);
+}
+.cfg-step-item.is-done {
+  color: #222;
+}
+.cfg-step-item.is-done .cfg-step-item__bullet {
+  background: #c79549;
+  border-color: #c79549;
+  color: #fff;
+}
+
+/* Liniowy pasek postępu pod listą kroków (opcjonalny) */
+.cfg-progress {
+  margin-top: 10px;
+  height: 6px;
+  border-radius: 999px;
+  background: #eee;
+  overflow: hidden;
+}
+.cfg-progress__value {
+  height: 100%;
+  width: 0%; /* ustawiane w JS np. (step/stepsCount*100%) */
+  background: #c79549;
+  transition: width 0.25s ease;
+}
+
+/* Responsywność: na tablet/mniejszym ukryj etykiety, zostaw numerki */
+@media (max-width: 768px) {
+  .cfg-stepper {
+    padding: 10px 12px;
+  }
+  .cfg-step-item__label {
+    display: none;
+  }
+}
+/* Preferencje ograniczonego ruchu */
+@media (prefers-reduced-motion: reduce) {
+  .cfg-progress__value {
+    transition: none;
+  }
+}
+/* === _steps.scss (kompletny) — style dla poszczególnych kroków konfiguratora === */
+/* Podstawowy wrapper kroku */
+.cfg-step {
+  flex: none;
+  padding: 24px;
+  overflow: visible;
+}
+@media (max-width: 768px) {
+  .cfg-step {
+    padding: 16px;
+  }
+}
+
+/* Tytuł kroku */
+.cfg-step__title {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+}
+
+/* Opis pod tytułem (opcjonalny) */
+.cfg-step__desc {
+  font-size: 15px;
+  color: #777;
+  margin-bottom: 20px;
+}
+
+/* Siatka pól formularza wewnątrz kroku */
+.cfg-step .grid {
+  margin-top: 8px;
+}
+
+/* Opcje wyboru (np. typ domu, fundament) */
+.cfg-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.cfg-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #ddd;
+  background: #fff;
+  padding: 12px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.cfg-option input[type=radio],
+.cfg-option input[type=checkbox] {
+  accent-color: #c79549;
+}
+.cfg-option:hover {
+  border-color: #c79549;
+}
+.cfg-option.is-active {
+  border-color: #c79549;
+  box-shadow: 0 0 0 3px rgba(199, 149, 73, 0.15);
+}
+
+/* Podsumowanie w krokach 6/7 */
+.summary {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px 0;
+}
+
+.summary li {
+  margin: 6px 0;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.muted {
+  color: #777;
+  font-size: 13px;
+}
+
+/* Zapewnij, że ostatni krok nie schowa treści pod sticky nav */
+.cfg-step:last-child {
+  padding-bottom: 80px;
+}
+
 .header__burger {
   position: relative;
   z-index: 110;

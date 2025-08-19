@@ -1,0 +1,41 @@
+/* === configurator.scss (główny plik SCSS konfiguratora) === */
+
+@use 'tokens';
+@use 'forms';
+@use 'buttons';
+@use 'popup';
+@use 'nav';
+@use 'stepper';
+@use 'steps';
+
+/* Globalne style konfiguratora */
+.cfg-modal {
+  font-family: tokens.$font-base;
+  font-size: tokens.$font-size-base;
+  color: #222;
+  line-height: 1.4;
+}
+
+/* Blokada scrolla tła przy otwartym modalu */
+body.no-scroll {
+  overflow: hidden;
+}
+
+/* Animacja pojawiania się i znikania okna */
+.cfg__backdrop {
+  animation: fadeIn .25s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.cfg__panel {
+  animation: slideUp .3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

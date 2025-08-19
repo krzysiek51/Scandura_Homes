@@ -12,6 +12,8 @@
   "license": "ISC",
   "devDependencies": {
     "sass": "^1.88.0"
+  },
+  "dependencies": {
+    "form-data": "^4.0.3"
   }
 }
-
