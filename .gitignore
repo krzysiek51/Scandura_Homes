@@ -2,3 +2,4 @@ node_modules/
 # Nie wrzucać klucza OpenAI do repozytorium
 server/.env
 dist/
+dist/
