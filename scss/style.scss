@@ -29,6 +29,8 @@
 //pages*
 
 
-@use "pages/about";
+
 @use "components/cfg-modal-fixed";
 @use "components/configurator-prompt";
+
+@use "pages/about";

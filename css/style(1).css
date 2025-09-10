@@ -494,6 +494,7 @@ body {
 /* === LOGO: zawsze klikalne na mobile/tablet === */
 .header__logo,
 .header__logo a {
+  position: relative;
   z-index: 5; /* ponad burgerem/menu/overlayami */
   pointer-events: auto;
 }
@@ -550,53 +551,6 @@ body {
   pointer-events: auto;
 }
 
-/* menu schowane/pokazane – tylko mobile/tablet */
-@media (max-width: 1439px) {
-  #mobile-menu[aria-hidden=true] {
-    display: none;
-    pointer-events: none;
-  }
-  #mobile-menu[aria-hidden=false] {
-    display: block;
-    pointer-events: auto;
-  }
-}
-/* blokada scrolla, gdy otwarte */
-html.nav-open, body.nav-open {
-  overflow: hidden;
-}
-
-/* burger klikalny */
-#burger-toggle {
-  position: relative;
-  z-index: 10;
-  pointer-events: auto;
-}
-
-/* overlay/video w headerze nie łapie klików */
-.header__overlay, .header_video, .header::before, .header::after {
-  pointer-events: none;
-}
-
-.header__nav-close {
-  position: absolute; /* dostosuj pozycję jak masz w projekcie */
-  top: 0;
-  right: 0;
-  z-index: 12; /* ponad zawartością menu */
-  pointer-events: auto; /* klikalny */
-}
-
-/* menu: stan zamknięty/otwarty (dla mobile/tablet) */
-@media (max-width: 1439px) {
-  #mobile-menu[aria-hidden=true] {
-    display: none;
-    pointer-events: none;
-  }
-  #mobile-menu[aria-hidden=false] {
-    display: block;
-    pointer-events: auto;
-  }
-}
 /* =========================================================
    Sekcja: MISJA (mobile first)
    ========================================================= */
@@ -4445,7 +4399,7 @@ html.nav-open, body.nav-open {
 .header__nav-close img {
   display: block;
   width: 20px;
-  height: 20px;
+  height: 14px;
 }
 
 /* CTA domyślnie ukryte (pokazujemy dopiero w belce ≥1440) */
@@ -6290,6 +6244,1282 @@ nav#mobile-menu .button--nav {
     padding-inline: 6px !important;
   }
 }
+/* =================================================================
+   PAGES / ABOUT — WERSJA W PEŁNI NIEZALEŻNA (bez @use / importów)
+   Grid/MQ: M 4×72 gap16 pad20 | T 8×65 gap20 pad42
+            L 12×78 gap24 pad40 | D 12×88 gap24 pad300
+   ================================================================= */
+/* ---------- LOKALNE ZMIENNE ---------- */
+/* Breakpointy */
+/* Kolory (lokalne, domyślne) — możesz podmienić na swoje tokeny */
+/* ---------- LOKALNY MIXIN: sekcyjny grid ---------- */
+/* === NOWY mixin: płynny grid === */
+/* =========================================================
+   HEADER (tylko about.html)
+   ========================================================= */
+.about-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 66px;
+  z-index: 1000;
+  background-color: rgba(23, 23, 23, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+.about-header__inner {
+  height: 100%;
+  padding-inline: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.about-header__logo {
+  display: block;
+  height: 40px;
+}
+.about-header__logo img {
+  height: 100%;
+  width: auto;
+  display: block;
+}
+.about-header__burger {
+  width: 20px;
+  height: 14px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+.about-header__burger img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.about-header__nav {
+  display: none;
+  background: #ffffff;
+  position: absolute;
+  top: 66px;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+}
+.about-header__menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.about-header__link {
+  font-size: 16px;
+  text-decoration: none;
+  color: #171717;
+}
+.about-header__link.is-active {
+  font-weight: 700;
+  color: #0F8B8D;
+}
+
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .about-header {
+    height: 80px;
+  }
+  .about-header__nav {
+    top: 80px;
+  }
+}
+@media (min-width: 1920px) {
+  .about-header {
+    height: 88px;
+  }
+  .about-header__nav {
+    top: 88px;
+  }
+}
+/* =========================================================
+   HERO
+   ========================================================= */
+.about-hero {
+  padding: 96px 0 40px; /* 66 header + ~30 odstępu */
+}
+.about-hero .about-hero__dots {
+  position: absolute;
+  top: -24px;
+  right: -24px;
+  width: 140px;
+  height: auto;
+  pointer-events: none;
+  z-index: 10;
+}
+.about-hero .about__container {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 72px);
+  column-gap: 16px;
+  row-gap: 16px;
+  justify-content: center; /* trzyma tory w środku */
+  margin-inline: auto;
+  min-width: 0;
+  box-sizing: content-box;
+  padding-inline: 20px;
+}
+.about-hero__content {
+  grid-column: 1/-1;
+}
+.about-hero__title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #171717;
+}
+.about-hero__lead {
+  font-size: 16px;
+  margin-bottom: 24px;
+  color: #6B7280;
+}
+.about-hero__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.about-hero__photo {
+  grid-column: 1/-1;
+  margin-top: 16px;
+}
+.about-hero__photo img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 94px 0 0 0;
+  object-fit: cover;
+  z-index: 50;
+}
+
+@media (min-width: 744px) and (max-width: 1439px) {
+  .about-hero {
+    padding: 112px 0 48px;
+  }
+  .about-hero .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(8, 65px);
+    column-gap: 20px;
+    row-gap: 20px;
+    justify-content: center; /* trzyma tory w środku */
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    padding-inline: 42px;
+  }
+  .about-hero__content {
+    grid-column: 1/-1;
+  }
+  .about-hero__photo {
+    grid-column: 1/-1;
+    margin-top: 20px;
+  }
+}
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .about-hero {
+    padding: 120px 0 56px;
+  }
+  .about-hero .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(12, 78px);
+    column-gap: 24px;
+    row-gap: 24px;
+    justify-content: center; /* trzyma tory w środku */
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    padding-inline: 40px;
+  }
+  .about-hero__content {
+    grid-column: 1/span 6;
+    align-self: center;
+  }
+  .about-hero__photo {
+    grid-column: 7/span 6;
+    margin-top: 0;
+  }
+}
+@media (min-width: 1920px) {
+  .about-hero {
+    padding: 128px 0 64px;
+  }
+  .about-hero .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(12, 88px);
+    column-gap: 24px;
+    row-gap: 24px;
+    justify-content: center; /* trzyma tory w środku */
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    padding-inline: 300px;
+  }
+  .about-hero__content {
+    grid-column: 1/span 6;
+  }
+  .about-hero__photo {
+    grid-column: 7/span 6;
+  }
+}
+/* =========================================================
+   VALUES
+   ========================================================= */
+.about-values {
+  background-color: #FAF7F4;
+  padding: 40px 0;
+}
+.about-values .about__container {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 72px);
+  column-gap: 16px;
+  row-gap: 16px;
+  justify-content: center; /* trzyma tory w środku */
+  margin-inline: auto;
+  min-width: 0;
+  box-sizing: content-box;
+  padding-inline: 20px;
+}
+.about-values .section-title {
+  grid-column: 1/-1;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+.about-values__grid {
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.about-values .value {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+}
+.about-values .value__title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.about-values .value__text {
+  font-size: 14px;
+  color: #6B7280;
+}
+
+@media (min-width: 744px) and (max-width: 1439px) {
+  .about-values .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(8, 65px);
+    column-gap: 20px;
+    row-gap: 20px;
+    justify-content: center; /* trzyma tory w środku */
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    padding-inline: 42px;
+  }
+  .about-values__grid {
+    gap: 20px;
+  }
+}
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .about-values .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(12, 78px);
+    column-gap: 24px;
+    row-gap: 24px;
+    justify-content: center; /* trzyma tory w środku */
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    padding-inline: 40px;
+  }
+  .about-values__grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+}
+@media (min-width: 1920px) {
+  .about-values .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(12, 88px);
+    column-gap: 24px;
+    row-gap: 24px;
+    justify-content: center; /* trzyma tory w środku */
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    padding-inline: 300px;
+  }
+}
+/* =========================================================
+   TIMELINE
+   ========================================================= */
+.about-timeline {
+  padding: 40px 0;
+  background-color: #ffffff;
+}
+.about-timeline .about__container {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 72px);
+  column-gap: 16px;
+  row-gap: 16px;
+  justify-content: center; /* trzyma tory w środku */
+  margin-inline: auto;
+  min-width: 0;
+  box-sizing: content-box;
+  padding-inline: 20px;
+}
+.about-timeline .section-title {
+  grid-column: 1/-1;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+.about-timeline .timeline {
+  grid-column: 1/-1;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.about-timeline .timeline li {
+  background: #FAF7F4;
+  border-radius: 12px;
+  padding: 20px;
+}
+.about-timeline .timeline li h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.about-timeline .timeline li p {
+  font-size: 14px;
+  color: #6B7280;
+}
+
+@media (min-width: 744px) and (max-width: 1439px) {
+  .about-timeline .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(8, 65px);
+    column-gap: 20px;
+    row-gap: 20px;
+    justify-content: center; /* trzyma tory w środku */
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    padding-inline: 42px;
+  }
+}
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .about-timeline .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(12, 78px);
+    column-gap: 24px;
+    row-gap: 24px;
+    justify-content: center; /* trzyma tory w środku */
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    padding-inline: 40px;
+  }
+  .about-timeline .timeline {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+}
+@media (min-width: 1920px) {
+  .about-timeline .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(12, 88px);
+    column-gap: 24px;
+    row-gap: 24px;
+    justify-content: center; /* trzyma tory w środku */
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    padding-inline: 300px;
+  }
+}
+/* =========================================================
+   PROCESS
+   ========================================================= */
+.about-process {
+  padding: 40px 0;
+  background-color: #F6F1EA;
+}
+.about-process .about__container {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 72px);
+  column-gap: 16px;
+  row-gap: 16px;
+  justify-content: center; /* trzyma tory w środku */
+  margin-inline: auto;
+  min-width: 0;
+  box-sizing: content-box;
+  padding-inline: 20px;
+}
+.about-process .section-title {
+  grid-column: 1/-1;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+.about-process .process-grid {
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.about-process .process-grid article {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+.about-process .process-grid article h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.about-process .process-grid article p {
+  font-size: 13px;
+  color: #6B7280;
+}
+
+@media (min-width: 744px) and (max-width: 1439px) {
+  .about-process .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(8, 65px);
+    column-gap: 20px;
+    row-gap: 20px;
+    justify-content: center; /* trzyma tory w środku */
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    padding-inline: 42px;
+  }
+  .about-process .process-grid {
+    gap: 20px;
+  }
+}
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .about-process .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(12, 78px);
+    column-gap: 24px;
+    row-gap: 24px;
+    justify-content: center; /* trzyma tory w środku */
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    padding-inline: 40px;
+  }
+  .about-process .process-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+}
+@media (min-width: 1920px) {
+  .about-process .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(12, 88px);
+    column-gap: 24px;
+    row-gap: 24px;
+    justify-content: center; /* trzyma tory w środku */
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    padding-inline: 300px;
+  }
+}
+/* =========================================================
+   STATS
+   ========================================================= */
+.about-stats {
+  padding: 40px 0;
+  background: #ffffff;
+}
+.about-stats .about__container {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 72px);
+  column-gap: 16px;
+  row-gap: 16px;
+  justify-content: center; /* trzyma tory w środku */
+  margin-inline: auto;
+  min-width: 0;
+  box-sizing: content-box;
+  padding-inline: 20px;
+}
+.about-stats .stats {
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  text-align: center;
+}
+.about-stats .stat {
+  background: #FAF7F4;
+  border-radius: 12px;
+  padding: 20px;
+}
+.about-stats .stat__value {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  display: block;
+}
+.about-stats .stat__label {
+  font-size: 13px;
+  color: #6B7280;
+}
+
+@media (min-width: 744px) and (max-width: 1439px) {
+  .about-stats .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(8, 65px);
+    column-gap: 20px;
+    row-gap: 20px;
+    justify-content: center; /* trzyma tory w środku */
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    padding-inline: 42px;
+  }
+  .about-stats .stats {
+    gap: 20px;
+  }
+}
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .about-stats .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(12, 78px);
+    column-gap: 24px;
+    row-gap: 24px;
+    justify-content: center; /* trzyma tory w środku */
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    padding-inline: 40px;
+  }
+  .about-stats .stats {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+}
+@media (min-width: 1920px) {
+  .about-stats .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(12, 88px);
+    column-gap: 24px;
+    row-gap: 24px;
+    justify-content: center; /* trzyma tory w środku */
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    padding-inline: 300px;
+  }
+}
+/* =========================================================
+   FEATURED PROJECTS
+   ========================================================= */
+.about-featured {
+  grid-column: 1/-1;
+  width: 100%;
+  padding: 40px 0;
+  background: #ffffff;
+}
+.about-featured .about__container {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 72px);
+  column-gap: 16px;
+  row-gap: 16px;
+  justify-content: center; /* trzyma tory w środku */
+  margin-inline: auto;
+  min-width: 0;
+  box-sizing: content-box;
+  padding-inline: 20px;
+}
+.about-featured .section-title {
+  grid-column: 1/-1;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+.about-featured .featured-grid {
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+.about-featured .project-card {
+  background: #FAF7F4;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.about-featured .project-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.about-featured .project-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 16px;
+}
+.about-featured .project-card p {
+  font-size: 14px;
+  color: #6B7280;
+  margin: 0 16px 16px;
+}
+.about-featured .project-card .btn {
+  margin: 0 16px 16px;
+}
+
+@media (min-width: 744px) and (max-width: 1439px) {
+  .about-featured .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(8, 65px);
+    column-gap: 20px;
+    row-gap: 20px;
+    justify-content: center; /* trzyma tory w środku */
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    padding-inline: 42px;
+  }
+  .about-featured .featured-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+}
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .about-featured .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(12, 78px);
+    column-gap: 24px;
+    row-gap: 24px;
+    justify-content: center; /* trzyma tory w środku */
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    padding-inline: 40px;
+  }
+  .about-featured .featured-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+}
+@media (min-width: 1920px) {
+  .about-featured .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(12, 88px);
+    column-gap: 24px;
+    row-gap: 24px;
+    justify-content: center; /* trzyma tory w środku */
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    padding-inline: 300px;
+  }
+}
+/* =========================================================
+   TESTIMONIALS (szkielet)
+   ========================================================= */
+.about-testimonials {
+  padding: 40px 0;
+  background: #FAF7F4;
+}
+.about-testimonials .about__container {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 72px);
+  column-gap: 16px;
+  row-gap: 16px;
+  justify-content: center; /* trzyma tory w środku */
+  margin-inline: auto;
+  min-width: 0;
+  box-sizing: content-box;
+  padding-inline: 20px;
+}
+.about-testimonials .section-title {
+  grid-column: 1/-1;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+.about-testimonials .testimonials-grid {
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 744px) and (max-width: 1439px) {
+  .about-testimonials .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(8, 65px);
+    column-gap: 20px;
+    row-gap: 20px;
+    justify-content: center; /* trzyma tory w środku */
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    padding-inline: 42px;
+  }
+  .about-testimonials .testimonials-grid {
+    gap: 20px;
+  }
+}
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .about-testimonials .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(12, 78px);
+    column-gap: 24px;
+    row-gap: 24px;
+    justify-content: center; /* trzyma tory w środku */
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    padding-inline: 40px;
+  }
+  .about-testimonials .testimonials-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+}
+@media (min-width: 1920px) {
+  .about-testimonials .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(12, 88px);
+    column-gap: 24px;
+    row-gap: 24px;
+    justify-content: center; /* trzyma tory w środku */
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    padding-inline: 300px;
+  }
+}
+/* =========================================================
+   CTA — karta w obrębie kontenera (nie wychodzi w paddingi)
+   ========================================================= */
+.about-cta {
+  /* sekcja neutralna, bez tła i bez marginesów */
+  margin: 0;
+  padding: 0;
+  /* about__container ma już grid + paddingy z Override Pack */
+  /* KARTA CTA (trzyma kolor i promień, nie wychodzi poza grid) */
+  /* Tytuł i opis na pełną szer. */
+  /* Rząd z dwoma przyciskami */
+}
+.about-cta .about__container {
+  /* nic więcej nie trzeba */
+}
+.about-cta__box {
+  grid-column: 1/-1; /* pełna szer. kolumn kontenera */
+  background: #0F8B8D;
+  color: #ffffff;
+  border-radius: 24px;
+  padding: 24px; /* wewnętrzny oddech karty */
+  display: grid;
+  grid-template-columns: 1fr; /* układ wspólny dla wszystkich MQ */
+  row-gap: 16px;
+}
+.about-cta__box > h2 {
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.2;
+  margin: 0;
+}
+.about-cta__box > p {
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+  opacity: 0.95;
+}
+.about-cta .btns {
+  display: flex;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 4px;
+  max-width: 335px;
+  margin: 0 auto;
+}
+
+/* ===== Tablet ===== */
+@media (min-width: 744px) and (max-width: 1439px) {
+  .about-cta__box {
+    padding: 32px;
+    row-gap: 18px;
+  }
+  .about-cta__box > h2 {
+    font-size: 26px;
+  }
+  .about-cta__box > p {
+    font-size: 16px;
+  }
+  .about-cta .btns {
+    gap: 14px;
+  }
+}
+/* ===== Laptop ===== */
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .about-cta__box {
+    padding: 40px;
+    row-gap: 20px;
+  }
+  .about-cta__box > h2 {
+    font-size: 28px;
+  }
+  .about-cta__box > p {
+    font-size: 16px;
+  }
+  .about-cta .btns .btn {
+    min-height: 48px;
+  }
+}
+/* ===== Desktop ===== */
+@media (min-width: 1920px) {
+  .about-cta__box {
+    padding: 48px;
+  }
+  .about-cta__box > h2 {
+    font-size: 30px;
+  }
+  .about-cta__box > p {
+    font-size: 18px;
+  }
+  .about-cta .btns .btn {
+    min-height: 52px;
+  }
+}
+/* Tablet */
+@media (min-width: 744px) {
+  .about-cta {
+    padding: 56px 0;
+  }
+  .about-cta h2 {
+    font-size: 26px;
+    margin-bottom: 16px;
+  }
+  .about-cta p {
+    font-size: 16px;
+    margin-bottom: 24px;
+  }
+  .about-cta .btns {
+    gap: 16px;
+  }
+}
+/* Laptop */
+@media (min-width: 1440px) {
+  .about-cta {
+    padding: 64px 0;
+  }
+  .about-cta h2 {
+    font-size: 28px;
+  }
+  .about-cta p {
+    font-size: 18px;
+  }
+  .about-cta .btns .btn {
+    min-height: 48px;
+  }
+}
+/* Desktop */
+@media (min-width: 1920px) {
+  .about-cta {
+    padding: 72px 0;
+  }
+  .about-cta h2 {
+    font-size: 32px;
+  }
+  .about-cta p {
+    font-size: 18px;
+  }
+  .about-cta .btns .btn {
+    min-height: 52px;
+  }
+}
+/* ===== Tablet (8 kol) – większa typografia i oddechy ===== */
+@media (min-width: 744px) and (max-width: 1439px) {
+  .about-cta {
+    padding: 40px 0;
+  }
+  .about-cta > .about__container > h2 {
+    font-size: 26px;
+    margin-bottom: 14px;
+  }
+  .about-cta > .about__container > p {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  .about-cta .btns {
+    gap: 14px;
+  }
+}
+/* ===== Laptop (12 kol) ===== */
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .about-cta {
+    padding: 48px 0;
+  }
+  .about-cta > .about__container > h2 {
+    font-size: 28px;
+  }
+  .about-cta > .about__container > p {
+    font-size: 16px;
+  }
+  .about-cta .btns {
+    gap: 16px;
+  }
+  .about-cta .btns .btn {
+    min-height: 48px;
+  }
+}
+/* ===== Desktop (12 kol, szerokie boki) ===== */
+@media (min-width: 1920px) {
+  .about-cta {
+    padding: 56px 0;
+  }
+  .about-cta > .about__container > h2 {
+    font-size: 30px;
+  }
+  .about-cta > .about__container > p {
+    font-size: 18px;
+  }
+  .about-cta .btns .btn {
+    min-height: 52px;
+  }
+}
+/* =========================================================
+   OVERRIDE PACK — płynny grid dla wszystkich sekcji ABOUT
+   (wklej NA SAMYM KOŃCU pliku)
+   ========================================================= */
+/* Mobile: 4 kol, gap 16, pad 20 */
+.about-hero .about__container,
+.about-values .about__container,
+.about-timeline .about__container,
+.about-process .about__container,
+.about-stats .about__container,
+.about-featured .about__container,
+.about-testimonials .about__container,
+.about-cta .about__container {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: 16px;
+  row-gap: 16px;
+  padding-inline: 20px;
+  justify-content: center;
+  margin-inline: auto;
+  min-width: 0;
+  box-sizing: content-box;
+}
+
+/* Tablet: 8 kol, gap 20, pad 42 */
+@media (min-width: 744px) and (max-width: 1439px) {
+  .about-hero .about__container,
+  .about-values .about__container,
+  .about-timeline .about__container,
+  .about-process .about__container,
+  .about-stats .about__container,
+  .about-featured .about__container,
+  .about-testimonials .about__container,
+  .about-cta .about__container {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    column-gap: 20px;
+    row-gap: 20px;
+    padding-inline: 42px;
+  }
+}
+/* Laptop: 12 kol, gap 24, pad 40 */
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .about-hero .about__container,
+  .about-values .about__container,
+  .about-timeline .about__container,
+  .about-process .about__container,
+  .about-stats .about__container,
+  .about-featured .about__container,
+  .about-testimonials .about__container,
+  .about-cta .about__container {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 24px;
+    row-gap: 24px;
+    padding-inline: 40px;
+  }
+}
+/* Desktop: 12 kol, gap 24, pad 300 */
+@media (min-width: 1920px) {
+  .about-hero .about__container,
+  .about-values .about__container,
+  .about-timeline .about__container,
+  .about-process .about__container,
+  .about-stats .about__container,
+  .about-featured .about__container,
+  .about-testimonials .about__container,
+  .about-cta .about__container {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 24px;
+    row-gap: 24px;
+    padding-inline: 300px;
+  }
+}
+/* Dots przy zdjęciu (jak w mission) */
+.about-hero__photo {
+  position: relative;
+}
+
+.about-hero__dots {
+  position: absolute;
+  top: -24px;
+  right: -24px;
+  width: 140px;
+  height: auto;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@media (max-width: 743px) {
+  .about-hero__dots {
+    top: -16px;
+    right: -16px;
+    width: 100px;
+  }
+}
+@media (min-width: 1440px) {
+  .about-hero__dots {
+    top: -32px;
+    right: -32px;
+    width: 180px;
+  }
+}
+/* === Projects embed inside About === */
+.about-featured .projects--embed {
+  /* bez własnych paddingów sekcji projects */
+  grid-column: 1/-1;
+  width: 100%;
+}
+
+/* Tablet: 2 kolumny kart */
+@media (min-width: 744px) and (max-width: 1439px) {
+  .about-featured .projects--embed {
+    grid-column: 1/-1;
+    width: 100%;
+  }
+}
+/* Laptop/Desktop: 3 kolumny kart */
+@media (min-width: 1440px) {
+  .about-featured .projects--embed .projects__cards-container {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+  }
+}
+/* === Testimonials embed inside About === */
+.about-testimonials {
+  /* klucz: sekcja .testimonials jest bezpośrednim dzieckiem about__container */
+  /* opcjonalnie: jeżeli chcesz, by moduł nie miał dodatkowego odstępu od About,
+     można wyluzować własny margines sekcji */
+  /* .testimonials { padding-top: 0; } */
+}
+.about-testimonials .about__container {
+  /* już ma nasz płynny grid z OVERRIDE PACK */
+}
+.about-testimonials .testimonials {
+  grid-column: 1/-1; /* pełny span przez kolumny about */
+  width: 100%;
+  margin: 0; /* na wypadek domyślnych marginesów */
+}
+
+/* === ABOUT CTA — fix przycisków === */
+.about-cta {
+  /* 2 kolumny już mamy, tu tylko korekty przycisków */
+  /* Ujednolicenie wymiarów niezależnie od contentu i globalnych styli .btn */
+  /* Kontekstowe kolory na zielonym tle karty */
+}
+.about-cta .btns {
+  grid-template-columns: 1fr 1fr; /* równo po 50% */
+  gap: 12px;
+}
+@media (min-width: 744px) {
+  .about-cta .btns {
+    gap: 14px;
+  }
+}
+@media (min-width: 1440px) {
+  .about-cta .btns {
+    gap: 16px;
+  }
+}
+.about-cta .btns .btn {
+  display: flex; /* pewne centrowanie w pionie */
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 44px; /* mobile */
+  padding: 12px 18px; /* nadpisanie ewentualnych globalnych */
+  margin: 0; /* kasuje globalne marginesy */
+  line-height: 1.2;
+  white-space: nowrap; /* bez łamania w jednej linii */
+  box-sizing: border-box;
+  -webkit-appearance: none; /* iOS */
+  border-radius: 12px; /* spójny promień */
+}
+@media (min-width: 1440px) {
+  .about-cta .btns .btn {
+    min-height: 48px;
+  }
+}
+@media (min-width: 1920px) {
+  .about-cta .btns .btn {
+    min-height: 52px;
+  }
+}
+.about-cta .about-cta__box {
+  /* PRIMARY – zostaje brandowy */
+  /* SECONDARY – obrys + biały tekst, żeby nie „znikał” na tle */
+}
+.about-cta .about-cta__box .btn--primary {
+  /* jeśli masz token, zostaw – tu tylko upewniamy się o kontraście */
+  color: #fff;
+}
+.about-cta .about-cta__box .btn--secondary {
+  background: transparent !important;
+  color: #fff !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.75);
+}
+.about-cta .about-cta__box .btn--secondary:hover,
+.about-cta .about-cta__box .btn--secondary:focus-visible {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  outline: none;
+}
+
+/* --- ABOUT CTA: AI Box ma być nad wszystkim i klikalny --- */
+.about-cta {
+  position: relative;
+  isolation: isolate; /* nowy stacking-context */
+  z-index: 1;
+}
+
+.about-cta::before,
+.about-cta::after {
+  pointer-events: none; /* pseudo-elementy nie zasłaniają klików */
+}
+
+.configurator-prompt,
+.configurator-prompt__content { /* karta wewnątrz */
+  position: relative;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+/* --- TESTIMONIALS: nawigacja/strzałki zawsze klikalne --- */
+.testimonials {
+  position: relative;
+  isolation: isolate;
+  z-index: 1;
+}
+
+.testimonials::before,
+.testimonials::after {
+  pointer-events: none; /* gradienty/dekoracje */
+}
+
+.testimonials__nav,
+.testimonials__arrow {
+  position: relative;
+  z-index: 3; /* ponad slajdami/dekoracjami */
+  pointer-events: auto;
+}
+
+/* Jeśli masz overlay/gradient nad kartami: */
+.testimonials__overlay,
+.testimonials__gradient,
+.testimonials__decor {
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Profilaktycznie: sekcja niżej (np. footer) nie wychodzi nad CTA */
+.footer,
+.section,
+.about-section,
+.about-content {
+  position: relative;
+  z-index: 0;
+}
+
 /* =========================================================
    POPUP KONFIGURATORA — stała ramka i zachowanie
    (przeniesione z <style id="cfg-fixed-frame-css">)
@@ -6804,1223 +8034,6 @@ body.cfg-open {
     letter-spacing: 1px;
     margin-top: 12px;
   }
-}
-/* =================================================================
-   PAGES / ABOUT — WERSJA W PEŁNI NIEZALEŻNA (bez @use / importów)
-   Grid/MQ: M 4×72 gap16 pad20 | T 8×65 gap20 pad42
-            L 12×78 gap24 pad40 | D 12×88 gap24 pad300
-   ================================================================= */
-/* ---------- LOKALNE ZMIENNE ---------- */
-/* Breakpointy */
-/* Kolory (lokalne, domyślne) — możesz podmienić na swoje tokeny */
-/* Override wysokości headera tylko na about */
-body.about .header {
-  min-height: 0 !important; /* przebija min-height:450px z header.scss */
-  height: auto;
-}
-
-/* ---------- LOKALNY MIXIN: sekcyjny grid ---------- */
-/* === NOWY mixin: płynny grid === */
-/* =========================================================
-   HERO
-   ========================================================= */
-.about-hero {
-  padding: 24px 0 0 0; /* 66 header + ~30 odstępu */
-  /* CTA w sekcji hero About */
-}
-.about-hero .about-hero__dots {
-  position: absolute;
-  top: -24px;
-  right: -24px;
-  width: 140px;
-  height: auto;
-  z-index: 1;
-  pointer-events: none;
-}
-.about-hero .about__container {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(4, 72px);
-  column-gap: 16px;
-  row-gap: 16px;
-  justify-content: center; /* trzyma tory w środku */
-  margin-inline: auto;
-  min-width: 0;
-  box-sizing: content-box;
-  padding-inline: 20px;
-}
-.about-hero .section-divider {
-  width: 230px;
-  height: 4px;
-  border-radius: 2px;
-  background: linear-gradient(90deg, #DC9B59 0%, #000000 100%);
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  margin: 20px 0;
-}
-.about-hero__content {
-  grid-column: 1/-1;
-}
-.about-hero__title {
-  font: 700 24px/1 "DM Sans", sans-serif;
-  color: #070707;
-  letter-spacing: 0.07em;
-  margin-bottom: 16px;
-}
-.about-hero__lead {
-  font: 500 16px/1.5 "DM Sans", sans-serif;
-  color: #070707;
-  letter-spacing: 0.05em;
-  margin-bottom: 20px;
-}
-.about-hero__cta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-.about-hero__photo {
-  position: relative;
-  grid-column: 1/-1;
-  margin-top: 16px;
-}
-.about-hero__photo img {
-  display: block;
-  width: 100%;
-  height: auto;
-  border-radius: 94px 0 0 0;
-  object-fit: cover;
-  position: relative;
-  z-index: 2;
-}
-.about-hero .about-hero__cta {
-  margin-bottom: 40px; /* odstęp od lead/opisu */
-  display: flex;
-  justify-content: flex-start; /* CTA wyrównane do lewej kolumny */
-}
-.about-hero .about-hero__cta .btn {
-  padding: 12px 24px;
-  font-size: 16px;
-  font-weight: 600;
-  border-radius: 0 12px 0 0;
-}
-
-@media (min-width: 744px) and (max-width: 1439px) {
-  .about-hero {
-    padding: 112px 0 48px;
-  }
-  .about-hero .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(8, 65px);
-    column-gap: 20px;
-    row-gap: 20px;
-    justify-content: center; /* trzyma tory w środku */
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-    padding-inline: 42px;
-  }
-  .about-hero__content {
-    grid-column: 1/-1;
-  }
-  .about-hero__photo {
-    grid-column: 1/-1;
-    margin-top: 20px;
-  }
-}
-@media (min-width: 1440px) and (max-width: 1919px) {
-  .about-hero {
-    padding: 120px 0 56px;
-  }
-  .about-hero .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(12, 78px);
-    column-gap: 24px;
-    row-gap: 24px;
-    justify-content: center; /* trzyma tory w środku */
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-    padding-inline: 40px;
-  }
-  .about-hero__content {
-    grid-column: 1/span 6;
-    align-self: center;
-  }
-  .about-hero__photo {
-    grid-column: 7/span 6;
-    margin-top: 0;
-  }
-}
-@media (min-width: 1920px) {
-  .about-hero {
-    padding: 128px 0 64px;
-  }
-  .about-hero .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(12, 88px);
-    column-gap: 24px;
-    row-gap: 24px;
-    justify-content: center; /* trzyma tory w środku */
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-    padding-inline: 300px;
-  }
-  .about-hero__content {
-    grid-column: 1/span 6;
-  }
-  .about-hero__photo {
-    grid-column: 7/span 6;
-  }
-}
-/* =========================================================
-   VALUES
-   ========================================================= */
-.about-values {
-  background-color: #FAF7F4;
-  padding: 40px 0;
-}
-.about-values .about__container {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(4, 72px);
-  column-gap: 16px;
-  row-gap: 16px;
-  justify-content: center; /* trzyma tory w środku */
-  margin-inline: auto;
-  min-width: 0;
-  box-sizing: content-box;
-  padding-inline: 20px;
-}
-.about-values .section-title {
-  grid-column: 1/-1;
-  text-align: center;
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 24px;
-}
-.about-values__grid {
-  grid-column: 1/-1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-.about-values .value {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 20px;
-  text-align: center;
-}
-.about-values .value__title {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-.about-values .value__text {
-  font-size: 14px;
-  color: #6B7280;
-}
-
-@media (min-width: 744px) and (max-width: 1439px) {
-  .about-values .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(8, 65px);
-    column-gap: 20px;
-    row-gap: 20px;
-    justify-content: center; /* trzyma tory w środku */
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-    padding-inline: 42px;
-  }
-  .about-values__grid {
-    gap: 20px;
-  }
-}
-@media (min-width: 1440px) and (max-width: 1919px) {
-  .about-values .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(12, 78px);
-    column-gap: 24px;
-    row-gap: 24px;
-    justify-content: center; /* trzyma tory w środku */
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-    padding-inline: 40px;
-  }
-  .about-values__grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-  }
-}
-@media (min-width: 1920px) {
-  .about-values .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(12, 88px);
-    column-gap: 24px;
-    row-gap: 24px;
-    justify-content: center; /* trzyma tory w środku */
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-    padding-inline: 300px;
-  }
-}
-/* ... POZOSTAŁE SEKCJE (timeline, process, stats, featured, testimonials, cta, overrides) BEZ ZMIAN ... */
-/* =========================================================
-   TIMELINE
-   ========================================================= */
-.about-timeline {
-  padding: 40px 0;
-  background-color: #ffffff;
-}
-.about-timeline .about__container {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(4, 72px);
-  column-gap: 16px;
-  row-gap: 16px;
-  justify-content: center; /* trzyma tory w środku */
-  margin-inline: auto;
-  min-width: 0;
-  box-sizing: content-box;
-  padding-inline: 20px;
-}
-.about-timeline .section-title {
-  grid-column: 1/-1;
-  text-align: center;
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 24px;
-}
-.about-timeline .timeline {
-  grid-column: 1/-1;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-.about-timeline .timeline li {
-  background: #FAF7F4;
-  border-radius: 12px;
-  padding: 20px;
-}
-.about-timeline .timeline li h3 {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-.about-timeline .timeline li p {
-  font-size: 14px;
-  color: #6B7280;
-}
-
-@media (min-width: 744px) and (max-width: 1439px) {
-  .about-timeline .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(8, 65px);
-    column-gap: 20px;
-    row-gap: 20px;
-    justify-content: center; /* trzyma tory w środku */
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-    padding-inline: 42px;
-  }
-}
-@media (min-width: 1440px) and (max-width: 1919px) {
-  .about-timeline .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(12, 78px);
-    column-gap: 24px;
-    row-gap: 24px;
-    justify-content: center; /* trzyma tory w środku */
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-    padding-inline: 40px;
-  }
-  .about-timeline .timeline {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-  }
-}
-@media (min-width: 1920px) {
-  .about-timeline .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(12, 88px);
-    column-gap: 24px;
-    row-gap: 24px;
-    justify-content: center; /* trzyma tory w środku */
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-    padding-inline: 300px;
-  }
-}
-/* =========================================================
-   PROCESS
-   ========================================================= */
-.about-process {
-  padding: 40px 0;
-  background-color: #F6F1EA;
-}
-.about-process .about__container {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(4, 72px);
-  column-gap: 16px;
-  row-gap: 16px;
-  justify-content: center; /* trzyma tory w środku */
-  margin-inline: auto;
-  min-width: 0;
-  box-sizing: content-box;
-  padding-inline: 20px;
-}
-.about-process .section-title {
-  grid-column: 1/-1;
-  text-align: center;
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 24px;
-}
-.about-process .process-grid {
-  grid-column: 1/-1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-.about-process .process-grid article {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 20px;
-  text-align: center;
-}
-.about-process .process-grid article h3 {
-  font-size: 15px;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-.about-process .process-grid article p {
-  font-size: 13px;
-  color: #6B7280;
-}
-
-@media (min-width: 744px) and (max-width: 1439px) {
-  .about-process .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(8, 65px);
-    column-gap: 20px;
-    row-gap: 20px;
-    justify-content: center; /* trzyma tory w środku */
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-    padding-inline: 42px;
-  }
-  .about-process .process-grid {
-    gap: 20px;
-  }
-}
-@media (min-width: 1440px) and (max-width: 1919px) {
-  .about-process .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(12, 78px);
-    column-gap: 24px;
-    row-gap: 24px;
-    justify-content: center; /* trzyma tory w środku */
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-    padding-inline: 40px;
-  }
-  .about-process .process-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-  }
-}
-@media (min-width: 1920px) {
-  .about-process .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(12, 88px);
-    column-gap: 24px;
-    row-gap: 24px;
-    justify-content: center; /* trzyma tory w środku */
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-    padding-inline: 300px;
-  }
-}
-/* =========================================================
-   STATS
-   ========================================================= */
-.about-stats {
-  padding: 40px 0;
-  background: #ffffff;
-}
-.about-stats .about__container {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(4, 72px);
-  column-gap: 16px;
-  row-gap: 16px;
-  justify-content: center; /* trzyma tory w środku */
-  margin-inline: auto;
-  min-width: 0;
-  box-sizing: content-box;
-  padding-inline: 20px;
-}
-.about-stats .stats {
-  grid-column: 1/-1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  text-align: center;
-}
-.about-stats .stat {
-  background: #FAF7F4;
-  border-radius: 12px;
-  padding: 20px;
-}
-.about-stats .stat__value {
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 4px;
-  display: block;
-}
-.about-stats .stat__label {
-  font-size: 13px;
-  color: #6B7280;
-}
-
-@media (min-width: 744px) and (max-width: 1439px) {
-  .about-stats .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(8, 65px);
-    column-gap: 20px;
-    row-gap: 20px;
-    justify-content: center; /* trzyma tory w środku */
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-    padding-inline: 42px;
-  }
-  .about-stats .stats {
-    gap: 20px;
-  }
-}
-@media (min-width: 1440px) and (max-width: 1919px) {
-  .about-stats .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(12, 78px);
-    column-gap: 24px;
-    row-gap: 24px;
-    justify-content: center; /* trzyma tory w środku */
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-    padding-inline: 40px;
-  }
-  .about-stats .stats {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-  }
-}
-@media (min-width: 1920px) {
-  .about-stats .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(12, 88px);
-    column-gap: 24px;
-    row-gap: 24px;
-    justify-content: center; /* trzyma tory w środku */
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-    padding-inline: 300px;
-  }
-}
-/* =========================================================
-   FEATURED PROJECTS
-   ========================================================= */
-.about-featured {
-  grid-column: 1/-1;
-  width: 100%;
-  padding: 40px 0;
-  background: #ffffff;
-}
-.about-featured .about__container {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(4, 72px);
-  column-gap: 16px;
-  row-gap: 16px;
-  justify-content: center; /* trzyma tory w środku */
-  margin-inline: auto;
-  min-width: 0;
-  box-sizing: content-box;
-  padding-inline: 20px;
-}
-.about-featured .section-title {
-  grid-column: 1/-1;
-  text-align: center;
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 24px;
-}
-.about-featured .featured-grid {
-  grid-column: 1/-1;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-}
-.about-featured .project-card {
-  background: #FAF7F4;
-  border-radius: 16px;
-  overflow: hidden;
-}
-.about-featured .project-card img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-.about-featured .project-card h3 {
-  font-size: 16px;
-  font-weight: 600;
-  margin: 16px;
-}
-.about-featured .project-card p {
-  font-size: 14px;
-  color: #6B7280;
-  margin: 0 16px 16px;
-}
-.about-featured .project-card .btn {
-  margin: 0 16px 16px;
-}
-
-@media (min-width: 744px) and (max-width: 1439px) {
-  .about-featured .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(8, 65px);
-    column-gap: 20px;
-    row-gap: 20px;
-    justify-content: center; /* trzyma tory w środku */
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-    padding-inline: 42px;
-  }
-  .about-featured .featured-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-}
-@media (min-width: 1440px) and (max-width: 1919px) {
-  .about-featured .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(12, 78px);
-    column-gap: 24px;
-    row-gap: 24px;
-    justify-content: center; /* trzyma tory w środku */
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-    padding-inline: 40px;
-  }
-  .about-featured .featured-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-}
-@media (min-width: 1920px) {
-  .about-featured .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(12, 88px);
-    column-gap: 24px;
-    row-gap: 24px;
-    justify-content: center; /* trzyma tory w środku */
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-    padding-inline: 300px;
-  }
-}
-/* =========================================================
-   TESTIMONIALS (szkielet)
-   ========================================================= */
-.about-testimonials {
-  padding: 40px 0;
-  background: #FAF7F4;
-}
-.about-testimonials .about__container {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(4, 72px);
-  column-gap: 16px;
-  row-gap: 16px;
-  justify-content: center; /* trzyma tory w środku */
-  margin-inline: auto;
-  min-width: 0;
-  box-sizing: content-box;
-  padding-inline: 20px;
-}
-.about-testimonials .section-title {
-  grid-column: 1/-1;
-  text-align: center;
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 24px;
-}
-.about-testimonials .testimonials-grid {
-  grid-column: 1/-1;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-}
-
-@media (min-width: 744px) and (max-width: 1439px) {
-  .about-testimonials .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(8, 65px);
-    column-gap: 20px;
-    row-gap: 20px;
-    justify-content: center; /* trzyma tory w środku */
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-    padding-inline: 42px;
-  }
-  .about-testimonials .testimonials-grid {
-    gap: 20px;
-  }
-}
-@media (min-width: 1440px) and (max-width: 1919px) {
-  .about-testimonials .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(12, 78px);
-    column-gap: 24px;
-    row-gap: 24px;
-    justify-content: center; /* trzyma tory w środku */
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-    padding-inline: 40px;
-  }
-  .about-testimonials .testimonials-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-}
-@media (min-width: 1920px) {
-  .about-testimonials .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(12, 88px);
-    column-gap: 24px;
-    row-gap: 24px;
-    justify-content: center; /* trzyma tory w środku */
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-    padding-inline: 300px;
-  }
-}
-/* =========================================================
-   CTA — karta w obrębie kontenera (nie wychodzi w paddingi)
-   ========================================================= */
-.about-cta {
-  /* sekcja neutralna, bez tła i bez marginesów */
-  margin: 0;
-  padding: 0;
-  /* about__container ma już grid + paddingy z Override Pack */
-  /* KARTA CTA (trzyma kolor i promień, nie wychodzi poza grid) */
-  /* Tytuł i opis na pełną szer. */
-  /* Rząd z dwoma przyciskami */
-}
-.about-cta .about__container {
-  font-family: dm sans, sans-serif;
-}
-.about-cta__box {
-  grid-column: 1/-1; /* pełna szer. kolumn kontenera */
-  background: #0F8B8D;
-  color: #ffffff;
-  border-radius: 24px;
-  padding: 24px; /* wewnętrzny oddech karty */
-  display: grid;
-  grid-template-columns: 1fr; /* układ wspólny dla wszystkich MQ */
-  row-gap: 16px;
-}
-.about-cta__box > h2 {
-  font-weight: 700;
-  font-size: 22px;
-  line-height: 1.2;
-  margin: 0;
-}
-.about-cta__box > p {
-  font-size: 14px;
-  line-height: 1.5;
-  margin: 0;
-  opacity: 0.95;
-}
-.about-cta .btns {
-  display: flex;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 4px;
-  max-width: 335px;
-  margin: 0 auto;
-}
-
-/* ===== Tablet ===== */
-@media (min-width: 744px) and (max-width: 1439px) {
-  .about-cta__box {
-    padding: 32px;
-    row-gap: 18px;
-  }
-  .about-cta__box > h2 {
-    font-size: 26px;
-  }
-  .about-cta__box > p {
-    font-size: 16px;
-  }
-  .about-cta .btns {
-    gap: 14px;
-  }
-}
-/* ===== Laptop ===== */
-@media (min-width: 1440px) and (max-width: 1919px) {
-  .about-cta__box {
-    padding: 40px;
-    row-gap: 20px;
-  }
-  .about-cta__box > h2 {
-    font-size: 28px;
-  }
-  .about-cta__box > p {
-    font-size: 16px;
-  }
-  .about-cta .btns .btn {
-    min-height: 48px;
-  }
-}
-/* ===== Desktop ===== */
-@media (min-width: 1920px) {
-  .about-cta__box {
-    padding: 48px;
-  }
-  .about-cta__box > h2 {
-    font-size: 30px;
-  }
-  .about-cta__box > p {
-    font-size: 18px;
-  }
-  .about-cta .btns .btn {
-    min-height: 52px;
-  }
-}
-/* Tablet */
-@media (min-width: 744px) {
-  .about-cta {
-    padding: 56px 0;
-  }
-  .about-cta h2 {
-    font-size: 26px;
-    margin-bottom: 16px;
-  }
-  .about-cta p {
-    font-size: 16px;
-    margin-bottom: 24px;
-  }
-  .about-cta .btns {
-    gap: 16px;
-  }
-}
-/* Laptop */
-@media (min-width: 1440px) {
-  .about-cta {
-    padding: 64px 0;
-  }
-  .about-cta h2 {
-    font-size: 28px;
-  }
-  .about-cta p {
-    font-size: 18px;
-  }
-  .about-cta .btns .btn {
-    min-height: 48px;
-  }
-}
-/* Desktop */
-@media (min-width: 1920px) {
-  .about-cta {
-    padding: 72px 0;
-  }
-  .about-cta h2 {
-    font-size: 32px;
-  }
-  .about-cta p {
-    font-size: 18px;
-  }
-  .about-cta .btns .btn {
-    min-height: 52px;
-  }
-}
-/* ===== Tablet (8 kol) – większa typografia i oddechy ===== */
-@media (min-width: 744px) and (max-width: 1439px) {
-  .about-cta {
-    padding: 40px 0;
-  }
-  .about-cta > .about__container > h2 {
-    font-size: 26px;
-    margin-bottom: 14px;
-  }
-  .about-cta > .about__container > p {
-    font-size: 16px;
-    margin-bottom: 20px;
-  }
-  .about-cta .btns {
-    gap: 14px;
-  }
-}
-/* ===== Laptop (12 kol) ===== */
-@media (min-width: 1440px) and (max-width: 1919px) {
-  .about-cta {
-    padding: 48px 0;
-  }
-  .about-cta > .about__container > h2 {
-    font-size: 28px;
-  }
-  .about-cta > .about__container > p {
-    font-size: 16px;
-  }
-  .about-cta .btns {
-    gap: 16px;
-  }
-  .about-cta .btns .btn {
-    min-height: 48px;
-  }
-}
-/* ===== Desktop (12 kol, szerokie boki) ===== */
-@media (min-width: 1920px) {
-  .about-cta {
-    padding: 56px 0;
-  }
-  .about-cta > .about__container > h2 {
-    font-size: 30px;
-  }
-  .about-cta > .about__container > p {
-    font-size: 18px;
-  }
-  .about-cta .btns .btn {
-    min-height: 52px;
-  }
-}
-/* =========================================================
-   OVERRIDE PACK — płynny grid dla wszystkich sekcji ABOUT
-   (wklej NA SAMYM KOŃCU pliku)
-   ========================================================= */
-/* Mobile: 4 kol, gap 16, pad 20 */
-.about-hero .about__container,
-.about-values .about__container,
-.about-timeline .about__container,
-.about-process .about__container,
-.about-stats .about__container,
-.about-featured .about__container,
-.about-testimonials .about__container,
-.about-cta .about__container {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  column-gap: 16px;
-  row-gap: 16px;
-  padding-inline: 20px;
-  justify-content: center;
-  margin-inline: auto;
-  min-width: 0;
-  box-sizing: content-box;
-}
-
-/* Tablet: 8 kol, gap 20, pad 42 */
-@media (min-width: 744px) and (max-width: 1439px) {
-  .about-hero .about__container,
-  .about-values .about__container,
-  .about-timeline .about__container,
-  .about-process .about__container,
-  .about-stats .about__container,
-  .about-featured .about__container,
-  .about-testimonials .about__container,
-  .about-cta .about__container {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-    column-gap: 20px;
-    row-gap: 20px;
-    padding-inline: 42px;
-  }
-}
-/* Laptop: 12 kol, gap 24, pad 40 */
-@media (min-width: 1440px) and (max-width: 1919px) {
-  .about-hero .about__container,
-  .about-values .about__container,
-  .about-timeline .about__container,
-  .about-process .about__container,
-  .about-stats .about__container,
-  .about-featured .about__container,
-  .about-testimonials .about__container,
-  .about-cta .about__container {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: 24px;
-    row-gap: 24px;
-    padding-inline: 40px;
-  }
-}
-/* Desktop: 12 kol, gap 24, pad 300 */
-@media (min-width: 1920px) {
-  .about-hero .about__container,
-  .about-values .about__container,
-  .about-timeline .about__container,
-  .about-process .about__container,
-  .about-stats .about__container,
-  .about-featured .about__container,
-  .about-testimonials .about__container,
-  .about-cta .about__container {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: 24px;
-    row-gap: 24px;
-    padding-inline: 300px;
-  }
-}
-/* Dots przy zdjęciu (jak w mission) */
-.about-hero__photo {
-  position: relative;
-}
-
-.about-hero__dots {
-  position: absolute;
-  top: -24px;
-  right: -24px;
-  width: 140px;
-  height: auto;
-  pointer-events: none;
-  z-index: 1;
-}
-
-@media (max-width: 743px) {
-  .about-hero__dots {
-    top: -16px;
-    right: -16px;
-    width: 100px;
-  }
-}
-@media (min-width: 1440px) {
-  .about-hero__dots {
-    top: -32px;
-    right: -32px;
-    width: 180px;
-  }
-}
-/* === Projects embed inside About === */
-.about-featured .projects--embed {
-  /* bez własnych paddingów sekcji projects */
-  grid-column: 1/-1;
-  width: 100%;
-}
-
-/* Tablet: 2 kolumny kart */
-@media (min-width: 744px) and (max-width: 1439px) {
-  .about-featured .projects--embed {
-    grid-column: 1/-1;
-    width: 100%;
-  }
-}
-/* Laptop/Desktop: 3 kolumny kart */
-@media (min-width: 1440px) {
-  .about-featured .projects--embed .projects__cards-container {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 24px;
-  }
-}
-/* === Testimonials embed inside About === */
-.about-testimonials {
-  /* klucz: sekcja .testimonials jest bezpośrednim dzieckiem about__container */
-  /* opcjonalnie: jeżeli chcesz, by moduł nie miał dodatkowego odstępu od About,
-     można wyluzować własny margines sekcji */
-  /* .testimonials { padding-top: 0; } */
-}
-.about-testimonials .about__container {
-  font-family: dm sans, sans-serif;
-}
-.about-testimonials .testimonials {
-  grid-column: 1/-1; /* pełny span przez kolumny about */
-  width: 100%;
-  margin: 0; /* na wypadek domyślnych marginesów */
-}
-
-/* === ABOUT CTA — fix przycisków === */
-.about-cta {
-  /* 2 kolumny już mamy, tu tylko korekty przycisków */
-  /* Ujednolicenie wymiarów niezależnie od contentu i globalnych styli .btn */
-  /* Kontekstowe kolory na zielonym tle karty */
-}
-.about-cta .btns {
-  grid-template-columns: 1fr 1fr; /* równo po 50% */
-  gap: 12px;
-}
-@media (min-width: 744px) {
-  .about-cta .btns {
-    gap: 14px;
-  }
-}
-@media (min-width: 1440px) {
-  .about-cta .btns {
-    gap: 16px;
-  }
-}
-.about-cta .btns .btn {
-  display: flex; /* pewne centrowanie w pionie */
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  min-height: 44px; /* mobile */
-  padding: 12px 18px; /* nadpisanie ewentualnych globalnych */
-  margin: 0; /* kasuje globalne marginesy */
-  line-height: 1.2;
-  white-space: nowrap; /* bez łamania w jednej linii */
-  box-sizing: border-box;
-  border-radius: 12px; /* spójny promień */
-}
-@media (min-width: 1440px) {
-  .about-cta .btns .btn {
-    min-height: 48px;
-  }
-}
-@media (min-width: 1920px) {
-  .about-cta .btns .btn {
-    min-height: 52px;
-  }
-}
-.about-cta .about-cta__box {
-  /* PRIMARY – zostaje brandowy */
-  /* SECONDARY – obrys + biały tekst, żeby nie „znikał” na tle */
-}
-.about-cta .about-cta__box .btn--primary {
-  /* jeśli masz token, zostaw – tu tylko upewniamy się o kontraście */
-  color: #fff;
-}
-.about-cta .about-cta__box .btn--secondary {
-  background: transparent !important;
-  color: #fff !important;
-  border: 1.5px solid rgba(255, 255, 255, 0.75);
-}
-.about-cta .about-cta__box .btn--secondary:hover,
-.about-cta .about-cta__box .btn--secondary:focus-visible {
-  border-color: #fff;
-  background: rgba(255, 255, 255, 0.08);
-  outline: none;
-}
-
-/* --- ABOUT CTA: AI Box ma być nad wszystkim i klikalny --- */
-.about-cta {
-  position: relative;
-  isolation: isolate; /* nowy stacking-context */
-  z-index: 1;
-}
-
-.about-cta::before,
-.about-cta::after {
-  pointer-events: none; /* pseudo-elementy nie zasłaniają klików */
-}
-
-.configurator-prompt,
-.configurator-prompt__content { /* karta wewnątrz */
-  position: relative;
-  z-index: 2;
-  pointer-events: auto;
-}
-
-/* --- TESTIMONIALS: nawigacja/strzałki zawsze klikalne --- */
-.testimonials {
-  position: relative;
-  isolation: isolate;
-  z-index: 1;
-}
-
-.testimonials::before,
-.testimonials::after {
-  pointer-events: none; /* gradienty/dekoracje */
-}
-
-.testimonials__nav,
-.testimonials__arrow {
-  position: relative;
-  z-index: 3; /* ponad slajdami/dekoracjami */
-  pointer-events: auto;
-}
-
-/* Jeśli masz overlay/gradient nad kartami: */
-.testimonials__overlay,
-.testimonials__gradient,
-.testimonials__decor {
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Profilaktycznie: sekcja niżej (np. footer) nie wychodzi nad CTA */
-.footer,
-.section,
-.about-section,
-.about-content {
-  position: relative;
-  z-index: 0;
 }
 
 /*# sourceMappingURL=style.css.map */

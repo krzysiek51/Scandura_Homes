@@ -23,6 +23,13 @@ $color-beige-bg:           #F6F1EA;
 $color-beige-light-bg:     #FAF7F4;
 $color-gradient-start:     #0F8B8D;
 
+
+/* Override wysokości headera tylko na about */
+body.about .header {
+  min-height: 0 !important; /* przebija min-height:450px z header.scss */
+  height: auto;
+}
+
 /* ---------- LOKALNY MIXIN: sekcyjny grid ---------- */
 @mixin section-grid($template, $col-gap, $row-gap) {
   position: relative; z-index: 1;
@@ -53,78 +60,69 @@ $color-gradient-start:     #0F8B8D;
 
 
 /* =========================================================
-   HEADER (tylko about.html)
-   ========================================================= */
-.about-header {
-  position: fixed; top: 0; left: 0; width: 100%;
-  height: 66px; z-index: 1000;
-  background-color: rgba(23, 23, 23, 0.4);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  box-shadow: 0 4px 4px rgba(0,0,0,0.25);
-
-  &__inner {
-    height: 100%; padding-inline: 20px;
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  &__logo { display: block; height: 40px;
-    img { height: 100%; width: auto; display: block; }
-  }
-  &__burger {
-    width: 20px; height: 14px; border: none; background: none; padding: 0; cursor: pointer;
-    img { display: block; width: 100%; height: auto; }
-  }
-  &__nav {
-    display: none; background: $color-white;
-    position: absolute; top: 66px; left: 0; width: 100%;
-    padding: 20px;
-  }
-  &__menu {
-    list-style: none; margin: 0; padding: 0;
-    display: flex; flex-direction: column; gap: 16px;
-  }
-  &__link { font-size: 16px; text-decoration: none; color: $color-dark-text;
-    &.is-active { font-weight: 700; color: $color-accent; }
-  }
-}
-@media (min-width: $bp-laptop) and (max-width: $bp-laptop-max) {
-  .about-header { height: 80px; &__nav { top: 80px; } }
-}
-@media (min-width: $bp-desktop) {
-  .about-header { height: 88px; &__nav { top: 88px; } }
-}
-
-/* =========================================================
    HERO
    ========================================================= */
 .about-hero {
-  padding: 96px 0 40px; /* 66 header + ~30 odstępu */
- 
+  padding: 24px 0 0 0; /* 66 header + ~30 odstępu */
 
+
+ 
   .about-hero__dots {
     position: absolute;
-    top: -24px;      // odsuwa kropki w pionie (tak jak w mission)
-    right: -24px;    // odsuwa kropki w poziomie
-    width: 140px;    // szerokość SVG (możesz dać mniejszą na mobile)
+    top: -24px;    // tak jak w Twoim kodzie
+    right: -24px;
+    width: 140px;
     height: auto;
+    z-index: 1;    // kropki pod spodem
     pointer-events: none;
-    z-index: 10;
   }
 
   .about__container {
     @include section-grid(repeat(4, 72px), 16px, 16px);
     padding-inline: 20px;
   }
+  .section-divider {
+  width: 230px;
+  height: 4px;
+  border-radius: 2px; // zaokrąglenie jak w Figma
+  background: linear-gradient(90deg, #DC9B59 0%, #000000 100%);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  margin: 20px 0; // odstęp od tekstu (dostosuj wg Figma)
+}
 
   &__content { grid-column: 1 / -1; }
-  &__title   { font-size: 28px; font-weight: 700; margin-bottom: 16px; color: $color-dark-text; }
-  &__lead    { font-size: 16px; margin-bottom: 24px; color: $color-light-grey-text; }
+  &__title   { font: 700 24px/1.0 "DM Sans", sans-serif;  color:#070707; letter-spacing: 0.07em; margin-bottom: 16px;}
+  &__lead    {font: 500 16px/1.5 "DM Sans", sans-serif; color:#070707; letter-spacing: 0.05em; margin-bottom: 20px;}
   &__cta     { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
 
   &__photo {
+    position: relative;
     grid-column: 1 / -1; margin-top: 16px;
-    img { width: 100%; height: auto; display: block; border-radius: 94px 0 0 0; object-fit: cover;  z-index: 50; }
+    img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 94px 0 0 0;
+    object-fit: cover;
+    position: relative;
+    z-index: 2; // zdjęcie zawsze na górze
   }
+
+  }
+  /* CTA w sekcji hero About */
+.about-hero__cta {
+  margin-bottom: 40px; /* odstęp od lead/opisu */
+  display: flex;
+  justify-content: flex-start; /* CTA wyrównane do lewej kolumny */
+  
+  .btn {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius:0 12px 0 0;
+    
+  }
+}
 }
 @media (min-width: $bp-tablet) and (max-width: $bp-tablet-max) {
   .about-hero {
@@ -188,6 +186,10 @@ $color-gradient-start:     #0F8B8D;
 @media (min-width: $bp-desktop) {
   .about-values .about__container { @include section-grid(repeat(12,88px),24px,24px); padding-inline: 300px; }
 }
+
+/* ... POZOSTAŁE SEKCJE (timeline, process, stats, featured, testimonials, cta, overrides) BEZ ZMIAN ... */
+
+
 
 /* =========================================================
    TIMELINE
@@ -369,7 +371,7 @@ $color-gradient-start:     #0F8B8D;
 
   /* about__container ma już grid + paddingy z Override Pack */
   .about__container {
-    /* nic więcej nie trzeba */
+  font-family: dm sans, sans-serif;
   }
 
   /* KARTA CTA (trzyma kolor i promień, nie wychodzi poza grid) */
@@ -648,7 +650,7 @@ $color-gradient-start:     #0F8B8D;
 /* === Testimonials embed inside About === */
 .about-testimonials {
   .about__container {
-    /* już ma nasz płynny grid z OVERRIDE PACK */
+    font-family: dm sans, sans-serif;
   }
 
   /* klucz: sekcja .testimonials jest bezpośrednim dzieckiem about__container */
@@ -685,7 +687,7 @@ $color-gradient-start:     #0F8B8D;
     line-height: 1.2;
     white-space: nowrap;            /* bez łamania w jednej linii */
     box-sizing: border-box;
-    -webkit-appearance: none;       /* iOS */
+    // -webkit-appearance: none;       /* iOS */
     border-radius: 12px;            /* spójny promień */
   }
   @media (min-width: 1440px) {

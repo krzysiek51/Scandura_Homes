@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pl">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,64 +8,81 @@
   <link rel="stylesheet" href="../css/style.css" />
 </head>
 
-<body>
+<body class="about">
 
-  <!-- HEADER tylko dla about -->
-  <header class="about-header">
-    <div class="about-header__inner">
-      <a href="/" class="about-header__logo">
-        <img src="../photos/mobile_logo.png" alt="Scandura Homes" />
-      </a>
-      <button class="about-header__burger" aria-label="Otwórz menu">
-        <img src="../photos/svg/burger.svg" alt="" width="20" height="14" />
-      </button>
+  <!-- HEADER LITE: tylko belka nawigacyjna -->
+  <header class="header">
+    <div class="header__wrap">
+      <div class="container header__top">
+        <!-- Logo -->
+        <a href="../index.html" class="header__logo">
+          <img class="header__logo--img" src="../photos/mobile_logo.png" alt="Scandura Homes" />
+        </a>
+
+        <!-- Burger (mobile/tablet) -->
+        <button class="header__burger" id="burger-toggle" type="button" aria-label="Otwórz menu" aria-expanded="false"
+          aria-controls="mobile-menu">
+          <img class="header__burger-icon" src="../photos/svg/burger.svg" width="20" height="14" alt="" />
+        </button>
+      </div>
     </div>
 
-      <!-- NAV wewnątrz headera -->
-  <nav class="header__nav" id="mobile-menu" aria-hidden="true">
-    <button class="header__nav-close" type="button" aria-label="Zamknij menu"></button>
+    <!-- NAV (ten sam, co na index) -->
+    <nav class="header__nav" id="mobile-menu" aria-hidden="true">
+      <button class="header__nav-close" aria-label="Zamknij menu">
+        <img src="../photos/svg/x.svg" alt="" />
+      </button>
 
-    <ul class="header__nav-list">
-      <li><a class="header__nav-link" href="#home">Home</a></li>
-      <li><a class="header__nav-link" href="pages/about.html">O nas</a></li>
-      <li><a class="header__nav-link" href="#services">Usługi</a></li>
-      <li><a class="header__nav-link" href="#projects">Projekty</a></li>
-      <li><a class="header__nav-link" href="#contact">Kontakt</a></li>
-    </ul>
+      <ul class="header__nav-list">
+        <li><a class="header__nav-link" href="../index.html">Home</a></li>
+        <li><a class="header__nav-link is-active" href="about.html">O nas</a></li>
+        <li><a class="header__nav-link" href="services.html">Usługi</a></li>
+        <li><a class="header__nav-link" href="projects.html">Projekty</a></li>
+        <li><a class="header__nav-link" href="contact.html">Kontakt</a></li>
+      </ul>
 
-    <a href="pages/contact.html" class="button button--nav">Contact Us</a>
-  </nav>
-
-
+      <a href="contact.html" class="button button--nav">Contact Us</a>
+    </nav>
   </header>
+
 
   <main>
 
     <!-- HERO -->
     <section class="about-hero">
       <div class="about__container">
+        <figure class="about-hero__photo">
+          
+          <!-- dekoracyjne kropki -->
+          <img src="../photos/svg/kropki1920.svg" alt="" aria-hidden="true" class="about-hero__dots">
+          
+          <picture>
+            <!-- Desktop (≥1920px) -->
+            <source srcset="../photos/pages/kt-snickers-mobile-desktop.webp" media="(min-width: 1920px)">
+            <!-- Laptop (1440–1919px) -->
+            <source srcset="../photos/pages/kt-snickers-mobile-laptop.webp" media="(min-width: 1440px)">
+            <!-- Tablet (744–1439px) -->
+            <source srcset="../photos/pages/kt-snickers-mobile-tablet.webp" media="(min-width: 744px)">
+            <!-- Mobile (fallback) -->
+            <img src="../photos/pages/kt-snickers-mobile.webp" alt="Kristoffer — założyciel Scandura Homes">
+          </picture>
 
-          <figure class="about-hero__photo">
-          <img
-            src="../photos/pages/kt-snickers-mobile.webp"
-            alt="Kristoffer — założyciel Scandura Homes" />
-          <!-- (opcjonalnie) własne kropki dla about; jeśli nie używasz, usuń linijkę poniżej -->
-          <img src="../photos/svg/kropki1920.svg" alt="" aria-hidden="true" class="about-hero__dots" />
         </figure>
 
+
         <div class="about-hero__content">
-          <h1 class="about-hero__title">Nazywam się Kristoffer</h1>
+          <div class="section-divider"></div>
+          <h1 class="about-hero__title">Nazywam się Krzysztof Torczyło</h1>
           <p class="about-hero__lead">
             Buduję nowoczesne, prefabrykowane domy szkieletowe w skandynawskim standardzie — z przejrzystą wyceną,
             terminowością i najwyższą jakością.
           </p>
           <div class="about-hero__cta">
             <a href="/pages/contact.html" class="btn btn--primary">Umów konsultację</a>
-            <a href="/pages/contact.html" class="btn btn--secondary">Napisz do mnie</a>
           </div>
         </div>
 
-      
+
 
       </div>
     </section>
@@ -126,11 +144,26 @@
         <h2 class="section-title">Jak pracuję</h2>
 
         <div class="process-grid">
-          <article><h3>01. Brief</h3><p>Zbieramy wymagania i ograniczenia.</p></article>
-          <article><h3>02. Koncepcja</h3><p>Warianty układu i technologii.</p></article>
-          <article><h3>03. Wycena</h3><p>Transparentny kosztorys i harmonogram.</p></article>
-          <article><h3>04. Realizacja</h3><p>Prefabrykacja + montaż na placu.</p></article>
-          <article><h3>05. Odbiór</h3><p>Checklista i opieka posprzedażowa.</p></article>
+          <article>
+            <h3>01. Brief</h3>
+            <p>Zbieramy wymagania i ograniczenia.</p>
+          </article>
+          <article>
+            <h3>02. Koncepcja</h3>
+            <p>Warianty układu i technologii.</p>
+          </article>
+          <article>
+            <h3>03. Wycena</h3>
+            <p>Transparentny kosztorys i harmonogram.</p>
+          </article>
+          <article>
+            <h3>04. Realizacja</h3>
+            <p>Prefabrykacja + montaż na placu.</p>
+          </article>
+          <article>
+            <h3>05. Odbiór</h3>
+            <p>Checklista i opieka posprzedażowa.</p>
+          </article>
         </div>
       </div>
     </section>
@@ -149,472 +182,478 @@
 
     <!-- FEATURED PROJECTS -->
     <section class="about-featured">
-  <div class="about__container">
-    <h2 class="section-title">Ostatnie projekty</h2>
+      <div class="about__container">
+        <h2 class="section-title">Ostatnie projekty</h2>
 
-    <!-- embed modułu Projects -->
-    <section class="projects projects--embed" aria-label="Ostatnie projekty">
-      <div class="projects__cards-container">
-        <!-- użyj tych samych kart co na index (project-card) -->
-        <article class="project-card">
-          <div class="project-card__image-wrapper">
-            <img src="../photos/projects/slide1.png" alt="" class="project-card__image">
-          </div>
-          <div class="project-card__content">
-            <div class="project-card__header-info">
-              <img src="../photos/svg/arrow.svg" alt="" class="project-card__header-arrow" width="24" height="24">
-              <span class="project-card__header-number project-card__header-number--current">01</span>
-              <img src="../photos/svg/vector60.svg" alt="" class="project-card__header-divider-img" width="138" height="2">
-              <span class="project-card__header-number">02</span>
-            </div>
-            <h3 class="project-card__title">Greenwood Estates</h3>
-            <p class="project-card__description">Opis projektu…</p>
-            <div class="project-card__meta">
-              <div class="project-card__meta-item">
-                <span class="project-card__meta-label">Location</span>
-                <span class="project-card__meta-value">Downtown City Center</span>
+        <!-- embed modułu Projects -->
+        <section class="projects projects--embed" aria-label="Ostatnie projekty">
+          <div class="projects__cards-container">
+            <!-- użyj tych samych kart co na index (project-card) -->
+            <article class="project-card">
+              <div class="project-card__image-wrapper">
+                <img src="../photos/projects/slide1.png" alt="" class="project-card__image">
               </div>
-              <div class="project-card__meta-item">
-                <span class="project-card__meta-label">Scope</span>
-                <span class="project-card__meta-value">Office Complex Development</span>
+              <div class="project-card__content">
+                <div class="project-card__header-info">
+                  <img src="../photos/svg/arrow.svg" alt="" class="project-card__header-arrow" width="24" height="24">
+                  <span class="project-card__header-number project-card__header-number--current">01</span>
+                  <img src="../photos/svg/vector60.svg" alt="" class="project-card__header-divider-img" width="138"
+                    height="2">
+                  <span class="project-card__header-number">02</span>
+                </div>
+                <h3 class="project-card__title">Greenwood Estates</h3>
+                <p class="project-card__description">Opis projektu…</p>
+                <div class="project-card__meta">
+                  <div class="project-card__meta-item">
+                    <span class="project-card__meta-label">Location</span>
+                    <span class="project-card__meta-value">Downtown City Center</span>
+                  </div>
+                  <div class="project-card__meta-item">
+                    <span class="project-card__meta-label">Scope</span>
+                    <span class="project-card__meta-value">Office Complex Development</span>
+                  </div>
+                </div>
+                <a href="#" class="project-card__button">See Details</a>
               </div>
-            </div>
-            <a href="#" class="project-card__button">See Details</a>
-          </div>
-        </article>
+            </article>
 
-        <!-- …kolejne <article class="project-card"> tak jak w projects … -->
+            <!-- …kolejne <article class="project-card"> tak jak w projects … -->
+          </div>
+        </section>
       </div>
     </section>
-  </div>
-</section>
 
 
-   <!-- OPINIE — embed modułu z index -->
-<section class="about-testimonials">
-  <div class="about__container">
-    <!-- ważne: sekcja .testimonials jest bezpośrednim dzieckiem grida -->
-    <section class="testimonials testimonials--embed" aria-label="Opinie klientów">
+    <!-- OPINIE — embed modułu z index -->
+    <section class="about-testimonials">
+      <div class="about__container">
+        <!-- ważne: sekcja .testimonials jest bezpośrednim dzieckiem grida -->
+        <section class="testimonials testimonials--embed" aria-label="Opinie klientów">
+          <div class="container">
+            <h2 class="testimonials__title">What our clients say?</h2>
+
+            <div class="testimonials__slider">
+              <!-- brakowało tego wrappera: -->
+              <div class="testimonials__track">
+                <!-- SLIDE 1 -->
+                <div class="testimonials__slide">
+                  <div class="testimonials__image-wrapper">
+                    <img src="../photos/main/opinie.jpg" alt="Zadowolony klient przed domem"
+                      class="testimonials__image">
+                  </div>
+                  <div class="testimonials__card">
+                    <h3 class="testimonials__headline">"Zespół Scandura Homes od początku wpierał nas w każdej decyzji.
+                      Nasz dom został wykonany z najwyższą jakością."</h3>
+                    <p class="testimonials__text">"Precyzyjna budowa, świetna komunikacja i transparentność w kosztach.
+                      Jesteśmy zachwyceni naszym nowym domem."</p>
+                    <div class="testimonials__stars">★★★★★</div>
+                    <p class="testimonials__author"><strong>Katarzyna M. Warsaw</strong><span>Doctor</span></p>
+                    <div class="testimonials__line"></div>
+                  </div>
+                </div>
+
+                <!-- SLIDE 2 -->
+                <div class="testimonials__slide">
+                  <div class="testimonials__image-wrapper">
+                    <img src="../photos/main/opinie.jpg" alt="Klient przed nowym domem" class="testimonials__image">
+                  </div>
+                  <div class="testimonials__card">
+                    <h3 class="testimonials__headline">"Profesjonalna ekipa i terminowość."</h3>
+                    <p class="testimonials__text">"Proces od projektu po odbiór przebiegł bez stresu. Polecam każdemu."
+                    </p>
+                    <div class="testimonials__stars">★★★★★</div>
+                    <p class="testimonials__author"><strong>Michał K. Gdańsk</strong><span>Inżynier</span></p>
+                    <div class="testimonials__line"></div>
+                  </div>
+                </div>
+
+                <!-- SLIDE 3 -->
+                <div class="testimonials__slide">
+                  <div class="testimonials__image-wrapper">
+                    <img src="../photos/main/opinie.jpg" alt="Rodzina przed domem" class="testimonials__image">
+                  </div>
+                  <div class="testimonials__card">
+                    <h3 class="testimonials__headline">"Świetny kontakt i doradztwo."</h3>
+                    <p class="testimonials__text">"Pomogli dobrać rozwiązania pod nasz budżet i styl życia."</p>
+                    <div class="testimonials__stars">★★★★★</div>
+                    <p class="testimonials__author"><strong>Anna &amp; Piotr, Oslo</strong><span>IT /
+                        Nauczycielka</span></p>
+                    <div class="testimonials__line"></div>
+                  </div>
+                </div>
+
+                <!-- SLIDE 4 -->
+                <div class="testimonials__slide">
+                  <div class="testimonials__image-wrapper">
+                    <img src="../photos/main/opinie.jpg" alt="Szczegóły wykończenia" class="testimonials__image">
+                  </div>
+                  <div class="testimonials__card">
+                    <h3 class="testimonials__headline">"Jakość wykończenia top."</h3>
+                    <p class="testimonials__text">"Każdy detal dopracowany, zero kompromisów w materiałach."</p>
+                    <div class="testimonials__stars">★★★★★</div>
+                    <p class="testimonials__author"><strong>Ola T., Trondheim</strong><span>Architekt</span></p>
+                    <div class="testimonials__line"></div>
+                  </div>
+                </div>
+
+                <!-- SLIDE 5 -->
+                <div class="testimonials__slide">
+                  <div class="testimonials__image-wrapper">
+                    <img src="../photos/main/opinie.jpg" alt="Inwestor przy budowie" class="testimonials__image">
+                  </div>
+                  <div class="testimonials__card">
+                    <h3 class="testimonials__headline">"Przejrzyste koszty i harmonogram."</h3>
+                    <p class="testimonials__text">"Zero ukrytych pozycji, wszystko opisane w umowie."</p>
+                    <div class="testimonials__stars">★★★★★</div>
+                    <p class="testimonials__author"><strong>Jakub W., Melhus</strong><span>Przedsiębiorca</span></p>
+                    <div class="testimonials__line"></div>
+                  </div>
+                </div>
+
+                <!-- SLIDE 6 -->
+                <div class="testimonials__slide">
+                  <div class="testimonials__image-wrapper">
+                    <img src="../photos/main/opinie.jpg" alt="Nowy dom parterowy" class="testimonials__image">
+                  </div>
+                  <div class="testimonials__card">
+                    <h3 class="testimonials__headline">"Szybko i rzetelnie."</h3>
+                    <p class="testimonials__text">"Termin dotrzymany mimo trudnych warunków pogodowych."</p>
+                    <div class="testimonials__stars">★★★★★</div>
+                    <p class="testimonials__author"><strong>Marcin R., Warsaw</strong><span>Lekarz</span></p>
+                    <div class="testimonials__line"></div>
+                  </div>
+                </div>
+
+                <!-- SLIDE 7 -->
+                <div class="testimonials__slide">
+                  <div class="testimonials__image-wrapper">
+                    <img src="../photos/main/opinie.jpg" alt="Salon w domu" class="testimonials__image">
+                  </div>
+                  <div class="testimonials__card">
+                    <h3 class="testimonials__headline">"Świetna współpraca z projektantem."</h3>
+                    <p class="testimonials__text">"Elastycznie dopasowali układ pomieszczeń do naszych potrzeb."</p>
+                    <div class="testimonials__stars">★★★★★</div>
+                    <p class="testimonials__author"><strong>Klaudia S., Bærum</strong><span>UX Designer</span></p>
+                    <div class="testimonials__line"></div>
+                  </div>
+                </div>
+
+                <!-- SLIDE 8 -->
+                <div class="testimonials__slide">
+                  <div class="testimonials__image-wrapper">
+                    <img src="../photos/main/opinie.jpg" alt="Taras drewniany" class="testimonials__image">
+                  </div>
+                  <div class="testimonials__card">
+                    <h3 class="testimonials__headline">"Bardzo dobra ekipa montażowa."</h3>
+                    <p class="testimonials__text">"Czysto na budowie, prace szły jak w zegarku."</p>
+                    <div class="testimonials__stars">★★★★★</div>
+                    <p class="testimonials__author"><strong>Paweł P., Gdynia</strong><span>Logistyk</span></p>
+                    <div class="testimonials__line"></div>
+                  </div>
+                </div>
+
+                <!-- SLIDE 9 -->
+                <div class="testimonials__slide">
+                  <div class="testimonials__image-wrapper">
+                    <img src="../photos/main/opinie.jpg" alt="Elewacja domu" class="testimonials__image">
+                  </div>
+                  <div class="testimonials__card">
+                    <h3 class="testimonials__headline">"Kontakt po odbiorze na plus."</h3>
+                    <p class="testimonials__text">"Szybko reagują na pytania i drobne poprawki gwarancyjne."</p>
+                    <div class="testimonials__stars">★★★★★</div>
+                    <p class="testimonials__author"><strong>Ewelina Z., Sopot</strong><span>Marketing</span></p>
+                    <div class="testimonials__line"></div>
+                  </div>
+                </div>
+
+                <!-- SLIDE 10 -->
+                <div class="testimonials__slide">
+                  <div class="testimonials__image-wrapper">
+                    <img src="../photos/main/opinie.jpg" alt="Wejście do domu" class="testimonials__image">
+                  </div>
+                  <div class="testimonials__card">
+                    <h3 class="testimonials__headline">"Rekomendujemy znajomym."</h3>
+                    <p class="testimonials__text">"Świetna relacja ceny do jakości i pełne wsparcie."</p>
+                    <div class="testimonials__stars">★★★★★</div>
+                    <p class="testimonials__author"><strong>Monika &amp; Adam, Kraków</strong><span>Analityk /
+                        Prawnik</span></p>
+                    <div class="testimonials__line"></div>
+                  </div>
+                </div>
+              </div><!-- /.testimonials__track -->
+            </div><!-- /.testimonials__slider -->
+
+            <div class="testimonials__nav">
+              <button class="testimonials__arrow testimonials__arrow--prev" aria-label="Poprzednia opinia">
+                <img src="../photos/svg/arow-left-testim.svg" alt="Poprzednia opinia">
+              </button>
+              <button class="testimonials__arrow testimonials__arrow--next" aria-label="Następna opinia">
+                <img src="../photos/svg/arow-right-testim.svg" alt="Następna opinia">
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="about-cta">
       <div class="container">
-        <h2 class="testimonials__title">What our clients say?</h2>
+        <!-- ====== AI BOX (prompt) ====== -->
+        <section class="configurator-prompt" id="configurator-prompt">
+          <div class="configurator-prompt__content" aria-labelledby="ai-title">
+            <span class="configurator-prompt__badge">Nowość • Asystent AI</span>
 
-        <div class="testimonials__slider">
-          <!-- brakowało tego wrappera: -->
-          <div class="testimonials__track">
-            <!-- SLIDE 1 -->
-            <div class="testimonials__slide">
-              <div class="testimonials__image-wrapper">
-                <img src="../photos/main/opinie.jpg" alt="Zadowolony klient przed domem" class="testimonials__image">
-              </div>
-              <div class="testimonials__card">
-                <h3 class="testimonials__headline">"Zespół Scandura Homes od początku wpierał nas w każdej decyzji. Nasz dom został wykonany z najwyższą jakością."</h3>
-                <p class="testimonials__text">"Precyzyjna budowa, świetna komunikacja i transparentność w kosztach. Jesteśmy zachwyceni naszym nowym domem."</p>
-                <div class="testimonials__stars">★★★★★</div>
-                <p class="testimonials__author"><strong>Katarzyna M. Warsaw</strong><span>Doctor</span></p>
-                <div class="testimonials__line"></div>
-              </div>
+            <h2 class="configurator-prompt__title" id="ai-title">
+              Rozpocznij konfigurację z AI
+            </h2>
+
+            <p class="configurator-prompt__sub">
+              Dobierz typ, materiały i poziom stawek.
+              Zobacz koszt <strong>robocizny oraz materiałów</strong>
+            </p>
+
+            <ul class="configurator-prompt__benefits" aria-label="Korzyści">
+              <li class="configurator-prompt__benefit">
+                <span aria-hidden="true">⚡</span> Szybko: wynik w 3–5 min
+              </li>
+              <li class="configurator-prompt__benefit">
+                <span aria-hidden="true">🎯</span> Precyzyjnie: realne widełki
+              </li>
+            </ul>
+
+            <div class="configurator-prompt__cta">
+              <button class="configurator-prompt__button" id="open-configurator-button" data-open-configurator
+                aria-label="Uruchom konfigurator AI">
+                Uruchom konfigurator AI
+              </button>
+
+              <button type="button" class="configurator-prompt__link" data-scroll="#example-quote"
+                aria-label="Zobacz przykład wyceny">
+                Zobacz przykład wyceny
+              </button>
             </div>
-
-            <!-- SLIDE 2 -->
-            <div class="testimonials__slide">
-              <div class="testimonials__image-wrapper">
-                <img src="../photos/main/opinie.jpg" alt="Klient przed nowym domem" class="testimonials__image">
-              </div>
-              <div class="testimonials__card">
-                <h3 class="testimonials__headline">"Profesjonalna ekipa i terminowość."</h3>
-                <p class="testimonials__text">"Proces od projektu po odbiór przebiegł bez stresu. Polecam każdemu."</p>
-                <div class="testimonials__stars">★★★★★</div>
-                <p class="testimonials__author"><strong>Michał K. Gdańsk</strong><span>Inżynier</span></p>
-                <div class="testimonials__line"></div>
-              </div>
-            </div>
-
-            <!-- SLIDE 3 -->
-            <div class="testimonials__slide">
-              <div class="testimonials__image-wrapper">
-                <img src="../photos/main/opinie.jpg" alt="Rodzina przed domem" class="testimonials__image">
-              </div>
-              <div class="testimonials__card">
-                <h3 class="testimonials__headline">"Świetny kontakt i doradztwo."</h3>
-                <p class="testimonials__text">"Pomogli dobrać rozwiązania pod nasz budżet i styl życia."</p>
-                <div class="testimonials__stars">★★★★★</div>
-                <p class="testimonials__author"><strong>Anna &amp; Piotr, Oslo</strong><span>IT / Nauczycielka</span></p>
-                <div class="testimonials__line"></div>
-              </div>
-            </div>
-
-            <!-- SLIDE 4 -->
-            <div class="testimonials__slide">
-              <div class="testimonials__image-wrapper">
-                <img src="../photos/main/opinie.jpg" alt="Szczegóły wykończenia" class="testimonials__image">
-              </div>
-              <div class="testimonials__card">
-                <h3 class="testimonials__headline">"Jakość wykończenia top."</h3>
-                <p class="testimonials__text">"Każdy detal dopracowany, zero kompromisów w materiałach."</p>
-                <div class="testimonials__stars">★★★★★</div>
-                <p class="testimonials__author"><strong>Ola T., Trondheim</strong><span>Architekt</span></p>
-                <div class="testimonials__line"></div>
-              </div>
-            </div>
-
-            <!-- SLIDE 5 -->
-            <div class="testimonials__slide">
-              <div class="testimonials__image-wrapper">
-                <img src="../photos/main/opinie.jpg" alt="Inwestor przy budowie" class="testimonials__image">
-              </div>
-              <div class="testimonials__card">
-                <h3 class="testimonials__headline">"Przejrzyste koszty i harmonogram."</h3>
-                <p class="testimonials__text">"Zero ukrytych pozycji, wszystko opisane w umowie."</p>
-                <div class="testimonials__stars">★★★★★</div>
-                <p class="testimonials__author"><strong>Jakub W., Melhus</strong><span>Przedsiębiorca</span></p>
-                <div class="testimonials__line"></div>
-              </div>
-            </div>
-
-            <!-- SLIDE 6 -->
-            <div class="testimonials__slide">
-              <div class="testimonials__image-wrapper">
-                <img src="../photos/main/opinie.jpg" alt="Nowy dom parterowy" class="testimonials__image">
-              </div>
-              <div class="testimonials__card">
-                <h3 class="testimonials__headline">"Szybko i rzetelnie."</h3>
-                <p class="testimonials__text">"Termin dotrzymany mimo trudnych warunków pogodowych."</p>
-                <div class="testimonials__stars">★★★★★</div>
-                <p class="testimonials__author"><strong>Marcin R., Warsaw</strong><span>Lekarz</span></p>
-                <div class="testimonials__line"></div>
-              </div>
-            </div>
-
-            <!-- SLIDE 7 -->
-            <div class="testimonials__slide">
-              <div class="testimonials__image-wrapper">
-                <img src="../photos/main/opinie.jpg" alt="Salon w domu" class="testimonials__image">
-              </div>
-              <div class="testimonials__card">
-                <h3 class="testimonials__headline">"Świetna współpraca z projektantem."</h3>
-                <p class="testimonials__text">"Elastycznie dopasowali układ pomieszczeń do naszych potrzeb."</p>
-                <div class="testimonials__stars">★★★★★</div>
-                <p class="testimonials__author"><strong>Klaudia S., Bærum</strong><span>UX Designer</span></p>
-                <div class="testimonials__line"></div>
-              </div>
-            </div>
-
-            <!-- SLIDE 8 -->
-            <div class="testimonials__slide">
-              <div class="testimonials__image-wrapper">
-                <img src="../photos/main/opinie.jpg" alt="Taras drewniany" class="testimonials__image">
-              </div>
-              <div class="testimonials__card">
-                <h3 class="testimonials__headline">"Bardzo dobra ekipa montażowa."</h3>
-                <p class="testimonials__text">"Czysto na budowie, prace szły jak w zegarku."</p>
-                <div class="testimonials__stars">★★★★★</div>
-                <p class="testimonials__author"><strong>Paweł P., Gdynia</strong><span>Logistyk</span></p>
-                <div class="testimonials__line"></div>
-              </div>
-            </div>
-
-            <!-- SLIDE 9 -->
-            <div class="testimonials__slide">
-              <div class="testimonials__image-wrapper">
-                <img src="../photos/main/opinie.jpg" alt="Elewacja domu" class="testimonials__image">
-              </div>
-              <div class="testimonials__card">
-                <h3 class="testimonials__headline">"Kontakt po odbiorze na plus."</h3>
-                <p class="testimonials__text">"Szybko reagują na pytania i drobne poprawki gwarancyjne."</p>
-                <div class="testimonials__stars">★★★★★</div>
-                <p class="testimonials__author"><strong>Ewelina Z., Sopot</strong><span>Marketing</span></p>
-                <div class="testimonials__line"></div>
-              </div>
-            </div>
-
-            <!-- SLIDE 10 -->
-            <div class="testimonials__slide">
-              <div class="testimonials__image-wrapper">
-                <img src="../photos/main/opinie.jpg" alt="Wejście do domu" class="testimonials__image">
-              </div>
-              <div class="testimonials__card">
-                <h3 class="testimonials__headline">"Rekomendujemy znajomym."</h3>
-                <p class="testimonials__text">"Świetna relacja ceny do jakości i pełne wsparcie."</p>
-                <div class="testimonials__stars">★★★★★</div>
-                <p class="testimonials__author"><strong>Monika &amp; Adam, Kraków</strong><span>Analityk / Prawnik</span></p>
-                <div class="testimonials__line"></div>
-              </div>
-            </div>
-          </div><!-- /.testimonials__track -->
-        </div><!-- /.testimonials__slider -->
-
-        <div class="testimonials__nav">
-          <button class="testimonials__arrow testimonials__arrow--prev" aria-label="Poprzednia opinia">
-            <img src="../photos/svg/arow-left-testim.svg" alt="Poprzednia opinia">
-          </button>
-          <button class="testimonials__arrow testimonials__arrow--next" aria-label="Następna opinia">
-            <img src="../photos/svg/arow-right-testim.svg" alt="Następna opinia">
-          </button>
-        </div>
+          </div>
+        </section>
+        <!-- ====== /AI BOX ====== -->
       </div>
     </section>
-  </div>
-</section>
 
-<section class="about-cta">
-  <div class="container">
-    <!-- ====== AI BOX (prompt) ====== -->
-    <section class="configurator-prompt" id="configurator-prompt">
-      <div class="configurator-prompt__content" aria-labelledby="ai-title">
-        <span class="configurator-prompt__badge">Nowość • Asystent AI</span>
+    <!-- ======= POPUP KONFIGURATORA (ten sam co na index) ======= -->
+    <div id="cfg-modal" class="cfg is-hidden" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="cfg__backdrop" data-close-configurator></div>
+      <div class="cfg__panel" role="document">
+        <button class="cfg__close" aria-label="Zamknij" data-close-configurator>×</button>
 
-        <h2 class="configurator-prompt__title" id="ai-title">
-          Rozpocznij konfigurację z AI
-        </h2>
+        <div class="cfg-stepper" aria-label="Postęp">
+          <div class="cfg-stepper__bar">
+            <div class="cfg-stepper__bar-fill"></div>
+          </div>
+          <div class="cfg-stepper__labels">
+            <span class="cfg-stepper__label" data-step-label="0">1. Rodzaj domu</span>
+            <span class="cfg-stepper__label" data-step-label="1">2. Fundament</span>
+            <span class="cfg-stepper__label" data-step-label="2">3. Elewacja</span>
+            <span class="cfg-stepper__label" data-step-label="3">4. Dach</span>
+            <span class="cfg-stepper__label" data-step-label="4">5. Rozkład</span>
+            <span class="cfg-stepper__label" data-step-label="5">6. Opcje</span>
+            <span class="cfg-stepper__label" data-step-label="6">7. Wycena</span>
+            <span class="cfg-stepper__label" data-step-label="7">8. Kontakt</span>
+          </div>
+          <div class="cfg-stepper__meta"><span id="cfg-stepper-current">Krok 1/8</span></div>
+        </div>
 
-        <p class="configurator-prompt__sub">
-          Dobierz typ, materiały i poziom stawek.
-          Zobacz koszt <strong>robocizny oraz materiałów</strong>
-        </p>
+        <section class="cfg-step" data-step="0"></section>
+        <section class="cfg-step" data-step="1" hidden></section>
+        <section class="cfg-step" data-step="2" hidden></section>
+        <section class="cfg-step" data-step="3" hidden></section>
+        <section class="cfg-step" data-step="4" hidden></section>
+        <section class="cfg-step" data-step="5" hidden></section>
+        <section class="cfg-step" data-step="6" hidden></section>
+        <section class="cfg-step" data-step="7" hidden></section>
 
-        <ul class="configurator-prompt__benefits" aria-label="Korzyści">
-          <li class="configurator-prompt__benefit">
-            <span aria-hidden="true">⚡</span> Szybko: wynik w 3–5 min
-          </li>
-          <li class="configurator-prompt__benefit">
-            <span aria-hidden="true">🎯</span> Precyzyjnie: realne widełki
-          </li>
-        </ul>
-
-        <div class="configurator-prompt__cta">
-          <button class="configurator-prompt__button"
-                  id="open-configurator-button"
-                  data-open-configurator
-                  aria-label="Uruchom konfigurator AI">
-            Uruchom konfigurator AI
-          </button>
-
-          <button type="button"
-                  class="configurator-prompt__link"
-                  data-scroll="#example-quote"
-                  aria-label="Zobacz przykład wyceny">
-            Zobacz przykład wyceny
-          </button>
+        <div class="cfg-nav">
+          <button class="btn btn--ghost" data-prev disabled>Wstecz</button>
+          <div class="cfg-nav__spacer"></div>
+          <button class="btn" data-next>Dalej</button>
         </div>
       </div>
-    </section>
-    <!-- ====== /AI BOX ====== -->
-  </div>
-</section>
-
-<!-- ======= POPUP KONFIGURATORA (ten sam co na index) ======= -->
-<div id="cfg-modal" class="cfg is-hidden" aria-hidden="true" role="dialog" aria-modal="true">
-  <div class="cfg__backdrop" data-close-configurator></div>
-  <div class="cfg__panel" role="document">
-    <button class="cfg__close" aria-label="Zamknij" data-close-configurator>×</button>
-
-    <div class="cfg-stepper" aria-label="Postęp">
-      <div class="cfg-stepper__bar"><div class="cfg-stepper__bar-fill"></div></div>
-      <div class="cfg-stepper__labels">
-        <span class="cfg-stepper__label" data-step-label="0">1. Rodzaj domu</span>
-        <span class="cfg-stepper__label" data-step-label="1">2. Fundament</span>
-        <span class="cfg-stepper__label" data-step-label="2">3. Elewacja</span>
-        <span class="cfg-stepper__label" data-step-label="3">4. Dach</span>
-        <span class="cfg-stepper__label" data-step-label="4">5. Rozkład</span>
-        <span class="cfg-stepper__label" data-step-label="5">6. Opcje</span>
-        <span class="cfg-stepper__label" data-step-label="6">7. Wycena</span>
-        <span class="cfg-stepper__label" data-step-label="7">8. Kontakt</span>
-      </div>
-      <div class="cfg-stepper__meta"><span id="cfg-stepper-current">Krok 1/8</span></div>
     </div>
-
-    <section class="cfg-step" data-step="0"></section>
-    <section class="cfg-step" data-step="1" hidden></section>
-    <section class="cfg-step" data-step="2" hidden></section>
-    <section class="cfg-step" data-step="3" hidden></section>
-    <section class="cfg-step" data-step="4" hidden></section>
-    <section class="cfg-step" data-step="5" hidden></section>
-    <section class="cfg-step" data-step="6" hidden></section>
-    <section class="cfg-step" data-step="7" hidden></section>
-
-    <div class="cfg-nav">
-      <button class="btn btn--ghost" data-prev disabled>Wstecz</button>
-      <div class="cfg-nav__spacer"></div>
-      <button class="btn" data-next>Dalej</button>
-    </div>
-  </div>
-</div>
-<!-- ======= /POPUP ======= -->
+    <!-- ======= /POPUP ======= -->
 
 
 
   </main>
 
- <!-- Footer -->
-<footer class="footer">
-  <div class="container">
-    <div class="footer__top">
-      <a href="/" class="footer__logo-link">
-        <img src="../photos/mobile_logo.png" alt="Scandura Homes Logo" class="footer__logo">
-      </a>
-      <p class="footer__description">
-        Z ponad 15-letnim doświadczeniem w budowie wysokiej jakości domów drewnianych w Norwegii,
-        a teraz także w Polsce, łączymy skandynawskie rzemiosło, zrównoważone materiały i precyzyjne
-        zarządzanie projektami, aby dostarczać trwałe, energooszczędne domy drewniane, które od pierwszego
-        dnia będą prawdziwym domem.
-      </p>
-    </div>
-
-    <div class="footer__main-content">
-      <div class="footer__links">
-        <h3 class="footer__heading">Przydatne linki</h3>
-        <ul class="footer__list">
-          <li><a href="/" class="footer__link">Strona domowa</a></li>
-          <li><a href="/pages/about.html" class="footer__link">O nas</a></li>
-          <li><a href="/privacy" class="footer__link">Polityka prywatności</a></li>
-        </ul>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <a href="/" class="footer__logo-link">
+          <img src="../photos/mobile_logo.png" alt="Scandura Homes Logo" class="footer__logo">
+        </a>
+        <p class="footer__description">
+          Z ponad 15-letnim doświadczeniem w budowie wysokiej jakości domów drewnianych w Norwegii,
+          a teraz także w Polsce, łączymy skandynawskie rzemiosło, zrównoważone materiały i precyzyjne
+          zarządzanie projektami, aby dostarczać trwałe, energooszczędne domy drewniane, które od pierwszego
+          dnia będą prawdziwym domem.
+        </p>
       </div>
 
-      <div class="footer__contact">
-        <h3 class="footer__heading">Skontaktuj się z nami</h3>
-        <address class="footer__address">Gdańsk</address>
-        <a href="tel:+4796727065" class="footer__link">Zadzwoń: +47 967 270 65</a>
-        <a href="https://wa.me/4796727065" class="footer__link">WhatsApp: +47 967 270 65</a>
-      </div>
+      <div class="footer__main-content">
+        <div class="footer__links">
+          <h3 class="footer__heading">Przydatne linki</h3>
+          <ul class="footer__list">
+            <li><a href="/" class="footer__link">Strona domowa</a></li>
+            <li><a href="/pages/about.html" class="footer__link">O nas</a></li>
+            <li><a href="/privacy" class="footer__link">Polityka prywatności</a></li>
+          </ul>
+        </div>
 
-      <div class="footer__socials">
-        <h3 class="footer__heading">Śledź nas</h3>
-        <div class="footer__social-icons">
-          <a href="#" class="footer__social-link" aria-label="Facebook">
-            <img src="../photos/svg/socials/fb.svg" alt="Facebook">
-          </a>
-          <a href="#" class="footer__social-link" aria-label="Instagram">
-            <img src="../photos/svg/socials/insta.svg" alt="Instagram">
-          </a>
-          <a href="#" class="footer__social-link" aria-label="X">
-            <img src="../photos/svg/socials/x.svg" alt="X (dawniej Twitter)">
-          </a>
-          <a href="#" class="footer__social-link" aria-label="LinkedIn">
-            <img src="../photos/svg/socials/in.svg" alt="LinkedIn">
-          </a>
+        <div class="footer__contact">
+          <h3 class="footer__heading">Skontaktuj się z nami</h3>
+          <address class="footer__address">Gdańsk</address>
+          <a href="tel:+4796727065" class="footer__link">Zadzwoń: +47 967 270 65</a>
+          <a href="https://wa.me/4796727065" class="footer__link">WhatsApp: +47 967 270 65</a>
+        </div>
+
+        <div class="footer__socials">
+          <h3 class="footer__heading">Śledź nas</h3>
+          <div class="footer__social-icons">
+            <a href="#" class="footer__social-link" aria-label="Facebook">
+              <img src="../photos/svg/socials/fb.svg" alt="Facebook">
+            </a>
+            <a href="#" class="footer__social-link" aria-label="Instagram">
+              <img src="../photos/svg/socials/insta.svg" alt="Instagram">
+            </a>
+            <a href="#" class="footer__social-link" aria-label="X">
+              <img src="../photos/svg/socials/x.svg" alt="X (dawniej Twitter)">
+            </a>
+            <a href="#" class="footer__social-link" aria-label="LinkedIn">
+              <img src="../photos/svg/socials/in.svg" alt="LinkedIn">
+            </a>
+          </div>
         </div>
       </div>
+
+      <div class="footer__bottom">
+        <p class="footer__copyright">© 2024 – Scandura Homes. Wszelkie prawa zastrzeżone.</p>
+      </div>
     </div>
-
-    <div class="footer__bottom">
-      <p class="footer__copyright">© 2024 – Scandura Homes. Wszelkie prawa zastrzeżone.</p>
-    </div>
-  </div>
-</footer>
+  </footer>
 
 
-<!-- Burger: about-header -->
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const btn = document.querySelector('.about-header__burger');
-    const nav = document.querySelector('.about-header__nav');
-    if (!btn || !nav) return;
+  <!-- Burger: about-header -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.querySelector('.about-header__burger');
+      const nav = document.querySelector('.about-header__nav');
+      if (!btn || !nav) return;
 
-    const toggle = () => {
-      const willShow = nav.hasAttribute('hidden');
-      nav.toggleAttribute('hidden', !willShow);
-      btn.setAttribute('aria-expanded', String(willShow));
-    };
+      const toggle = () => {
+        const willShow = nav.hasAttribute('hidden');
+        nav.toggleAttribute('hidden', !willShow);
+        btn.setAttribute('aria-expanded', String(willShow));
+      };
 
-    btn.addEventListener('click', toggle);
-  });
-</script>
-
-<!-- Testimonials core (dokładny plik z /js) -->
-<script src="../js/testimonials-slider.js" defer></script>
-
-<!-- Inicjalizacja Testimonials: dokładnie raz dla instancji w About -->
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const roots = document.querySelectorAll('.about-testimonials .testimonials');
-    if (typeof window.initTestimonials !== 'function') return;
-
-    roots.forEach(root => {
-      // jeśli skrypt sam dodał klasę, nie inicjujemy drugi raz
-      if (root.classList.contains('is-slider-ready')) return;
-      window.initTestimonials({ root });
+      btn.addEventListener('click', toggle);
     });
-  });
-</script>
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const modal   = document.getElementById('cfg-modal');
-    const openBtn = document.querySelector('[data-open-configurator]');
-    if (!modal || !openBtn) return;
+  </script>
 
-    const closers = modal.querySelectorAll('[data-close-configurator]');
+  <!-- Testimonials core (dokładny plik z /js) -->
+  <script src="../js/testimonials-slider.js" defer></script>
 
-    function open() {
-      modal.classList.remove('is-hidden');
-      document.documentElement.classList.add('cfg-open');
-      document.body.classList.add('cfg-open');
-      modal.setAttribute('aria-hidden','false');
-    }
-    function close() {
-      modal.classList.add('is-hidden');
-      document.documentElement.classList.remove('cfg-open');
-      document.body.classList.remove('cfg-open');
-      modal.setAttribute('aria-hidden','true');
-    }
+  <!-- Inicjalizacja Testimonials: dokładnie raz dla instancji w About -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const roots = document.querySelectorAll('.about-testimonials .testimonials');
+      if (typeof window.initTestimonials !== 'function') return;
 
-    openBtn.addEventListener('click', open);
-    closers.forEach(btn => btn.addEventListener('click', close));
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
-  });
-</script>
+      roots.forEach(root => {
+        // jeśli skrypt sam dodał klasę, nie inicjujemy drugi raz
+        if (root.classList.contains('is-slider-ready')) return;
+        window.initTestimonials({ root });
+      });
+    });
+  </script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('cfg-modal');
+      const openBtn = document.querySelector('[data-open-configurator]');
+      if (!modal || !openBtn) return;
 
-<script>
-(() => {
-  const btn  = document.getElementById('burger-toggle');   // burger
-  const menu = document.getElementById('mobile-menu');      // kontener menu
-  if (!btn || !menu) return;
+      const closers = modal.querySelectorAll('[data-close-configurator]');
 
-  if (btn.dataset.bound === '1') return;
-  btn.dataset.bound = '1';
+      function open() {
+        modal.classList.remove('is-hidden');
+        document.documentElement.classList.add('cfg-open');
+        document.body.classList.add('cfg-open');
+        modal.setAttribute('aria-hidden', 'false');
+      }
+      function close() {
+        modal.classList.add('is-hidden');
+        document.documentElement.classList.remove('cfg-open');
+        document.body.classList.remove('cfg-open');
+        modal.setAttribute('aria-hidden', 'true');
+      }
 
-  if (!menu.hasAttribute('aria-hidden')) menu.setAttribute('aria-hidden', 'true');
+      openBtn.addEventListener('click', open);
+      closers.forEach(btn => btn.addEventListener('click', close));
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+    });
+  </script>
 
-  const open  = () => menu.setAttribute('aria-hidden', 'false');
-  const close = () => menu.setAttribute('aria-hidden', 'true');
-  const isOpen = () => menu.getAttribute('aria-hidden') === 'false';
+  <script>
+    (() => {
+      const btn = document.getElementById('burger-toggle');   // burger
+      const menu = document.getElementById('mobile-menu');      // kontener menu
+      if (!btn || !menu) return;
 
-  // toggle burger
-  btn.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    isOpen() ? close() : open();
-  }, { passive: true });
+      if (btn.dataset.bound === '1') return;
+      btn.dataset.bound = '1';
 
-  // ✳️ 1) PRZYCISK CLOSE W MENU
-  const closeBtn = menu.querySelector('.header__nav-close, .header_nav-close, #nav-close');
-  if (closeBtn) {
-    closeBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      close();
-    }, { passive: true });
-  }
+      if (!menu.hasAttribute('aria-hidden')) menu.setAttribute('aria-hidden', 'true');
 
-  // ✳️ 2) KLIK W LINK W MENU = ZAMKNIJ
-  menu.querySelectorAll('a[href]').forEach(a => {
-    a.addEventListener('click', () => close(), { passive: true });
-  });
+      const open = () => menu.setAttribute('aria-hidden', 'false');
+      const close = () => menu.setAttribute('aria-hidden', 'true');
+      const isOpen = () => menu.getAttribute('aria-hidden') === 'false';
 
-  // ✳️ 3) KLIK POZA MENU = ZAMKNIJ
-  document.addEventListener('click', (e) => {
-    if (!isOpen()) return;
-    if (menu.contains(e.target) || btn.contains(e.target)) return;
-    close();
-  }, { capture: true, passive: true });
+      // toggle burger
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        isOpen() ? close() : open();
+      }, { passive: true });
 
-  // ✳️ 4) ESC = ZAMKNIJ
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') close();
-  }, { passive: true });
-})();
-</script>
+      // ✳️ 1) PRZYCISK CLOSE W MENU
+      const closeBtn = menu.querySelector('.header__nav-close, .header_nav-close, #nav-close');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          close();
+        }, { passive: true });
+      }
+
+      // ✳️ 2) KLIK W LINK W MENU = ZAMKNIJ
+      menu.querySelectorAll('a[href]').forEach(a => {
+        a.addEventListener('click', () => close(), { passive: true });
+      });
+
+      // ✳️ 3) KLIK POZA MENU = ZAMKNIJ
+      document.addEventListener('click', (e) => {
+        if (!isOpen()) return;
+        if (menu.contains(e.target) || btn.contains(e.target)) return;
+        close();
+      }, { capture: true, passive: true });
+
+      // ✳️ 4) ESC = ZAMKNIJ
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') close();
+      }, { passive: true });
+    })();
+  </script>
 
 
 
 </body>
+
 </html>
