@@ -3,3 +3,4 @@ node_modules/
 server/.env
 dist/
 dist/
+photos/header_video.mp4
