@@ -1,8 +1,44 @@
+# ==========================================
+# SCANDURA HOMES - .gitignore
+# ==========================================
+
+# --- Build artefakty ---
+dist/
+css/*.map
+*.log
+
+# --- Node / NPM ---
 node_modules/
-# Nie wrzucać klucza OpenAI do repozytorium
-server/.env
-dist/
-dist/
-photos/header_video.mp4
-dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# --- OS Junk ---
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+desktop.ini
+
+# --- IDE Junk ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Backup / Temp ---
+*.bak
+*.tmp
+*.temp
+*~
+*.old
+
+# --- Local caches ---
+.cache/
+.parcel-cache/
+.next/
+out/
+
+# --- Projektowe duże pliki ---
 photos/header_video.mp4
