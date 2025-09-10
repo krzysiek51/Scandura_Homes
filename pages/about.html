@@ -563,6 +563,58 @@
   });
 </script>
 
+<script>
+(() => {
+  const btn  = document.getElementById('burger-toggle');   // burger
+  const menu = document.getElementById('mobile-menu');      // kontener menu
+  if (!btn || !menu) return;
+
+  if (btn.dataset.bound === '1') return;
+  btn.dataset.bound = '1';
+
+  if (!menu.hasAttribute('aria-hidden')) menu.setAttribute('aria-hidden', 'true');
+
+  const open  = () => menu.setAttribute('aria-hidden', 'false');
+  const close = () => menu.setAttribute('aria-hidden', 'true');
+  const isOpen = () => menu.getAttribute('aria-hidden') === 'false';
+
+  // toggle burger
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    isOpen() ? close() : open();
+  }, { passive: true });
+
+  // ✳️ 1) PRZYCISK CLOSE W MENU
+  const closeBtn = menu.querySelector('.header__nav-close, .header_nav-close, #nav-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      close();
+    }, { passive: true });
+  }
+
+  // ✳️ 2) KLIK W LINK W MENU = ZAMKNIJ
+  menu.querySelectorAll('a[href]').forEach(a => {
+    a.addEventListener('click', () => close(), { passive: true });
+  });
+
+  // ✳️ 3) KLIK POZA MENU = ZAMKNIJ
+  document.addEventListener('click', (e) => {
+    if (!isOpen()) return;
+    if (menu.contains(e.target) || btn.contains(e.target)) return;
+    close();
+  }, { capture: true, passive: true });
+
+  // ✳️ 4) ESC = ZAMKNIJ
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') close();
+  }, { passive: true });
+})();
+</script>
+
+
 
 </body>
 </html>

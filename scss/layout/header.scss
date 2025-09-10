@@ -383,3 +383,86 @@
 }
 
 
+/* === LOGO: zawsze klikalne na mobile/tablet === */
+.header__logo,
+.header__logo a {
+
+  z-index: 5;          /* ponad burgerem/menu/overlayami */
+  pointer-events: auto;
+}
+/* (opcjonalnie) żeby klik trafiał w <a>, nie w <img> */
+.header__logo img { pointer-events: none; }
+
+/* Ukryte menu i overlay NIE mogą łapać klików */
+.nav-overlay.is-hidden,
+.mobile-menu.is-hidden {
+  display: none !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+/* MOBILE+TABLET: menu zamknięte nie zasłania headera */
+@media (max-width: 1439px) {
+  #mobile-menu[aria-hidden="true"] {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;   /* <-- kluczowe */
+  }
+  #mobile-menu[aria-hidden="false"] {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+}
+
+/* Na wszelki wypadek: dekoracje headera nie przechwytują klików */
+.header__overlay,
+.header_video,
+.header::before,
+.header::after {
+  pointer-events: none;
+}
+/* === Burger zawsze klikalny === */
+.header__burger,
+#mobile-menu-button,
+.menu-toggle {
+  position: relative;
+  z-index: 6;         /* wyżej niż logo i reszta headera */
+  pointer-events: auto;
+}
+/* Burger zawsze nad wszystkim i klikalny */
+#burger-toggle {
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+/* menu schowane/pokazane – tylko mobile/tablet */
+@media (max-width: 1439px) {
+  #mobile-menu[aria-hidden="true"]  { display: none;  pointer-events: none; }
+  #mobile-menu[aria-hidden="false"] { display: block; pointer-events: auto;  }
+}
+
+/* blokada scrolla, gdy otwarte */
+html.nav-open, body.nav-open { overflow: hidden; }
+
+/* burger klikalny */
+#burger-toggle { position: relative; z-index: 10; pointer-events: auto; }
+
+/* overlay/video w headerze nie łapie klików */
+.header__overlay, .header_video, .header::before, .header::after { pointer-events: none; }
+.header__nav-close {
+  position: absolute;     /* dostosuj pozycję jak masz w projekcie */
+  top: 0; 
+  right: 0;
+  z-index: 12;            /* ponad zawartością menu */
+  pointer-events: auto;   /* klikalny */
+}
+
+/* menu: stan zamknięty/otwarty (dla mobile/tablet) */
+@media (max-width: 1439px) {
+  #mobile-menu[aria-hidden="true"]  { display: none;  pointer-events: none; }
+  #mobile-menu[aria-hidden="false"] { display: block; pointer-events: auto;  }
+}
