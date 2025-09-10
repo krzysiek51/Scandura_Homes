@@ -1,0 +1,17 @@
+<header class="header">
+  <div class="container">
+    <a href="/" class="logo">Scandura Homes</a>
+    <button class="about-header__burger" aria-label="Otwórz menu">
+      <img src="/photos/svg/burger.svg" alt="" width="20" height="14" />
+    </button>
+    {% if nav %}
+      <nav class="nav" aria-label="Główne">
+        <ul>
+          {% for item in nav %}
+            <li><a href="{{ item.href }}" class="{{ 'is-active' if item.active }}">{{ item.label }}</a></li>
+          {% endfor %}
+        </ul>
+      </nav>
+    {% endif %}
+  </div>
+</header>

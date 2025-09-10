@@ -1,0 +1,152 @@
+/* scss/layout/calculator.scss
+   Mobile-first wariant „karta”.
+   Od ≥768px karta ma szerokość równą szerokości kontenera .container,
+   czyli marginesy boczne identyczne jak reszta contentu na stronie.
+*/
+
+.calculator {
+  position: relative;
+
+  /* overlap pod header – delikatny */
+  --calc-offset: clamp(-64px, -4vh, 20px);
+  margin-top: var(--calc-offset);
+}
+
+/* === KARTA (MOBILE DOMYŚLNIE – wąska, wysoka, TR mocno zaokrąglony) === */
+.calc-card {
+  /* rozmiary mobile */
+  --card-max-w: 360px;
+  --card-min-h: 420px;
+  --card-pad-x: 16px;
+  --card-pad-y: 16px;
+  --card-radius: 16px;
+  --card-radius-TR: 56px;
+
+  width: min(100% - 32px, var(--card-max-w));
+  min-height: var(--card-min-h);
+  margin-inline: auto;
+  padding: var(--card-pad-y) var(--card-pad-x);
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.10);
+  border-radius: var(--card-radius) var(--card-radius-TR) var(--card-radius) var(--card-radius);
+  box-shadow: 0 16px 48px rgba(0,0,0,.10);
+
+  display: grid;
+  grid-template-rows: auto auto auto auto auto;
+  row-gap: 12px;
+
+  /* defensywnie – brak dziwnych transformów */
+  transform: none !important;
+  transition: none !important;
+}
+
+.calc-card__title{
+  margin: 0;
+  line-height: 1.15;
+  font-weight: 800;
+  font-size: clamp(22px, 6.2vw, 28px);
+  text-align: center;
+}
+.calc-card__subtitle{
+  margin: 6px 0 0;
+  text-align: center;
+  line-height: 1.4;
+  font-size: 14px;
+  color: rgba(0,0,0,.72);
+}
+.calc-card__accent{
+  width: 28px; height: 3px; border-radius: 3px;
+  background: currentColor; opacity:.18; justify-self:center; margin-top: 6px;
+}
+
+/* siatka pól na mobile: 2 kolumny */
+.calc-card__grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 6px;
+}
+.calc-card__field{ display: grid; gap: 6px; }
+.calc-card__label{ font-size: 12px; line-height: 1.2; color: rgba(0,0,0,.65); }
+.calc-card__control{
+  height: 44px; padding: 0 12px;
+  border: 1px solid rgba(0,0,0,.16);
+  border-radius: 12px; background:#fff; color: inherit; font: inherit; appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 18px) 50%, calc(100% - 12px) 50%;
+  background-size: 6px 6px, 6px 6px; background-repeat: no-repeat;
+}
+
+/* akcje (przycisk) – pod siatką na mobile */
+.calc-card__actions{
+  display: grid; grid-template-columns: 1fr auto; align-items: end; margin-top: 8px;
+}
+.calc-card__submit{
+  /* jeżeli masz globalną .btn – zostaw obie klasy: class="calc-card__submit btn" */
+  min-height: 48px; padding: 0 20px; border-radius: 14px; border: 0; font-weight: 700; cursor: pointer;
+}
+
+/* =================== TABLET ≥768px =================== */
+/* Tu kartę robimy na pełną szerokość .container */
+@media (min-width: 768px){
+  .calculator{ --calc-offset: clamp(-72px, -4vh, 24px); }
+
+  .calc-card{
+    width: 100%;           /* <<< klucz: szerokość równa .container */
+    max-width: none;
+    min-height: 400px;
+
+    /* karta bardziej „płaska”, większe oddechy */
+    --card-pad-x: 24px;
+    --card-pad-y: 18px;
+    --card-radius-TR: 36px; /* nadal zaokrąglony prawy-górny, ale mniejszy */
+    border-radius: 16px var(--card-radius-TR) 16px 16px;
+    row-gap: 16px;
+  }
+
+  /* siatka pól – ciaśniejsze odstępy */
+  .calc-card__grid{ gap: 16px 16px; }
+}
+
+/* =================== LAPTOP ≥1024px =================== */
+@media (min-width: 1024px){
+  .calculator{ --calc-offset: clamp(-88px, -5vh, 24px); }
+
+  .calc-card{
+    width: 100%;           /* pełna szerokość kontenera */
+    min-height: 360px;
+    --card-pad-x: 28px;
+    --card-pad-y: 20px;
+    --card-radius-TR: 28px;
+    border-radius: 16px var(--card-radius-TR) 16px 16px;
+    row-gap: 18px;
+  }
+
+  /* na szerokości siatka 4 kolumny (pola) */
+  .calc-card__grid{
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px 18px;
+  }
+}
+
+/* =================== DESKTOP ≥1440px =================== */
+@media (min-width: 1440px){
+  .calculator{ --calc-offset: clamp(-104px, -6vh, 24px); }
+
+  .calc-card{
+    width: 100%;           /* pełna szerokość kontenera */
+    min-height: 340px;
+    --card-pad-x: 32px;
+    --card-pad-y: 22px;
+    --card-radius-TR: 24px;  /* jeszcze subtelniej, jak na layoutach desktop */
+    border-radius: 16px var(--card-radius-TR) 16px 16px;
+    row-gap: 20px;
+  }
+
+  .calc-card__grid{
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px 24px;
+  }
+}

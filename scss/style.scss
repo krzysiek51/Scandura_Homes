@@ -1,0 +1,34 @@
+@use "base/reset";
+@use "base/base";
+@use "base/typography";
+
+@use "layout/container";
+@use "layout/grid";
+@use "layout/header";
+@use "layout/mission";
+@use "layout/calculator";
+@use "layout/footer";
+@use "layout/why-us";
+@use "layout/services";
+@use "layout/projects-section";
+@use "layout/project-card";
+@use "layout/partners";
+@use "layout/booking";
+@use "layout/testimonials";
+@use "layout/contact";
+@use "layout/navigation";
+@use "layout/utilities";
+@use "layout/button";
+
+/* CTA konfiguratora (jeden plik - bez zadnych nakladek) */
+// @use "layout/configurator-prompt";
+
+/* KONFIGURATOR (jeden agregat) */
+@use "konfigurator_header/index";
+
+//pages*
+
+
+@use "pages/about";
+@use "components/cfg-modal-fixed";
+@use "components/configurator-prompt";

@@ -1,0 +1,772 @@
+/* =================================================================
+   PAGES / ABOUT — WERSJA W PEŁNI NIEZALEŻNA (bez @use / importów)
+   Grid/MQ: M 4×72 gap16 pad20 | T 8×65 gap20 pad42
+            L 12×78 gap24 pad40 | D 12×88 gap24 pad300
+   ================================================================= */
+
+/* ---------- LOKALNE ZMIENNE ---------- */
+/* Breakpointy */
+$bp-mobile:        0px;   // semantycznie
+$bp-tablet:        744px;
+$bp-tablet-max:    1439px;
+$bp-laptop:        1440px;
+$bp-laptop-max:    1919px;
+$bp-desktop:       1920px;
+
+/* Kolory (lokalne, domyślne) — możesz podmienić na swoje tokeny */
+$color-white:              #ffffff;
+$color-black:              #000000;
+$color-accent:             #0F8B8D;
+$color-dark-text:          #171717;
+$color-light-grey-text:    #6B7280;
+$color-beige-bg:           #F6F1EA;
+$color-beige-light-bg:     #FAF7F4;
+$color-gradient-start:     #0F8B8D;
+
+/* ---------- LOKALNY MIXIN: sekcyjny grid ---------- */
+@mixin section-grid($template, $col-gap, $row-gap) {
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: #{$template};
+  column-gap: $col-gap;
+  row-gap: $row-gap;
+  justify-content: center;   /* trzyma tory w środku */
+  margin-inline: auto;
+  min-width: 0;
+  box-sizing: content-box;
+}
+
+/* === NOWY mixin: płynny grid === */
+@mixin section-grid-fluid($cols, $col-gap, $row-gap, $pad-inline) {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat($cols, minmax(0, 1fr)); // kolumny elastyczne
+  column-gap: $col-gap;
+  row-gap: $row-gap;
+  padding-inline: $pad-inline;
+  justify-content: center;
+  margin-inline: auto;
+  min-width: 0;
+  box-sizing: content-box;
+}
+
+
+/* =========================================================
+   HEADER (tylko about.html)
+   ========================================================= */
+.about-header {
+  position: fixed; top: 0; left: 0; width: 100%;
+  height: 66px; z-index: 1000;
+  background-color: rgba(23, 23, 23, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 4px 4px rgba(0,0,0,0.25);
+
+  &__inner {
+    height: 100%; padding-inline: 20px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  &__logo { display: block; height: 40px;
+    img { height: 100%; width: auto; display: block; }
+  }
+  &__burger {
+    width: 20px; height: 14px; border: none; background: none; padding: 0; cursor: pointer;
+    img { display: block; width: 100%; height: auto; }
+  }
+  &__nav {
+    display: none; background: $color-white;
+    position: absolute; top: 66px; left: 0; width: 100%;
+    padding: 20px;
+  }
+  &__menu {
+    list-style: none; margin: 0; padding: 0;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  &__link { font-size: 16px; text-decoration: none; color: $color-dark-text;
+    &.is-active { font-weight: 700; color: $color-accent; }
+  }
+}
+@media (min-width: $bp-laptop) and (max-width: $bp-laptop-max) {
+  .about-header { height: 80px; &__nav { top: 80px; } }
+}
+@media (min-width: $bp-desktop) {
+  .about-header { height: 88px; &__nav { top: 88px; } }
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+.about-hero {
+  padding: 96px 0 40px; /* 66 header + ~30 odstępu */
+ 
+
+  .about-hero__dots {
+    position: absolute;
+    top: -24px;      // odsuwa kropki w pionie (tak jak w mission)
+    right: -24px;    // odsuwa kropki w poziomie
+    width: 140px;    // szerokość SVG (możesz dać mniejszą na mobile)
+    height: auto;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .about__container {
+    @include section-grid(repeat(4, 72px), 16px, 16px);
+    padding-inline: 20px;
+  }
+
+  &__content { grid-column: 1 / -1; }
+  &__title   { font-size: 28px; font-weight: 700; margin-bottom: 16px; color: $color-dark-text; }
+  &__lead    { font-size: 16px; margin-bottom: 24px; color: $color-light-grey-text; }
+  &__cta     { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+
+  &__photo {
+    grid-column: 1 / -1; margin-top: 16px;
+    img { width: 100%; height: auto; display: block; border-radius: 94px 0 0 0; object-fit: cover;  z-index: 50; }
+  }
+}
+@media (min-width: $bp-tablet) and (max-width: $bp-tablet-max) {
+  .about-hero {
+    padding: 112px 0 48px;
+    .about__container { @include section-grid(repeat(8, 65px), 20px, 20px); padding-inline: 42px; }
+    &__content { grid-column: 1 / -1; }
+    &__photo   { grid-column: 1 / -1; margin-top: 20px; }
+  }
+}
+@media (min-width: $bp-laptop) and (max-width: $bp-laptop-max) {
+  .about-hero {
+    padding: 120px 0 56px;
+    .about__container { @include section-grid(repeat(12, 78px), 24px, 24px); padding-inline: 40px; }
+    &__content { grid-column: 1 / span 6; align-self: center; }
+    &__photo   { grid-column: 7 / span 6; margin-top: 0; }
+  }
+}
+@media (min-width: $bp-desktop) {
+  .about-hero {
+    padding: 128px 0 64px;
+    .about__container { @include section-grid(repeat(12, 88px), 24px, 24px); padding-inline: 300px; }
+    &__content { grid-column: 1 / span 6; }
+    &__photo   { grid-column: 7 / span 6; }
+  }
+}
+
+/* =========================================================
+   VALUES
+   ========================================================= */
+.about-values {
+  background-color: $color-beige-light-bg;
+  padding: 40px 0;
+
+  .about__container { @include section-grid(repeat(4,72px),16px,16px); padding-inline: 20px; }
+
+  .section-title {
+    grid-column: 1 / -1; text-align: center;
+    font-size: 22px; font-weight: 700; margin-bottom: 24px;
+  }
+
+  &__grid {
+    grid-column: 1 / -1;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+
+  .value {
+    background: $color-white; border-radius: 16px; padding: 20px; text-align: center;
+    &__title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+    &__text  { font-size: 14px; color: $color-light-grey-text; }
+  }
+}
+@media (min-width: $bp-tablet) and (max-width: $bp-tablet-max) {
+  .about-values { .about__container { @include section-grid(repeat(8,65px),20px,20px); padding-inline: 42px; } &__grid { gap: 20px; } }
+}
+@media (min-width: $bp-laptop) and (max-width: $bp-laptop-max) {
+  .about-values {
+    .about__container { @include section-grid(repeat(12,78px),24px,24px); padding-inline: 40px; }
+    &__grid { grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  }
+}
+@media (min-width: $bp-desktop) {
+  .about-values .about__container { @include section-grid(repeat(12,88px),24px,24px); padding-inline: 300px; }
+}
+
+/* =========================================================
+   TIMELINE
+   ========================================================= */
+.about-timeline {
+  padding: 40px 0; background-color: $color-white;
+
+  .about__container { @include section-grid(repeat(4,72px),16px,16px); padding-inline: 20px; }
+
+  .section-title {
+    grid-column: 1 / -1; text-align: center;
+    font-size: 22px; font-weight: 700; margin-bottom: 24px;
+  }
+
+  .timeline {
+    grid-column: 1 / -1;
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 24px;
+
+    li {
+      background: $color-beige-light-bg; border-radius: 12px; padding: 20px;
+      h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+      p  { font-size: 14px; color: $color-light-grey-text; }
+    }
+  }
+}
+@media (min-width: $bp-tablet) and (max-width: $bp-tablet-max) {
+  .about-timeline .about__container { @include section-grid(repeat(8,65px),20px,20px); padding-inline: 42px; }
+}
+@media (min-width: $bp-laptop) and (max-width: $bp-laptop-max) {
+  .about-timeline {
+    .about__container { @include section-grid(repeat(12,78px),24px,24px); padding-inline: 40px; }
+    .timeline         { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  }
+}
+@media (min-width: $bp-desktop) {
+  .about-timeline .about__container { @include section-grid(repeat(12,88px),24px,24px); padding-inline: 300px; }
+}
+
+/* =========================================================
+   PROCESS
+   ========================================================= */
+.about-process {
+  padding: 40px 0; background-color: $color-beige-bg;
+
+  .about__container { @include section-grid(repeat(4,72px),16px,16px); padding-inline: 20px; }
+
+  .section-title {
+    grid-column: 1 / -1; text-align: center;
+    font-size: 22px; font-weight: 700; margin-bottom: 24px;
+  }
+
+  .process-grid {
+    grid-column: 1 / -1;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+
+    article {
+      background: $color-white; border-radius: 12px; padding: 20px; text-align: center;
+      h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+      p  { font-size: 13px; color: $color-light-grey-text; }
+    }
+  }
+}
+@media (min-width: $bp-tablet) and (max-width: $bp-tablet-max) {
+  .about-process { .about__container { @include section-grid(repeat(8,65px),20px,20px); padding-inline: 42px; } .process-grid { gap: 20px; } }
+}
+@media (min-width: $bp-laptop) and (max-width: $bp-laptop-max) {
+  .about-process {
+    .about__container { @include section-grid(repeat(12,78px),24px,24px); padding-inline: 40px; }
+    .process-grid     { grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  }
+}
+@media (min-width: $bp-desktop) {
+  .about-process .about__container { @include section-grid(repeat(12,88px),24px,24px); padding-inline: 300px; }
+}
+
+/* =========================================================
+   STATS
+   ========================================================= */
+.about-stats {
+  padding: 40px 0; background: $color-white;
+
+  .about__container { @include section-grid(repeat(4,72px),16px,16px); padding-inline: 20px; }
+
+  .stats {
+    grid-column: 1 / -1;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; text-align: center;
+  }
+
+  .stat {
+    background: $color-beige-light-bg; border-radius: 12px; padding: 20px;
+    &__value { font-size: 20px; font-weight: 700; margin-bottom: 4px; display: block; }
+    &__label { font-size: 13px; color: $color-light-grey-text; }
+  }
+}
+@media (min-width: $bp-tablet) and (max-width: $bp-tablet-max) {
+  .about-stats { .about__container { @include section-grid(repeat(8,65px),20px,20px); padding-inline: 42px; } .stats { gap: 20px; } }
+}
+@media (min-width: $bp-laptop) and (max-width: $bp-laptop-max) {
+  .about-stats { .about__container { @include section-grid(repeat(12,78px),24px,24px); padding-inline: 40px; } .stats { grid-template-columns: repeat(4, 1fr); gap: 24px; } }
+}
+@media (min-width: $bp-desktop) {
+  .about-stats .about__container { @include section-grid(repeat(12,88px),24px,24px); padding-inline: 300px; }
+}
+
+/* =========================================================
+   FEATURED PROJECTS
+   ========================================================= */
+.about-featured {
+   grid-column: 1 / -1;   // <-- to jest klucz
+  width: 100%;
+  padding: 40px 0; background: $color-white;
+
+  .about__container { @include section-grid(repeat(4,72px),16px,16px); padding-inline: 20px; }
+
+  .section-title {
+    grid-column: 1 / -1; text-align: center;
+    font-size: 22px; font-weight: 700; margin-bottom: 24px;
+  }
+
+  .featured-grid {
+    grid-column: 1 / -1;
+    display: grid; grid-template-columns: 1fr; gap: 24px;
+  }
+
+  .project-card {
+    background: $color-beige-light-bg; border-radius: 16px; overflow: hidden;
+    img { width: 100%; height: auto; display: block; }
+    h3 { font-size: 16px; font-weight: 600; margin: 16px; }
+    p  { font-size: 14px; color: $color-light-grey-text; margin: 0 16px 16px; }
+    .btn { margin: 0 16px 16px; }
+  }
+}
+@media (min-width: $bp-tablet) and (max-width: $bp-tablet-max) {
+  .about-featured { .about__container { @include section-grid(repeat(8,65px),20px,20px); padding-inline: 42px; } .featured-grid { grid-template-columns: 1fr 1fr; gap: 20px; } }
+}
+@media (min-width: $bp-laptop) and (max-width: $bp-laptop-max) {
+  .about-featured { .about__container { @include section-grid(repeat(12,78px),24px,24px); padding-inline: 40px; } .featured-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
+}
+@media (min-width: $bp-desktop) {
+  .about-featured .about__container { @include section-grid(repeat(12,88px),24px,24px); padding-inline: 300px; }
+}
+
+/* =========================================================
+   TESTIMONIALS (szkielet)
+   ========================================================= */
+.about-testimonials {
+  padding: 40px 0; background: $color-beige-light-bg;
+
+  .about__container { @include section-grid(repeat(4,72px),16px,16px); padding-inline: 20px; }
+
+  .section-title {
+    grid-column: 1 / -1; text-align: center;
+    font-size: 22px; font-weight: 700; margin-bottom: 24px;
+  }
+
+  .testimonials-grid {
+    grid-column: 1 / -1;
+    display: grid; grid-template-columns: 1fr; gap: 16px;
+  }
+}
+@media (min-width: $bp-tablet) and (max-width: $bp-tablet-max) {
+  .about-testimonials { .about__container { @include section-grid(repeat(8,65px),20px,20px); padding-inline: 42px; } .testimonials-grid { gap: 20px; } }
+}
+@media (min-width: $bp-laptop) and (max-width: $bp-laptop-max) {
+  .about-testimonials { .about__container { @include section-grid(repeat(12,78px),24px,24px); padding-inline: 40px; } .testimonials-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
+}
+@media (min-width: $bp-desktop) {
+  .about-testimonials .about__container { @include section-grid(repeat(12,88px),24px,24px); padding-inline: 300px; }
+}
+
+/* =========================================================
+   CTA — karta w obrębie kontenera (nie wychodzi w paddingi)
+   ========================================================= */
+.about-cta {
+  /* sekcja neutralna, bez tła i bez marginesów */
+  margin: 0;
+  padding: 0;
+
+  /* about__container ma już grid + paddingy z Override Pack */
+  .about__container {
+    /* nic więcej nie trzeba */
+  }
+
+  /* KARTA CTA (trzyma kolor i promień, nie wychodzi poza grid) */
+  &__box {
+    grid-column: 1 / -1;          /* pełna szer. kolumn kontenera */
+    background: $color-gradient-start;
+    color: $color-white;
+    border-radius: 24px;
+    padding: 24px;                 /* wewnętrzny oddech karty */
+    display: grid;
+    grid-template-columns: 1fr;    /* układ wspólny dla wszystkich MQ */
+    row-gap: 16px;
+  }
+
+  /* Tytuł i opis na pełną szer. */
+  &__box > h2 {
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1.2;
+    margin: 0;
+  }
+  &__box > p {
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+    opacity: .95;
+  }
+
+  /* Rząd z dwoma przyciskami */
+  .btns {
+    display: flex;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 4px;
+    max-width: 335px;
+    margin: 0 auto;
+  }
+  // .btns .btn {
+  //   width: 100%;
+  //   min-height: 44px;
+  //   text-align: center;
+  //   justify-content: center;
+  // }
+}
+
+/* ===== Tablet ===== */
+@media (min-width: $bp-tablet) and (max-width: $bp-tablet-max) {
+  .about-cta {
+    &__box { padding: 32px; row-gap: 18px; }
+    &__box > h2 { font-size: 26px; }
+    &__box > p  { font-size: 16px; }
+    .btns { gap: 14px; }
+  }
+}
+
+/* ===== Laptop ===== */
+@media (min-width: $bp-laptop) and (max-width: $bp-laptop-max) {
+  .about-cta {
+    &__box { padding: 40px; row-gap: 20px; }
+    &__box > h2 { font-size: 28px; }
+    &__box > p  { font-size: 16px; }
+    .btns .btn { min-height: 48px; }
+  }
+}
+
+/* ===== Desktop ===== */
+@media (min-width: $bp-desktop) {
+  .about-cta {
+    &__box { padding: 48px; }
+    &__box > h2 { font-size: 30px; }
+    &__box > p  { font-size: 18px; }
+    .btns .btn { min-height: 52px; }
+  }
+}
+
+
+/* Tablet */
+@media (min-width: $bp-tablet) {
+  .about-cta {
+    padding: 56px 0;
+
+    h2 { font-size: 26px; margin-bottom: 16px; }
+    p  { font-size: 16px; margin-bottom: 24px; }
+    .btns { gap: 16px; }
+  }
+}
+
+/* Laptop */
+@media (min-width: $bp-laptop) {
+  .about-cta {
+    padding: 64px 0;
+
+    h2 { font-size: 28px; }
+    p  { font-size: 18px; }
+    .btns .btn { min-height: 48px; }
+  }
+}
+
+/* Desktop */
+@media (min-width: $bp-desktop) {
+  .about-cta {
+    padding: 72px 0;
+
+    h2 { font-size: 32px; }
+    p  { font-size: 18px; }
+    .btns .btn { min-height: 52px; }
+  }
+}
+
+/* ===== Tablet (8 kol) – większa typografia i oddechy ===== */
+@media (min-width: $bp-tablet) and (max-width: $bp-tablet-max) {
+  .about-cta {
+    padding: 40px 0;
+
+    > .about__container > h2 {
+      font-size: 26px;
+      margin-bottom: 14px;
+    }
+    > .about__container > p {
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    .btns { gap: 14px; }
+  }
+}
+
+/* ===== Laptop (12 kol) ===== */
+@media (min-width: $bp-laptop) and (max-width: $bp-laptop-max) {
+  .about-cta {
+    padding: 48px 0;
+
+    > .about__container > h2 { font-size: 28px; }
+    > .about__container > p  { font-size: 16px; }
+    .btns { gap: 16px; }
+
+    .btns .btn { min-height: 48px; }
+  }
+}
+
+/* ===== Desktop (12 kol, szerokie boki) ===== */
+@media (min-width: $bp-desktop) {
+  .about-cta {
+    padding: 56px 0;
+
+    > .about__container > h2 { font-size: 30px; }
+    > .about__container > p  { font-size: 18px; }
+
+    .btns .btn { min-height: 52px; }
+  }
+}
+
+
+
+/* =========================================================
+   OVERRIDE PACK — płynny grid dla wszystkich sekcji ABOUT
+   (wklej NA SAMYM KOŃCU pliku)
+   ========================================================= */
+
+/* Mobile: 4 kol, gap 16, pad 20 */
+.about-hero .about__container,
+.about-values .about__container,
+.about-timeline .about__container,
+.about-process .about__container,
+.about-stats .about__container,
+.about-featured .about__container,
+.about-testimonials .about__container,
+.about-cta .about__container {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: 16px;
+  row-gap: 16px;
+  padding-inline: 20px;
+  justify-content: center;
+  margin-inline: auto;
+  min-width: 0;
+  box-sizing: content-box;
+}
+
+/* Tablet: 8 kol, gap 20, pad 42 */
+@media (min-width: 744px) and (max-width: 1439px) {
+  .about-hero .about__container,
+  .about-values .about__container,
+  .about-timeline .about__container,
+  .about-process .about__container,
+  .about-stats .about__container,
+  .about-featured .about__container,
+  .about-testimonials .about__container,
+  .about-cta .about__container {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    column-gap: 20px;
+    row-gap: 20px;
+    padding-inline: 42px;
+  }
+}
+
+/* Laptop: 12 kol, gap 24, pad 40 */
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .about-hero .about__container,
+  .about-values .about__container,
+  .about-timeline .about__container,
+  .about-process .about__container,
+  .about-stats .about__container,
+  .about-featured .about__container,
+  .about-testimonials .about__container,
+  .about-cta .about__container {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 24px;
+    row-gap: 24px;
+    padding-inline: 40px;
+  }
+}
+
+/* Desktop: 12 kol, gap 24, pad 300 */
+@media (min-width: 1920px) {
+  .about-hero .about__container,
+  .about-values .about__container,
+  .about-timeline .about__container,
+  .about-process .about__container,
+  .about-stats .about__container,
+  .about-featured .about__container,
+  .about-testimonials .about__container,
+  .about-cta .about__container {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 24px;
+    row-gap: 24px;
+    padding-inline: 300px;
+  }
+}
+
+/* Dots przy zdjęciu (jak w mission) */
+.about-hero__photo { position: relative; }
+.about-hero__dots {
+  position: absolute;
+  top: -24px;
+  right: -24px;
+  width: 140px;
+  height: auto;
+  pointer-events: none;
+  z-index: 1;
+}
+@media (max-width: 743px) {
+  .about-hero__dots { top: -16px; right: -16px; width: 100px; }
+}
+@media (min-width: 1440px) {
+  .about-hero__dots { top: -32px; right: -32px; width: 180px; }
+}
+
+/* === Projects embed inside About === */
+.about-featured {
+  .projects--embed {
+    /* bez własnych paddingów sekcji projects */
+ grid-column: 1 / -1;   // <-- to jest klucz
+  width: 100%;
+
+
+  }
+}
+
+/* Tablet: 2 kolumny kart */
+@media (min-width: 744px) and (max-width: 1439px) {
+.about-featured .projects--embed {
+  grid-column: 1 / -1;   // <-- to jest klucz
+  width: 100%;
+}
+
+}
+
+/* Laptop/Desktop: 3 kolumny kart */
+@media (min-width: 1440px) {
+  .about-featured .projects--embed .projects__cards-container {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+  }
+}
+
+/* === Testimonials embed inside About === */
+.about-testimonials {
+  .about__container {
+    /* już ma nasz płynny grid z OVERRIDE PACK */
+  }
+
+  /* klucz: sekcja .testimonials jest bezpośrednim dzieckiem about__container */
+  .testimonials {
+    grid-column: 1 / -1;  /* pełny span przez kolumny about */
+    width: 100%;
+    margin: 0;            /* na wypadek domyślnych marginesów */
+  }
+
+  /* opcjonalnie: jeżeli chcesz, by moduł nie miał dodatkowego odstępu od About,
+     można wyluzować własny margines sekcji */
+  /* .testimonials { padding-top: 0; } */
+}
+/* === ABOUT CTA — fix przycisków === */
+.about-cta {
+  /* 2 kolumny już mamy, tu tylko korekty przycisków */
+  .btns {
+    grid-template-columns: 1fr 1fr; /* równo po 50% */
+    gap: 12px;
+
+    @media (min-width: 744px) { gap: 14px; }
+    @media (min-width: 1440px) { gap: 16px; }
+  }
+
+  /* Ujednolicenie wymiarów niezależnie od contentu i globalnych styli .btn */
+  .btns .btn {
+    display: flex;                  /* pewne centrowanie w pionie */
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 44px;               /* mobile */
+    padding: 12px 18px;             /* nadpisanie ewentualnych globalnych */
+    margin: 0;                      /* kasuje globalne marginesy */
+    line-height: 1.2;
+    white-space: nowrap;            /* bez łamania w jednej linii */
+    box-sizing: border-box;
+    -webkit-appearance: none;       /* iOS */
+    border-radius: 12px;            /* spójny promień */
+  }
+  @media (min-width: 1440px) {
+    .btns .btn { min-height: 48px; }
+  }
+  @media (min-width: 1920px) {
+    .btns .btn { min-height: 52px; }
+  }
+
+  /* Kontekstowe kolory na zielonym tle karty */
+  .about-cta__box {
+    /* PRIMARY – zostaje brandowy */
+    .btn--primary {
+      /* jeśli masz token, zostaw – tu tylko upewniamy się o kontraście */
+      color: #fff;
+    }
+    /* SECONDARY – obrys + biały tekst, żeby nie „znikał” na tle */
+    .btn--secondary {
+      background: transparent !important;
+      color: #fff !important;
+      border: 1.5px solid rgba(255,255,255,.75);
+    }
+    .btn--secondary:hover,
+    .btn--secondary:focus-visible {
+      border-color: #fff;
+      background: rgba(255,255,255,.08);
+      outline: none;
+    }
+  }
+}
+/* --- ABOUT CTA: AI Box ma być nad wszystkim i klikalny --- */
+.about-cta {
+  position: relative;
+  isolation: isolate;   /* nowy stacking-context */
+  z-index: 1;
+}
+
+.about-cta::before,
+.about-cta::after {
+  pointer-events: none; /* pseudo-elementy nie zasłaniają klików */
+}
+
+.configurator-prompt,           /* sama sekcja AI Box */
+.configurator-prompt__content { /* karta wewnątrz */
+  position: relative;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+/* --- TESTIMONIALS: nawigacja/strzałki zawsze klikalne --- */
+.testimonials {
+  position: relative;
+  isolation: isolate;
+  z-index: 1;
+}
+
+.testimonials::before,
+.testimonials::after {
+  pointer-events: none; /* gradienty/dekoracje */
+}
+
+.testimonials__nav,
+.testimonials__arrow {
+  position: relative;
+  z-index: 3;          /* ponad slajdami/dekoracjami */
+  pointer-events: auto;
+}
+
+/* Jeśli masz overlay/gradient nad kartami: */
+.testimonials__overlay,
+.testimonials__gradient,
+.testimonials__decor {
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Profilaktycznie: sekcja niżej (np. footer) nie wychodzi nad CTA */
+.footer,
+.section,
+.about-section,
+.about-content {
+  position: relative;
+  z-index: 0;
+}

@@ -1,0 +1,32 @@
+<!-- photos/svg/house-ai.svg -->
+<svg width="112" height="72" viewBox="0 0 112 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="h_grad" x1="0" y1="0" x2="112" y2="72" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F3C472"/>
+      <stop offset="1" stop-color="#C88B36"/>
+    </linearGradient>
+    <filter id="h_soft" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- dach -->
+  <path d="M8 38L56 8L104 38" stroke="url(#h_grad)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" filter="url(#h_soft)"/>
+
+  <!-- komin -->
+  <path d="M70 10V22" stroke="url(#h_grad)" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- bryła domu -->
+  <rect x="18" y="34" width="76" height="34" rx="8" fill="#fff" stroke="#E7E7EA" stroke-width="2" filter="url(#h_soft)"/>
+
+  <!-- drzwi -->
+  <rect x="30" y="44" width="14" height="24" rx="3" fill="#111827" opacity=".9"/>
+  <circle cx="41" cy="56" r="1.5" fill="#F3C472"/>
+
+  <!-- okno -->
+  <rect x="66" y="44" width="18" height="14" rx="3" fill="#F8FAFC" stroke="#E5E7EB"/>
+  <path d="M75 44v14M66 51h18" stroke="#E5E7EB"/>
+
+  <!-- subtelna podstawa -->
+  <rect x="8" y="66" width="96" height="2" rx="1" fill="#EAEAEA"/>
+</svg>

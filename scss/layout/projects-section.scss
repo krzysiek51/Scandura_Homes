@@ -1,0 +1,167 @@
+@use '../utils/variables' as *;
+@use 'grid' as *;
+
+/* =========================================================
+   PROJECTS — mobile-first: 1 karta w kadrze
+   Współpraca z /js/projects-slider.js (tworzy .projects__track)
+   Tor = GRID na .projects__track
+   ========================================================= */
+
+/* Tokeny (mobile) */
+$viewport-mobile: 375px;   /* rama M */
+$content-mobile: 336px;    /* szer. kolumny/karty w torze */
+$gap-slider: 60px;         /* gap na mobile */
+
+/* Breakpointy */
+$bp-tablet: 744px;
+$bp-laptop: 1440px;
+$bp-desktop: 1920px;
+
+/* --- Blok: projects --- */
+.projects {
+  width: 100%;
+  //background-color: #ffffff;
+  padding: 40px 0;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  &__title {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    line-height: 1.2;
+    color: #2a2a2a;
+    margin: 0 0 16px 0;
+    text-align: center;
+  }
+
+  &__lead {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #4a4a4a;
+    margin: 0 0 24px 0;
+    text-align: center;
+  }
+
+  /* === Viewport (maski, overflow) === */
+  &__cards-container {
+    position: relative;
+    width: 100%;
+    max-width: $viewport-mobile;   /* 375px */
+    margin: 0 auto;
+    overflow: hidden;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+
+    /* Maski po bokach w kolorze tła sekcji */
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 100vw;
+      height: 100%;
+      //background: #ffffff;
+      z-index: 2;
+      pointer-events: none;
+      padding: 440px;
+    }
+    &::before { right: 100%; }
+    &::after  { left: 100%; }
+  }
+
+  /* === TOR (GRID) — JS steruje transform === */
+  &__track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: $content-mobile;  /* 336px */
+    column-gap: $gap-slider;             /* 60px */
+    align-items: start;
+    justify-content: start;
+  }
+
+  /* w torze projektowa karta ma wypełniać kolumnę */
+  &__track > .project-card {
+    width: 100%;
+    min-width: 0;
+    flex: initial;
+  }
+}
+
+/* =========================================================
+   TABLET: 744–1439
+   - viewport 660
+   - 1 karta 601×869
+   - gap 20
+   - maska odsunięta, żeby karta mogła wejść -60px w lewo (JS)
+   ========================================================= */
+@media (min-width: 744px) and (max-width: 1439px) {
+  .projects {
+    &__cards-container {
+      max-width: 660px;
+      overflow: visible;
+      &::before { right: calc(100% + 60px); } /* odsuwamy maskę */
+    }
+    &__track {
+      grid-auto-columns: 601px;
+      column-gap: 20px;
+    }
+    
+  }
+}
+
+/* =========================================================
+   LAPTOP: 1440–1919
+   - content 1280
+   - karta w torze 1191px, gap 24
+   - maski na krawędzi viewportu
+   ========================================================= */
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .projects {
+    &__cards-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      overflow: hidden;
+      &::before { right: 100%; }
+      &::after  { left: 100%; }
+    }
+    &__track {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 1191px;
+      column-gap: 24px;
+      position: relative;
+      z-index: 1;
+    }
+    
+  }
+}
+
+/* =========================================================
+   DESKTOP: ≥1920
+   - content 1320
+   - układ jak laptop
+   ========================================================= */
+@media (min-width: 1920px) {
+  .projects {
+    &__cards-container {
+      max-width: 1320px;
+      margin: 0 auto;
+      overflow: hidden;
+      &::before { right: 100%; }
+      &::after  { left: 100%; }
+    }
+    &__track {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 1191px;
+      column-gap: 24px;
+      position: relative;
+      z-index: 1;
+    }
+  }
+}

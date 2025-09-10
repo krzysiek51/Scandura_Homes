@@ -1,0 +1,257 @@
+@use '../utils/variables' as *;
+@use 'sass:color';
+@use "sass:math";
+
+
+/* ===== Fallbacki (gdyby brakowało w utils/variables) ===== */
+$bp-tablet: 744px !default;
+$bp-laptop: 1440px !default;
+$bp-desktop: 1920px !default;
+
+$color-black: #000 !default;
+$color-white: #fff !default;
+
+/* ===================== TOKENS — MOBILE ===================== */
+$footer-m-pad-y: 60px !default;
+
+/* ===================== TOKENS — TABLET (744) ===================== */
+$footer-tab-pad-y: 48px !default;
+$footer-tab-logo-w: 140px !default;
+$footer-tab-body: 14px !default;
+$footer-tab-head: 20px !default;
+$footer-tab-line: 1.6 !default;
+$footer-tab-list-gap: 12px !default;
+$footer-tab-col-gap: 20px !default;
+$footer-tab-icon: 32px !default;
+$footer-tab-social-gap: 16px !default;
+
+/* ===================== TOKENS — LAPTOP (1440–1919) ===================== */
+$footer-lap-pad-y: 80px !default;
+$footer-lap-logo-w: 160px !default;
+$footer-lap-body: 16px !default;
+$footer-lap-head: 24px !default;
+$footer-lap-line: 1.6 !default;
+$footer-lap-list-gap: 14px !default;
+$footer-lap-col-gap: 24px !default;
+$footer-lap-icon: 44px !default;
+$footer-lap-social-gap: 16px !default;
+
+/* ===================== TOKENS — DESKTOP (≥1920) ===================== */
+$footer-desk-pad-y: 88px !default;
+$footer-desk-logo-w: 172px !default;
+$footer-desk-body: 16px !default;
+$footer-desk-head: 24px !default;
+$footer-desk-line: 1.65 !default;
+$footer-desk-list-gap: 14px !default;
+$footer-desk-col-gap: 24px !default;
+$footer-desk-icon: 48px !default;
+$footer-desk-social-gap: 16px !default;
+
+/* =========================================================
+   FOOTER — mobile-first; grid płynny (wypełnia 100% do paddingów)
+   ========================================================= */
+.footer {
+  background-color: $color-black;
+  color: $color-white;
+  padding: $footer-m-pad-y 0 30px;
+
+  /* ——— CONTAINER (wspólne) ——— */
+  .container {
+    /* Zerujemy globalne ograniczenia kontenera wyżej w kaskadzie */
+    max-width: none;
+    width: 100%;
+    box-sizing: border-box;
+    padding-inline: 20px;           /* mobile padding */
+    margin-inline: auto;
+
+    display: grid;
+    /* PŁYNNY GRID: 4 kolumny które zawsze wypełniają szerokość do paddingów */
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: 16px;
+    row-gap: 16px;
+
+    /* ważne: nie centruj torów – pozwól im wypełnić szerokość */
+    justify-content: normal;
+    align-items: start;
+    min-width: 0;
+  }
+
+  /* BRAND */
+  &__top         { grid-column: 1 / -1; }
+  &__logo-link   { display: inline-block; line-height: 0; }
+  &__logo        { width: 130px; height: auto; margin-bottom: 20px; display: block; }
+  &__description {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba($color-white, .8);
+    max-width: 400px;
+    text-align: left;
+  }
+
+  /* LINKI */
+  &__links { grid-column: 1 / -1; }
+  &__heading {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 20px;
+    line-height: 150%;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  &__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  &__link {
+    color: rgba($color-white, .85);
+    font-size: 14px; line-height: 1.5; text-decoration: none;
+    transition: color .2s ease;
+    &:hover { color: $color-white; }
+    &:focus-visible { outline: 2px solid rgba($color-white, .9); outline-offset: 2px; border-radius: 2px; }
+  }
+
+  /* KONTAKT */
+  &__contact { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 10px; }
+  &__address { color: rgba($color-white, .85); font-size: 14px; line-height: 1.5; font-style: normal; }
+
+  /* SOCIAL */
+  &__socials { grid-column: 1 / -1; }
+  &__social-icons { display: flex; align-items: center; gap: 16px; }
+  &__social-link  {
+    display: inline-flex; justify-content: center; align-items: center;
+    width: 44px; height: 44px; border-radius: 50%; background: $color-white;
+    transition: transform .2s ease;
+    img { display: block; width: 20px; height: 20px; }
+    &:hover { transform: scale(1.06); }
+    &:focus-visible { outline: 2px solid rgba($color-white, .9); outline-offset: 2px; }
+  }
+
+  /* BOTTOM */
+  &__bottom {
+    grid-column: 1 / -1;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba($color-white, .2);
+    text-align: center; /* mobile */
+  }
+  &__copyright { font-size: 14px; color: rgba($color-white, .7); }
+  &__main-content { display: contents; }
+
+  /* =================== TABLET (≥744) =================== */
+  @media (min-width: $bp-tablet) {
+    padding-top: $footer-tab-pad-y;
+    padding-bottom: $footer-tab-pad-y;
+
+    & .container {
+      padding-inline: 42px;
+      /* 8 kolumn – płynne do paddingów */
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      column-gap: $footer-tab-col-gap;
+      row-gap: $footer-tab-col-gap;
+      justify-content: normal;
+    }
+
+    /* mapa bloków */
+    &__top     { grid-column: 1 / -1; grid-row: 1; }
+    &__links   { grid-column: 1 / span 2; grid-row: 2; }
+    &__contact { grid-column: 3 / span 3; grid-row: 2; }
+    &__socials { grid-column: 6 / span 3; grid-row: 2; display: block; }
+
+    &__bottom {
+      grid-column: 1 / -1;
+      grid-row: 3;
+      margin-top: 24px;
+      padding-top: 0;
+      border: none;
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      gap: 20px;
+      text-align: left;
+
+      &::before { content: none; }
+    }
+    &__copyright { grid-column: 1 / span 4; font-size: 12.5px; }
+    &__bottom-nav { grid-column: 5 / span 4; justify-self: end; display: flex; gap: 16px; }
+
+    /* typografia */
+    &__logo { width: $footer-tab-logo-w; margin-bottom: 16px; }
+    &__description { font-size: $footer-tab-body; line-height: $footer-tab-line; color: rgba($color-white, .85); }
+    &__heading { font-size: $footer-tab-head; line-height: 1.5; margin-bottom: 16px; }
+    &__list { gap: $footer-tab-list-gap; }
+    &__link, &__contact a, &__address { font-size: $footer-tab-body; line-height: $footer-tab-line; }
+    &__social-icons { gap: $footer-tab-social-gap; }
+    &__social-link { width: $footer-tab-icon; height: $footer-tab-icon; img { width: 18px; height: 18px; } }
+  }
+
+ /* =================== LAPTOP (1440–1919) =================== */
+@media (min-width: $bp-laptop) and (max-width: #{($bp-desktop - 1px)}) {
+  .footer {
+    padding-top: $footer-lap-pad-y;
+   padding-bottom: math.div($footer-lap-pad-y, 2);
+
+    .container {
+      max-width: 100%;
+      padding-inline: 40px;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: $footer-lap-col-gap;
+      row-gap: $footer-lap-col-gap;
+      justify-content: normal;
+    }
+
+    &__top     { grid-column: 1  / span 4; grid-row: 1; }
+    &__links   { grid-column: 5  / span 2; grid-row: 1; }
+    &__contact { grid-column: 7  / span 3; grid-row: 1; }
+    &__socials { grid-column: 10 / span 3; grid-row: 1; }
+
+    &__bottom {
+      grid-column: 1 / -1; grid-row: 2;
+      margin-top: 24px; padding-top: 24px;
+      border-top: 1px solid rgba($color-white, .2);
+      text-align: left;
+    }
+
+    &__logo         { width: $footer-lap-logo-w; margin-bottom: 24px; }
+    &__description  { font-size: $footer-lap-body; line-height: $footer-lap-line; color: rgba($color-white, .85); }
+    &__heading      { font-size: $footer-lap-head; margin-bottom: 24px; }
+    &__list         { gap: $footer-lap-list-gap; }
+    &__link, &__contact a, &__address { font-size: $footer-lap-body; line-height: $footer-lap-line; }
+    &__social-icons { gap: $footer-lap-social-gap; }
+    &__social-link  { width: $footer-lap-icon; height: $footer-lap-icon; }
+    &__copyright    { font-size: 14px; }
+  }
+}
+
+  /* =================== DESKTOP (≥1920) =================== */
+  @media (min-width: $bp-desktop) {
+    padding-top: $footer-desk-pad-y;
+   padding-bottom: math.div($footer-lap-pad-y, 2);
+
+    & .container {
+      max-width: 100%;
+      padding-inline: 300px;
+      /* 12 płynnych kolumn */
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: $footer-desk-col-gap;
+      row-gap:   $footer-desk-col-gap;
+      justify-content: normal;
+    }
+
+    &__top     { grid-column: 1  / span 4; grid-row: 1; }
+    &__links   { grid-column: 5  / span 3; grid-row: 1; }
+    &__contact { grid-column: 8  / span 3; grid-row: 1; }
+    &__socials { grid-column: 11 / span 2; grid-row: 1; }
+
+    &__bottom {
+      grid-column: 1 / -1;
+      border-top: 1px solid rgba($color-white, .2);
+      margin-top: 28px;
+      padding-top: 24px;
+      text-align: left;
+    }
+
+    &__logo { width: $footer-desk-logo-w; }
+    &__description { font-size: $footer-desk-body; line-height: $footer-desk-line; color: rgba($color-white, .85); }
+    &__heading { font-size: $footer-desk-head; margin-bottom: 24px; }
+    &__list { gap: $footer-desk-list-gap; }
+    &__link, &__contact a, &__address { font-size: $footer-desk-body; line-height: $footer-desk-line; }
+    &__social-icons { gap: $footer-desk-social-gap; }
+    &__social-link  { width: $footer-desk-icon; height: $footer-desk-icon; img { width: 22px; height: 22px; } }
+  }
+}

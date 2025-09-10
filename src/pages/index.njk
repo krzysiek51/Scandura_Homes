@@ -1,0 +1,21 @@
+{% extends "layouts/base.njk" %}
+{% set title = "Strona główna — Scandura Homes" %}
+{% set nav = [
+  { href: "/", label: "Strona główna", active: true },
+  { href: "/pages/about.html", label: "O mnie" },
+  { href: "/pages/services.html", label: "Usługi" },
+  { href: "/pages/contact.html", label: "Kontakt" }
+] %}
+
+{% block content %}
+<section class="hero">
+  <div class="container">
+    <h1>Domy drewniane w standardzie skandynawskim</h1>
+    <p>…twój content…</p>
+  </div>
+</section>
+
+{# 👉 AI Box z partiala #}
+{% include "partials/_ai-box.njk" %}
+
+{% endblock %}

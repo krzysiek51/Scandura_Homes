@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120" height="88" viewBox="0 0 120 88" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Ikona domu (Scandura)</title>
+  <desc id="desc">Minimalistyczny dom ze spadzistym dachem i oknem, w kolorystyce złoto‑szarej.</desc>
+
+  <!-- tło / karta -->
+  <rect x="1" y="6" width="118" height="76" rx="12" fill="#FBFBFB" stroke="#E9ECEF"/>
+
+  <!-- cień pod domem -->
+  <ellipse cx="60" cy="72" rx="28" ry="6" fill="#EDEFF2"/>
+
+  <!-- bryła domu -->
+  <rect x="30" y="34" width="60" height="34" rx="4" fill="#FFFFFF" stroke="#D6DAE1" stroke-width="2"/>
+
+  <!-- dach -->
+  <path d="M24 37 L60 18 L96 37" fill="#FDF4E7" stroke="#C58E3D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- komin -->
+  <rect x="74" y="22" width="8" height="10" rx="1.5" fill="#FFFFFF" stroke="#D6DAE1" stroke-width="2"/>
+
+  <!-- okno -->
+  <rect x="42" y="45" width="16" height="14" rx="2" fill="#F5F7FA" stroke="#D6DAE1" stroke-width="2"/>
+  <line x1="50" y1="45" x2="50" y2="59" stroke="#D6DAE1" stroke-width="2"/>
+  <line x1="42" y1="52" x2="58" y2="52" stroke="#D6DAE1" stroke-width="2"/>
+
+  <!-- drzwi -->
+  <rect x="66" y="46" width="16" height="22" rx="2" fill="#FFFFFF" stroke="#D6DAE1" stroke-width="2"/>
+  <circle cx="79" cy="57" r="1.8" fill="#C58E3D"/>
+
+  <!-- akcent złotej kalenicy -->
+  <line x1="24" y1="37" x2="96" y2="37" stroke="#E8B468" stroke-width="2" stroke-linecap="round" opacity=".35"/>
+</svg>

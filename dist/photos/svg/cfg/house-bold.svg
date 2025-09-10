@@ -1,0 +1,9 @@
+<!-- photos/svg/cfg/house-bold.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="72" viewBox="0 0 96 72" fill="none">
+  <path d="M10 38L48 12L86 38" stroke="#1F2937" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M20 36V62C20 63.657 21.343 65 23 65H73C74.657 65 76 63.657 76 62V36" stroke="#1F2937" stroke-width="4" stroke-linecap="round"/>
+  <rect x="42" y="48" width="12" height="17" rx="2" fill="#C0841A"/>
+  <rect x="60" y="44" width="10" height="8" rx="2" fill="#E5E7EB"/>
+  <rect x="26" y="44" width="10" height="8" rx="2" fill="#E5E7EB"/>
+  <path d="M12 40H84" stroke="#D1D5DB" stroke-width="2" stroke-linecap="round"/>
+</svg>

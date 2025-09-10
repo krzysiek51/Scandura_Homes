@@ -1,0 +1,406 @@
+// components/_services.scss
+@use '../layout/grid' as *;
+@use '../utils/variables' as *;
+
+/* =========================================================
+   SERVICES — MOBILE-FIRST
+   Płynnie: 0–1919 • Sztywno: ≥1920
+   ========================================================= */
+
+/* ——— Tokeny sekcji ——— */
+$vp-mobile: 375px;    // kadr 1 karty (mobile)
+$card-mobile: 336px;  // szer. karty mobile (siatka 336/72/16/20)
+$gap-m: 16px;         // mobile gap
+$gap-t: 20px;         // tablet gap
+$gap-l: 24px;         // laptop/desktop gap
+
+/* ——— Baza sekcji (wspólne) ——— */
+.services {
+  background: #fff;
+  position: relative;
+  padding: 40px 0;
+  box-sizing: border-box;
+
+  /* Tytuł */
+  &__title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 140%;
+    color: $color-dark-text;
+    margin: 0;
+
+    &::before {
+      content: '';
+      display: block;
+      width: 225px;
+      height: 4px;
+      background: linear-gradient(90deg, $color-gradient-start 0%, $color-gradient-end 100%);
+      border-radius: 2px;
+      margin: 0 0 20px;
+    }
+  }
+
+  /* Slider – viewport */
+  &__slider {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    padding-bottom: 36px;
+    display: flex;
+
+    /* przewijanie ukryte – tor przesuwa JS */
+    overflow-x: hidden;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory; /* mobile – w MQ wyżej wyłączamy */
+    -webkit-overflow-scrolling: touch;
+
+    /* maski na brzegi (mobile) */
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      width: 100vw;
+      height: 100%;
+      background: #fff;
+      z-index: 2;
+      pointer-events: none;
+    }
+    &::before { right: 100%; }
+    &::after  { left: 100%; }
+
+    /* Kadr mobilny */
+    max-width: $vp-mobile; /* 375 */
+  }
+
+  /* Tor slidera */
+  &__track {
+    display: flex;
+    gap: $gap-m; /* spójnie z siatką mobile */
+    transition: transform 600ms cubic-bezier(.22,.61,.36,1);
+    will-change: transform;
+  }
+
+  /* Karta */
+  &__card {
+    position: relative;
+    padding-bottom: 28px;
+    overflow: visible;
+    flex-shrink: 0;
+    width: $card-mobile; /* 336 */
+    box-sizing: border-box;
+    background-color: $color-beige-light-bg;
+    scroll-snap-align: start;
+    border-top-right-radius: 60px;
+    transition: transform 280ms cubic-bezier(.22,.61,.36,1), box-shadow 280ms ease;
+
+    &.is-active { transform: none; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+  }
+
+  &__image {
+    width: 100%;
+    height: 218px;
+    object-fit: cover;
+    border-top-left-radius: 0;
+    border-top-right-radius: 40px;
+    display: block;
+  }
+
+  &__icon-wrapper {
+    width: 100px; height: 100px; border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    margin: 0 auto; transform: translateY(-50%); z-index: 1;
+  }
+  &__icon { width: 93px; height: 93px; }
+
+  &__card-body {
+    padding: 20px;
+    display: flex; flex-direction: column;
+    align-items: flex-start; gap: 0; margin-top: -50px;
+  }
+
+  &__card-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500; font-size: 20px; line-height: 126%;
+    letter-spacing: 0.07em; color: #000;
+    text-align: center; width: 100%; margin: 0 auto; padding-bottom: 25px;
+  }
+
+  &__card-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px; font-weight: 400; line-height: 126%;
+    letter-spacing: 0.07em; text-align: center; color: #000;
+    margin-bottom: 36px;
+  }
+
+  &__button {
+    width: 174px; height: 56px;
+    display: inline-flex; justify-content: center; align-items: center;
+    padding: 10px 20px; background: $color-black; color: $color-white;
+    border-radius: 0 20px 0 0; text-decoration: none;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+    cursor: pointer; box-sizing: border-box;
+
+    position: absolute; bottom: -28px; left: 50%;
+    transform: translateX(-50%); z-index: 1;
+    box-shadow: 0 4px 4px rgba(0,0,0,.25);
+  }
+
+  /* Nawigacja */
+  &__nav {
+    width: 100%;
+    max-width: 335px; /* mobile */
+    height: 37px;
+    margin: 14px auto 0;
+    padding: 0 16px;
+    display: flex; align-items: center; justify-content: center; gap: 21px;
+    position: relative;
+  }
+
+  &__arrow {
+    border: 0; background: none; height: 37px; width: 37px; padding: 0;
+    display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+
+    img { width: 16px; height: auto; display: block; }
+    &:focus-visible { outline: 2px solid rgba(0,0,0,.2); outline-offset: 2px; border-radius: 6px; }
+    &[disabled] { opacity: .35; pointer-events: none; }
+  }
+}
+
+/* =========================================================
+   MOBILE (0–743) — nav pod sliderem
+   ========================================================= */
+@media (max-width: 743px) {
+  .services {
+    > .container {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(72px, 1fr));
+      column-gap: $gap-m;
+      row-gap: 24px;
+      padding-inline: 20px;
+
+      grid-template-areas:
+        "title title title title"
+        "slider slider slider slider"
+        "nav    nav    nav    nav";
+    }
+
+    /* wrapper lewej kolumny jest neutralny w tym MQ */
+    > .container > .services__left { display: contents; }
+
+    /* przypięcie areas */
+    > .container .services__title  { grid-area: title; }
+    > .container .services__slider { grid-area: slider; }
+    > .container .services__nav    {
+      grid-area: nav;
+      margin: 14px auto 0;
+      justify-content: center;
+      gap: $gap-m;
+    }
+  }
+}
+
+/* =========================================================
+   TABLET (744–1439)
+   2 pełne karty, nav pod sliderem, bez podwójnych paddingów
+   ========================================================= */
+@media (min-width: 744px) and (max-width: 1439px) {
+  .services {
+    /* wyzeruj padding sekcji – rama jest na .container */
+    padding-inline: 0;
+
+    > .container {
+      display: grid;
+      grid-template-columns: repeat(8, minmax(65px, 1fr));
+      column-gap: $gap-t;
+      row-gap: 24px;
+
+      /* content 660 + padding 42+42 = 744 */
+      max-width: 660px;
+      padding-inline: 42px;
+      margin-inline: auto;
+      box-sizing: content-box;
+
+      grid-template-areas:
+        "title title title title title title title title"
+        "slider slider slider slider slider slider slider slider"
+        "nav    nav    nav    nav    nav    nav    nav    nav";
+
+      /* stałe tabletu */
+      --svcs-content: 660px;
+      --svcs-gap: #{$gap-t};
+      --svcs-cards: 2;
+      --svcs-card-w: calc(
+        (var(--svcs-content) - (var(--svcs-gap) * (var(--svcs-cards) - 1)))
+        / var(--svcs-cards)
+      ); /* 320px */
+    }
+
+    > .container > .services__left { display: contents; }
+
+    > .container .services__title  { grid-area: title; }
+
+    > .container .services__slider {
+      grid-area: slider;
+      width: 100%;
+      max-width: var(--svcs-content);  /* 660 */
+      margin-inline: auto;
+      margin-left: 0;                  /* reset ewentualnych offsetów */
+      overflow-x: hidden;
+      scroll-snap-type: none;          /* ruchem steruje JS */
+      &::before, &::after { display: none; }
+    }
+
+    > .container .services__track { gap: var(--svcs-gap); }
+    > .container .services__card  { width: var(--svcs-card-w); } /* 320 */
+
+    > .container .services__nav {
+      grid-area: nav;
+      margin: 14px auto 0;
+      justify-content: center;
+      gap: var(--svcs-gap);
+      max-width: none;
+      padding: 0;
+    }
+  }
+}
+
+/* =========================================================
+   LAPTOP (1440–1919)
+   Lewa 1/4 (center Y), Prawa 4/13, 2×400 + 24, offset 39
+   ========================================================= */
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .services {
+    > .container {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(78px, 1fr));
+      column-gap: $gap-l;
+      padding-inline: 40px;
+      max-width: 1280px;
+      margin-inline: auto;
+      align-items: stretch;
+
+      --svcs-gap: #{$gap-l};
+      --svcs-card-w: 400px;                                  /* Figma */
+      --svcs-viewport: calc(var(--svcs-card-w)*2 + var(--svcs-gap)); /* 824px */
+      --svcs-offset-left: 39px;                              /* odsunięcie od linii grida */
+    }
+
+    /* lewy blok – jeden wrapper, wyśrodkowany pionowo */
+    > .container > .services__left {
+      grid-column: 1 / 4;
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* ⬅ centrum w pionie */
+      gap: 24px;
+      min-height: 100%;
+    }
+    > .container > .services__left .services__title { margin: 0; }
+    > .container > .services__left .services__nav   { justify-content: flex-start; gap: 24px; }
+
+    /* prawy blok – slider */
+    > .container > .services__slider {
+      grid-column: 4 / 13;
+      max-width: var(--svcs-viewport);   /* 824 = 2×400 + 24 */
+      margin-left: var(--svcs-offset-left); /* 39px */
+      scroll-snap-type: none;
+      &::before, &::after { display: none; }
+    }
+    > .container .services__track { gap: var(--svcs-gap); }
+    > .container .services__card  { width: var(--svcs-card-w); }  /* 400 */
+    > .container .services__image { height: 218px; }
+  }
+}
+
+/* =========================================================
+   DESKTOP (≥1920) — SZTYWNY
+   Jak laptop: lewa 1/4 (center Y), prawa 4/13
+   Content 1320 (12×88) + gap 24, sekcja p-x 300
+   ========================================================= */
+@media (min-width: 1920px) {
+  .services {
+    padding-inline: 300px; /* margines sekcji */
+
+    > .container {
+      display: grid;
+      grid-template-columns: repeat(12, 88px); /* SZTYWNO */
+      column-gap: $gap-l;
+      padding-inline: 0;
+      max-width: 1320px;                       /* SZTYWNO */
+      margin-inline: auto;
+      align-items: stretch;
+
+      --svcs-gap: #{$gap-l};
+      --svcs-card-w: 400px;
+      --svcs-viewport: calc(var(--svcs-card-w)*2 + var(--svcs-gap)); /* 824 */
+      --svcs-offset-left: 39px;
+    }
+
+    > .container > .services__left {
+      grid-column: 1 / 4;
+      align-self: stretch;
+      display: flex; flex-direction: column; justify-content: center;
+      gap: 24px; min-height: 100%;
+    }
+    > .container > .services__left .services__title { margin: 0; }
+    > .container > .services__left .services__nav   { justify-content: flex-start; gap: 24px; }
+
+    > .container > .services__slider {
+      grid-column: 4 / 13;
+      max-width: var(--svcs-viewport);  /* 824 */
+      margin-left: var(--svcs-offset-left); /* 39 */
+      scroll-snap-type: none;
+      &::before, &::after { display: none; }
+    }
+    > .container .services__track { gap: var(--svcs-gap); }
+    > .container .services__card  { width: var(--svcs-card-w); }
+    > .container .services__image { height: 218px; }
+  }
+}
+
+/* =========================================================
+   DOSTĘPNOŚĆ
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .services .services__track,
+  .services .services__card { transition: none; }
+}
+
+/* =========================================================
+   3D RING — bez zmian w logice
+   ========================================================= */
+.services {
+  .services__ring {
+    position: relative;
+    height: clamp(320px, 48vw, 520px);
+    transform-style: preserve-3d;
+    transition: transform var(--svcs-duration, 700ms) var(--svcs-ease, cubic-bezier(.22,.61,.36,1));
+    will-change: transform;
+    transform: rotateX(var(--svcs-tilt, -6deg)) rotateY(var(--svcs-rotation, 0deg));
+  }
+  .services__ring > .services__card {
+    position: absolute; top: 50%; left: 50%; translate: -50% -50%;
+    width: clamp(220px, 38vw, 320px); aspect-ratio: 4 / 5;
+    transform-style: preserve-3d; background: #fff;
+    border-radius: 20px; border-top-right-radius: 48px;
+    overflow: hidden; cursor: pointer;
+    transition:
+      transform var(--svcs-duration, 700ms) var(--svcs-ease, cubic-bezier(.22,.61,.36,1)),
+      box-shadow 300ms ease;
+
+    &.is-center { box-shadow: 0 30px 60px rgba(0,0,0,.18); }
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(33,150,243,.35), 0 20px 40px rgba(0,0,0,.14);
+    }
+
+    .services__image {
+      height: 52%;
+      width: 100%;
+      object-fit: contain;
+      display: block;
+    }
+  }
+}

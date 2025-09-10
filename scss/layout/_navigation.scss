@@ -1,0 +1,258 @@
+/* =========================================
+   NAVIGATION
+   - 0–1439: burger overlay (fixed, pełnoekranowy)
+   - ≥1440 : belka (fixed, full-width), linki środkiem, CTA po prawej
+   ========================================= */
+
+/* --- MOBILE/TABLET (overlay) --- */
+.header__nav {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100dvh;
+
+  z-index: 2147483646;
+  background: rgba(17,17,17,.85);
+  backdrop-filter: blur(6px);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  padding-top: 64px;
+  padding-bottom: 24px;
+
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  opacity: 0;
+  transform: translateY(8px);
+  visibility: hidden;
+  transition:
+    opacity 240ms cubic-bezier(.2,.7,.3,1),
+    transform 240ms cubic-bezier(.2,.7,.3,1);
+}
+
+.header__nav.is-open { opacity: 1; transform: none; visibility: visible; }
+
+.header__nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.header__nav-link {
+  display: block;
+  padding: 8px 0;
+  text-decoration: none;
+  color: rgba(255,255,255,.92);
+}
+
+/* Zamykacz overlayu */
+.header__nav-close {
+  position: fixed;
+  top: 0;
+  right: 20px;
+  height: 66px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  z-index: 2147483647;
+
+  img { display: block; width: 20px; height: 14px; }
+}
+
+/* CTA domyślnie ukryte (pokazujemy dopiero w belce ≥1440) */
+.button--nav { display: none; }
+
+/* --- Tablet kosmetyka --- */
+@media (min-width: 744px) and (max-width: 1439px) {
+  .header__nav { padding-top: 32px; padding-bottom: 32px; }
+  .header__nav-list { row-gap: 20px; }
+}
+
+/* =========================================
+   LAPTOP (≥1440 <1920) — NAV nad belką, bez blur; zawsze widoczny
+   ========================================= */
+@media (min-width: 1440px) and (max-width: 1919px) {
+  nav#mobile-menu.header__nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 80px;
+    padding: 0 40px;          /* content 1280 */
+    min-height: 0;
+    overflow: visible;
+    padding-inline: 40px; 
+
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: row;
+
+    font-family: dm sans, sans-serif;
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: 500;
+
+    /* klucz: szybka z blurem */
+    z-index: 30;
+    background: transparent;
+     backdrop-filter: none;
+    isolation: isolate;
+
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    pointer-events: auto;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1; /* pod linkami, nad stroną */
+      background: rgba(17,17,17,.40);
+      box-shadow: 0 4px 4px rgba(0,0,0,0.25);
+      pointer-events: none;
+    }
+  }
+
+  nav#mobile-menu .header__nav-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 48px;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    width: auto;
+  }
+
+  nav#mobile-menu .header__nav-link { 
+    color: rgba(255,255,255,.92);
+    z-index: 20;
+   }
+
+  nav#mobile-menu .button--nav {
+    display: inline-flex;
+    min-width: 174px;
+    height: 56px;
+    margin-left: 24px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 0 16px 0 0;
+    background: #DC9B59;
+    color: #000;
+    text-decoration: none;
+    line-height: 56px;
+  }
+
+  .header__nav-close { display: none; }
+}
+
+
+/* =========================================
+   DESKTOP (≥1920) — NAV nad belką, bez blur; zawsze widoczny
+   ========================================= */
+@media (min-width: 1920px) {
+   nav#mobile-menu.header__nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 80px;
+    padding: 0 40px;          /* content 1280 */
+    min-height: 0;
+    overflow: visible;
+
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: row;
+
+    font-family: dm sans, sans-serif;
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: 500;
+
+    /* klucz: szybka z blurem */
+    z-index: 30;
+    background: transparent;
+     backdrop-filter: none;
+    isolation: isolate;
+
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    pointer-events: auto;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1; /* pod linkami, nad stroną */
+      background: rgba(17,17,17,.40);
+      box-shadow: 0 4px 4px rgba(0,0,0,0.25);
+      pointer-events: none;
+    }
+  }
+
+  nav#mobile-menu .header__nav-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 48px;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    width: auto;
+  }
+
+  nav#mobile-menu .header__nav-link { color: rgba(255,255,255,.92); }
+
+  nav#mobile-menu .button--nav {
+    display: inline-flex;
+    min-width: 174px;
+    height: 56px;
+    margin-left: 24px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 0 16px 0 0;
+    background: #DC9B59;
+    color: #000;
+    text-decoration: none;
+    line-height: 56px;
+  }
+
+  .header__nav-close { display: none; }
+}
+/* NAV ma taki sam padding jak header__content */
+@media (min-width: 1440px) and (max-width: 1919px) {
+  nav#mobile-menu.header__nav { padding-inline: var(--content-x); }
+}
+@media (min-width: 1920px) {
+  nav#mobile-menu.header__nav { padding-inline: var(--content-x); }
+}
+
+/* (opcjonalnie) bez dodatkowego odsunięcia przy prawej krawędzi */
+nav#mobile-menu .button--nav { margin-right: 0; }
+
+/* ===== AUTO-HIDE NAV (tylko ≥1440) ===== */
+@media (min-width: 1440px) {
+  nav#mobile-menu.header__nav {
+    transition: transform 220ms cubic-bezier(.2,.7,.3,1);
+    will-change: transform;
+  }
+
+  /* nie chowamy, gdy overlay menu jest otwarty */
+  nav#mobile-menu.header__nav.is-hidden:not(.is-open) {
+    transform: translateY(-100%);
+  }
+}

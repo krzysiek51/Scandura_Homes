@@ -1,0 +1,383 @@
+@use "sass:color";
+
+/* =========================================
+   HEADER (mobile-first)
+   ========================================= */
+
+.header {
+  position: relative;
+  width: 100%;
+  min-height: 450px;
+  color: #fff;
+  overflow: hidden;
+  isolation: auto;
+  // z-index: 1;
+
+
+  &__video   { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+  &__overlay { position: absolute; inset: 0; background: rgba(0,0,0,.5); z-index: 1; pointer-events: none; }
+
+  /* === Belka top — ZAWSZE 100% viewportu === */
+  &__wrap { position: relative; z-index: auto; }
+
+  .container.header__top {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  height: 66px; /* mobile */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  /* fill (tło półprzezroczyste) */
+  background: rgba(23, 23, 23, 0.4); 
+
+  /* blur */
+  backdrop-filter: blur(1px);
+
+  /* stroke (imitacja stroke inside → border-bottom, bo belka leży na górze) */
+  border-bottom: 1px solid rgba(0, 0, 0, 1);
+
+  /* drop shadow */
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.35);
+}
+
+  &__logo { display: flex; align-items: center; }
+  &__logo--img { height: 40px; width: 92px; display: block; }
+
+  /* Burger (0–1439 px) */
+  &__burger {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 44px; min-height: 44px; padding-right: 2px;
+    margin: 0; border: 0; background: transparent; cursor: pointer;
+    position: relative; z-index: 2147483647;
+    &:focus-visible { outline: 2px solid #DC9B59; outline-offset: 2px; border-radius: 8px; }
+  }
+  &__burger-icon { display: block; width: 24px; height: 24px; }
+
+  /* Treść hero */
+  &__content {
+    position: relative; z-index: 2;
+    width: 100%;
+    padding: 0 20px 0 20px ;
+    margin: 0;
+  }
+  .header__badge       { grid-column: 1 / span 6; }
+    .header__title       { 
+      // grid-column: 1 / span 8; 
+    font-family: dm sans, sans-serif;
+    font-size: 32px;
+    line-height: 130%;
+    letter-spacing: 2%;
+    font-weight: 600;
+
+    margin-top: 26px;
+    }
+    .header__description {
+      // grid-column: 1 / span 8; 
+      font-family: dm sans, sans-serif;
+      font-size: 14px;
+      line-height: auto;
+      font-weight: 400; 
+
+      margin-top: 16px;
+      
+      
+      }
+  
+  .button--header      { 
+      grid-column: 1 / span 3; 
+      width: 335px;
+      height: 56px;
+      justify-self: start; 
+      margin-bottom: 37px;
+      font-family: dm sans, sans-serif;
+      font-size: 16px;
+      line-height: 1.4;
+      font-weight: 600; 
+      letter-spacing: -0.43px;
+    }
+}
+
+/* ===== TABLET (≥744 <1440) — grid 660: 8×65 / gap 20 / padding 42 ===== */
+@media (min-width: 744px) and (max-width: 1439px) {
+  .header {
+    .container.header__top { 
+      height: 66px; 
+      padding: 0 42px;   
+    //  background: transparent;
+    //   backdrop-filter: none;
+    //   border: 0;
+    //   box-shadow: none;
+      z-index: 31;
+    
+    }
+
+    &__content {
+      /* zamiast „max-width: 744px” robimy płynne 100% z marginesami 42px */
+      width: 100%;
+      max-width: none;
+      padding-inline: 42px;
+      padding-bottom: 0;
+      padding-top: 36px;
+      margin-inline: 0; /* nie centrować nic sztywnie */
+
+      /* grid: 8 płynnych kolumn, stały gap 20 */
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      column-gap: 20px;
+      row-gap: 16px;
+
+      > * { min-width: 0; } /* zabezpieczenie przed overflowem */
+    }
+    /* ⬆⬆ KONIEC PODMIANY ⬆⬆ */
+
+
+    .header__badge       { grid-column: 1 / span 6; }
+    .header__title       { 
+      grid-column: 1 / span 8; 
+    font-family: dm sans, sans-serif;
+    font-size: 48px;
+    line-height: 130%;
+    letter-spacing: 0.07em;
+    font-weight: 600;
+    }
+    .header__description {
+      grid-column: 1 / span 8; 
+      font-family: dm sans, sans-serif;
+      font-size: 18px;
+      line-height: auto;
+      font-weight: 300; 
+      
+      
+      }
+    .button--header      { 
+      grid-column: 1 / span 3; 
+      width: 250px;
+      height: 56px;
+      justify-self: start; 
+      margin-bottom: 103px;
+      font-family: dm sans, sans-serif;
+      font-size: 16px;
+      line-height: 1.4;
+      font-weight: 700; 
+      letter-spacing: -0.43px;
+    }
+  }
+}
+
+/* ===== LAPTOP (≥1440 <1920) — grid 1280: 12×78 / 24 / 40 ===== */
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .header {
+    /* Belka top: PODWIESZONA, tło full-width przez padding 40 */
+    .container.header__top {
+     position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 80px;
+       padding: 0;
+
+      /* KLUCZ: żadnego stosu i żadnego wizualu – to robi nav */
+      background: transparent;
+      backdrop-filter: none;
+      border: 0;
+      box-shadow: none;
+      z-index: 31;
+     
+    }
+
+    .header__logo {
+      position: fixed;
+      top: 0; left: 40px;    /* jak padding belki */
+      height: 80px; 
+      display: flex; 
+      align-items: center;
+      z-index: 40;           /* NAJWYŻEJ */
+}
+
+    .header__logo--img {
+      height: 60px;
+      width: 138px;
+      position: static;         /* żadnych z-index na samym img */
+    }
+
+    &__burger    { display: none; }
+
+    &__content {
+      max-width: 1440px;
+    margin: 0 auto; 
+ ;   
+    padding-top: 0;
+    padding-bottom: 45px;
+    padding-left: 40px;
+    padding-right: 40px;     /* centruje siatkę */
+    //padding-inline: 40px;      /* po 40px z lewej i prawej */
+    display: grid;
+    grid-template-columns: repeat(12, 78px);
+    column-gap: 24px;
+    row-gap: 20px;
+
+    > * { min-width: 0; }
+    }
+
+    .header__badge       { grid-column: 1 / span 6; }
+    .header__title       { 
+     grid-column: 1 / span 9; 
+    font-family: dm sans, sans-serif;
+    font-size: 66px;
+    line-height: 130%;
+    letter-spacing: 2%;
+    font-weight: 600;
+    margin-top: 282px;
+    }
+    .header__description {
+      grid-column: 1 / span 8; 
+      font-family: dm sans, sans-serif;
+      font-size: 18px;
+      line-height: auto;
+      font-weight: 300; 
+      
+      
+      }
+    .button--header      { 
+      grid-column: 1 / span 3; 
+      width: 275px;
+      height: 56px;
+      justify-self: start; 
+      margin-bottom: 103px;
+      font-family: dm sans, sans-serif;
+      font-size: 18px;
+      line-height: 1.4;
+      font-weight: 600; 
+      letter-spacing: -0.43px;
+    }
+  }
+}
+
+/* ===== DESKTOP (≥1920) — grid 1320: 12×88 / 24 / 300 ===== */
+@media (min-width: 1920px) {
+  .header {
+    .container.header__top {
+     position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 80px;
+
+      /* KLUCZ: żadnego stosu i żadnego wizualu – to robi nav */
+      background: transparent;
+      backdrop-filter: none;
+      border: 0;
+      box-shadow: none;
+      z-index: 31;
+     
+    }
+    &__logo--img { 
+      height: 60px; 
+      width: 138px; 
+      margin-left: 0;
+      z-index: 40;             /* najwyżej */
+    }
+    &__burger    { display: none; }
+
+    &__content {
+  max-width: 1920px;
+  height: 860px;
+  padding-inline: 300px;
+  margin-inline: auto;
+
+  display: grid;
+  grid-template-columns: repeat(12, 88px);
+  column-gap: 24px;
+  row-gap: 1px;
+  align-content: start;          /* ✱ NIE rozciągaj wierszy na całą wysokość */
+  align-items: start;            /* ✱ elementy przy górze swoich wierszy */
+  grid-auto-rows: min-content;   /* ✱ wiersze dopasowane do treści (brak „szyn”) */
+
+  /* ✱ przeniesione NAD zagnieżdżenie */
+  padding-top: 0;
+
+  /* dzieci w gridzie nie wychodzą poza kolumny */
+  > * { min-width: 0; }
+}
+
+    .header__badge       { grid-column: 1 / span 6; }
+    .header__title       { 
+      grid-column: 1 / span 10; 
+    font-family: dm sans, sans-serif;
+    font-size: 77px;
+    line-height: 120%;
+    letter-spacing: 0.07em;
+    font-weight: 600;
+    margin-top: 286px;
+    }
+    .header__description {
+      grid-column: 1 / span 10; 
+      font-family: dm sans, sans-serif;
+      font-size: 24px;
+      line-height: auto;
+      font-weight: 300; 
+      margin-bottom: 22px;
+      
+      
+      }
+    .button--header      { 
+      grid-column: 1 / span 3; 
+      width: 289px;
+      height: 66px;
+      justify-self: start; 
+      margin-bottom: 103px;
+      font-family: dm sans, sans-serif;
+      font-size: 18px;
+      line-height: 18px;
+      font-weight: 600; 
+      letter-spacing: -0.43px;
+
+      justify-content: flex-start;
+  text-align: left;
+    }
+  }
+}
+/* === Jedno źródło prawdy dla poziomowych gutterów === */
+/* ===== Jeden gutter dla całej strony ===== */
+/* ========== WSPÓLNE STAŁE ========== */
+:root { --content-x: 20px; --nav-h: 66px; }                           /* mobile */
+@media (min-width: 744px) and (max-width: 1439px)  { :root { --content-x: 42px; --nav-h: 66px; } }  /* tablet */
+@media (min-width: 1440px) and (max-width: 1919px) { :root { --content-x: 40px; --nav-h: 80px; } }  /* laptop */
+@media (min-width: 1920px)                          { :root { --content-x: 300px; --nav-h: 88px; } } /* desktop */
+
+/* Belka tła (szkło) – 100% szerokości, bez własnych paddingów */
+.header .container.header__top {
+  /* ta reguła NADPISUJE padding z .container — nie ma podwójnych odstępów */
+  position: relative;          /* <<< DODANE */
+  z-index: 31;                 /* <<< DODANE */
+  padding-inline: var(--content-x);
+  height: var(--nav-h);
+}
+
+/* Treść hero ma ten sam gutter co NAV */
+@media (min-width: 1440px) {
+  .header__content { padding-inline: var(--content-x); }
+}
+
+/* LOGO — od 1440px kotwiczone do tego samego guttera */
+@media (min-width: 1440px) {
+  .header__logo{
+    position: fixed;              /* trzyma się belki przy scrollu */
+    top: 0;
+    left: var(--content-x);       /* KLUCZ: ten sam gutter co NAV i hero */
+    height: var(--nav-h);
+    display: flex; align-items: center;
+    z-index: 40;                  /* nad szkłem i AI-boxem, razem z linkami */
+    pointer-events: auto;
+  }
+  .header__logo--img{ height: 60px; width: 138px; } /* Twoje wartości */
+}
+
+@media (min-width: 1440px) {
+  .header__logo {
+    transition: transform 220ms cubic-bezier(.2,.7,.3,1);
+    will-change: transform;
+  }
+  /* gdy belka jest ukryta */
+  .nav-hidden .header__logo {
+    transform: translateY(-100%);
+  }
+}

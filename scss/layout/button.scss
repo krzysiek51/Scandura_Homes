@@ -1,0 +1,167 @@
+/* scss/layout/button.scss */
+@use "sass:color";
+
+/* === PALETA PRZYCISKÓW (liczona przez Sass) === */
+$button-bg:        #dc9b59;
+$button-fg:        #000000;
+$button-bg-hover:  color.adjust($button-bg, $lightness: -6%);   // zamiast darken()
+$button-bg-active: color.adjust($button-bg, $lightness: -12%);
+
+/* Wystawiamy też jako CSS Custom Properties – ale TYLKO do odczytu w CSS */
+:root {
+  --button-bg:        #{$button-bg};
+  --button-fg:        #{$button-fg};
+  --button-bg-hover:  #{$button-bg-hover};
+  --button-bg-active: #{$button-bg-active};
+}
+
+/* === BAZA PRZYCISKU === */
+.button {
+  -webkit-tap-highlight-color: transparent;
+  appearance: none;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  padding-inline: 16px;
+
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.1;
+  letter-spacing: 0;
+
+  background: var(--button-bg);
+  color: var(--button-fg);
+  transition: background-color .15s ease, transform .06s ease;
+
+  img,
+  svg {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+    pointer-events: none;
+  }
+
+  &:hover   { background: var(--button-bg-hover); }
+  &:active  { background: var(--button-bg-active); transform: translateY(1px); }
+  &:disabled{
+    opacity: .5;
+    pointer-events: none;
+  }
+}
+
+/* === WARIANT: CTA w HEADERZE (mobile first) === */
+.button--header {
+  margin-top: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  // width: 100%;
+  // max-width: none;
+  // height: 40px;
+
+  padding-inline: 20px;
+  border-top-right-radius: 16px;
+
+  font-family: "DM Sans", sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.1;
+  letter-spacing: 0;
+
+  img,
+  svg {
+    width: 14px;
+    height: 14px;
+    display: block;
+  }
+}
+
+/* === WARIANT „ghost” === */
+.button--ghost {
+  background: transparent;
+  color: #111;
+  border: 1px solid rgba(0,0,0,.12);
+
+  &:hover  { background: rgba(0,0,0,.04); }
+  &:active { background: rgba(0,0,0,.07); }
+}
+
+/* Utility */
+.button--full { width: 100%; }
+
+/* =========================================================
+   MEDIA QUERIES – MOBILE FIRST STRUKTURA
+   ========================================================= */
+
+/* Tablet (744–1439px) */
+@media (min-width: 744px) and (max-width: 1439px) {
+  .button {
+    font-size: 14px;
+    gap: 12px;
+
+    img,
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .button--header {
+    height: 44px;
+    font-size: 14px;
+  }
+}
+
+/* Laptop (1440–1919px) */
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .button {
+    font-size: 16px;
+    gap: 14px;
+
+    img,
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  .button--header {
+    height: 48px;
+    font-size: 16px;
+  }
+}
+
+/* Desktop (≥1920px) */
+@media (min-width: 1920px) {
+  .button {
+    gap: 16px;
+    font-family: dm sans, sans-serif;
+    font-size: 16px;
+    line-height: 16px;
+    letter-spacing: 0;
+    font-weight: 800;
+    
+
+    padding-inline: 20px;
+
+    img,
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .button--header {
+    height: 52px;
+    font-size: 18px;
+  }
+}

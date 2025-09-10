@@ -1,0 +1,58 @@
+// =============================================================================
+// PEŁNY KOD SCSS - GENERATOR KLAS POMOCNICZYCH DLA PRZESTRZENI
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// KONFIGURACJA
+// Tutaj możesz dostosować wartości do swoich potrzeb.
+// -----------------------------------------------------------------------------
+
+// Definiuje skróty (np. 'm' dla 'margin') i pełne nazwy właściwości CSS.
+$spacing-properties: (
+  "m": "margin",
+  "p": "padding"
+);
+
+// Definiuje skróty kierunków (np. '-x' dla osi poziomej) i odpowiadające im kierunki CSS.
+$spacing-directions: (
+  "":       ("top", "right", "bottom", "left"),
+  "-top":   ("top"),
+  "-right": ("right"),
+  "-bottom":("bottom"),
+  "-left":  ("left"),
+  "-x":     ("left", "right"),
+  "-y":     ("top", "bottom")
+);
+
+// Jednostka bazowa dla przestrzeni. Wszystkie wartości będą jej wielokrotnością.
+// Domyślnie 1rem = 16px, więc $spacer * 1 = 0.25rem (czyli 4px).
+$spacer: 0.25rem;
+
+// Maksymalna liczba kroków do wygenerowania.
+// Ustawienie na 8 wygeneruje klasy od 0 do 8 (np. .m-top-0, .m-top-1, ..., .m-top-8).
+$max-spacing-steps: 8;
+
+
+// -----------------------------------------------------------------------------
+// GENERATOR
+// Poniższy kod automatycznie tworzy wszystkie klasy. Nie musisz go modyfikować.
+// -----------------------------------------------------------------------------
+
+@each $prop-abbr, $prop-name in $spacing-properties {
+  @each $dir-abbr, $dir-names in $spacing-directions {
+    @for $i from 0 through $max-spacing-steps {
+
+      // Tworzy kompletną nazwę klasy, np. "p-x-4"
+      $class-name: ".#{$prop-abbr}#{$dir-abbr}-#{$i}";
+
+      #{$class-name} {
+        @each $dir-name in $dir-names {
+          // Generuje finalną regułę CSS z odpowiednią wartością.
+          // Użycie !important jest opcjonalne, ale częste w klasach pomocniczych,
+          // aby zapewnić, że styl zostanie zastosowany.
+          #{$prop-name}-#{$dir-name}: ($spacer * $i) !important;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,224 @@
+/* =========================================================
+   PARTNERZY — full-bleed marquee (mobile-first + MQ)
+   ========================================================= */
+
+/* Breakpointy */
+$bp-tablet: 744px;
+$bp-laptop: 1440px;
+$bp-desktop: 1920px;
+
+/* Content widths (tytuł/opis) */
+$w-t: 660px;   // + 42
+$w-l: 1280px;  // + 40
+$w-d: 1320px;  // + 300
+
+/* Odstęp między kaflami */
+$gap-m: 16px;
+$gap-t: 16px;
+$gap-l: 19.5px;
+$gap-d: 19.5px;
+
+/* Kafle – wspólne */
+$pad-x: 16px;
+$pad-y: 10px;           // bazowy (nadpisujemy per-MQ na elemencie)
+$radius: 12px;
+
+/* Rozmiary per MQ (TOTAL wysokość, z paddingiem) */
+$tile-h-m: 80px;  $tile-max-w-m: 140px; /* total 80 */
+$tile-h-t: 80px;  $tile-max-w-t: 160px; /* total 80 */
+$tile-h-l: 157px; $tile-max-w-l: 320px; /* total 157 */
+$tile-h-d: 157px; $tile-max-w-d: 320px;
+
+
+/* =========================================================
+   MOBILE-FIRST (0–743)
+   ========================================================= */
+.partners {
+  isolation: isolate;
+  width: 100%;
+  background: #f8f8f8;
+  padding: 20px;
+
+  &__container { text-align: center; box-sizing: border-box; }
+
+  &__title       { font: 700 24px/1.20 "DM Sans", sans-serif; margin: 0 0 20px; color:#070707; letter-spacing: 0.06em; }
+  &__description { font: 400 14px/1.6  "DM Sans", sans-serif; margin: 0 auto 24px; max-width: 640px; color:#0c0c0c; }
+
+  /* Taśmy full-bleed */
+  &__logos {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow: hidden;
+  }
+
+  &__row {
+    position: relative;
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+    line-height: 0;
+    height: $tile-h-m !important;       /* 80 — przebija inline z JS */
+  }
+
+  &__marquee { display: flex; flex-wrap: nowrap; white-space: nowrap; height: 100%; }
+
+  /* === KAFEL (MOBILE) — total height = 80; padding 14/14 => logo 32 === */
+  &__logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;              /* 80 zawiera padding */
+    height: $tile-h-m;                   /* total */
+    width: auto;                         /* ELASTYCZNE */
+    max-width: $tile-max-w-m;            /* clamp do 140 */
+    padding: 14px 14px;                /* ⬅ zmniejszamy logo paddingiem */
+    margin-right: $gap-m;                /* 16 */
+    border-radius: $radius;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,.04);
+    overflow: hidden;                    /* tnij pion gdyby co */
+    flex: 0 0 auto;
+  }
+
+  /* obraz: ustawiamy wprost, aby nie zależał od globalnego $pad-y */
+  &__logo-icon {
+    display: block;
+    height: 32px !important;             /* ⬅ mobile: logo 32 */
+    width: auto !important;
+    max-width: calc(#{$tile-max-w-m} - #{2 * $pad-x});     /* <= 108 */
+    object-fit: contain;
+  }
+}
+
+
+/* =========================================================
+   TABLET (744–1439) — total height 80; padding 15/15 => logo 50
+   ========================================================= */
+@media (min-width: $bp-tablet) and (max-width: calc(#{$bp-laptop} - 1px)) {
+  .partners {
+    padding: 42px;
+
+      &__logos {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow: hidden;
+  }
+
+    &__title       { font: 700 32px/1.20 "DM Sans", sans-serif; margin: 0 0 20px; color:#070707; letter-spacing: 0.06em; margin-bottom: 20px;}
+    &__description { font: 400 14px/1.6  "DM Sans", sans-serif; margin: 0 auto 24px; max-width: 640px; color:#0c0c0c; }
+    &__container { max-width: $w-t; margin: 0 auto; padding: 0 42px; box-sizing: border-box; }
+    &__row      { height: $tile-h-t !important; }          /* 80 */
+    &__marquee  { height: 100%; }
+
+    &__logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      height: $tile-h-t;                 /* total 80 */
+      width: auto;                       /* ELASTYCZNE */
+      max-width: $tile-max-w-t;          /* clamp do 160 */
+      padding: 15px 15px;              /* ⬅ 15/15 => img 50 */
+      margin-right: $gap-t;              /* 16 */
+      border-radius: $radius;
+      background: #fff;
+      box-shadow: 0 4px 8px rgba(0,0,0,.04);
+      overflow: hidden;
+      flex: 0 0 auto;
+    }
+
+    &__logo-icon {
+      display: block;
+      height: 50px !important;           /* ⬅ tablet: logo 50 */
+      width: auto !important;
+      max-width: calc(#{$tile-max-w-t} - #{2 * $pad-x});     /* <= 128 */
+      object-fit: contain;
+    }
+  }
+}
+
+
+/* =========================================================
+   LAPTOP (1440–1919) — total height 157; padding 53.5/53.5 => logo 50
+   ========================================================= */
+@media (min-width: $bp-laptop) and (max-width: calc(#{$bp-desktop} - 1px)) {
+  .partners {
+    padding: 80px 40px;
+    &__title       { font: 700 48px/1.12 "DM Sans", sans-serif; margin: 0 0 20px; color:#070707; letter-spacing: 0.06em; margin-bottom: 56px;}
+    &__container { max-width: $w-l; margin: 0 auto; padding: 0 40px; box-sizing: border-box; }
+    &__row      { height: $tile-h-l !important; }          /* 157 */
+    &__marquee  { height: 100%; }
+
+    &__logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;            /* 157 zawiera padding */
+      height: $tile-h-l;                 /* total 157 */
+      width: auto;                       /* ELASTYCZNE */
+      max-width: $tile-max-w-l;          /* clamp do 320 */
+      padding: 53.5px 118px;            /* ⬅ 53.5/53.5 => img 50 */
+      margin-right: $gap-l;              /* 19.5 */
+      border-radius: $radius;
+      background: #fff;
+      box-shadow: 0 4px 8px rgba(0,0,0,.04);
+      overflow: hidden;
+      flex: 0 0 auto;
+    }
+
+    &__logo-icon {
+      display: block;
+      height: 50px !important;           /* ⬅ laptop: logo 50 */
+      width: auto !important;
+      max-width: calc(#{$tile-max-w-l} - #{2 * $pad-x});     /* <= 288 */
+      object-fit: contain;
+    }
+  }
+}
+
+
+/* =========================================================
+   DESKTOP (≥1920) — jak laptop (padding 53.5/53.5 => logo 50)
+   ========================================================= */
+@media (min-width: $bp-desktop) {
+  .partners {
+    padding: 100px 300px;
+    &__title       { font: 700 48px/1.12 "DM Sans", sans-serif; margin: 0 0 20px; color:#070707; letter-spacing: 0.06em; margin-bottom: 56px;}
+    &__container { max-width: $w-d; margin: 0 auto; padding: 0 300px; box-sizing: border-box; }
+    &__row      { height: $tile-h-d !important; }          /* 157 */
+    &__marquee  { height: 100%; }
+
+    &__logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      height: $tile-h-d;
+      width: auto;                       /* ELASTYCZNE */
+      max-width: $tile-max-w-d;          /* 320 */
+      padding: 53.5px 118px;            /* ⬅ 53.5/53.5 => img 50 */
+      margin-right: $gap-d;              /* 19.5 */
+      border-radius: $radius;
+      background: #fff;
+      box-shadow: 0 4px 8px rgba(0,0,0,.04);
+      overflow: hidden;
+      flex: 0 0 auto;
+    }
+
+    &__logo-icon {
+      display: block;
+      height: 50px !important;           /* ⬅ desktop: logo 50 */
+      width: auto !important;
+      max-width: 100%;     /* <= 288 */
+      object-fit: contain;
+    }
+  }
+}

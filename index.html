@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+    rel="stylesheet" />
+
+  <!-- ✅ Stała wysokość panelu konfiguratora (twardy CSS) -->
+  <!-- <style id="cfg-fixed-frame-css">
+    #cfg-modal {
+      position: fixed !important;
+      inset: 0 !important;
+      display: grid !important;
+      place-items: center !important;
+      place-content: center !important;
+      padding: 24px !important;
+      z-index: 10000 !important
+    }
+
+    #cfg-modal.is-hidden {
+      display: none !important
+    }
+
+    #cfg-modal .cfg__backdrop {
+      position: fixed !important;
+      inset: 0 !important;
+      background: rgba(0, 0, 0, .48) !important;
+      z-index: 0 !important
+    }
+
+    #cfg-modal .cfg__panel {
+      position: relative !important;
+      z-index: 1 !important;
+      margin: 0 auto !important;
+      display: grid !important;
+      grid-template-rows: auto 1fr auto !important;
+      gap: 12px !important;
+      height: min(88vh, 880px) !important;
+      width: min(1080px, calc(100vw - 32px)) !important;
+      max-width: 1080px !important;
+      background: #fff !important;
+      border-radius: 16px !important;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, .18) !important;
+      overflow: hidden !important
+    }
+
+    #cfg-modal .cfg__close {
+      position: absolute !important;
+      top: 8px;
+      right: 10px;
+      z-index: 3 !important;
+      background: transparent;
+      border: 0;
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+      opacity: .7
+    }
+
+    #cfg-modal .cfg__close:hover {
+      opacity: 1
+    }
+
+    #cfg-modal .cfg__panel>.cfg-stepper {
+      grid-row: 1/2 !important;
+      min-height: 0 !important
+    }
+
+    #cfg-modal .cfg__panel>.cfg-step {
+      grid-row: 2/3 !important;
+      min-height: 0 !important;
+      overflow: auto !important;
+      -webkit-overflow-scrolling: touch;
+      padding-inline: 8px !important;
+      padding-bottom: 16px !important
+    }
+
+    #cfg-modal .cfg__panel>.cfg-step[hidden] {
+      display: none !important
+    }
+
+    #cfg-modal .cfg__panel>.cfg-nav {
+      grid-row: 3/4 !important;
+      background: #fff !important;
+      border-top: 1px solid rgba(0, 0, 0, .06) !important;
+      padding: 10px 12px !important;
+      position: sticky !important;
+      bottom: 0 !important;
+      z-index: 2 !important
+    }
+
+    @media (max-width:1024px) {
+      #cfg-modal {
+        padding: 16px !important
+      }
+
+      #cfg-modal .cfg__panel {
+        height: min(92vh, 820px) !important;
+        width: min(100vw - 16px, 960px) !important
+      }
+    }
+
+    @media (max-width:480px) {
+      #cfg-modal {
+        padding: 8px !important
+      }
+
+      #cfg-modal .cfg__panel {
+        height: 92vh !important;
+        width: calc(100vw - 12px) !important;
+        border-radius: 12px !important
+      }
+
+      #cfg-modal .cfg__panel>.cfg-step {
+        padding-inline: 6px !important
+      }
+    }
+
+    html.cfg-open,
+    body.cfg-open {
+      overflow: hidden !important
+    }
+  </style> -->
+
+  <title>Scandura Homes</title>
+</head>
+
+<body>
+ <header class="header">
+  <video class="header__video" autoplay muted loop playsinline>
+    <source src="photos/header_video.mp4" type="video/mp4" />
+  </video>
+  <div class="header__overlay"></div>
+
+  <div class="header__wrap">
+    <div class="container header__top">
+      <a href="/" class="header__logo">
+        <img class="header__logo--img" src="photos/mobile_logo.png" alt="Scandura Homes" />
+      </a>
+
+      <button
+        class="header__burger"
+        id="burger-toggle"
+        type="button"
+        aria-label="Otwórz menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu">
+        <img class="header__burger-icon" src="photos/svg/burger.svg" width="20" height="14" alt="" />
+      </button>
+    </div>
+  </div>
+
+  <div class="header__content">
+    <h1 class="header__title">Zbuduj wymarzony drewniany dom w skandynawskim stylu</h1>
+    <p class="header__description">
+      15 lat doświadczenia w Norwegii, domy energooszczędne i przyjazne środowisku.
+    </p>
+    <button class="button button--header" type="button">
+      Umów bezpłatną wizytę
+      <img src="photos/svg/keyboard-arrow-right.svg" alt="" />
+    </button>
+  </div>
+
+  <!-- NAV wewnątrz headera -->
+  <nav class="header__nav" id="mobile-menu" aria-hidden="true">
+    <button class="header__nav-close" type="button" aria-label="Zamknij menu"></button>
+
+    <ul class="header__nav-list">
+      <li><a class="header__nav-link" href="#home">Home</a></li>
+      <li><a class="header__nav-link" href="pages/about.html">O nas</a></li>
+      <li><a class="header__nav-link" href="#services">Usługi</a></li>
+      <li><a class="header__nav-link" href="#projects">Projekty</a></li>
+      <li><a class="header__nav-link" href="#contact">Kontakt</a></li>
+    </ul>
+
+    <a href="pages/contact.html" class="button button--nav">Contact Us</a>
+  </nav>
+</header>
+
+
+
+  <!-- ====== AI BOX (mobile-first, trzyma się gridu 4 kol) ====== -->
+  <section class="configurator-prompt" id="configurator-prompt">
+    <div class="configurator-prompt__content" aria-labelledby="ai-title">
+      <span class="configurator-prompt__badge">Nowość • Asystent AI</span>
+
+      <h2 class="configurator-prompt__title" id="ai-title">
+        Rozpocznij konfigurację z AI
+      </h2>
+
+      <p class="configurator-prompt__sub">
+        Dobierz typ, materiały i poziom stawek.
+        Zobacz koszt <strong>robocizny oraz materiałów</strong>
+      </p>
+
+      <ul class="configurator-prompt__benefits" aria-label="Korzyści">
+        <li class="configurator-prompt__benefit">
+          <span aria-hidden="true">⚡</span> Szybko: wynik w 3–5 min
+        </li>
+        <li class="configurator-prompt__benefit">
+          <span aria-hidden="true">🎯</span> Precyzyjnie: realne widełki
+        </li>
+      </ul>
+
+      <!-- CTA WRAPPER: button + link razem (link pod przyciskiem) -->
+      <div class="configurator-prompt__cta">
+        <button class="configurator-prompt__button" id="open-configurator-button" data-open-configurator
+          aria-label="Uruchom konfigurator AI">
+          Uruchom konfigurator AI
+        </button>
+
+        <button type="button" class="configurator-prompt__link" data-scroll="#example-quote"
+          aria-label="Zobacz przykład wyceny">
+          Zobacz przykład wyceny
+        </button>
+      </div>
+      <!-- /CTA WRAPPER -->
+    </div>
+  </section>
+  <!-- ====== /AI BOX ====== -->
+
+
+  <!-- Sekcja: Misja -->
+  <section class="mission">
+    <div class="container">
+      <div class="mission__content">
+
+        <div class="mission__image-wrapper">
+          <img src="photos/main/Rectangle.jpg" alt="Two workers in a timber workshop" class="mission__image" />
+          <img src="photos/svg/kropki1920.svg" alt="" aria-hidden="true" class="mission__dots" />
+        </div>
+
+        <!-- ✅ Divider POD obrazkiem, nad tekstem -->
+        <div class="mission__divider" aria-hidden="true"></div>
+
+        <div class="mission__copy">
+          <h2 class="mission__title">Nasza Misja</h2>
+          <p class="mission__text-title">Tworzymy domy, które trwają pokolenia.</p>
+          <p class="mission__text">
+            Naszą misją jest dostarczanie wysokiej jakości, energooszczędnych domów drewnianych w technologii
+            szkieletowej. Dzięki 15-letniemu doświadczeniu zdobytemu w Norwegii, wykorzystujemy sprawdzone
+            skandynawskie techniki i ekologiczne materiały. Każda realizacja to precyzja, trwałość i nowoczesność.
+            Od fundamentów po wykończenie pod klucz – dbamy o każdy szczegół.
+          </p>
+          <a href="/about.html" class="mission__button">
+            Dowiedz się więcej
+            <img src="photos/svg/Path.svg" alt="" class="mission__button-arrow" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- Sekcja: Dlaczego my -->
+  <section class="why-us">
+    <div class="container">
+      <div class="why-us__grid">
+
+        <div class="why-us__review-card">
+          <img src="photos/review.png" alt="Client review" class="why-us__review-image" />
+          <div class="why-us__review-overlay">
+            <p class="why-us__review-title">Oceny Klientów</p>
+            <div class="why-us__review-avatars">
+              <img src="photos/avatars/Ellipse 21.jpg" alt="Client Avatar 1" class="why-us__avatar-item" />
+              <img src="photos/avatars/Ellipse 22.jpg" alt="Client Avatar 2" class="why-us__avatar-item" />
+              <img src="photos/avatars/Ellipse 23.jpg" alt="Client Avatar 3" class="why-us__avatar-item" />
+              <img src="photos/avatars/Ellipse 24.jpg" alt="Client Avatar 4" class="why-us__avatar-item" />
+              <img src="photos/avatars/Ellipse 25.jpg" alt="Client Avatar 5" class="why-us__avatar-item" />
+              <img src="photos/avatars/Ellipse 26.jpg" alt="Client Avatar 6" class="why-us__avatar-item" />
+              <img src="photos/avatars/Ellipse 21.jpg" alt="Client Avatar 1" class="why-us__avatar-item" />
+              <img src="photos/avatars/Ellipse 21.jpg" alt="Client Avatar 1" class="why-us__avatar-item" />
+            </div>
+            <div class="why-us__stars">
+              <img src="photos/svg/star-icon.svg" alt="Star rating" class="star-icon" />
+              <img src="photos/svg/star-icon.svg" alt="Star rating" class="star-icon" />
+              <img src="photos/svg/star-icon.svg" alt="Star rating" class="star-icon" />
+              <img src="photos/svg/star-icon.svg" alt="Star rating" class="star-icon" />
+              <img src="photos/svg/star-icon.svg" alt="Star rating" class="star-icon" />
+              <span>5.0</span>
+            </div>
+            <p class="why-us__review-count">
+              <span class="why-us__review-number">120+</span>
+              <span class="why-us__review-label">Review</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="why-us__stats">
+          <div class="why-us__projects">
+            <p class="why-us__projects-number">26+</p>
+            <p class="why-us__projects-label">Ukończonych projektów</p>
+          </div>
+          <div class="why-us__image-wrapper">
+            <img src="photos/why-project_done.png" alt="Woodworker" class="why-us__image" />
+          </div>
+        </div>
+
+        <!-- ✅ Divider pod statystykami -->
+        <div class="why-us__divider" aria-hidden="true"></div>
+
+        <div class="why-us__text">
+          <h2 class="why-us__heading"><em class="why-us__title">Dlaczego My?</em></h2>
+          <p class="why-us__description-title">Jakość, której możesz zaufać.</p>
+          <p class="why-us__description">
+            Jako firma z bogatym doświadczeniem, dbamy o jakość naszych produktów i usług. Stawiamy na solidne
+            fundamenty i precyzję wykonania, aby zapewnić trwałość i bezpieczeństwo Twojego domu. Wszystkie nasze
+            realizacje są objęte gwarancją, co daje Ci pewność, że otrzymasz najwyższej jakości produkt.
+            <br /><br />
+            Energooszczędność dla środowiska i portfela.
+
+          </p>
+
+          <ul class="why-us__list">
+            <li class="why-us__item"><img src="photos/svg/check.svg" alt="" class="why-us__check-icon" /><span
+                class="why-us__check-text">15 lat doświadczenia</span></li>
+            <li class="why-us__item"><img src="photos/svg/check.svg" alt="" class="why-us__check-icon" /><span
+                class="why-us__check-text">Precyzja skandynawska</span></li>
+            <li class="why-us__item"><img src="photos/svg/check.svg" alt="" class="why-us__check-icon" /><span
+                class="why-us__check-text">Norweski Certyfikat Sentral Godkjent</span></li>
+            <li class="why-us__item"><img src="photos/svg/check.svg" alt="" class="why-us__check-icon" /><span
+                class="why-us__check-text">Możliwy import drewna C24 z Norwegii</span></li>
+            <li class="why-us__item"><img src="photos/svg/check.svg" alt="" class="why-us__check-icon" /><span
+                class="why-us__check-text">Wsparcie na każdym etapie</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Sekcja: Usługi -->
+  <section class="services">
+    <div class="container">
+      <!-- LEWY BLOK: tytuł + nawigacja (jeden wrapper) -->
+      <div class="services__left">
+        <h2 class="services__title"><em>Nasza oferta</em></h2>
+
+        <div class="services__nav">
+          <button class="services__arrow services__arrow--prev" type="button" aria-label="Poprzedni">
+            <img src="photos/arrows/keyboard-arrow-left.png" alt="" />
+          </button>
+          <button class="services__arrow services__arrow--next" type="button" aria-label="Następny">
+            <img src="photos/arrows/keyboard-arrow-right.png" alt="" />
+          </button>
+        </div>
+      </div>
+
+      <!-- PRAWY BLOK: slider (z torem) -->
+      <div class="services__slider">
+        <div class="services__track">
+          <!-- Karta 1 -->
+          <div class="services__card">
+            <img src="photos/timber_frame.house.png" alt="Timber Frame House in the forest" class="services__image" />
+            <div class="services__icon-wrapper">
+              <img src="photos/svg/ico_timber.svg" alt="House icon" class="services__icon" />
+            </div>
+            <div class="services__card-body">
+              <h3 class="services__card-title">Domy Drewniane w Technologii Szkieletowej</h3>
+              <p class="services__card-text">
+                Budujemy ekologiczne i energooszczędne domy drewniane. Wykonujemy pełen zakres prac – od fundamentów po
+                wykończenie pod klucz.
+              </p>
+              <a href="/services/timber-frame-houses.html" class="services__button">Zobacz pełną ofertę</a>
+            </div>
+          </div>
+
+          <!-- Karta 2 -->
+          <div class="services__card">
+            <img src="photos/timber_frame.house.png" alt="Timber Frame House in the forest" class="services__image" />
+            <div class="services__icon-wrapper">
+              <img src="photos/svg/ico_timber.svg" alt="House icon" class="services__icon" />
+            </div>
+            <div class="services__card-body">
+              <h3 class="services__card-title">Domy Drewniane w Technologii Szkieletowej</h3>
+              <p class="services__card-text">
+                Budujemy ekologiczne i energooszczędne domy drewniane. Wykonujemy pełen zakres prac – od fundamentów po
+                wykończenie pod klucz.
+              </p>
+              <a href="/services/timber-frame-houses.html" class="services__button">Zobacz pełną ofertę</a>
+            </div>
+          </div>
+
+          <!-- Karta 3 -->
+          <div class="services__card">
+            <img src="photos/timber_frame.house.png" alt="Timber Frame House in the forest" class="services__image" />
+            <div class="services__icon-wrapper">
+              <img src="photos/svg/ico_timber.svg" alt="House icon" class="services__icon" />
+            </div>
+            <div class="services__card-body">
+              <h3 class="services__card-title">Domy Drewniane w Technologii Szkieletowej</h3>
+              <p class="services__card-text">
+                Budujemy ekologiczne i energooszczędne domy drewniane. Wykonujemy pełen zakres prac – od fundamentów po
+                wykończenie pod klucz.
+              </p>
+              <a href="/services/timber-frame-houses.html" class="services__button">Zobacz pełną ofertę</a>
+            </div>
+          </div>
+
+          <!-- Karta 4 -->
+          <div class="services__card">
+            <img src="photos/timber_frame.house.png" alt="Timber Frame House in the forest" class="services__image" />
+            <div class="services__icon-wrapper">
+              <img src="photos/svg/ico_timber.svg" alt="House icon" class="services__icon" />
+            </div>
+            <div class="services__card-body">
+              <h3 class="services__card-title">Domy Drewniane w Technologii Szkieletowej</h3>
+              <p class="services__card-text">
+                Budujemy ekologiczne i energooszczędne domy drewniane. Wykonujemy pełen zakres prac – od fundamentów po
+                wykończenie pod klucz.
+              </p>
+              <a href="/services/timber-frame-houses.html" class="services__button">Zobacz pełną ofertę</a>
+            </div>
+          </div>
+
+          <!-- Karta 5 -->
+          <div class="services__card">
+            <img src="photos/timber_frame.house.png" alt="Timber Frame House in the forest" class="services__image" />
+            <div class="services__icon-wrapper">
+              <img src="photos/svg/ico_timber.svg" alt="House icon" class="services__icon" />
+            </div>
+            <div class="services__card-body">
+              <h3 class="services__card-title">Domy Drewniane w Technologii Szkieletowej</h3>
+              <p class="services__card-text">
+                Budujemy ekologiczne i energooszczędne domy drewniane. Wykonujemy pełen zakres prac – od fundamentów po
+                wykończenie pod klucz.
+              </p>
+              <a href="/services/timber-frame-houses.html" class="services__button">Zobacz pełną ofertę</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- Sekcja: Projekty -->
+  <section class="projects">
+    <h2 class="projects__title">Our Recent Projects</h2>
+
+    <div class="projects__cards-container">
+
+      <!-- Karta 1 -->
+      <article class="project-card">
+        <div class="project-card__image-wrapper">
+          <img src="photos/projects/slide1.png" alt="Greenwood Estates project image" class="project-card__image">
+        </div>
+        <div class="project-card__content">
+          <div class="project-card__header-info">
+            <img src="photos/svg/arrow.svg" alt="Następny slajd" class="project-card__header-arrow" width="24"
+              height="24">
+            <span class="project-card__header-number project-card__header-number--current">01</span>
+            <img src="photos/svg/vector60.svg" alt="linia dzieląca" class="project-card__header-divider-img" width="138"
+              height="2">
+            <span class="project-card__header-number">02</span>
+          </div>
+          <h3 class="project-card__title">Greenwood Estates</h3>
+          <p class="project-card__description">
+            Nestled in a tranquil, tree-lined setting, this estate offers elegant homes
+            crafted with sustainability and comfort in mind.
+          </p>
+          <div class="project-card__meta">
+            <div class="project-card__meta-item"><span class="project-card__meta-label">Location</span><span
+                class="project-card__meta-value">Downtown City Center</span></div>
+            <div class="project-card__meta-item"><span class="project-card__meta-label">Scope</span><span
+                class="project-card__meta-value">Office Complex Development</span></div>
+          </div>
+          <a href="#" class="project-card__button">See Details</a>
+        </div>
+      </article>
+
+      <!-- Karta 2 -->
+      <article class="project-card">
+        <div class="project-card__image-wrapper">
+          <img src="photos/projects/slide1.png" alt="Greenwood Estates project image" class="project-card__image">
+        </div>
+        <div class="project-card__content">
+          <div class="project-card__header-info">
+            <img src="photos/svg/arrow.svg" alt="Następny slajd" class="project-card__header-arrow" width="24"
+              height="24">
+            <span class="project-card__header-number project-card__header-number--current">02</span>
+            <img src="photos/svg/vector60.svg" alt="linia dzieląca" class="project-card__header-divider-img" width="138"
+              height="2">
+            <span class="project-card__header-number">03</span>
+          </div>
+          <h3 class="project-card__title">Greenwood Estates</h3>
+          <p class="project-card__description">Nestled in a tranquil, tree-lined setting, this estate offers elegant
+            homes crafted with sustainability and comfort in mind.</p>
+          <div class="project-card__meta">
+            <div class="project-card__meta-item"><span class="project-card__meta-label">Location</span><span
+                class="project-card__meta-value">Downtown City Center</span></div>
+            <div class="project-card__meta-item"><span class="project-card__meta-label">Scope</span><span
+                class="project-card__meta-value">Office Complex Development</span></div>
+          </div>
+          <a href="#" class="project-card__button">See Details</a>
+        </div>
+      </article>
+
+      <!-- Karta 3 -->
+      <article class="project-card">
+        <div class="project-card__image-wrapper">
+          <img src="photos/projects/slide1.png" alt="Greenwood Estates project image" class="project-card__image">
+        </div>
+        <div class="project-card__content">
+          <div class="project-card__header-info">
+            <img src="photos/svg/arrow.svg" alt="Następny slajd" class="project-card__header-arrow" width="24"
+              height="24">
+            <span class="project-card__header-number project-card__header-number--current">03</span>
+            <img src="photos/svg/vector60.svg" alt="linia dzieląca" class="project-card__header-divider-img" width="138"
+              height="2">
+            <span class="project-card__header-number">04</span>
+          </div>
+          <h3 class="project-card__title">Greenwood Estates</h3>
+          <p class="project-card__description">Nestled in a tranquil, tree-lined setting, this estate offers elegant
+            homes crafted with sustainability and comfort in mind.</p>
+          <div class="project-card__meta">
+            <div class="project-card__meta-item"><span class="project-card__meta-label">Location</span><span
+                class="project-card__meta-value">Downtown City Center</span></div>
+            <div class="project-card__meta-item"><span class="project-card__meta-label">Scope</span><span
+                class="project-card__meta-value">Office Complex Development</span></div>
+          </div>
+          <a href="#" class="project-card__button">See Details</a>
+        </div>
+      </article>
+
+      <!-- Karta 4 -->
+      <article class="project-card">
+        <div class="project-card__image-wrapper">
+          <img src="photos/projects/slide1.png" alt="Greenwood Estates project image" class="project-card__image">
+        </div>
+        <div class="project-card__content">
+          <div class="project-card__header-info">
+            <img src="photos/svg/arrow.svg" alt="Następny slajd" class="project-card__header-arrow" width="24"
+              height="24">
+            <span class="project-card__header-number project-card__header-number--current">04</span>
+            <img src="photos/svg/vector60.svg" alt="linia dzieląca" class="project-card__header-divider-img" width="138"
+              height="2">
+            <span class="project-card__header-number">05</span>
+          </div>
+          <h3 class="project-card__title">Greenwood Estates</h3>
+          <p class="project-card__description">Nestled in a tranquil, tree-lined setting, this estate offers elegant
+            homes crafted with sustainability and comfort in mind.</p>
+          <div class="project-card__meta">
+            <div class="project-card__meta-item"><span class="project-card__meta-label">Location</span><span
+                class="project-card__meta-value">Downtown City Center</span></div>
+            <div class="project-card__meta-item"><span class="project-card__meta-label">Scope</span><span
+                class="project-card__meta-value">Office Complex Development</span></div>
+          </div>
+          <a href="#" class="project-card__button">See Details</a>
+        </div>
+      </article>
+
+      <!-- Karta 5 -->
+      <article class="project-card">
+        <div class="project-card__image-wrapper">
+          <img src="photos/projects/slide1.png" alt="Greenwood Estates project image" class="project-card__image">
+        </div>
+        <div class="project-card__content">
+          <div class="project-card__header-info">
+            <img src="photos/svg/arrow.svg" alt="Następny slajd" class="project-card__header-arrow" width="24"
+              height="24">
+            <span class="project-card__header-number project-card__header-number--current">05</span>
+            <img src="photos/svg/vector60.svg" alt="linia dzieląca" class="project-card__header-divider-img" width="138"
+              height="2">
+            <span class="project-card__header-number">06</span>
+          </div>
+          <h3 class="project-card__title">Greenwood Estates</h3>
+          <p class="project-card__description">Nestled in a tranquil, tree-lined setting, this estate offers elegant
+            homes crafted with sustainability and comfort in mind.</p>
+          <div class="project-card__meta">
+            <div class="project-card__meta-item"><span class="project-card__meta-label">Location</span><span
+                class="project-card__meta-value">Downtown City Center</span></div>
+            <div class="project-card__meta-item"><span class="project-card__meta-label">Scope</span><span
+                class="project-card__meta-value">Office Complex Development</span></div>
+          </div>
+          <a href="#" class="project-card__button">See Details</a>
+        </div>
+      </article>
+
+      <!-- Karta 6 -->
+      <article class="project-card">
+        <div class="project-card__image-wrapper">
+          <img src="photos/projects/slide1.png" alt="Greenwood Estates project image" class="project-card__image">
+        </div>
+        <div class="project-card__content">
+          <div class="project-card__header-info">
+            <img src="photos/svg/arrow.svg" alt="Następny slajd" class="project-card__header-arrow" width="24"
+              height="24">
+            <span class="project-card__header-number project-card__header-number--current">06</span>
+            <img src="photos/svg/vector60.svg" alt="linia dzieląca" class="project-card__header-divider-img" width="138"
+              height="2">
+            <span class="project-card__header-number">07</span>
+          </div>
+          <h3 class="project-card__title">Greenwood Estates</h3>
+          <p class="project-card__description">Nestled in a tranquil, tree-lined setting, this estate offers elegant
+            homes crafted with sustainability and comfort in mind.</p>
+          <div class="project-card__meta">
+            <div class="project-card__meta-item"><span class="project-card__meta-label">Location</span><span
+                class="project-card__meta-value">Downtown City Center</span></div>
+            <div class="project-card__meta-item"><span class="project-card__meta-label">Scope</span><span
+                class="project-card__meta-value">Office Complex Development</span></div>
+          </div>
+          <a href="#" class="project-card__button">See Details</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+
+  <section class="partners">
+    <div class="partners__container">
+      <h2 class="partners__title">Dołącz do społeczności osób, które wybrały trwałość i ekologię</h2>
+      <!-- <p class="partners__description">
+      Już ponad 10 000 rodzin zaufało naszym usługom. Dołącz do grona zadowolonych klientów i miej pewność, że Twój dom powstanie z najwyższą dbałością o szczegóły.
+    </p> -->
+
+      <div class="partners__logos">
+        <div class="partners__row">
+          <div class="partners__marquee">
+            <div class="partners__logo"><img class="partners__logo-icon" src="photos/svg/partners/festool-logo.min.svg"
+                alt="Festool"></div>
+            <div class="partners__logo"><img class="partners__logo-icon" src="photos/svg/partners/hilti.svg"
+                alt="Hilti"></div>
+            <div class="partners__logo"><img class="partners__logo-icon" src="photos/svg/partners/moelven.svg"
+                alt="Moelven"></div>
+            <div class="partners__logo"><img class="partners__logo-icon" src="photos/svg/partners/isover.svg"
+                alt="Isover"></div>
+          </div>
+        </div>
+
+        <div class="partners__row">
+          <div class="partners__marquee">
+            <div class="partners__logo"><img class="partners__logo-icon" src="photos/svg/partners/nordan.svg"
+                alt="NorDan"></div>
+            <div class="partners__logo"><img class="partners__logo-icon" src="photos/svg/partners/glava.svg"
+                alt="Glava"></div>
+            <div class="partners__logo"><img class="partners__logo-icon" src="photos/svg/partners/isola-seeklogo.svg"
+                alt="Isola"></div>
+            <div class="partners__logo"><img class="partners__logo-icon" src="photos/svg/partners/sg.svg" alt="SG">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sekcja: Rezerwacja -->
+  <section class="booking">
+    <div class="container">
+      <div class="booking__content">
+        <h2 class="booking__title">Rozpocznij projekt swojego domu z nami</h2>
+        <p class="booking__text">Masz pytania? Chcesz porozmawiać o możliwościach? Jesteśmy tu, aby pomóc Ci spełnić
+          marzenie o idealnym domu.</p>
+        <a href="/contact.html" class="booking__button">Umów bezpłatną konsultację</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sekcja: Opinie -->
+  <section class="testimonials">
+    <div class="container">
+      <h2 class="testimonials__title">What our clients say?</h2>
+
+      <div class="testimonials__slider">
+        <!-- SLIDE 1 -->
+        <div class="testimonials__slide">
+          <div class="testimonials__image-wrapper">
+            <img src="photos/main/opinie.jpg" alt="Zadowolony klient przed domem" class="testimonials__image">
+          </div>
+          <div class="testimonials__card">
+            <h3 class="testimonials__headline">"Zespół Scandura Homes od początku wpierał nas w każdej decyzji. Nasz dom
+              został wykonany z najwyższą jakością."</h3>
+            <p class="testimonials__text">"Precyzyjna budowa, świetna komunikacja i transparentność w kosztach. Jesteśmy
+              zachwyceni naszym nowym domem."</p>
+            <div class="testimonials__stars">★★★★★</div>
+            <p class="testimonials__author"><strong>Katarzyna M. Warsaw</strong><span>Doctor</span></p>
+            <div class="testimonials__line"></div>
+          </div>
+        </div>
+
+        <!-- SLIDE 2 -->
+        <div class="testimonials__slide">
+          <div class="testimonials__image-wrapper">
+            <img src="photos/main/opinie.jpg" alt="Klient przed nowym domem" class="testimonials__image">
+          </div>
+          <div class="testimonials__card">
+            <h3 class="testimonials__headline">"Profesjonalna ekipa i terminowość."</h3>
+            <p class="testimonials__text">"Proces od projektu po odbiór przebiegł bez stresu. Polecam każdemu."</p>
+            <div class="testimonials__stars">★★★★★</div>
+            <p class="testimonials__author"><strong>Michał K. Gdańsk</strong><span>Inżynier</span></p>
+            <div class="testimonials__line"></div>
+          </div>
+        </div>
+
+        <!-- SLIDE 3 -->
+        <div class="testimonials__slide">
+          <div class="testimonials__image-wrapper">
+            <img src="photos/main/opinie.jpg" alt="Rodzina przed domem" class="testimonials__image">
+          </div>
+          <div class="testimonials__card">
+            <h3 class="testimonials__headline">"Świetny kontakt i doradztwo."</h3>
+            <p class="testimonials__text">"Pomogli dobrać rozwiązania pod nasz budżet i styl życia."</p>
+            <div class="testimonials__stars">★★★★★</div>
+            <p class="testimonials__author"><strong>Anna & Piotr, Oslo</strong><span>IT / Nauczycielka</span></p>
+            <div class="testimonials__line"></div>
+          </div>
+        </div>
+
+        <!-- SLIDE 4 -->
+        <div class="testimonials__slide">
+          <div class="testimonials__image-wrapper">
+            <img src="photos/main/opinie.jpg" alt="Szczegóły wykończenia" class="testimonials__image">
+          </div>
+          <div class="testimonials__card">
+            <h3 class="testimonials__headline">"Jakość wykończenia top."</h3>
+            <p class="testimonials__text">"Każdy detal dopracowany, zero kompromisów w materiałach."</p>
+            <div class="testimonials__stars">★★★★★</div>
+            <p class="testimonials__author"><strong>Ola T., Trondheim</strong><span>Architekt</span></p>
+            <div class="testimonials__line"></div>
+          </div>
+        </div>
+
+        <!-- SLIDE 5 -->
+        <div class="testimonials__slide">
+          <div class="testimonials__image-wrapper">
+            <img src="photos/main/opinie.jpg" alt="Inwestor przy budowie" class="testimonials__image">
+          </div>
+          <div class="testimonials__card">
+            <h3 class="testimonials__headline">"Przejrzyste koszty i harmonogram."</h3>
+            <p class="testimonials__text">"Zero ukrytych pozycji, wszystko opisane w umowie."</p>
+            <div class="testimonials__stars">★★★★★</div>
+            <p class="testimonials__author"><strong>Jakub W., Melhus</strong><span>Przedsiębiorca</span></p>
+            <div class="testimonials__line"></div>
+          </div>
+        </div>
+
+        <!-- SLIDE 6 -->
+        <div class="testimonials__slide">
+          <div class="testimonials__image-wrapper">
+            <img src="photos/main/opinie.jpg" alt="Nowy dom parterowy" class="testimonials__image">
+          </div>
+          <div class="testimonials__card">
+            <h3 class="testimonials__headline">"Szybko i rzetelnie."</h3>
+            <p class="testimonials__text">"Termin dotrzymany mimo trudnych warunków pogodowych."</p>
+            <div class="testimonials__stars">★★★★★</div>
+            <p class="testimonials__author"><strong>Marcin R., Warsaw</strong><span>Lekarz</span></p>
+            <div class="testimonials__line"></div>
+          </div>
+        </div>
+
+        <!-- SLIDE 7 -->
+        <div class="testimonials__slide">
+          <div class="testimonials__image-wrapper">
+            <img src="photos/main/opinie.jpg" alt="Salon w domu" class="testimonials__image">
+          </div>
+          <div class="testimonials__card">
+            <h3 class="testimonials__headline">"Świetna współpraca z projektantem."</h3>
+            <p class="testimonials__text">"Elastycznie dopasowali układ pomieszczeń do naszych potrzeb."</p>
+            <div class="testimonials__stars">★★★★★</div>
+            <p class="testimonials__author"><strong>Klaudia S., Bærum</strong><span>UX Designer</span></p>
+            <div class="testimonials__line"></div>
+          </div>
+        </div>
+
+        <!-- SLIDE 8 -->
+        <div class="testimonials__slide">
+          <div class="testimonials__image-wrapper">
+            <img src="photos/main/opinie.jpg" alt="Taras drewniany" class="testimonials__image">
+          </div>
+          <div class="testimonials__card">
+            <h3 class="testimonials__headline">"Bardzo dobra ekipa montażowa."</h3>
+            <p class="testimonials__text">"Czysto na budowie, prace szły jak w zegarku."</p>
+            <div class="testimonials__stars">★★★★★</div>
+            <p class="testimonials__author"><strong>Paweł P., Gdynia</strong><span>Logistyk</span></p>
+            <div class="testimonials__line"></div>
+          </div>
+        </div>
+
+        <!-- SLIDE 9 -->
+        <div class="testimonials__slide">
+          <div class="testimonials__image-wrapper">
+            <img src="photos/main/opinie.jpg" alt="Elewacja domu" class="testimonials__image">
+          </div>
+          <div class="testimonials__card">
+            <h3 class="testimonials__headline">"Kontakt po odbiorze na plus."</h3>
+            <p class="testimonials__text">"Szybko reagują na pytania i drobne poprawki gwarancyjne."</p>
+            <div class="testimonials__stars">★★★★★</div>
+            <p class="testimonials__author"><strong>Ewelina Z., Sopot</strong><span>Marketing</span></p>
+            <div class="testimonials__line"></div>
+          </div>
+        </div>
+
+        <!-- SLIDE 10 -->
+        <div class="testimonials__slide">
+          <div class="testimonials__image-wrapper">
+            <img src="photos/main/opinie.jpg" alt="Wejście do domu" class="testimonials__image">
+          </div>
+          <div class="testimonials__card">
+            <h3 class="testimonials__headline">"Rekomendujemy znajomym."</h3>
+            <p class="testimonials__text">"Świetna relacja ceny do jakości i pełne wsparcie."</p>
+            <div class="testimonials__stars">★★★★★</div>
+            <p class="testimonials__author"><strong>Monika & Adam, Kraków</strong><span>Analityk / Prawnik</span></p>
+            <div class="testimonials__line"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonials__nav">
+        <button class="testimonials__arrow testimonials__arrow--prev" aria-label="Poprzednia opinia">
+          <img src="photos/svg/arow-left-testim.svg" alt="Poprzednia opinia">
+        </button>
+        <button class="testimonials__arrow testimonials__arrow--next" aria-label="Następna opinia">
+          <img src="photos/svg/arow-right-testim.svg" alt="Następna opinia">
+        </button>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Sekcja: Kontakt -->
+  <section class="contact">
+    <div class="container">
+      <div class="contact__main">
+        <div class="contact__intro">
+          <h2 class="contact__title">Rozpocznij swój projekt z nami</h2>
+          <p class="contact__description">
+            Masz pytania? Jesteśmy tutaj, aby pomóc! Dzięki ponad 15-letniemu doświadczeniu w budowie wysokiej jakości
+            domów drewnianych w Norwegii, a teraz także w Polsce, łączymy skandynawskie rzemiosło, zrównoważone
+            materiały i precyzyjne zarządzanie projektami.
+          </p>
+          <p class="contact__description">
+            Naszym celem jest tworzenie trwałych i energooszczędnych domów, które od pierwszego dnia będą dla Ciebie
+            prawdziwym domem.
+          </p>
+
+          <div class="contact__socials">
+            <a href="#" class="contact__social-link" aria-label="Facebook"><img src="photos/svg/socials/fb.svg"
+                alt="Facebook"></a>
+            <a href="#" class="contact__social-link" aria-label="Instagram"><img src="photos/svg/socials/insta.svg"
+                alt="Instagram"></a>
+            <a href="#" class="contact__social-link" aria-label="X (Twitter)"><img src="photos/svg/socials/x.svg"
+                alt="X"></a>
+            <a href="#" class="contact__social-link" aria-label="LinkedIn"><img src="photos/svg/socials/in.svg"
+                alt="LinkedIn"></a>
+          </div>
+        </div>
+
+        <div class="contact__form-wrapper">
+          <form action="/thank-you.html" method="post" class="contact__form">
+            <header class="contact__form-header">
+              <p class="contact__form-supertitle">Wyślij wiadomość</p>
+              <h3 class="contact__form-title"><em>Poproś o telefon zwrotny</em></h3>
+            </header>
+
+            <div class="contact__form-group">
+              <label for="name" class="contact__label">Imię i Nazwisko</label>
+              <input class="contact__input" type="text" id="name" name="name" placeholder="Imię i Nazwisko" required>
+            </div>
+
+            <div class="contact__form-group">
+              <label for="email" class="contact__label">Email</label>
+              <input class="contact__input" type="email" id="email" name="email" placeholder="Adres e-mail" required>
+            </div>
+
+            <div class="contact__form-group">
+              <label for="phone" class="contact__label">Numer Telefonu</label>
+              <input class="contact__input" type="tel" id="phone" name="phone" placeholder="Numer telefonu" required>
+            </div>
+
+            <div class="contact__form-group">
+              <label for="message" class="contact__label">Wiadomość</label>
+              <textarea class="contact__textarea" id="message" name="message" placeholder="Wpisz swoją wiadomość..."
+                rows="4"></textarea>
+            </div>
+
+            <div class="contact__form-group--checkbox">
+              <input class="contact__checkbox-input" type="checkbox" id="terms" name="terms" required>
+              <label for="terms" class="contact__checkbox-label">Zgadzam się na warunki korzystania z usługi.</label>
+            </div>
+
+            <button type="submit" class="contact__submit-button">Wyślij</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <a href="/" class="footer__logo-link"><img src="photos/mobile_logo.png" alt="Scandura Homes Logo"
+            class="footer__logo"></a>
+        <p class="footer__description">Z ponad 15-letnim doświadczeniem w budowie wysokiej jakości domów drewnianych w
+          Norwegii, a teraz także w Polsce, łączymy skandynawskie rzemiosło, zrównoważone materiały i precyzyjne
+          zarządzanie projektami, aby dostarczać trwałe, energooszczędne domy drewniane, które od pierwszego dnia będą
+          prawdziwym domem.</p>
+      </div>
+      <div class="footer__main-content">
+        <div class="footer__links">
+          <h3 class="footer__heading">Przydatne linki</h3>
+          <ul class="footer__list">
+            <li><a href="/" class="footer__link">Strona Domowa</a></li>
+            <li><a href="/about" class="footer__link">O nas</a></li>
+            <li><a href="/privacy" class="footer__link">Polityka prywatności</a></li>
+          </ul>
+        </div>
+        <div class="footer__contact">
+          <h3 class="footer__heading">Skontaktuj sie z nami</h3>
+          <address class="footer__address">Gdansk</address>
+          <a href="tel:+12295550109" class="footer__link">Zadzwon do nas: +47 967 270 65</a>
+          <a href="https://wa.me/12085550112" class="footer__link">Whatsapp: +47 967 270 65</a>
+        </div>
+        <div class="footer__socials">
+          <h3 class="footer__heading">Śledź nas</h3>
+          <div class="footer__social-icons">
+            <a href="#" class="footer__social-link" aria-label="Facebook"><img src="photos/svg/socials/fb.svg"
+                alt="Facebook"></a>
+            <a href="#" class="footer__social-link" aria-label="Instagram"><img src="photos/svg/socials/insta.svg"
+                alt="Instagram"></a>
+            <a href="#" class="footer__social-link" aria-label="X"><img src="photos/svg/socials/x.svg" alt="X"></a>
+            <a href="#" class="footer__social-link" aria-label="LinkedIn"><img src="photos/svg/socials/in.svg"
+                alt="LinkedIn"></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copyright">© 2024 – Scandura Homes _ Wszelkie prawa zastrzeżone"</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======= POPUP KONFIGURATORA ======= -->
+  <div id="cfg-modal" class="cfg is-hidden" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="cfg__backdrop" data-close-configurator></div>
+    <div class="cfg__panel" role="document">
+      <button class="cfg__close" aria-label="Zamknij" data-close-configurator>×</button>
+
+      <div class="cfg-stepper" aria-label="Postęp">
+        <div class="cfg-stepper__bar">
+          <div class="cfg-stepper__bar-fill"></div>
+        </div>
+        <div class="cfg-stepper__labels">
+          <span class="cfg-stepper__label" data-step-label="0">1. Rodzaj domu</span>
+          <span class="cfg-stepper__label" data-step-label="1">2. Fundament</span>
+          <span class="cfg-stepper__label" data-step-label="2">3. Elewacja</span>
+          <span class="cfg-stepper__label" data-step-label="3">4. Dach</span>
+          <span class="cfg-stepper__label" data-step-label="4">5. Rozkład</span>
+          <span class="cfg-stepper__label" data-step-label="5">6. Opcje</span>
+          <span class="cfg-stepper__label" data-step-label="6">7. Wycena</span>
+          <span class="cfg-stepper__label" data-step-label="7">8. Kontakt</span>
+        </div>
+        <div class="cfg-stepper__meta"><span id="cfg-stepper-current">Krok 1/8</span></div>
+      </div>
+
+      <section class="cfg-step" data-step="0"></section>
+      <section class="cfg-step" data-step="1" hidden></section>
+      <section class="cfg-step" data-step="2" hidden></section>
+      <section class="cfg-step" data-step="3" hidden></section>
+      <section class="cfg-step" data-step="4" hidden></section>
+      <section class="cfg-step" data-step="5" hidden></section>
+      <section class="cfg-step" data-step="6" hidden></section>
+      <section class="cfg-step" data-step="7" hidden></section>
+
+      <div class="cfg-nav">
+        <button class="btn btn--ghost" data-prev disabled>Wstecz</button>
+        <div class="cfg-nav__spacer"></div>
+        <button class="btn" data-next>Dalej</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/config.js"></script>
+  <script type="module" src="js/configurator.js"></script>
+  <script src="js/patch-modal-ux.js"></script>
+  <script src="/js/services-slider.js" defer></script>
+  <script src="/js/projects-slider.js" defer></script>
+  <script src="/js/partners-marquee.js" defer></script>
+  <script src="/js/testimonials-slider.js" defer></script>
+  <script src="/js/mobile-menu.js" defer></script>
+  <script src="/js/nav-autohide.js" defer></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const burgerButton = document.querySelector('.header__burger');
+      if (burgerButton) { burgerButton.addEventListener('click', () => document.body.classList.toggle('is-menu-active')); }
+    });
+  </script>
+</body>
+
+</html>

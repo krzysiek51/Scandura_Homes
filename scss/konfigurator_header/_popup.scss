@@ -1,0 +1,102 @@
+/* === POPUP KONFIGURATORA – FIX Z-INDEX / LAYOUT === */
+
+.cfg {
+  position: fixed;      /* pełny overlay, nie scrolluje z body */
+  inset: 0;             /* top:0 right:0 bottom:0 left:0 */
+  z-index: 100000;      /* ponad stopkę, header, sticky itp. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cfg.is-hidden { display: none !important; }
+
+.cfg__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, .52);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.cfg__panel {
+  position: relative;
+  z-index: 1; /* ponad backdroppem */
+  display: grid;
+  grid-template-rows: auto 1fr auto; /* stepper / content / nav */
+  gap: 12px;
+
+  width: min(1080px, calc(100vw - 32px));
+  max-width: 1080px;
+  height: min(92vh, 880px);
+  max-height: 92vh;
+
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 24px 64px rgba(0,0,0,.18);
+  overflow: hidden;
+}
+
+/* Close button zawsze na wierzchu, nie chowa się pod paskiem */
+.cfg__close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 3; /* > stepper */
+  width: 28px;
+  height: 28px;
+  line-height: 26px;
+  text-align: center;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: #fff;
+  cursor: pointer;
+}
+
+/* Pasek postępu nie zasłania X, lekko odsuń w dół */
+.cfg-stepper {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #fff;
+  padding: 10px 12px 6px;
+}
+
+/* Obszar kroku – scrolluje się wewnątrz panelu */
+.cfg-step {
+  min-height: 0; /* fix dla grid + overflow */
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-inline: 12px;
+  padding-bottom: 16px;
+}
+.cfg-step[hidden] { display: none !important; }
+
+/* Dolna nawigacja – zawsze widoczna, nie przeskakuje */
+.cfg-nav {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  background: #fff;
+  border-top: 1px solid rgba(0,0,0,.06);
+  padding: 10px 12px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* RWD */
+@media (max-width: 1024px) {
+  .cfg__panel {
+    width: min(960px, calc(100vw - 16px));
+    height: min(92vh, 820px);
+  }
+}
+@media (max-width: 480px) {
+  .cfg__panel {
+    width: calc(100vw - 12px);
+    height: 92vh;
+    border-radius: 12px;
+  }
+  .cfg-step { padding-inline: 8px; }
+}

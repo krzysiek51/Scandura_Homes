@@ -1,0 +1,12 @@
+/* scss/konfigurator_header/index.scss */
+@use './tokens';
+@use './mixins';
+@use './popup';
+@use './stepper';
+@use './steps';
+@use './forms';
+@use './nav';
+@use './configurator';
+@use "./fields";
+@use "./pricing"; /* <— NOWE */
+@use "./panel-fixed";

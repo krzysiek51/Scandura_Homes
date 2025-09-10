@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Strona główna — Scandura Homes</title>
+  <meta name="description" content="Domy drewniane — skandynawska jakość.">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="container">
+    <a href="/" class="logo">Scandura Homes</a>
+    <button class="about-header__burger" aria-label="Otwórz menu">
+      <img src="/photos/svg/burger.svg" alt="" width="20" height="14" />
+    </button>
+      <nav class="nav" aria-label="Główne">
+        <ul>
+            <li><a href="/" class="is-active">Strona główna</a></li>
+            <li><a href="/pages/about.html" class="">O mnie</a></li>
+            <li><a href="/pages/services.html" class="">Usługi</a></li>
+            <li><a href="/pages/contact.html" class="">Kontakt</a></li>
+        </ul>
+      </nav>
+  </div>
+</header>
+  <main>
+<section class="hero">
+  <div class="container">
+    <h1>Domy drewniane w standardzie skandynawskim</h1>
+    <p>…twój content…</p>
+  </div>
+</section>
+
+
+
+<section class="configurator-prompt" id="configurator-prompt">
+  <div class="configurator-prompt__content" aria-labelledby="ai-title">
+    <span class="configurator-prompt__badge">Nowość • Asystent AI</span>
+
+    <h2 class="configurator-prompt__title" id="ai-title">
+      Rozpocznij konfigurację z AI
+    </h2>
+
+    <p class="configurator-prompt__sub">
+      Dobierz typ, materiały i poziom stawek.
+      Zobacz koszt <strong>robocizny oraz materiałów</strong>
+    </p>
+
+    <ul class="configurator-prompt__benefits" aria-label="Korzyści">
+      <li class="configurator-prompt__benefit">
+        <span aria-hidden="true">⚡</span> Szybko: wynik w 3–5 min
+      </li>
+      <li class="configurator-prompt__benefit">
+        <span aria-hidden="true">🎯</span> Precyzyjnie: realne widełki
+      </li>
+    </ul>
+
+    <div class="configurator-prompt__cta">
+      <button class="configurator-prompt__button"
+              id="open-configurator-button"
+              data-open-configurator
+              aria-label="Uruchom konfigurator AI">
+        Uruchom konfigurator AI
+      </button>
+
+      <button type="button"
+              class="configurator-prompt__link"
+              data-scroll="#example-quote"
+              aria-label="Zobacz przykład wyceny">
+        Zobacz przykład wyceny
+      </button>
+    </div>
+  </div>
+</section>
+
+
+<div id="cfg-modal" class="cfg is-hidden" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="cfg__backdrop" data-close-configurator></div>
+  <div class="cfg__panel" role="document">
+    <button class="cfg__close" aria-label="Zamknij" data-close-configurator>×</button>
+
+    <div class="cfg-stepper" aria-label="Postęp">
+      <div class="cfg-stepper__bar">
+        <div class="cfg-stepper__bar-fill"></div>
+      </div>
+      <div class="cfg-stepper__labels">
+        <span class="cfg-stepper__label" data-step-label="0">1. Rodzaj domu</span>
+        <span class="cfg-stepper__label" data-step-label="1">2. Fundament</span>
+        <span class="cfg-stepper__label" data-step-label="2">3. Elewacja</span>
+        <span class="cfg-stepper__label" data-step-label="3">4. Dach</span>
+        <span class="cfg-stepper__label" data-step-label="4">5. Rozkład</span>
+        <span class="cfg-stepper__label" data-step-label="5">6. Opcje</span>
+        <span class="cfg-stepper__label" data-step-label="6">7. Wycena</span>
+        <span class="cfg-stepper__label" data-step-label="7">8. Kontakt</span>
+      </div>
+      <div class="cfg-stepper__meta"><span id="cfg-stepper-current">Krok 1/8</span></div>
+    </div>
+
+    <section class="cfg-step" data-step="0"></section>
+    <section class="cfg-step" data-step="1" hidden></section>
+    <section class="cfg-step" data-step="2" hidden></section>
+    <section class="cfg-step" data-step="3" hidden></section>
+    <section class="cfg-step" data-step="4" hidden></section>
+    <section class="cfg-step" data-step="5" hidden></section>
+    <section class="cfg-step" data-step="6" hidden></section>
+    <section class="cfg-step" data-step="7" hidden></section>
+
+    <div class="cfg-nav">
+      <button class="btn btn--ghost" data-prev disabled>Wstecz</button>
+      <div class="cfg-nav__spacer"></div>
+      <button class="btn" data-next>Dalej</button>
+    </div>
+  </div>
+</div>
+
+  </main>
+<footer class="footer">
+  <div class="container">
+    <p>© Scandura Homes 2025</p>
+  </div>
+</footer>
+  <script src="/js/main.js" defer></script>
+</body>
+</html>

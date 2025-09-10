@@ -1,0 +1,42 @@
+/* scss/konfigurator_header/_stepper.scss */
+@use './tokens' as t;
+
+.cfg-stepper {
+  margin-bottom: 16px;
+}
+
+.cfg-stepper__bar {
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  background: #ececf0;
+  overflow: hidden;
+}
+.cfg-stepper__bar-fill {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 0%;
+  background: t.$color-primary;
+  transition: width .25s ease;
+}
+
+.cfg-stepper__labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 10px;
+}
+.cfg-stepper__label {
+  font-size: 12px;
+  color: t.$color-muted;
+}
+.cfg-stepper__label.is-active {
+  color: t.$color-text;
+  font-weight: 700;
+}
+.cfg-stepper__meta {
+  margin-top: 6px;
+  font-size: 12px;
+  color: t.$color-muted;
+}

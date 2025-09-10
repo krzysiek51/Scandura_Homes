@@ -1,0 +1,16 @@
+// layout/container.scss
+@use '../utils/variables' as *;
+
+.container {
+  max-width: 1200px; // To jest dla większych ekranów
+  width: 100%; // Zawsze 100% szerokości dostępnego miejsca
+
+  // Ustawiamy paddingi na stałe 20px z każdej strony
+  padding-left: $container-padding-left; // 20px
+  padding-right: $container-padding-right; // 20px
+
+  margin: 0 auto;
+  box-sizing: border-box;
+
+  pointer-events: none;
+}
