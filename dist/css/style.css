@@ -491,6 +491,33 @@ body {
     transform: translateY(-100%);
   }
 }
+.header__overlay,
+.header_video,
+.header::before,
+.header::after {
+  pointer-events: none; /* nie przechwytują klików */
+}
+
+/* === Burger fix: wyniesienie wrapa i przycisku na wierzch === */
+.header__wrap {
+  position: relative;
+  z-index: 1001; /* wyżej niż overlay/video */
+}
+
+.header__burger {
+  position: relative;
+  z-index: 1002; /* nad wrapem i całą resztą */
+  pointer-events: auto; /* zawsze klikalny */
+}
+
+/* Overlay i video nie mogą blokować kliknięć */
+.header__overlay,
+.header__video,
+.header::before,
+.header::after {
+  pointer-events: none;
+}
+
 /* =========================================================
    Sekcja: MISJA (mobile first)
    ========================================================= */
@@ -4528,6 +4555,13 @@ nav#mobile-menu .button--nav {
     transform: translateY(-100%);
   }
 }
+.header__overlay,
+.header_video,
+.header::before,
+.header::after {
+  pointer-events: none; /* nie przechwytują klików */
+}
+
 .m-0 {
   margin-top: 0rem !important;
   margin-right: 0rem !important;

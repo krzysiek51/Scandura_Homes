@@ -4528,6 +4528,102 @@ nav#mobile-menu .button--nav {
     transform: translateY(-100%);
   }
 }
+/* === Burger + linki: klikalność i warstwowanie === */
+/* === HEADER: pewne warstwowanie i klikalność === */
+/* 0) Header tworzy własny stacking-context */
+.header {
+  position: relative;
+  isolation: isolate;
+}
+
+/* 1) Tła/dekoracje zawsze NAJNIŻEJ i nie łapią klików */
+.header__overlay,
+.header_overlay,
+.header__video,
+.header_video,
+.header::before,
+.header::after {
+  position: absolute;
+  inset: 0;
+  z-index: 0; /* pod wszystkim */
+  pointer-events: none; /* nie blokują kliknięć */
+}
+
+/* Jeśli video ma zasłaniać wizualnie mniej, można dać -1: */
+/* Pokazuj nav na tablet/desktop niezależnie od aria-hidden */
+/* Pokazuj nav na tablet/desktop niezależnie od aria-hidden */
+@media (min-width: 744px) {
+  /* Burger tylko na mobile */
+}
+/* Chowanie nav tylko na MOBILE, gdy aria-hidden="true" */
+@media (max-width: 743px) {
+  #mobile-menu[aria-hidden=true],
+  .nav-overlay.is-hidden,
+  .mobile-menu.is-hidden {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+}
+/* Overlay/video w headerze nie łapią klików (zostawiamy) */
+.header__overlay,
+.header_video,
+.header::before,
+.header::after {
+  pointer-events: none;
+}
+
+/* Burger ma przyjmować klik na mobile */
+.header__burger {
+  position: relative;
+  z-index: 4;
+  pointer-events: auto;
+}
+
+/* === LOGO: zawsze klikalne na mobile/tablet === */
+.header__logo,
+.header__logo a {
+  z-index: 5; /* ponad burgerem/menu/overlayami */
+  pointer-events: auto;
+}
+
+/* (opcjonalnie) żeby klik trafiał w <a>, nie w <img> */
+.header__logo img {
+  pointer-events: none;
+}
+
+/* Ukryte menu i overlay NIE mogą łapać klików */
+.nav-overlay.is-hidden,
+.mobile-menu.is-hidden {
+  display: none;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+/* MOBILE+TABLET: menu zamknięte nie zasłania headera */
+@media (max-width: 1439px) {
+  #mobile-menu[aria-hidden=true] {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; /* <-- kluczowe */
+  }
+  #mobile-menu[aria-hidden=false] {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+/* Na wszelki wypadek: dekoracje headera nie przechwytują klików */
+.header__overlay,
+.header_video,
+.header::before,
+.header::after {
+  pointer-events: none;
+}
+
 .m-0 {
   margin-top: 0rem !important;
   margin-right: 0rem !important;
