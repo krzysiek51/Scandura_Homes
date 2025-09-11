@@ -1,0 +1,14 @@
+// utils/_mixins.scss
+@mixin section-grid-fluid($cols, $col-gap, $row-gap, $pad-inline) {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat($cols, minmax(0, 1fr));
+  column-gap: $col-gap;
+  row-gap: $row-gap;
+  padding-inline: $pad-inline;
+  justify-content: center;
+  margin-inline: auto;
+  min-width: 0;
+  box-sizing: content-box;
+}
