@@ -45,3 +45,7 @@ photos/header_video.mp4
 # --- Windows duplicate files ---
 css/style(*).css
 css/style(*).map
+dist/
+css/*.map
+.sass-cache/
+.cache/
