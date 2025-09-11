@@ -1040,14 +1040,21 @@ content: "";
   .about-timeline {
     .about__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
 
-    .timeline-grid, .timeline { gap: 24px; }
+    .timeline-grid, .timeline { gap: 90px; }
+
+    
 
     .timeline-card {
-      --icon-size: 80px;
+      --icon-size: 140px;
 
-      &__media {
-        aspect-ratio: 4 / 3;
-        height: 360px;
+       &__media {
+        aspect-ratio: 3 / 2;   /* szerszy kadr na laptopach */
+        height: 580px;          /* zmniejszona wysokość */
+      }
+
+      &__photo {
+        object-fit: cover;
+        object-position: center;
       }
 
       &__icon {

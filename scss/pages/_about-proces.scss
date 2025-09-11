@@ -1,0 +1,113 @@
+/* =================================================================
+   ABOUT › PROCESS — progress bar + drawer (mobile-first)
+   Uwaga: brak @use — plik samowystarczalny.
+   ================================================================= */
+
+/* Baza: progress pod każdą kartą (Twoja logika – pozostawiona) */
+.about-process {
+  position: relative;
+  isolation: isolate; /* własny stacking context nad sąsiadami */
+
+  .process-grid article{
+    /* baza */
+    --progress: 0%;
+    --track: rgba(0,0,0,.12);
+    --fill:  #DC9B59;
+    position: relative;
+    padding-bottom: 28px;
+    overflow: hidden;
+
+    /* szyna */
+    &::after{
+      content:"";
+      position:absolute; left:20px; right:20px; bottom:14px;
+      height:4px; border-radius:2px;
+      background: var(--track);
+      opacity:.85;
+    }
+
+    /* wypełnienie do kropki */
+    &::before{
+      content:"";
+      position:absolute; left:20px; bottom:14px;
+      height:4px; border-radius:2px;
+      width: 0;
+      background: linear-gradient(90deg, #DC9B59 0%, #000 100%);
+      transition: width .25s ease;
+      pointer-events:none;
+    }
+
+    /* kropka */
+    .progress-dot{
+      position:absolute; bottom:12px;
+      left: calc(20px + ( (100% - 40px) * (var(--progress) / 100) ) );
+      width:12px; height:12px; border-radius:50%;
+      background: var(--fill);
+      box-shadow: 0 0 0 2px #fff;
+      pointer-events:none; z-index:1;
+    }
+
+    /* hover/focus — iluminacja paska do kropki */
+    &:focus-within::before,
+    &:hover::before{
+      width: calc( (100% - 40px) * (var(--progress) / 100) );
+    }
+  }
+}
+
+/* =========================
+   PROCESS — Drawer overlay per card (≥1440)
+   ========================= */
+@media (min-width: 1440px) {
+  .about-process .process-grid{
+    overflow: visible;
+    position: relative;
+  }
+
+  .about-process .process-grid article{
+    position: relative;
+    overflow: visible;                 /* pozwól drawerowi wychodzić poza kartę */
+    z-index: 0;
+    transition: transform .18s ease, box-shadow .2s ease, z-index 0s;
+    will-change: transform;
+  }
+
+  /* Drawer (szufladka) – domyślnie schowana, pod kartą */
+  .about-process .process-grid article .drawer{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;                         /* start tuż pod kartą */
+    transform-origin: top;
+    transform: translateY(8px) scaleY(0);  /* złożona */
+    opacity: 0;
+    pointer-events: none;
+
+    background: #FFFFFF;
+    border-radius: 0 16px 16px 16px;
+    box-shadow: 0 12px 28px rgba(0,0,0,.10);
+    padding: 16px 20px;
+
+    transition: transform .22s ease, opacity .18s ease;
+    z-index: 25;                       /* ponad sąsiadami w sekcji */
+  }
+
+  /* Tylko aktywna karta się rozszerza (nakłada się na dół) */
+  .about-process .process-grid article.is-open{
+    z-index: 30;                        /* nad sąsiadami i nast. sekcją */
+    transform: translateY(-2px);        /* subtelny lifter */
+    box-shadow: 0 12px 28px rgba(0,0,0,.10);
+  }
+  .about-process .process-grid article.is-open .drawer{
+    transform: translateY(8px) scaleY(1);
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* Bardzo szerokie ekrany – grubszy pasek i kropka (opcjonalnie) */
+@media (min-width: 1920px){
+  .about-process .process-grid article::after{ height:5px; }
+  .about-process .process-grid article::before{ height:5px; }
+  .about-process .process-grid article .progress-dot{ width:14px; height:14px; }
+}
