@@ -1,10 +1,14 @@
 /* =================================================================
+<<<<<<< HEAD
    PAGES / ABOUT — WERSJA W PEŁNI NIEZALEŻNA (bez @use / importów)
    Grid (fluid): 
      M: 4 kol | gap 16 | pad 20
      T: 8 kol | gap 20 | pad 42
      L: 12 kol | gap 24 | pad 40
      D: 12 kol | gap 24 | pad 300
+=======
+   ABOUT — CLEAN, NO PATCHES
+>>>>>>> rescue-pre-skeleton
    ================================================================= */
 
 /* ---------- Breakpointy ---------- */
@@ -12,15 +16,23 @@ $bp-tablet: 744px;
 $bp-laptop: 1440px;
 $bp-desktop: 1920px;
 
+<<<<<<< HEAD
 /* ---------- Kolory (lokalne) ---------- */
 $color-white:           #ffffff;
 $color-black:           #000000;
 $color-dark-text:       #1D1F2C; // z figmy na screenach
+=======
+/* ---------- Kolory ---------- */
+$color-white:           #ffffff;
+$color-black:           #000000;
+$color-dark-text:       #1D1F2C;
+>>>>>>> rescue-pre-skeleton
 $color-light-text:      #6B7280;
 $color-beige-bg:        #F6F1EA;
 $color-beige-light-bg:  #FAF7F4;
 $color-cta-bg:          #000000;
 
+<<<<<<< HEAD
 /* ---------- Typografia (zrzuty – MOBILE) ----------
    Title: DM Sans / SemiBold / 24 / letter-spacing: 7% / line-height: auto
    Body : DM Sans / Regular  / 14 / letter-spacing: 5% / line-height: 150%
@@ -55,6 +67,29 @@ body.about .header {
   height: auto;
 }
 
+=======
+/* ---------- Typografia (bazowa – Mobile) ---------- */
+$ff: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+$h-title-weight: 600;
+$h-title-size:   24px;
+$h-title-ls:     0.07em;
+$h-title-lh:     1.1;
+
+$body-weight:    400;
+$body-size:      14px;
+$body-ls:        0.05em;
+$body-lh:        1.5;
+
+$btn-weight:     500;
+$btn-size:       16px;
+$btn-lh:         1;
+$btn-ls:         0;
+
+/* ---------- Local tweaks ---------- */
+body.about .header { min-height: 0 !important; height: auto; }
+
+>>>>>>> rescue-pre-skeleton
 /* ---------- Mixin: fluid grid kontenera sekcji ---------- */
 @mixin section-grid-fluid($cols, $col-gap, $row-gap, $pad-inline) {
   position: relative;
@@ -74,6 +109,7 @@ body.about .header {
    HERO
    ========================================================= */
 .about-hero {
+<<<<<<< HEAD
   padding: 24px 0 0 0;
 
   .about__container {
@@ -140,11 +176,63 @@ body.about .header {
       cursor: pointer;
       text-decoration: none;
       white-space: nowrap;
+=======
+  padding: 24px 0 0;
+
+  .about__container { @include section-grid-fluid(4, 16px, 16px, 20px); }
+
+  &__content {
+    grid-column: 1 / -1;
+    color: $color-dark-text;
+    font-family: $ff;
+  }
+
+  &__title {
+    font: {
+      family: $ff;
+      weight: $h-title-weight;
+      size: $h-title-size;
+    }
+    line-height: $h-title-lh;
+    letter-spacing: $h-title-ls;
+    color: $color-dark-text;
+    margin: 0 0 16px;
+  }
+
+  &__lead {
+    font: {
+      family: $ff;
+      weight: $body-weight;
+      size: $body-size;
+    }
+    line-height: $body-lh;
+    letter-spacing: $body-ls;
+    color: $color-dark-text;
+    margin: 0 0 20px;
+  }
+
+  .section-divider {
+    width: 230px; height: 4px; border-radius: 2px;
+    background: linear-gradient(90deg, #DC9B59 0%, #000000 100%);
+    box-shadow: 0 4px 4px rgba(0,0,0,.25);
+    margin: 20px 0;
+  }
+
+  &__cta {
+    display: flex; justify-content: flex-start; margin: 0 0 40px;
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      height: 56px; padding: 0 16px;
+      font-family: $ff; font-weight: $btn-weight; font-size: $btn-size; line-height: $btn-lh; letter-spacing: $btn-ls;
+      color: #fff; background: $color-cta-bg; border: 0; border-radius: 28px;
+      cursor: pointer; text-decoration: none; white-space: nowrap;
+>>>>>>> rescue-pre-skeleton
     }
   }
 
   &__photo {
     position: relative;
+<<<<<<< HEAD
     grid-column: 1 / -1;
     margin-top: 16px;
 
@@ -278,8 +366,142 @@ body.about .header {
   .about-values .about__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
 }
 
+=======
+    grid-column: 1 / -1;
+    margin-top: 16px;
+
+    img {
+      display: block; width: 100%; height: auto; object-fit: cover;
+      border-radius: 94px 0 0 0; /* Mobile */
+      position: relative; z-index: 2;
+    }
+  }
+
+  .about-hero__dots {
+    position: absolute; top: -24px; right: -24px; width: 140px; height: auto;
+    pointer-events: none; z-index: 1;
+  }
+}
+
+/* ===== VALUES: karta – baza dla M/T (320×491, twardo) ===== */
+.value-card {
+  width: 320px;
+  height: 491px;
+  position: relative;
+  display: grid;
+  grid-template-rows: 218px 1fr;
+  border-radius: 16px;
+  background: #fff;
+  overflow: hidden;
+
+  &__media {
+    position: relative;
+    height: 218px;
+    border-radius: 40px 40px 0 0;
+    overflow: hidden;
+
+    img { display:block; width:320px; height:218px; object-fit:cover; }
+  }
+
+  /* badge 93×93 — na styku media/body */
+  &__badge {
+    position: absolute;
+    left: 50%;
+    bottom: -46.5px; /* - (93/2) */
+    transform: translateX(-50%);
+    width: 93px;
+    height: 93px;
+    border-radius: 50%;
+    background: #fff;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.08);
+
+    img { width:93px; height:93px; border-radius:50%; object-fit:cover; display:block; }
+  }
+
+  &__body {
+    background: #FAF7F4;
+    color: #000;
+    border-radius: 0 0 16px 16px;
+    padding: 28px 24px 24px;
+  }
+
+  &__title {
+    margin: 52px 0 8px; /* miejsce pod wpuszczony badge */
+    font: 600 20px/1.25 "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color:#000;
+  }
+
+  &__text {
+    margin: 0 0 12px;
+    font: 400 14px/1.5 "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    letter-spacing: .01em;
+    color:#000; opacity:.8;
+  }
+
+  &__btn {
+    display:inline-flex; align-items:center; justify-content:center;
+    min-width:174px; height:56px; padding:0 24px;
+    background:#DC9B59; color:#fff; text-decoration:none;
+    font:600 16px/1 "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    border:0; border-radius:12px; cursor:pointer;
+    transition: transform .1s ease, filter .2s ease;
+    &:hover{ filter:brightness(.97); } &:active{ transform:translateY(1px); }
+  }
+}
+
+/* nie centrować – karta ma wypełniać tor grida */
+.about-values__grid > .value-card { justify-self: stretch; }
+
+/* ===== LAPT0P+DESKTOP: karta skaluje się i wypełnia tor ===== */
+@media (min-width: $bp-laptop) {
+  /* płynna skala w zakresie 1440→1920 */
+  :root {
+    --t: clamp(0, (100vw - 1440px) / 480, 1);  /* 0..1 */
+    /* docelowe powiększenia (możesz łatwo skorygować liczby po prawej) */
+    --badge-size: calc(93px + 12px * var(--t));   /* 93 → 105 */
+    --btn-h:      calc(56px +  6px * var(--t));   /* 56 → 62  */
+    --btn-w:      calc(174px + 20px * var(--t));  /* 174→ 194 */
+    --title-top:  calc(52px +  8px * var(--t));   /* 52 → 60  */
+  }
+
+  .value-card {
+    width: 100%;          /* wypełnia szerokość swojego toru grida */
+    height: auto;         /* rośnie z zawartością */
+    grid-template-rows: auto 1fr; /* media będzie wyliczana z aspect-ratio */
+  }
+
+  /* górne zdjęcie skaluje się wraz z szerokością karty */
+  .value-card__media {
+    height: auto;
+    aspect-ratio: 320 / 218;   /* zachowaj proporcję 320×218 */
+    border-radius: 40px 40px 0 0;
+  }
+  .value-card__media img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+
+  /* badge – zawsze na styku, skaluje się płynnie */
+  .value-card__badge {
+    width: var(--badge-size);
+    height: var(--badge-size);
+    bottom: calc(var(--badge-size) / -2);
+  }
+  .value-card__badge img {
+    width: var(--badge-size);
+    height: var(--badge-size);
+  }
+
+  .value-card__title { margin-top: var(--title-top); }
+  .value-card__btn   { height: var(--btn-h); min-width: var(--btn-w); }
+}
+
+
+
+>>>>>>> rescue-pre-skeleton
 /* =========================================================
-   TIMELINE
+   TIMELINE — „Moja droga” (3 duże kafle po lewej, tekst po prawej)
    ========================================================= */
 .about-timeline {
   padding: 40px 0;
@@ -287,7 +509,13 @@ body.about .header {
 
   .about__container { @include section-grid-fluid(4, 16px, 16px, 20px); }
 
+  .section-title,
+  .section-lead {
+    grid-column: 1 / -1;
+    font-family: $ff; color: $color-dark-text;
+  }
   .section-title {
+<<<<<<< HEAD
     grid-column: 1 / -1;
     margin: 0 0 24px 0;
     text-align: center;
@@ -297,10 +525,21 @@ body.about .header {
     line-height: $h-title-lh;
     letter-spacing: $h-title-ls;
     color: $color-dark-text;
+=======
+    margin: 0 0 8px;
+    font-weight: $h-title-weight; font-size: $h-title-size; line-height: $h-title-lh; letter-spacing: $h-title-ls;
+    text-align: left;
+  }
+  .section-lead {
+    margin: 0 0 24px;
+    font-weight: $body-weight; font-size: $body-size; line-height: $body-lh; letter-spacing: $body-ls;
+>>>>>>> rescue-pre-skeleton
   }
 
+  /* Mobile: kafle w 2 kolumnach */
   .timeline {
     grid-column: 1 / -1;
+<<<<<<< HEAD
     list-style: none;
     margin: 0;
     padding: 0;
@@ -350,9 +589,19 @@ body.about .header {
 @media (min-width: $bp-desktop) {
   .about-timeline .about__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
 }
+=======
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    list-style: none; margin: 0; padding: 0;
+
+    &__item {
+      background: $color-white; border-radius: 16px; padding: 20px; min-width: 0; font-family: $ff;
+    }
+  }
+}
+>>>>>>> rescue-pre-skeleton
 
 /* =========================================================
-   PROCESS
+   PROCESS — 2 kol (M/T) → 3 kol (L/D)
    ========================================================= */
 .about-process {
   padding: 40px 0;
@@ -362,6 +611,7 @@ body.about .header {
 
   .section-title {
     grid-column: 1 / -1;
+<<<<<<< HEAD
     margin: 0 0 24px 0;
     text-align: center;
     font-family: $ff;
@@ -370,6 +620,11 @@ body.about .header {
     line-height: $h-title-lh;
     letter-spacing: $h-title-ls;
     color: $color-dark-text;
+=======
+    margin: 0 0 24px;
+    text-align: left;
+    font-family: $ff; font-weight: $h-title-weight; font-size: $h-title-size; line-height: $h-title-lh; letter-spacing: $h-title-ls; color: $color-dark-text;
+>>>>>>> rescue-pre-skeleton
   }
 
   .process-grid {
@@ -379,6 +634,7 @@ body.about .header {
     gap: 16px;
 
     article {
+<<<<<<< HEAD
       background: $color-white;
       border-radius: 12px;
       padding: 20px;
@@ -424,9 +680,18 @@ body.about .header {
 @media (min-width: $bp-desktop) {
   .about-process .about__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
 }
+=======
+      background: $color-white; border-radius: 12px; padding: 20px; text-align: left; font-family: $ff;
+
+      h3 { margin: 0 0 8px; font-weight: 600; font-size: 16px; line-height: 1.3; color: $color-dark-text; }
+      p  { margin: 0; font-weight: $body-weight; font-size: $body-size; line-height: $body-lh; letter-spacing: $body-ls; color: $color-light-text; }
+    }
+  }
+}
+>>>>>>> rescue-pre-skeleton
 
 /* =========================================================
-   STATS
+   STATS — 2 kol (M/T) → 3 kol (L/D)
    ========================================================= */
 .about-stats {
   padding: 40px 0;
@@ -436,6 +701,7 @@ body.about .header {
 
   .stats {
     grid-column: 1 / -1;
+<<<<<<< HEAD
     display: grid;
     grid-template-columns: 1fr 1fr; /* 2 kol od mobile */
     gap: 16px;
@@ -509,19 +775,50 @@ body.about .header {
     display: grid;
     grid-template-columns: 1fr;
     row-gap: 16px;
+=======
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    text-align: center; font-family: $ff;
+  }
+
+  .stat {
+    background: $color-beige-light-bg; border-radius: 12px; padding: 20px;
+
+    &__value { display: block; margin: 0 0 4px; font-weight: 700; font-size: 20px; line-height: 1.2; color: $color-dark-text; }
+    &__label { margin: 0; font-weight: $body-weight; font-size: $body-size; line-height: $body-lh; letter-spacing: $body-ls; color: $color-light-text; }
+  }
+}
+
+/* =========================================================
+   CTA — karta w kontenerze
+   ========================================================= */
+.about-cta {
+  margin: 0; padding: 0;
+
+  .about__container { @include section-grid-fluid(4, 16px, 16px, 20px); font-family: $ff; }
+
+  &__box {
+    grid-column: 1 / -1;
+    background: #0F8B8D; color: $color-white; border-radius: 24px; padding: 24px;
+    display: grid; grid-template-columns: 1fr; row-gap: 16px;
+>>>>>>> rescue-pre-skeleton
   }
 
   &__box > h2 {
     margin: 0;
+<<<<<<< HEAD
     font-family: $ff;
     font-weight: $h-title-weight;
     font-size: $h-title-size;
     line-height: $h-title-lh;
     letter-spacing: $h-title-ls;
+=======
+    font-family: $ff; font-weight: $h-title-weight; font-size: $h-title-size; line-height: $h-title-lh; letter-spacing: $h-title-ls;
+>>>>>>> rescue-pre-skeleton
   }
 
   &__box > p {
     margin: 0;
+<<<<<<< HEAD
     font-family: $ff;
     font-weight: $body-weight;
     font-size: $body-size;
@@ -576,6 +873,129 @@ body.about .header {
 
 /* ===== LAPTOP ===== */
 @media (min-width: $bp-laptop) and (max-width: $bp-desktop - 1) {
+=======
+    font-family: $ff; font-weight: $body-weight; font-size: $body-size; line-height: $body-lh; letter-spacing: $body-ls; opacity: .95;
+  }
+
+  .btns {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    margin-top: 4px; max-width: 335px; margin-left: 0;
+  }
+
+  .btns .btn {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 44px; padding: 12px 18px; margin: 0; width: 100%;
+    line-height: 1.2; white-space: nowrap; border-radius: 12px;
+    border: 1.5px solid rgba(255,255,255,.75);
+    color: #fff; background: transparent; text-decoration: none;
+  }
+
+  .btns .btn:hover, .btns .btn:focus-visible { border-color: #fff; background: rgba(255,255,255,.08); outline: none; }
+}
+
+/* =========================================================
+   TABLET (≥744): 8 kol | gap 20 | pad 42
+   ========================================================= */
+@media (min-width: $bp-tablet) {
+  /* HERO */
+  .about-hero {
+    padding: 112px 0 48px;
+    .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+    &__content { grid-column: 1 / -1; }
+    &__photo   { grid-column: 1 / -1; margin-top: 20px; }
+    &__photo img { border-radius: 154px 0 0 0; } /* T+ */
+  }
+
+  /* VALUES — ten sam układ (1|3), inne linie */
+  .about-values {
+    .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+    &__grid { display: contents; }
+    .section-title { grid-column: 1 / 3; grid-row: 1; margin: 0 0 8px; }
+    .section-lead  { grid-column: 1 / 3; grid-row: 1; margin: 36px 0 0; }
+    &__grid > .value:nth-of-type(1) { grid-column: 3 / 5; }
+    &__grid > .value:nth-of-type(2) { grid-column: 5 / 7; }
+    &__grid > .value:nth-of-type(3) { grid-column: 7 / 9; }
+  }
+
+  /* TIMELINE — 12-kol układ dopiero od laptopa, więc tu: 8-kol z większym gapem */
+  .about-timeline {
+    .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+    .timeline { gap: 20px; }
+  }
+
+  /* PROCESS */
+  .about-process {
+    .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+    .process-grid { gap: 20px; } /* wciąż 2 kol */
+  }
+
+  /* STATS */
+  .about-stats {
+    .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+    .stats { gap: 20px; }
+  }
+
+  /* CTA */
+  .about-cta {
+    .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+    &__box { padding: 32px; row-gap: 18px; }
+    .btns { gap: 14px; }
+    .btns .btn { min-height: 44px; }
+  }
+}
+
+/* =========================================================
+   LAPTOP (≥1440): 12 kol | gap 24 | pad 40
+   (wyjątek: Values/Timeline używają gap=20)
+   ========================================================= */
+@media (min-width: $bp-laptop) {
+  /* HERO */
+  .about-hero {
+    padding: 120px 0 56px;
+    .about__container { @include section-grid-fluid(12, 24px, 24px, 40px); align-items: center; grid-auto-rows: auto; }
+    &__content { grid-column: 1 / span 6; grid-row: 1; margin: 0; align-self: center; }
+    &__photo   { grid-column: 7 / span 6; grid-row: 1; margin: 0; }
+    .about-hero__dots { top: -32px; right: -32px; width: 180px; }
+  }
+
+  /* VALUES — gap=20, układ 1|3 */
+  .about-values {
+    .about__container { @include section-grid-fluid(12, 20px, 20px, 40px); }
+    &__grid { display: contents; }
+    .section-title { grid-column: 1 / 4; grid-row: 1; margin: 0 0 8px; }
+    .section-lead  { grid-column: 1 / 4; grid-row: 1; margin: 36px 0 0; }
+    &__grid > .value { grid-row: 1; height: 471px; padding: 24px; display: flex; flex-direction: column; justify-content: center; }
+    &__grid > .value:nth-of-type(1) { grid-column: 4  / 7; }
+    &__grid > .value:nth-of-type(2) { grid-column: 7  / 10; }
+    &__grid > .value:nth-of-type(3) { grid-column: 10 / 13; }
+  }
+
+  /* TIMELINE — gap=20; kafle po lewej, tekst po prawej w jednym rzędzie */
+  .about-timeline {
+    .about__container { @include section-grid-fluid(12, 20px, 20px, 40px); }
+    .timeline { display: contents; }
+    .section-title { grid-column: 10 / 13; grid-row: 1; margin: 0 0 8px; }
+    .section-lead  { grid-column: 10 / 13; grid-row: 1; margin: 36px 0 0; }
+    .timeline__item { grid-row: 1; height: 400px; padding: 24px; display: flex; flex-direction: column; justify-content: center; border-radius: 16px; background: $color-white; }
+    .timeline__item:nth-of-type(1) { grid-column: 1 / 4; }
+    .timeline__item:nth-of-type(2) { grid-column: 4 / 7; }
+    .timeline__item:nth-of-type(3) { grid-column: 7 / 10; }
+  }
+
+  /* PROCESS — 3 kol */
+  .about-process {
+    .about__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
+    .process-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  }
+
+  /* STATS — 3 kol */
+  .about-stats {
+    .about__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
+    .stats { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  }
+
+  /* CTA */
+>>>>>>> rescue-pre-skeleton
   .about-cta {
     .about__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
     &__box { padding: 40px; row-gap: 20px; }
@@ -583,13 +1003,38 @@ body.about .header {
   }
 }
 
+<<<<<<< HEAD
 /* ===== DESKTOP ===== */
 @media (min-width: $bp-desktop) {
+=======
+/* =========================================================
+   DESKTOP (≥1920): 12 kol | gap 24 | pad 300
+   (wyjątek: Values/Timeline gap=20)
+   ========================================================= */
+@media (min-width: $bp-desktop) {
+  /* HERO */
+  .about-hero .about__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
+
+  /* VALUES */
+  .about-values .about__container { @include section-grid-fluid(12, 20px, 20px, 300px); }
+
+  /* TIMELINE */
+  .about-timeline .about__container { @include section-grid-fluid(12, 20px, 20px, 300px); }
+
+  /* PROCESS */
+  .about-process .about__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
+
+  /* STATS */
+  .about-stats .about__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
+
+  /* CTA */
+>>>>>>> rescue-pre-skeleton
   .about-cta {
     .about__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
     &__box { padding: 48px; }
     .btns .btn { min-height: 52px; }
   }
+<<<<<<< HEAD
 }
 
 /* =========================================================
@@ -629,3 +1074,13 @@ body.about .header {
    - .about-featured (embed projects)
    - .about-testimonials
    ========================================================= */
+=======
+}
+
+/* =========================================================
+   Warstwy/klik — bezpieczeństwo (dla AI boxa w CTA)
+   ========================================================= */
+.about-cta { position: relative; isolation: isolate; z-index: 1; }
+.about-cta::before, .about-cta::after { pointer-events: none; }
+.configurator-prompt, .configurator-prompt__content { position: relative; z-index: 2; pointer-events: auto; }
+>>>>>>> rescue-pre-skeleton
