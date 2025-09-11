@@ -6917,45 +6917,48 @@ body.about .header {
   z-index: 1;
 }
 
-/* ===== VALUES: karta – baza dla M/T (320×491, twardo) ===== */
+/* ===== VALUES: karta 320×491, media 320×218, badge 93×93 ===== */
 .value-card {
   width: 320px;
   height: 491px;
   position: relative;
   display: grid;
-  grid-template-rows: 218px 1fr;
+  grid-template-rows: 218px 1fr; /* top image + dolna część */
   border-radius: 16px;
-  background: #fff;
-  overflow: hidden;
-  /* badge 93×93 — na styku media/body */
+  background: #FFFFFF; /* kontener karty bez tła */
+  overflow: hidden; /* na wszelki wypadek */
+  /* górne zdjęcie 320×218 z zaokrągleniem 40 na górze */
+  /* okrągła ikonka 93×93 na styku (wyśrodkowana) */
+  /* dolna część: tło #FAF7F4, kolor tekstu #000 */
+  /* przycisk 174×56 z #DC9B59 */
 }
 .value-card__media {
-  position: relative;
   height: 218px;
-  border-radius: 40px 40px 0 0;
+  border-radius: 0 40px 0 0;
   overflow: hidden;
 }
 .value-card__media img {
   display: block;
-  width: 320px;
-  height: 218px;
+  width: 320px; /* twardo */
+  height: 218px; /* twardo */
   object-fit: cover;
 }
 .value-card__badge {
   position: absolute;
   left: 50%;
-  bottom: -46.5px; /* - (93/2) */
-  transform: translateX(-50%);
+  top: 218px; /* dokładnie krawędź zdjęcia */
+  transform: translate(-50%, -50%);
   width: 93px;
   height: 93px;
   border-radius: 50%;
-  background: #fff;
+  background: #FFFFFF;
   display: grid;
   place-items: center;
+  z-index: 2;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 .value-card__badge img {
-  width: 93px;
+  width: 93px; /* twardo: sama grafika 93×93 */
   height: 93px;
   border-radius: 50%;
   object-fit: cover;
@@ -6963,18 +6966,27 @@ body.about .header {
 }
 .value-card__body {
   background: #FAF7F4;
-  color: #000;
+  color: #000000;
   border-radius: 0 0 16px 16px;
   padding: 28px 24px 24px;
+  position: relative;
+  z-index: 1;
 }
 .value-card__title {
-  margin: 52px 0 8px; /* miejsce pod wpuszczony badge */
-  font: 600 20px/1.25 "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  margin: 52px 0 8px; /* miejsce na wpuszczoną odznakę */
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.25;
+  letter-spacing: 0;
   color: #000;
 }
 .value-card__text {
   margin: 0 0 12px;
-  font: 400 14px/1.5 "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
   letter-spacing: 0.01em;
   color: #000;
   opacity: 0.8;
@@ -6987,11 +6999,14 @@ body.about .header {
   height: 56px;
   padding: 0 24px;
   background: #DC9B59;
-  color: #fff;
+  color: #FFFFFF;
   text-decoration: none;
-  font: 600 16px/1 "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1;
   border: 0;
-  border-radius: 12px;
+  border-radius: 0 12px 0 0;
   cursor: pointer;
   transition: transform 0.1s ease, filter 0.2s ease;
 }
@@ -7002,56 +7017,11 @@ body.about .header {
   transform: translateY(1px);
 }
 
-/* nie centrować – karta ma wypełniać tor grida */
+/* żeby grid nie ściskał karty — centrowanie w kolumnie */
 .about-values__grid > .value-card {
-  justify-self: stretch;
+  justify-self: center;
 }
 
-/* ===== LAPT0P+DESKTOP: karta skaluje się i wypełnia tor ===== */
-@media (min-width: 1440px) {
-  /* płynna skala w zakresie 1440→1920 */
-  :root {
-    --t: clamp(0, (100vw - 1440px) / 480, 1); /* 0..1 */
-    /* docelowe powiększenia (możesz łatwo skorygować liczby po prawej) */
-    --badge-size: calc(93px + 12px * var(--t)); /* 93 → 105 */
-    --btn-h: calc(56px + 6px * var(--t)); /* 56 → 62  */
-    --btn-w: calc(174px + 20px * var(--t)); /* 174→ 194 */
-    --title-top: calc(52px + 8px * var(--t)); /* 52 → 60  */
-  }
-  .value-card {
-    width: 100%; /* wypełnia szerokość swojego toru grida */
-    height: auto; /* rośnie z zawartością */
-    grid-template-rows: auto 1fr; /* media będzie wyliczana z aspect-ratio */
-  }
-  /* górne zdjęcie skaluje się wraz z szerokością karty */
-  .value-card__media {
-    height: auto;
-    aspect-ratio: 320/218; /* zachowaj proporcję 320×218 */
-    border-radius: 40px 40px 0 0;
-  }
-  .value-card__media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  /* badge – zawsze na styku, skaluje się płynnie */
-  .value-card__badge {
-    width: var(--badge-size);
-    height: var(--badge-size);
-    bottom: calc(var(--badge-size) / -2);
-  }
-  .value-card__badge img {
-    width: var(--badge-size);
-    height: var(--badge-size);
-  }
-  .value-card__title {
-    margin-top: var(--title-top);
-  }
-  .value-card__btn {
-    height: var(--btn-h);
-    min-width: var(--btn-w);
-  }
-}
 /* =========================================================
    TIMELINE — „Moja droga” (3 duże kafle po lewej, tekst po prawej)
    ========================================================= */

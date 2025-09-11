@@ -1,0 +1,13 @@
+<svg width="93" height="93" viewBox="0 0 93 93" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="46.5" cy="46.5" r="46.5" fill="#FAF7F4"/>
+  <g fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    
+    <!-- linie listy -->
+    <path d="M32 44 H54"/>
+    <path d="M32 50 H54"/>
+    <path d="M32 56 H46"/>
+    <!-- check (przejrzystość) -->
+    <path d="M57 62 L61 66 L69 57"/>
+    <circle cx="63" cy="61" r="11"/>
+  </g>
+</svg>

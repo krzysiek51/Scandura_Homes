@@ -99,7 +99,7 @@
             </div>
 
             <div class="value-card__badge" aria-hidden="true">
-              <img src="../photos/pages/values/icon_rzemioslo.svg" alt="">
+              <img src="../photos/pages/valico1.png" alt="">
             </div>
 
             <div class="value-card__body">
@@ -117,7 +117,7 @@
             </div>
 
             <div class="value-card__badge" aria-hidden="true">
-              <img src="../photos/pages/values/icon_terminowosc.svg" alt="">
+              <img src="../photos/pages/values/" alt="">
             </div>
 
             <div class="value-card__body">
@@ -135,7 +135,7 @@
             </div>
 
             <div class="value-card__badge" aria-hidden="true">
-              <img src="../photos/pages/values/icon_transparentnosc.svg" alt="">
+              <img src="../photos/pages/valico3.png" alt="">
             </div>
 
             <div class="value-card__body">

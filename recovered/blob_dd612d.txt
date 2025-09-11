@@ -126,120 +126,113 @@ body.about .header { min-height: 0 !important; height: auto; }
   }
 }
 
-/* ===== VALUES: karta – baza dla M/T (320×491, twardo) ===== */
+/* ===== VALUES: karta 320×491, media 320×218, badge 93×93 ===== */
 .value-card {
   width: 320px;
   height: 491px;
   position: relative;
   display: grid;
-  grid-template-rows: 218px 1fr;
+  grid-template-rows: 218px 1fr; /* top image + dolna część */
   border-radius: 16px;
-  background: #fff;
-  overflow: hidden;
+  background: #FFFFFF; /* kontener karty bez tła */
+  overflow: hidden;     /* na wszelki wypadek */
 
+  /* górne zdjęcie 320×218 z zaokrągleniem 40 na górze */
   &__media {
-    position: relative;
     height: 218px;
-    border-radius: 40px 40px 0 0;
+    border-radius: 0 40px 0 0;
     overflow: hidden;
 
-    img { display:block; width:320px; height:218px; object-fit:cover; }
+    img {
+      display: block;
+      width: 320px;     /* twardo */
+      height: 218px;    /* twardo */
+      object-fit: cover;
+    }
   }
 
-  /* badge 93×93 — na styku media/body */
+  /* okrągła ikonka 93×93 na styku (wyśrodkowana) */
   &__badge {
     position: absolute;
     left: 50%;
-    bottom: -46.5px; /* - (93/2) */
-    transform: translateX(-50%);
+    top: 218px;                 /* dokładnie krawędź zdjęcia */
+    transform: translate(-50%, -50%);
     width: 93px;
     height: 93px;
     border-radius: 50%;
-    background: #fff;
+    background: #FFFFFF;
     display: grid;
     place-items: center;
+    z-index: 2;
     box-shadow: 0 8px 24px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.08);
 
-    img { width:93px; height:93px; border-radius:50%; object-fit:cover; display:block; }
+    img {
+      width: 93px;              /* twardo: sama grafika 93×93 */
+      height: 93px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+    }
   }
 
+  /* dolna część: tło #FAF7F4, kolor tekstu #000 */
   &__body {
     background: #FAF7F4;
-    color: #000;
+    color: #000000;
     border-radius: 0 0 16px 16px;
     padding: 28px 24px 24px;
+    position: relative;
+    z-index: 1;
   }
 
   &__title {
-    margin: 52px 0 8px; /* miejsce pod wpuszczony badge */
-    font: 600 20px/1.25 "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    color:#000;
+    margin: 52px 0 8px;         /* miejsce na wpuszczoną odznakę */
+    font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.25;
+    letter-spacing: 0;
+    color: #000;
   }
 
   &__text {
     margin: 0 0 12px;
-    font: 400 14px/1.5 "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    letter-spacing: .01em;
-    color:#000; opacity:.8;
+    font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+    color: #000;
+    opacity: .8;
   }
 
+  /* przycisk 174×56 z #DC9B59 */
   &__btn {
-    display:inline-flex; align-items:center; justify-content:center;
-    min-width:174px; height:56px; padding:0 24px;
-    background:#DC9B59; color:#fff; text-decoration:none;
-    font:600 16px/1 "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    border:0; border-radius:12px; cursor:pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 174px;
+    height: 56px;
+    padding: 0 24px;
+    background: #DC9B59;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1;
+    border: 0;
+    border-radius: 0 12px 0 0;
+    cursor: pointer;
     transition: transform .1s ease, filter .2s ease;
-    &:hover{ filter:brightness(.97); } &:active{ transform:translateY(1px); }
+
+    &:hover  { filter: brightness(.97); }
+    &:active { transform: translateY(1px); }
   }
 }
 
-/* nie centrować – karta ma wypełniać tor grida */
-.about-values__grid > .value-card { justify-self: stretch; }
-
-/* ===== LAPT0P+DESKTOP: karta skaluje się i wypełnia tor ===== */
-@media (min-width: $bp-laptop) {
-  /* płynna skala w zakresie 1440→1920 */
-  :root {
-    --t: clamp(0, (100vw - 1440px) / 480, 1);  /* 0..1 */
-    /* docelowe powiększenia (możesz łatwo skorygować liczby po prawej) */
-    --badge-size: calc(93px + 12px * var(--t));   /* 93 → 105 */
-    --btn-h:      calc(56px +  6px * var(--t));   /* 56 → 62  */
-    --btn-w:      calc(174px + 20px * var(--t));  /* 174→ 194 */
-    --title-top:  calc(52px +  8px * var(--t));   /* 52 → 60  */
-  }
-
-  .value-card {
-    width: 100%;          /* wypełnia szerokość swojego toru grida */
-    height: auto;         /* rośnie z zawartością */
-    grid-template-rows: auto 1fr; /* media będzie wyliczana z aspect-ratio */
-  }
-
-  /* górne zdjęcie skaluje się wraz z szerokością karty */
-  .value-card__media {
-    height: auto;
-    aspect-ratio: 320 / 218;   /* zachowaj proporcję 320×218 */
-    border-radius: 40px 40px 0 0;
-  }
-  .value-card__media img {
-    width: 100%; height: 100%; object-fit: cover;
-  }
-
-  /* badge – zawsze na styku, skaluje się płynnie */
-  .value-card__badge {
-    width: var(--badge-size);
-    height: var(--badge-size);
-    bottom: calc(var(--badge-size) / -2);
-  }
-  .value-card__badge img {
-    width: var(--badge-size);
-    height: var(--badge-size);
-  }
-
-  .value-card__title { margin-top: var(--title-top); }
-  .value-card__btn   { height: var(--btn-h); min-width: var(--btn-w); }
-}
-
+/* żeby grid nie ściskał karty — centrowanie w kolumnie */
+.about-values__grid > .value-card { justify-self: center; }
 
 
 /* =========================================================
