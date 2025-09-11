@@ -150,11 +150,11 @@ body.about .header { min-height: 0 !important; height: auto; }
    VALUES — „W co wierzę”
    ========================================================= */
 .about-values {
-  background: $color-beige-light-bg;
+  background: white;
   padding: 40px 0;
 
   /* MOBILE: 4 kol | gap 16 | pad 20 — karty pionowo */
-  .about__container { @include section-grid-fluid(4, 16px, 16px, 20px); }
+  .about__container { @include section-grid-fluid(4, 24px, 16px, 20px); }
 
   .section-title {
     grid-column: 1 / -1; grid-row: 1;
@@ -188,7 +188,8 @@ body.about .header { min-height: 0 !important; height: auto; }
   position: relative;
   display: grid;
   grid-template-rows: auto 1fr;
-  border-radius: 16px;
+  padding: 20px;
+
   background: #fff;
   overflow: hidden;
   font-family: $ff;
@@ -196,13 +197,12 @@ body.about .header { min-height: 0 !important; height: auto; }
   &__media {
     position: relative;
     aspect-ratio: 320 / 218;
-    border-radius: 40px 40px 0 0;
     overflow: hidden;
 
     img {
       width: 100%; height: 100%;
       object-fit: cover;             /* kontrola kadru */
-      object-position: center center;/* modyfikuj per-karta klasą util jeśli trzeba */
+      object-position: center 50%;
       display: block;
     }
   }
@@ -213,38 +213,36 @@ body.about .header { min-height: 0 !important; height: auto; }
   left: 50%;
   bottom: 0;                      // przyklejony do dołu obrazka
   transform: translate(-50%, 50%); // wystaje 50% w dół
-  width: var(--badge-size);
-  height: var(--badge-size);
+  width: 73px;
+  height: 73px;
   border-radius: 50%;
   background: #fff;
   display: grid;
   place-items: center;
   z-index: 2;
   box-shadow: 0 8px 24px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.08);
+  margin-bottom: 320px;
   }
 
   .value-card__badge img {
-  width: 100%;
-  height: 100%;
+  width: 73px;
+  height: 73px;
   border-radius: 50%;
   object-fit: cover;
   display: block;
 }
 
 /* Tytuł odsuwamy w dół o połowę badge + trochę odstępu */
-.value-card__title {
-  margin-top: calc(var(--badge-size) / 2 + 24px);
-}
 
   &__body {
     background: #FAF7F4; color: #000;
-    border-radius: 0 0 16px 16px;
     padding: 28px 24px 24px;
     position: relative; z-index: 1;
   }
 
   &__title {
-    margin-top: calc(var(--badge-size) / 2 + 24px);
+    margin-top: 20px;
+    margin-bottom: 16px;
     font-weight: 600; font-size: 20px; line-height: 1.25; color: #000;
   }
 
@@ -254,19 +252,39 @@ body.about .header { min-height: 0 !important; height: auto; }
     color: #000; opacity: .8;
   }
 
-  &__btn {
-    display: inline-flex; align-items: center; justify-content: center;
+    &__btn {
+    position: absolute;
+    bottom: 0;
+    left: 0;               // jeśli ma startować od lewej
+    // left: 50%; transform: translateX(-50%); // jeśli ma być wyśrodkowany
+    // right: 0;                            // jeśli ma kleić się do prawej
+
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center;
+
     height: clamp(44px, 17.5%, 56px);
     min-width: clamp(140px, 54.375%, 174px);
     padding: 0 24px;
-    background: #DC9B59; color: #fff; text-decoration: none;
-    font-weight: 600; font-size: 16px; line-height: 1;
-    border: 0; border-radius: 12px; cursor: pointer;
+
+    background: #DC9B59; 
+    color: #fff; 
+    text-decoration: none;
+    font-weight: 600; 
+    font-size: 16px; 
+    line-height: 1;
+    border: 0; 
+    border-radius: 0 12px 0 0; 
+    cursor: pointer;
     transition: transform .1s ease, filter .2s ease;
+    margin-bottom: 20px;
+    margin-left: 20px;
+
     &:hover { filter: brightness(.97); }
     &:active { transform: translateY(1px); }
   }
 }
+
 
 /* ===== TABLET (≥744): 8 kol | gap 20 | pad 42
    Wiersz 1: tekst (1–4) | karta1 (5–8)
