@@ -7541,9 +7541,13 @@ body.about .header {
 /* =========================================================
    PROCESS — „Jak pracuję”
    ========================================================= */
+/* =========================================================
+   PROCESS — „Jak pracuję” (mobile-first)
+   ========================================================= */
 .about-process {
   padding: 40px 0;
   background: #F6F1EA;
+  /* kontener M */
 }
 .about-process .about__container {
   position: relative;
@@ -7569,35 +7573,130 @@ body.about .header {
   letter-spacing: 0.07em;
   color: #1D1F2C;
 }
+.about-process {
+  /* GRID kart – MOBILE: 1 kolumna */
+}
 .about-process .process-grid {
   grid-column: 1/-1;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+.about-process {
+  /* KARTA kroku – spójna z VALUES */
 }
 .about-process .process-grid article {
-  background: #ffffff;
-  border-radius: 12px;
+  position: relative;
+  background: #fff;
+  border-radius: 0 16px 0 0;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
   padding: 20px;
-  text-align: left;
-  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+.about-process .process-grid article:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+.about-process .process-grid article {
+  /* mała belka-akcent pod nagłówkiem (to samo gradientowe złoto co na stronie) */
+}
+.about-process .process-grid article::after {
+  content: "";
+  display: block;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #DC9B59 0%, #000 100%);
+  opacity: 0.15;
+  margin: 10px 0 0;
 }
 .about-process .process-grid article h3 {
   margin: 0 0 8px;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 1.3;
+  font: 600 16px/1.3 "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color: #1D1F2C;
 }
 .about-process .process-grid article p {
-  margin: 0;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 1.5;
+  margin: 8px 0 0;
+  font: 400 14px/1.5 "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   letter-spacing: 0.05em;
   color: #6B7280;
 }
 
+/* ===== TABLET (≥744) – 2 kolumny, większe odstępy/typografia ===== */
+@media (min-width: 744px) {
+  .about-process .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    column-gap: 20px;
+    row-gap: 20px;
+    padding-inline: 42px;
+    justify-content: center;
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+  }
+  .about-process .process-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .about-process .process-grid article {
+    padding: 24px;
+  }
+  .about-process .process-grid article h3 {
+    font-size: 18px;
+  }
+  .about-process .process-grid article p {
+    font-size: 15px;
+    line-height: 1.55;
+  }
+}
+/* ===== LAPTOP (≥1440) – 3 kolumny, jeszcze czytelniej ===== */
+@media (min-width: 1440px) {
+  .about-process .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 24px;
+    row-gap: 24px;
+    padding-inline: 40px;
+    justify-content: center;
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+  }
+  .about-process .process-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .about-process .process-grid article {
+    padding: 28px;
+  }
+  .about-process .process-grid article h3 {
+    font-size: 19px;
+  }
+  .about-process .process-grid article p {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+}
+/* ===== DESKTOP (≥1920) – te same 3 kolumny, większe marginesy kontenera ===== */
+@media (min-width: 1920px) {
+  .about-process .about__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 24px;
+    row-gap: 24px;
+    padding-inline: 300px;
+    justify-content: center;
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+  }
+}
 /* =========================================================
    STATS
    ========================================================= */
