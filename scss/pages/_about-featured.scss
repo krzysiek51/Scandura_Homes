@@ -1,0 +1,44 @@
+@use "../utils/variables" as *;
+
+/* Featured Projects osadzone na ABOUT */
+.about-featured {
+  /* spraw, by blok .projects zajął pełną szerokość kontenera strony */
+  .projects {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  /* Uwaga na nazwę klasy kontenera kart:
+     - jeśli w HTML masz "projects__cards-container" (BEM, podwójny _),
+       to pierwszy selektor zadziała;
+     - jeśli przez przypadek jest "projects_cards-container" (pojedynczy _),
+       to drugi selektor łapie fallback. */
+  .projects__cards-container,
+  .projects_cards-container {
+    display: grid;               /* K L U C Z */
+    grid-template-columns: 1fr;  /* mobile: 1 kolumna */
+    gap: 16px;
+    width: 100%;
+  }
+
+  /* karty mogą zostać tak jak są – ale upewnijmy się, że wypełnią kolumnę */
+  .project-card { width: 100%; }
+}
+
+/* Tablet (≥744): 2 kolumny */
+@media (min-width: $bp-tablet) {
+  .about-featured .projects__cards-container,
+  .about-featured .projects_cards-container {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+}
+
+/* Laptop (≥1440): 3 kolumny */
+@media (min-width: $bp-laptop) {
+  .about-featured .projects__cards-container,
+  .about-featured .projects_cards-container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+}

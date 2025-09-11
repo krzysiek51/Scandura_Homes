@@ -1,0 +1,237 @@
+@use "../utils/variables" as *;  // zmienne (bp, kolory, typografia)
+@use "../utils/mixins" as *;     // mixiny (w tym section-grid-fluid)
+
+/* ---------- Utility ---------- */
+body.about .header {
+  min-height: 0 !important;
+  height: auto;
+}
+
+/* =================================================================
+   ABOUT › PROCESS — progress bar + drawer (mobile-first)
+   ================================================================= */
+.about-process {
+  padding: 40px 0;
+  background: $color-beige-bg;
+
+  /* KONTENER — MOBILE */
+  .about__container { @include section-grid-fluid(4, 16px, 16px, 20px); }
+
+  .section-title {
+    grid-column: 1 / -1;
+    margin: 0 0 24px;
+    text-align: left;
+    font-family: $ff;
+    font-weight: $h-title-weight;
+    font-size: $h-title-size;
+    line-height: $h-title-lh;
+    letter-spacing: $h-title-ls;
+    color: $color-dark-text;
+  }
+
+  /* GRID kart — MOBILE: 1 kolumna */
+  .process-grid {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    overflow: visible;
+    position: relative;
+  }
+
+  /* KARTA kroku */
+  .process-grid article {
+    /* baza */
+    --progress: 0%;
+    --track: rgba(0,0,0,.12);
+    --fill:  #DC9B59;
+
+    position: relative;
+    background: #fff;
+    border-radius: 0 16px 0 0;
+    box-shadow: 0 1px 0 rgba(0,0,0,.04);
+    padding: 20px 20px 48px; /* +miejsca na progress pod spodem */
+    transition: transform .15s ease, box-shadow .2s ease;
+    overflow: visible;
+    isolation: isolate;
+
+    &:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.06); }
+
+    /* belka-akcent pod nagłówkiem */
+    &::after{
+      content:"";
+      display:block;
+      height: 4px; border-radius: 2px;
+      background: linear-gradient(90deg,#DC9B59 0%, #000 100%);
+      opacity:.15;
+      margin: 10px 0 0;
+    }
+
+    h3{
+      margin: 0 0 8px;
+      font: 600 16px/1.3 $ff;
+      color: $color-dark-text;
+    }
+    p{
+      margin: 8px 0 0;
+      font: $body-weight 14px/1.5 $ff;
+      letter-spacing: $body-ls;
+      color: $color-light-text;
+    }
+
+    /* === PROGRESS (szyna + wypełnienie + kropka) === */
+    /* szyna */
+    &::before{
+      content:"";
+      position:absolute; left:20px; right:20px; bottom:14px;
+      height:4px; border-radius:2px;
+      background: var(--track);
+      opacity:.85;
+    }
+    /* wypełnienie */
+    .progress-fill{
+      position:absolute; left:20px; bottom:14px; height:4px;
+      width: calc( (100% - 40px) * (var(--progress) / 100) );
+      border-radius:2px;
+      background: linear-gradient(90deg, #DC9B59 0%, #000 100%);
+      transition: width .25s ease;
+      pointer-events:none;
+    }
+    /* kropka */
+    .progress-dot{
+      position:absolute; bottom:12px;
+      left: calc(20px + ( (100% - 40px) * (var(--progress) / 100) ) );
+      width:12px; height:12px; border-radius:50%;
+      background: var(--fill);
+      box-shadow: 0 0 0 2px #fff;
+      pointer-events:none; z-index:1;
+    }
+
+    /* DRAWER (szuflada) — domyślnie schowana, pojawia się od ≥1440 w interakcji */
+    .drawer{
+      position: absolute;
+      left: 0; right: 0; top: 100%;
+      transform-origin: top;
+      transform: translateY(8px) scaleY(0);
+      opacity: 0;
+      pointer-events: none;
+      background: #FFFFFF;
+      border-radius: 0 16px 16px 16px;
+      box-shadow: 0 12px 28px rgba(0,0,0,.10);
+      padding: 16px 20px;
+      transition: transform .22s ease, opacity .18s ease;
+      z-index: 25;
+    }
+
+    &.is-open{
+      z-index: 30;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(0,0,0,.10);
+
+      .drawer{
+        transform: translateY(8px) scaleY(1);
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+  }
+}
+
+/* ===== TABLET (≥744) ===== */
+@media (min-width: $bp-tablet){
+  .about-process{
+    .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+    .process-grid{ grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .process-grid article{
+      padding: 24px 24px 52px;
+      h3{ font-size: 18px; }
+      p { font-size: 15px; line-height: 1.55; }
+    }
+  }
+}
+
+/* ===== LAPTOP (≥1440) ===== */
+@media (min-width: $bp-laptop){
+  .about-process{
+    .about__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
+    .process-grid{ grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+    .process-grid article{
+      padding: 28px 28px 56px;
+      h3{ font-size: 19px; }
+      p { font-size: 16px; line-height: 1.6; }
+    }
+  }
+}
+
+/* ===== DESKTOP (≥1920) ===== */
+@media (min-width: $bp-desktop){
+  .about-process .about__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
+  .about-process .process-grid article::before{ height:5px; }
+  .about-process .process-grid article .progress-dot{ width:14px; height:14px; }
+}
+
+/* =================================================================
+   ABOUT › STATS (mobile-first)
+   ================================================================= */
+.about-stats {
+  padding: 40px 0;
+  background: $color-white;
+
+  .about__container { @include section-grid-fluid(4, 16px, 16px, 20px); }
+
+  .stats {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    text-align: center;
+    font-family: $ff;
+  }
+
+  .stat {
+    background: $color-beige-light-bg;
+    border-radius: 12px;
+    padding: 20px;
+
+    &__value {
+      display: block;
+      margin: 0 0 4px;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 1.2;
+      color: $color-dark-text;
+    }
+
+    &__label {
+      margin: 0;
+      font-weight: $body-weight;
+      font-size: $body-size;
+      line-height: $body-lh;
+      letter-spacing: $body-ls;
+      color: $color-light-text;
+    }
+  }
+}
+
+/* ===== TABLET (≥744) ===== */
+@media (min-width: $bp-tablet){
+  .about-stats {
+    .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+    .stats { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  }
+}
+
+/* ===== LAPTOP (≥1440) ===== */
+@media (min-width: $bp-laptop){
+  .about-stats {
+    .about__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
+    .stats { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  }
+}
+
+/* ===== DESKTOP (≥1920) ===== */
+@media (min-width: $bp-desktop){
+  .about-stats .about__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
+}

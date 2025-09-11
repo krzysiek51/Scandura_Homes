@@ -33,6 +33,23 @@
 @use "components/cfg-modal-fixed";
 @use "components/configurator-prompt";
 
-@use "pages/about";
-@use "pages/about-proces";
-@use "pages/timeline.scss";
+
+
+/* ABOUT */
+
+@use "pages/about-core";
+@use "pages/about-hero";
+@use "pages/about-values";
+@use "pages/about-timeline";
+@use "pages/about-process";
+@use "pages/about-cta";
+@use "pages/about-featured";
+
+
+// @use "pages/about";
+// @use "pages/about-proces";
+// @use "pages/about-timeline.scss";
+// @use "pages/about-hero.scss";
+// @use "pages/abaut-values.scss";
+// @use "pages/about-core";
+

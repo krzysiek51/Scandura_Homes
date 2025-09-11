@@ -1,0 +1,30 @@
+@use "../utils/variables" as *;
+
+.about__container {
+  margin-inline: auto;           /* centruje */
+  max-width: $container-max-width;
+  padding-inline: 20px;          /* mobile padding bazowy, i tak nadpisujesz mixinem */
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (min-width: $bp-tablet) {
+  .about__container {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 20px;
+    padding-inline: 42px;
+  }
+}
+
+@media (min-width: $bp-laptop) {
+  .about__container {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 24px;
+    padding-inline: 40px;
+  }
+}
+
+@media (min-width: $bp-desktop) {
+  .about__container { padding-inline: 300px; }
+}

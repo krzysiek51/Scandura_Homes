@@ -1,0 +1,164 @@
+
+@use "../utils/variables" as *;
+@use "../utils/mixins" as *;
+
+
+/* ---------- Utility ---------- */
+body.about .header {
+  min-height: 0 !important;
+  height: auto;
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+.about-hero {
+  padding: 24px 0 0;
+
+  .about__container {
+    @include section-grid-fluid(4, 16px, 16px, 20px);
+  }
+
+  &__content {
+    grid-column: 1 / -1;
+    color: $color-dark-text;
+    font-family: $ff;
+  }
+
+  &__title {
+    font-family: $ff;
+    font-weight: $h-title-weight;
+    font-size: $h-title-size;
+    line-height: $h-title-lh;
+    letter-spacing: $h-title-ls;
+    color: $color-dark-text;
+    margin: 0 0 16px;
+  }
+
+  &__lead {
+    font-family: $ff;
+    font-weight: $body-weight;
+    font-size: $body-size;
+    line-height: $body-lh;
+    letter-spacing: $body-ls;
+    color: $color-dark-text;
+    margin: 0 0 20px;
+  }
+
+  &__cta {
+    display: flex;
+    justify-content: flex-start;
+    margin: 0 0 40px;
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      height: 56px;
+      padding: 0 16px;
+      font-family: $ff;
+      font-weight: $btn-weight;
+      font-size: $btn-size;
+      line-height: $btn-lh;
+      letter-spacing: $btn-ls;
+      color: #fff;
+      background: $color-cta-bg;
+      border: 0;
+      border-radius: 28px;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+  }
+
+  &__photo {
+    position: relative;
+    grid-column: 1 / -1;
+    margin-top: 16px;
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      border-radius: 94px 0 0 0;
+      /* Mobile */
+      position: relative;
+      z-index: 2;
+    }
+  }
+
+  .about-hero__dots {
+    position: absolute;
+    top: -24px;
+    right: -24px;
+    width: 140px;
+    height: auto;
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+
+/* ====== TABLET (≥744) ====== */
+
+@media (min-width: $bp-tablet) {
+
+  /* HERO */
+  .about-hero {
+    padding: 112px 0 48px;
+
+    .about__container {
+      @include section-grid-fluid(8, 20px, 20px, 42px);
+    }
+
+    &__content {
+      grid-column: 1 / -1;
+    }
+
+    &__photo {
+      grid-column: 1 / -1;
+      margin-top: 20px;
+    }
+
+    &__photo img {
+      border-radius: 154px 0 0 0;
+    }
+  }}
+
+
+  
+  /* ====== LAPTOP (≥1440) ====== */
+@media (min-width: $bp-laptop) {
+
+  /* HERO */
+  .about-hero {
+    padding: 120px 0 56px;
+
+    .about__container {
+      @include section-grid-fluid(12, 24px, 24px, 40px);
+      align-items: center;
+      grid-auto-rows: auto;
+    }
+
+    &__content {
+      grid-column: 1 / span 6;
+      grid-row: 1;
+      margin: 0;
+      align-self: center;
+    }
+
+    &__photo {
+      grid-column: 7 / span 6;
+      grid-row: 1;
+      margin: 0;
+    }
+
+    .about-hero__dots {
+      top: -32px;
+      right: -32px;
+      width: 180px;
+    }
+  }}

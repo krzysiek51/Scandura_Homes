@@ -1,0 +1,120 @@
+@use "../utils/variables" as *;  // zmienne ($bp-*, kolory, typografia)
+@use "../utils/mixins" as *;     // mixiny (w tym section-grid-fluid)
+
+
+/* =========================================================
+   CTA — karta w kontenerze
+   ========================================================= */
+.about-cta {
+  margin: 0;
+  padding: 0;
+
+  .about__container {
+    @include section-grid-fluid(4, 16px, 16px, 20px);
+    font-family: $ff;
+  }
+
+  &__box {
+    grid-column: 1 / -1;
+    background: #0F8B8D;
+    color: $color-white;
+    border-radius: 24px;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 16px;
+  }
+
+  &__box>h2 {
+    margin: 0;
+    font-family: $ff;
+    font-weight: $h-title-weight;
+    font-size: $h-title-size;
+    line-height: $h-title-lh;
+    letter-spacing: $h-title-ls;
+  }
+
+  &__box>p {
+    margin: 0;
+    font-family: $ff;
+    font-weight: $body-weight;
+    font-size: $body-size;
+    line-height: $body-lh;
+    letter-spacing: $body-ls;
+    opacity: .95;
+  }
+
+  .btns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 4px;
+    max-width: 335px;
+    margin-left: 0;
+  }
+
+  .btns .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 12px 18px;
+    margin: 0;
+    width: 100%;
+    line-height: 1.2;
+    white-space: nowrap;
+    border-radius: 12px;
+    border: 1.5px solid rgba(255, 255, 255, .75);
+    color: #fff;
+    background: transparent;
+    text-decoration: none;
+  }
+
+  .btns .btn:hover,
+  .btns .btn:focus-visible {
+    border-color: #fff;
+    background: rgba(255, 255, 255, .08);
+    outline: none;
+  }
+}
+
+
+
+
+/* CTA */ MQ
+  .about-cta {
+    .about__container {
+      @include section-grid-fluid(8, 20px, 20px, 42px);
+    }
+
+    &__box {
+      padding: 32px;
+      row-gap: 18px;
+    }
+
+    .btns {
+      gap: 14px;
+    }
+
+    .btns .btn {
+      min-height: 44px;
+    }
+  }
+
+/* ====== DESKTOP (≥1920) ====== */
+@media (min-width: $bp-desktop) {
+  
+  /* CTA */
+  .about-cta {
+    .about__container {
+      @include section-grid-fluid(12, 24px, 24px, 300px);
+    }
+
+    &__box {
+      padding: 48px;
+    }
+
+    .btns .btn {
+      min-height: 52px;
+    }
+  }}

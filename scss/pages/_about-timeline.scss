@@ -1,0 +1,239 @@
+@use "../utils/variables" as *;
+@use "../utils/mixins" as *;
+
+/* Utility */
+body.about .header { min-height: 0 !important; height: auto; }
+
+/* =========================================================
+   TIMELINE — „Moja droga” (mobile-first)
+   ========================================================= */
+.about-timeline {
+  padding: 40px 0;
+  background: $color-white;
+
+  /* KONTENER (MOBILE): 4 kol., gap 16, pad 20 */
+  .about__container {
+    @include section-grid-fluid(4, 16px, 16px, 20px); /* FIX: 16px zamiast 1px */
+  }
+
+  /* nagłówek */
+  .section-divider {
+    grid-column: 1 / -1;
+    margin: 0 0 16px;
+  }
+  .section-title {
+    grid-column: 1 / -1;
+    margin: 5px 0 8px;
+    font-family: $ff;
+    font-weight: $h-title-weight;
+    font-size: $h-title-size;
+    line-height: $h-title-lh;
+    letter-spacing: $h-title-ls;
+    color: $color-dark-text;
+    text-align: start;
+  }
+  .section-lead {
+    grid-column: 1 / -1;
+    margin: 16px 0 32px;
+    font-family: $ff;
+    font-weight: $body-weight;
+    font-size: $body-size;
+    line-height: $body-lh;
+    letter-spacing: $body-ls;
+    color: $color-dark-text;
+    text-align: start;
+  }
+
+  /* siatka kart */
+  .timeline-grid {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr;   /* mobile: karty pod sobą */
+    gap: 44px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    position: relative;           /* baza pod pseudo-linię */
+    counter-reset: step;          /* numeracja kroków */
+
+    /* pionowa przerywana linia */
+    &::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: repeating-linear-gradient(
+        to bottom,
+        #DC9B59 0 8px,
+        transparent 8px 16px
+      );
+      z-index: 0;
+    }
+  }
+
+  /* KARTA */
+  .timeline-card {
+    --icon-size: 64px;
+
+    position: relative;
+    z-index: 1;
+    counter-increment: step;
+    background: #FAF7F4;
+    border-radius: 0 16px 0 0;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .04);
+    overflow: hidden;
+    width: 100%;
+    text-align: center;
+    font-family: $ff;
+
+    /* marker na osi */
+    &::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translate(-50%, -50%);
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: #DC9B59;
+      border: 3px solid #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,.12);
+      z-index: 2;
+    }
+    /* numer kroku */
+    &::before {
+      content: counter(step);
+      position: absolute;
+      left: 50%;
+      top: -22px;
+      transform: translateX(-50%);
+      padding: 2px 6px;
+      font: 700 12px/1 $ff;
+      color: #1D1F2C;
+      background: #fff;
+      border: 1px solid #E6E2DD;
+      border-radius: 999px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+      z-index: 2;
+    }
+
+    &__media {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      height: auto;
+      overflow: hidden;
+      border-radius: 0 16px 0 0;
+
+      .timeline-card__photo {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+        object-position: center;
+      }
+    }
+
+    &__icon {
+      position: absolute;
+      left: 50%;
+      bottom: calc(var(--icon-size) / -2); /* pół ikony pod zdjęciem */
+      transform: translateX(-50%);
+      width: var(--icon-size);
+      height: var(--icon-size);
+      border-radius: 50%;
+      background: #fff;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .12), 0 2px 8px rgba(0, 0, 0, .08);
+      z-index: 2;
+
+      .timeline-card__icon img {
+        width: 70%; height: 70%;
+        object-fit: contain;
+        display: block;
+        border-radius: 50%;
+      }
+    }
+
+    &__title {
+      margin: calc(var(--icon-size) / 2 + 12px) 16px 6px;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 1.3;
+      color: $color-dark-text;
+    }
+
+    &__text {
+      margin: 0 16px 20px;
+      font-weight: $body-weight;
+      font-size: $body-size;
+      line-height: $body-lh;
+      letter-spacing: $body-ls;
+      color: $color-light-text;
+    }
+  }
+}
+
+/* ====== TABLET (≥744) ====== */
+@media (min-width: $bp-tablet) {
+  .about-timeline {
+    .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+    .timeline-grid { gap: 80px; }
+
+    .section-title { font-size: 42px; }
+    .section-lead  { font-size: 24px; }
+
+    .timeline-card {
+      --icon-size: 72px;
+
+      &__media { aspect-ratio: 6 / 3; }
+      &__icon  { width: var(--icon-size); height: var(--icon-size); }
+      &__title { font-size: 20px; margin-top: calc(var(--icon-size) / 2 + 12px); }
+      &__text  { font-size: 15px; line-height: 1.55; }
+    }
+
+    .timeline-grid::before { width: 2.5px; }
+  }
+}
+
+/* ====== LAPTOP (≥1440) ====== */
+@media (min-width: $bp-laptop) {
+  .about-timeline {
+    .about__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
+    .timeline-grid { gap: 90px; }
+
+    .timeline-card {
+      --icon-size: 92px;
+
+      &__media { aspect-ratio: 3 / 2; }
+      &__icon  { width: var(--icon-size); height: var(--icon-size); }
+      &__title { font-size: 20px; margin-top: calc(var(--icon-size) / 2 + 12px); }
+      &__text  { font-size: 16px; line-height: 1.6; }
+    }
+
+    .timeline-grid::before { width: 3px; }
+  }
+}
+
+/* ====== DESKTOP (≥1920) ====== */
+@media (min-width: $bp-desktop) {
+  .about-timeline {
+    .about__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
+
+    .timeline-card {
+      --icon-size: 100px;
+
+      &__media { aspect-ratio: 4 / 3; }
+      &__icon  { width: var(--icon-size); height: var(--icon-size); }
+      &__title { font-size: 22px; margin-top: calc(var(--icon-size) / 2 + 14px); }
+      &__text  { font-size: 16px; line-height: 1.65; }
+    }
+
+    .timeline-grid::before { width: 3.5px; }
+  }
+}

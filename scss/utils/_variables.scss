@@ -35,3 +35,35 @@ $bp-mobile: 375px;
 $bp-tablet: 744px;
 $bp-laptop: 1440px;
 $bp-desktop: 1920px;
+
+/* ========== TYPOGRAFIA ========== */
+$ff: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+/* ========== BREAKPOINTS ========== */
+$bp-tablet: 744px;
+$bp-laptop: 1440px;
+$bp-desktop: 1920px;
+
+/* ========== COLORS ========== */
+$color-white:          #ffffff;
+$color-black:          #000000;
+$color-dark-text:      #1D1F2C;
+$color-light-text:     #6B7280;
+$color-beige-bg:       #F6F1EA;
+$color-beige-light-bg: #FAF7F4;
+$color-cta-bg:         #000000;
+
+$h-title-weight: 600;
+$h-title-size:   24px;
+$h-title-ls:     0.07em;
+$h-title-lh:     1.1;
+
+$body-weight:    400;
+$body-size:      14px;
+$body-ls:        0.05em;
+$body-lh:        1.5;
+
+$btn-weight:     500;
+$btn-size:       16px;
+$btn-lh:         1;
+$btn-ls:         0;
