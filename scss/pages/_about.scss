@@ -1,4 +1,4 @@
-/* =================================================================
+/* ================================================================= 
    ABOUT — CLEAN, MOBILE-FIRST, BEZ PATCHY
    ================================================================= */
 
@@ -52,6 +52,15 @@ body.about .header { min-height: 0 !important; height: auto; }
   box-sizing: content-box;
 }
 
+.section-divider {
+  width: 230px;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #DC9B59 0%, #000000 100%);
+  box-shadow: 0 4px 4px rgba(0,0,0,.25);
+  margin: 20px 0;
+}
+
 /* =========================================================
    HERO
    ========================================================= */
@@ -86,13 +95,6 @@ body.about .header { min-height: 0 !important; height: auto; }
     margin: 0 0 20px;
   }
 
-  .section-divider {
-    width: 230px; height: 4px; border-radius: 2px;
-    background: linear-gradient(90deg, #DC9B59 0%, #000000 100%);
-    box-shadow: 0 4px 4px rgba(0,0,0,.25);
-    margin: 20px 0;
-  }
-
   &__cta {
     display: flex; justify-content: flex-start; margin: 0 0 40px;
     .btn {
@@ -122,49 +124,33 @@ body.about .header { min-height: 0 !important; height: auto; }
   }
 }
 
-@media (min-width: $bp-tablet) {
-  .about-hero {
-    padding: 112px 0 48px;
-    .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
-    &__content { grid-column: 1 / -1; }
-    &__photo   { grid-column: 1 / -1; margin-top: 20px; }
-    &__photo img { border-radius: 154px 0 0 0; }
-  }
-}
 
-@media (min-width: $bp-laptop) {
-  .about-hero {
-    padding: 120px 0 56px;
-    .about__container {
-      @include section-grid-fluid(12, 24px, 24px, 40px);
-      align-items: center;
-      grid-auto-rows: auto;
-    }
-    &__content { grid-column: 1 / span 6; grid-row: 1; margin: 0; align-self: center; }
-    &__photo   { grid-column: 7 / span 6; grid-row: 1; margin: 0; }
-    .about-hero__dots { top: -32px; right: -32px; width: 180px; }
-  }
-}
+
+
+
 
 /* =========================================================
    VALUES — „W co wierzę”
    ========================================================= */
 .about-values {
-  background: white;
+  background: #FAF7F4;
   padding: 40px 0;
 
   /* MOBILE: 4 kol | gap 16 | pad 20 — karty pionowo */
   .about__container { @include section-grid-fluid(4, 24px, 16px, 20px); }
+  
+  .section-divider   { grid-column: 1 / -1; grid-row: 1; margin: 0 0 16px; margin-top: 20px;}
 
   .section-title {
     grid-column: 1 / -1; grid-row: 1;
-    margin: 0 0 8px;
+    margin: 0 0 28px;
+    margin-top: 40px;
     font-family: $ff; font-weight: $h-title-weight; font-size: $h-title-size;
     line-height: $h-title-lh; letter-spacing: $h-title-ls; color: $color-dark-text;
   }
   .section-lead  {
     grid-column: 1 / -1; grid-row: 1;
-    margin: 36px 0 24px;
+    margin: 76px 0 24px;
     font-family: $ff; font-weight: $body-weight; font-size: $body-size;
     line-height: $body-lh; letter-spacing: $body-ls; color: $color-dark-text;
   }
@@ -189,8 +175,8 @@ body.about .header { min-height: 0 !important; height: auto; }
   display: grid;
   grid-template-rows: auto 1fr;
   padding: 20px;
-
-  background: #fff;
+  
+  background:#FAF7F4;
   overflow: hidden;
   font-family: $ff;
 
@@ -204,38 +190,38 @@ body.about .header { min-height: 0 !important; height: auto; }
       object-fit: cover;             /* kontrola kadru */
       object-position: center 50%;
       display: block;
+      border-radius: 0 40px 0 0;
     }
   }
 
   /* Badge przyklejony do dołu zdjęcia — stabilny na każdym MQ */
   &__badge {
-     position: absolute;
-  left: 50%;
-  bottom: 0;                      // przyklejony do dołu obrazka
-  transform: translate(-50%, 50%); // wystaje 50% w dół
-  width: 73px;
-  height: 73px;
-  border-radius: 50%;
-  background: #fff;
-  display: grid;
-  place-items: center;
-  z-index: 2;
-  box-shadow: 0 8px 24px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.08);
-  margin-bottom: 320px;
+    position: absolute;
+    left: 50%;
+    bottom: 0;                      // przyklejony do dołu obrazka
+    transform: translate(-50%, 50%); // wystaje 50% w dół
+    width: 73px;
+    height: 73px;
+    border-radius: 50%;
+    background: #fff;
+    display: grid;
+    place-items: center;
+    z-index: 2;
+    box-shadow: 0 8px 24px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.08);
+    margin-bottom: 320px;
   }
 
   .value-card__badge img {
-  width: 73px;
-  height: 73px;
-  border-radius: 50%;
-  object-fit: cover;
-  display: block;
-}
+    width: 73px;
+    height: 73px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+  }
 
-/* Tytuł odsuwamy w dół o połowę badge + trochę odstępu */
-
+  /* Tytuł odsuwamy w dół o połowę badge + trochę odstępu */
   &__body {
-    background: #FAF7F4; color: #000;
+    background: #ffffff; color: #000;
     padding: 28px 24px 24px;
     position: relative; z-index: 1;
   }
@@ -252,7 +238,7 @@ body.about .header { min-height: 0 !important; height: auto; }
     color: #000; opacity: .8;
   }
 
-    &__btn {
+  &__btn {
     position: absolute;
     bottom: 0;
     left: 0;               // jeśli ma startować od lewej
@@ -284,61 +270,6 @@ body.about .header { min-height: 0 !important; height: auto; }
     &:active { transform: translateY(1px); }
   }
 }
-
-
-/* ===== TABLET (≥744): 8 kol | gap 20 | pad 42
-   Wiersz 1: tekst (1–4) | karta1 (5–8)
-   Wiersz 2: karta2 (1–4) | karta3 (5–8)
-   ========================================================= */
-@media (min-width: $bp-tablet) {
-  .about-values {
-    .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
-    .about-values__grid { display: contents; }
-
-    .section-title { grid-column: 1 / 5; grid-row: 1; margin: 0 0 8px; text-align: left; }
-    .section-lead  { grid-column: 1 / 5; grid-row: 1; margin: 36px 0 0;  text-align: left; }
-
-    .about-values__grid > .value-card {
-      justify-self: stretch; width: 100%; height: auto;
-    }
-    .about-values__grid > .value-card:nth-of-type(1) { grid-column: 5 / 9; grid-row: 1; }
-    .about-values__grid > .value-card:nth-of-type(2) { grid-column: 1 / 5; grid-row: 2; }
-    .about-values__grid > .value-card:nth-of-type(3) { grid-column: 5 / 9; grid-row: 2; }
-  }
-}
-
-/* =========================================================
-   LAPTOP (≥1440): 12 kol | gap 20 | pad 40 — 1 wiersz
-   ========================================================= */
-@media (min-width: $bp-laptop) {
-  .about-values {
-    .about__container { @include section-grid-fluid(12, 20px, 20px, 40px); }
-    .about-values__grid { display: contents; }
-
-    /* Tekst po lewej (ten sam wiersz) */
-    .section-title { grid-column: 1 / 4; grid-row: 1; margin: 0 0 8px; text-align: left; }
-    .section-lead  { grid-column: 1 / 4; grid-row: 1; margin: 36px 0 0;  text-align: left; }
-
-    /* 3 karty w tym samym wierszu */
-    .about-values__grid > .value-card { justify-self: stretch; width: 100%; height: auto; }
-    .about-values__grid > .value-card:nth-of-type(1) { grid-column: 4  / 7;  grid-row: 1; }
-    .about-values__grid > .value-card:nth-of-type(2) { grid-column: 7  / 10; grid-row: 1; }
-    .about-values__grid > .value-card:nth-of-type(3) { grid-column: 10 / 13; grid-row: 1; }
-
-    .value-card__media { aspect-ratio: 320 / 218; }
-    .value-card__media img { width: 100%; height: 100%; object-fit: cover; }
-  }
-}
-
-/* =========================================================
-   DESKTOP (≥1920): 12 kol | gap 20 | pad 300 — 1 wiersz
-   ========================================================= */
-@media (min-width: $bp-desktop) {
-  .about-values .about__container { @include section-grid-fluid(12, 20px, 20px, 300px); }
-}
-
-
-
 
 /* =========================================================
    TIMELINE — „Moja droga”
@@ -377,36 +308,6 @@ body.about .header { min-height: 0 !important; height: auto; }
   }
 }
 
-@media (min-width: $bp-tablet) {
-  .about-timeline {
-    .about__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
-    .timeline { gap: 24px; }
-  }
-}
-
-@media (min-width: $bp-laptop) {
-  .about-timeline {
-    .about__container { @include section-grid-fluid(12, 20px, 20px, 40px); } /* gap=20 jak ustalane */
-    .timeline { display: contents; }
-    .section-title { grid-column: 10 / 13; grid-row: 1; margin: 0 0 8px; }
-    .section-lead  { grid-column: 10 / 13; grid-row: 1; margin: 36px 0 0; }
-
-    .timeline__item { 
-      grid-row: 1;
-      height: 400px; padding: 24px;
-      display: flex; flex-direction: column; justify-content: center;
-      border-radius: 16px; background: $color-white;
-    }
-    .timeline__item:nth-of-type(1) { grid-column: 1 / 4; }
-    .timeline__item:nth-of-type(2) { grid-column: 4 / 7; }
-    .timeline__item:nth-of-type(3) { grid-column: 7 / 10; }
-  }
-}
-
-@media (min-width: $bp-desktop) {
-  .about-timeline .about__container { @include section-grid-fluid(12, 20px, 20px, 300px); }
-}
-
 /* =========================================================
    PROCESS — „Jak pracuję”
    ========================================================= */
@@ -438,24 +339,6 @@ body.about .header { min-height: 0 !important; height: auto; }
   }
 }
 
-@media (min-width: $bp-tablet) {
-  .about-process {
-    .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
-    .process-grid { gap: 20px; }
-  }
-}
-
-@media (min-width: $bp-laptop) {
-  .about-process {
-    .about__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
-    .process-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  }
-}
-
-@media (min-width: $bp-desktop) {
-  .about-process .about__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
-}
-
 /* =========================================================
    STATS
    ========================================================= */
@@ -477,24 +360,6 @@ body.about .header { min-height: 0 !important; height: auto; }
     &__value { display: block; margin: 0 0 4px; font-weight: 700; font-size: 20px; line-height: 1.2; color: $color-dark-text; }
     &__label { margin: 0; font-weight: $body-weight; font-size: $body-size; line-height: $body-lh; letter-spacing: $body-ls; color: $color-light-text; }
   }
-}
-
-@media (min-width: $bp-tablet) {
-  .about-stats {
-    .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
-    .stats { gap: 20px; }
-  }
-}
-
-@media (min-width: $bp-laptop) {
-  .about-stats {
-    .about__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
-    .stats { grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  }
-}
-
-@media (min-width: $bp-desktop) {
-  .about-stats .about__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
 }
 
 /* =========================================================
@@ -537,7 +402,63 @@ body.about .header { min-height: 0 !important; height: auto; }
   .btns .btn:hover, .btns .btn:focus-visible { border-color: #fff; background: rgba(255,255,255,.08); outline: none; }
 }
 
+/* =========================================================
+   Warstwy/klik — bezpieczeństwo (AI box)
+   ========================================================= */
+.about-cta { position: relative; isolation: isolate; z-index: 1; }
+.about-cta::before, .about-cta::after { pointer-events: none; }
+.configurator-prompt, .configurator-prompt__content { position: relative; z-index: 2; pointer-events: auto; }
+
+/* =========================================================
+   =====================  M E D I A   Q U E R I E S  =====================
+   ========================================================= */
+
+/* ====== TABLET (≥744) ====== */
 @media (min-width: $bp-tablet) {
+  /* HERO */
+  .about-hero {
+    padding: 112px 0 48px;
+    .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+    &__content { grid-column: 1 / -1; }
+    &__photo   { grid-column: 1 / -1; margin-top: 20px; }
+    &__photo img { border-radius: 154px 0 0 0; }
+  }
+
+  /* VALUES */
+  .about-values {
+    .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+    .about-values__grid { display: contents; }
+
+    .section-title { grid-column: 1 / 5; grid-row: 1; margin: 42px 0 0 0; text-align: left; }
+    .section-lead  { grid-column: 1 / 5; grid-row: 1; margin: 85px 0 0;  text-align: left; }
+
+    .about-values__grid > .value-card {
+      justify-self: stretch; width: 100%; height: auto;
+    }
+    .about-values__grid > .value-card:nth-of-type(1) { grid-column: 5 / 9; grid-row: 1; }
+    .about-values__grid > .value-card:nth-of-type(2) { grid-column: 1 / 5; grid-row: 2; }
+    .about-values__grid > .value-card:nth-of-type(3) { grid-column: 5 / 9; grid-row: 2; }
+  }
+
+  /* TIMELINE */
+  .about-timeline {
+    .about__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
+    .timeline { gap: 24px; }
+  }
+
+  /* PROCESS */
+  .about-process {
+    .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+    .process-grid { gap: 20px; }
+  }
+
+  /* STATS */
+  .about-stats {
+    .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+    .stats { gap: 20px; }
+  }
+
+  /* CTA */
   .about-cta {
     .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
     &__box { padding: 32px; row-gap: 18px; }
@@ -546,7 +467,71 @@ body.about .header { min-height: 0 !important; height: auto; }
   }
 }
 
+/* ====== LAPTOP (≥1440) ====== */
 @media (min-width: $bp-laptop) {
+  /* HERO */
+  .about-hero {
+    padding: 120px 0 56px;
+    .about__container {
+      @include section-grid-fluid(12, 24px, 24px, 40px);
+      align-items: center;
+      grid-auto-rows: auto;
+    }
+    &__content { grid-column: 1 / span 6; grid-row: 1; margin: 0; align-self: center; }
+    &__photo   { grid-column: 7 / span 6; grid-row: 1; margin: 0; }
+    .about-hero__dots { top: -32px; right: -32px; width: 180px; }
+  }
+
+  /* VALUES */
+  .about-values {
+    .about__container { @include section-grid-fluid(12, 20px, 20px, 40px); }
+    .about-values__grid { display: contents; }
+
+    /* Tekst po lewej (ten sam wiersz) */
+    .section-title { grid-column: 1 / 4; grid-row: 1; margin: 70px 0 0 0x; text-align: left; }
+    .section-lead  { grid-column: 1 / 4; grid-row: 1; margin: 85px 0 0;  text-align: left; }
+
+    /* 3 karty w tym samym wierszu */
+    .about-values__grid > .value-card { justify-self: stretch; width: 100%; height: auto; }
+    .about-values__grid > .value-card:nth-of-type(1) { grid-column: 4  / 7;  grid-row: 1; }
+    .about-values__grid > .value-card:nth-of-type(2) { grid-column: 7  / 10; grid-row: 1; }
+    .about-values__grid > .value-card:nth-of-type(3) { grid-column: 10 / 13; grid-row: 1; }
+
+    .value-card__media { aspect-ratio: 320 / 218; }
+    .value-card__media img { width: 100%; height: 100%; object-fit: cover; }
+  }
+
+  /* TIMELINE */
+  .about-timeline {
+    .about__container { @include section-grid-fluid(12, 20px, 20px, 40px); } /* gap=20 jak ustalane */
+    .timeline { display: contents; }
+    .section-title { grid-column: 10 / 13; grid-row: 1; margin: 0 0 8px; }
+    .section-lead  { grid-column: 10 / 13; grid-row: 1; margin: 36px 0 0; }
+
+    .timeline__item { 
+      grid-row: 1;
+      height: 400px; padding: 24px;
+      display: flex; flex-direction: column; justify-content: center;
+      border-radius: 16px; background: $color-white;
+    }
+    .timeline__item:nth-of-type(1) { grid-column: 1 / 4; }
+    .timeline__item:nth-of-type(2) { grid-column: 4 / 7; }
+    .timeline__item:nth-of-type(3) { grid-column: 7 / 10; }
+  }
+
+  /* PROCESS */
+  .about-process {
+    .about__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
+    .process-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  }
+
+  /* STATS */
+  .about-stats {
+    .about__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
+    .stats { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  }
+
+  /* CTA */
   .about-cta {
     .about__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
     &__box { padding: 40px; row-gap: 20px; }
@@ -554,17 +539,26 @@ body.about .header { min-height: 0 !important; height: auto; }
   }
 }
 
+/* ====== DESKTOP (≥1920) ====== */
 @media (min-width: $bp-desktop) {
+  /* HERO — (brak dedykowanych w oryginale poza values/timeline/process/stats/cta) */
+
+  /* VALUES */
+  .about-values .about__container { @include section-grid-fluid(12, 20px, 20px, 300px); }
+
+  /* TIMELINE */
+  .about-timeline .about__container { @include section-grid-fluid(12, 20px, 20px, 300px); }
+
+  /* PROCESS */
+  .about-process .about__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
+
+  /* STATS */
+  .about-stats .about__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
+
+  /* CTA */
   .about-cta {
     .about__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
     &__box { padding: 48px; }
     .btns .btn { min-height: 52px; }
   }
 }
-
-/* =========================================================
-   Warstwy/klik — bezpieczeństwo (AI box)
-   ========================================================= */
-.about-cta { position: relative; isolation: isolate; z-index: 1; }
-.about-cta::before, .about-cta::after { pointer-events: none; }
-.configurator-prompt, .configurator-prompt__content { position: relative; z-index: 2; pointer-events: auto; }
