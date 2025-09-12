@@ -47,10 +47,9 @@
 @use "pages/about-stat";
 
 
-// @use "pages/about";
-// @use "pages/about-proces";
-// @use "pages/about-timeline.scss";
-// @use "pages/about-hero.scss";
-// @use "pages/abaut-values.scss";
-// @use "pages/about-core";
+//* CONTACT *//
 
+@use "pages/pages_contact";
+
+// pages
+@use "pages/pages_core.scss";

@@ -1,0 +1,50 @@
+@use "../utils/variables" as *;
+@use "../utils/mixins" as *;
+
+/* =================================================================
+   GLOBAL GRID DLA STRON W /pages (contact, services, projects itd.)
+   ================================================================= */
+
+.pages__container {
+  box-sizing: border-box;
+  margin-inline: auto;
+  width: 100% !important;
+  max-width: none !important;
+  padding-inline: 20px !important;   /* MOBILE */
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+/* Rozpuść wewnętrzne .container (importowane z indexu), żeby nie zawężały */
+.pages__container .container {
+  display: contents !important;
+  max-width: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* TABLET */
+@media (min-width: $bp-tablet) {
+  .pages__container {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 20px;
+    padding-inline: 42px !important;
+  }
+}
+
+/* LAPTOP */
+@media (min-width: $bp-laptop) {
+  .pages__container {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 24px;
+    padding-inline: 40px !important;
+  }
+}
+
+/* DESKTOP */
+@media (min-width: $bp-desktop) {
+  .pages__container {
+    padding-inline: 300px !important;
+  }
+}

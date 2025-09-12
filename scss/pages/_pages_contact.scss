@@ -1,0 +1,142 @@
+@use "../utils/variables" as *;
+@use "../utils/mixins" as *;
+
+/* === wrapper strony kontaktu (namespace) === */
+.contact-page {
+  .contact__container { @include section-grid-fluid(4, 16px, 16px, 20px); }      /* mobile */
+  @media (min-width: $bp-tablet)  { .contact__container { @include section-grid-fluid(8, 20px, 20px, 42px); } }
+  @media (min-width: $bp-laptop)  { .contact__container { @include section-grid-fluid(12, 24px, 24px, 40px); } }
+  @media (min-width: $bp-desktop) { .contact__container { @include section-grid-fluid(12, 24px, 24px, 300px); } }
+}
+
+/* ===== Sekcja główna ===== */
+.contact-hero {
+  background: $color-white;
+  padding-block: 40px;
+
+  .contact-title {
+    grid-column: 1 / -1;
+    margin: 0 0 8px;
+    font-family: $ff;
+    font-weight: $h-title-weight;
+    font-size: $h-title-size;
+    line-height: $h-title-lh;
+    letter-spacing: $h-title-ls;
+    color: $color-dark-text;
+  }
+
+  .contact-lead {
+    grid-column: 1 / -1;
+    margin: 0 0 24px;
+    max-width: 70ch;
+    font-family: $ff;
+    font-weight: $body-weight;
+    font-size: $body-size;
+    line-height: $body-lh;
+    letter-spacing: $body-ls;
+    color: $color-light-text;
+  }
+
+  .contact-info  { grid-column: 1 / -1; }
+  .contact-form  { grid-column: 1 / -1; }
+
+  @media (min-width: $bp-tablet) {
+    .contact-info { grid-column: 1 / span 4; }
+    .contact-form { grid-column: 5 / span 4; }
+  }
+  @media (min-width: $bp-laptop) {
+    .contact-info { grid-column: 1 / span 4; }
+    .contact-form { grid-column: 5 / span 8; }
+  }
+}
+
+/* box z danymi */
+.contact-info {
+  background: $color-beige-light-bg;
+  border-radius: 12px;
+  padding: 20px;
+  color: $color-dark-text;
+
+  .contact-list {
+    list-style: none;
+    margin: 0; padding: 0;
+    display: grid; gap: 10px;
+
+    a { color: inherit; text-decoration: none; border-bottom: 1px dashed rgba(0,0,0,.25); }
+    a:hover { border-bottom-color: rgba(0,0,0,.55); }
+  }
+}
+
+/* formularz */
+.contact-form {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.06);
+  padding: 20px;
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+
+    @media (min-width: $bp-tablet) { grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (min-width: $bp-laptop) { gap: 20px; }
+
+    .span-2 { grid-column: 1 / -1; }
+  }
+
+  .field {
+    display: grid; gap: 6px;
+
+    span { font: 600 14px/1.3 $ff; color: $color-dark-text; }
+
+    input, textarea {
+      width: 100%;
+      border: 1px solid rgba(0,0,0,.12);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font: 400 14px/1.4 $ff;
+      color: $color-dark-text;
+      background: #fff;
+      outline: none;
+
+      &:focus { border-color: $color-gradient-start; box-shadow: 0 0 0 3px rgba(220,155,89,.15); }
+    }
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 48px; padding: 0 22px;
+    font: 700 15px/1 $ff; letter-spacing: 0.01em;
+    color: #fff; background: $color-gradient-start;
+    border: 0; border-radius: 12px; cursor: pointer;
+    transition: filter .2s ease, transform .1s ease;
+
+    &:hover { filter: brightness(.97); }
+    &:active { transform: translateY(1px); }
+  }
+}
+
+/* (opcjonalnie) gdyby stary globalny .contact miał tło – wyzeruj je na stronie kontaktu */
+body.contact-page .contact { background: none !important; }
+
+
+body.contact-page .header {
+  background: url("../../photos/pages/contact/contact_picture_header.webp") center/cover no-repeat;
+  min-height: 760px; /* wysokość, dopasuj wg Figma */
+  position: relative;
+}
+
+body.contact-page .header__wrap,
+body.contact-page .header__nav {
+  position: relative;
+  z-index: 2; /* żeby menu nie znikło pod zdjęciem */
+}
+
+body.contact-page .header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35); /* opcjonalne przyciemnienie */
+  z-index: 1;
+}
