@@ -7057,34 +7057,87 @@ body.cfg-open {
   }
 }
 /* ABOUT */
-.about__container {
-  margin-inline: auto; /* centruje */
-  max-width: 1320px;
-  padding-inline: 20px; /* mobile padding bazowy, i tak nadpisujesz mixinem */
+/* =================================================================
+   ABOUT — GLOBAL CONTAINER (grid + padding per breakpoint)
+   ================================================================= */
+/* Bazowo: pełna szerokość, brak max-width, padding 20px */
+body.about .about__container {
+  box-sizing: border-box;
+  margin-inline: auto;
+  width: 100% !important;
+  max-width: none !important;
+  padding-inline: 20px !important; /* MOBILE */
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
 }
 
+/* Rozpuść wszystkie wewnętrzne "container" z sekcji z indexu,
+   żeby nie zawężały siatki na About */
+body.about .about__container .container {
+  display: contents !important;
+  max-width: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
 @media (min-width: 744px) {
-  .about__container {
+  body.about .about__container {
     grid-template-columns: repeat(8, minmax(0, 1fr));
     gap: 20px;
-    padding-inline: 42px;
+    padding-inline: 42px !important; /* TABLET */
   }
 }
 @media (min-width: 1440px) {
-  .about__container {
+  body.about .about__container {
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: 24px;
-    padding-inline: 40px;
+    padding-inline: 40px !important; /* LAPTOP */
   }
 }
 @media (min-width: 1920px) {
-  .about__container {
-    padding-inline: 300px;
+  body.about .about__container {
+    padding-inline: 300px !important; /* DESKTOP */
   }
 }
+/* =================================================================
+   ABOUT → PROJECTS (embed z indexu) — pełny span + siatka jak na index
+   ================================================================= */
+/* Sekcja projects jest dzieckiem about__container → span na cały grid */
+body.about section.about-featured > .about__container > section.projects.projects--embed {
+  grid-column: 1/-1 !important;
+  width: 100%;
+}
+
+/* Kontener kart — wymuszamy grida (bo MQ z indexu tu nie dochodzą) */
+body.about section.about-featured > .about__container > section.projects.projects--embed > .projects__cards-container {
+  display: grid !important;
+  grid-template-columns: 1fr; /* mobile */
+  gap: 24px !important;
+  max-width: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  justify-items: stretch;
+  align-items: stretch;
+}
+
+/* MQ aliasy — jak na index (tablet/laptop) */
+@media (min-width: 744px) {
+  body.about section.about-featured > .about__container > section.projects.projects--embed > .projects__cards-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+@media (min-width: 1440px) {
+  body.about section.about-featured > .about__container > section.projects.projects--embed > .projects__cards-container {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+/* Karta ma wypełniać kolumnę */
+body.about section.about-featured > .about__container > section.projects.projects--embed > .projects__cards-container > .project-card {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
 /* ---------- Utility ---------- */
 body.about .header {
   min-height: 0 !important;
@@ -7310,7 +7363,7 @@ body.about .header {
   display: grid;
   grid-template-rows: auto 1fr;
   background: #fff;
-  border-radius: 12px;
+  border-radius: 0 40px 0 0;
   overflow: hidden;
   font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
@@ -7327,10 +7380,10 @@ body.about .header {
   display: block;
   border-radius: 0 40px 0 0;
 }
-.value-card__media {
+.value-card {
   /* Badge przyklejony do dołu zdjęcia */
 }
-.value-card__media .value-card__badge {
+.value-card .value-card__badge {
   position: absolute;
   left: 50%;
   bottom: 0;
@@ -7343,9 +7396,9 @@ body.about .header {
   place-items: center;
   z-index: 2;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
-  /* USUNIĘTE: margin-bottom: 320px; */
+  margin-bottom: 310px;
 }
-.value-card__media .value-card__badge img {
+.value-card .value-card__badge img {
   width: 100%;
   height: 100%;
   border-radius: 50%;
@@ -7498,6 +7551,9 @@ body.about .header {
     grid-column: 10/13;
     grid-row: 1/span 2;
   }
+  .about-values .value-card {
+    container-type: inline-size; /* <— potrzebne do cqw; NIE zmienia layoutu */
+  }
   .about-values .value-card__media {
     aspect-ratio: 320/218;
   }
@@ -7505,6 +7561,31 @@ body.about .header {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+  .about-values {
+    /* === BADGE (ikona) — stabilnie na dole zdjęcia ===
+       aspect-ratio 320/218 → wysokość media = 68.125% szerokości karty = 68.125cqw */
+  }
+  .about-values .value-card__badge {
+    position: absolute;
+    left: 50%;
+    top: calc(68.125cqw - var(--badge-size) / 2); /* ⬅ kluczowa linia */
+    transform: translateX(-50%);
+    width: var(--badge-size);
+    height: var(--badge-size);
+    border-radius: 50%;
+    background: #fff;
+    display: grid;
+    place-items: center;
+    z-index: 2;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  .about-values .value-card__badge img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
   }
 }
 @media (min-width: 1920px) {
@@ -7522,14 +7603,19 @@ body.about .header {
     box-sizing: content-box;
   }
 }
-/* Utility */
+/* About → Testimonials (embed z indexu) */
+body.about section.about-testimonials > .about__container > section.testimonials {
+  grid-column: 1/-1 !important;
+}
+
+/* ---------- Utility ---------- */
 body.about .header {
   min-height: 0 !important;
   height: auto;
 }
 
 /* =========================================================
-   TIMELINE — „Moja droga” (mobile-first)
+   TIMELINE — „Moja droga” (mobile-first, full file)
    ========================================================= */
 .about-timeline {
   padding: 40px 0;
@@ -7548,10 +7634,9 @@ body.about .header {
   margin-inline: auto;
   min-width: 0;
   box-sizing: content-box;
-  /* FIX: 16px zamiast 1px */
 }
 .about-timeline {
-  /* nagłówek */
+  /* Nagłówek sekcji */
 }
 .about-timeline .section-divider {
   grid-column: 1/-1;
@@ -7580,19 +7665,19 @@ body.about .header {
   text-align: start;
 }
 .about-timeline {
-  /* siatka kart */
+  /* Siatka kart */
 }
 .about-timeline .timeline-grid {
   grid-column: 1/-1;
   display: grid;
-  grid-template-columns: 1fr; /* mobile: karty pod sobą */
+  grid-template-columns: 1fr; /* mobile: jedna kolumna */
   gap: 44px;
   list-style: none;
   padding: 0;
   margin: 0;
-  position: relative; /* baza pod pseudo-linię */
-  counter-reset: step; /* numeracja kroków */
-  /* pionowa przerywana linia */
+  position: relative; /* baza pod linię czasu */
+  counter-reset: step; /* numeracja kart */
+  /* pionowa przerywana linia czasu */
 }
 .about-timeline .timeline-grid::before {
   content: "";
@@ -7606,13 +7691,19 @@ body.about .header {
   z-index: 0;
 }
 .about-timeline {
-  /* KARTA */
+  /* Karta na osi czasu */
 }
 .about-timeline .timeline-card {
-  --icon-size: 64px;
+  /* rozmiary ikony + obrazka w kółku */
+  --icon-size: 64px; /* średnica kółka (mobile) */
+  --icon-img: 70%; /* procent średnicy dla <img> w środku */
+  /* niezależne kotwiczenie do dołu media: */
+  --media-h: 75cqw; /* mobile: aspect-ratio 4/3 => 3/4 = 75% szerokości karty */
+  --icon-nudge: 0px; /* drobna korekta gdyby trzeba było (opcjonalna) */
   position: relative;
   z-index: 1;
   counter-increment: step;
+  container-type: inline-size; /* <--- pozwala używać cqw (nie zmienia layoutu) */
   background: #FAF7F4;
   border-radius: 0 16px 0 0;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
@@ -7637,7 +7728,7 @@ body.about .header {
   z-index: 2;
 }
 .about-timeline .timeline-card {
-  /* numer kroku */
+  /* numer kroku nad markerem */
 }
 .about-timeline .timeline-card::before {
   content: counter(step);
@@ -7654,10 +7745,13 @@ body.about .header {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   z-index: 2;
 }
+.about-timeline .timeline-card {
+  /* zdjęcie */
+}
 .about-timeline .timeline-card__media {
   position: relative;
   width: 100%;
-  aspect-ratio: 4/3;
+  aspect-ratio: 4/3; /* MOBILE default */
   height: auto;
   overflow: hidden;
   border-radius: 0 16px 0 0;
@@ -7669,11 +7763,16 @@ body.about .header {
   object-fit: cover;
   object-position: center;
 }
+.about-timeline .timeline-card {
+  /* kółko z ikoną — zakotwiczone do DOŁU MEDIA (nie do karty, nie do tekstu) */
+}
 .about-timeline .timeline-card__icon {
   position: absolute;
   left: 50%;
-  bottom: calc(var(--icon-size) / -2); /* pół ikony pod zdjęciem */
+  top: 0; /* kotwica: górna krawędź karty */
   transform: translateX(-50%);
+  /* pozycja = wysokość media - połowa ikony (+ ewentualna korekta) */
+  margin-top: calc(var(--media-h) - var(--icon-size) / 2 + var(--icon-nudge));
   width: var(--icon-size);
   height: var(--icon-size);
   border-radius: 50%;
@@ -7683,15 +7782,11 @@ body.about .header {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
   z-index: 2;
 }
-.about-timeline .timeline-card__icon .timeline-card__icon img {
-  width: 70%;
-  height: 70%;
-  object-fit: contain;
-  display: block;
-  border-radius: 50%;
+.about-timeline .timeline-card {
+  /* tytuł i tekst */
 }
 .about-timeline .timeline-card__title {
-  margin: calc(var(--icon-size) / 2 + 12px) 16px 6px;
+  margin: calc(var(--icon-size) / 2 + 12px) 16px 6px; /* odsunięcie spod ikony */
   font-weight: 600;
   font-size: 16px;
   line-height: 1.3;
@@ -7704,6 +7799,17 @@ body.about .header {
   line-height: 1.5;
   letter-spacing: 0.05em;
   color: #6B7280;
+}
+.about-timeline {
+  /* IMG w środku kółka (globalnie, by nie zależeć od zagnieżdżenia) */
+}
+.about-timeline .timeline-card__icon-img {
+  width: var(--icon-img);
+  height: var(--icon-img);
+  display: block;
+  object-fit: contain; /* nie rozciąga proporcji */
+  object-position: center;
+  margin: 0 auto;
 }
 
 /* ====== TABLET (≥744) ====== */
@@ -7724,6 +7830,9 @@ body.about .header {
   .about-timeline .timeline-grid {
     gap: 80px;
   }
+  .about-timeline .timeline-grid::before {
+    width: 2.5px;
+  }
   .about-timeline .section-title {
     font-size: 42px;
   }
@@ -7731,14 +7840,13 @@ body.about .header {
     font-size: 24px;
   }
   .about-timeline .timeline-card {
-    --icon-size: 72px;
+    --icon-size: 72px; /* większe kółko */
+    --icon-img: 72%;
+    --media-h: 50cqw; /* aspect-ratio 6/3 => 1/2 szerokości karty */
+    /* --icon-nudge: 0px; // opcjonalnie, jeśli potrzebujesz korekty */
   }
   .about-timeline .timeline-card__media {
     aspect-ratio: 6/3;
-  }
-  .about-timeline .timeline-card__icon {
-    width: var(--icon-size);
-    height: var(--icon-size);
   }
   .about-timeline .timeline-card__title {
     font-size: 20px;
@@ -7747,9 +7855,6 @@ body.about .header {
   .about-timeline .timeline-card__text {
     font-size: 15px;
     line-height: 1.55;
-  }
-  .about-timeline .timeline-grid::before {
-    width: 2.5px;
   }
 }
 /* ====== LAPTOP (≥1440) ====== */
@@ -7770,26 +7875,29 @@ body.about .header {
   .about-timeline .timeline-grid {
     gap: 90px;
   }
+  .about-timeline .timeline-grid::before {
+    width: 3px;
+  }
   .about-timeline .timeline-card {
     --icon-size: 92px;
+    --icon-img: 75%;
+    --media-h: 66.6667cqw; /* aspect-ratio 3/2 => 2/3 szerokości karty */
+    /* --icon-nudge: 0px; */
   }
   .about-timeline .timeline-card__media {
     aspect-ratio: 3/2;
   }
-  .about-timeline .timeline-card__icon {
-    width: var(--icon-size);
-    height: var(--icon-size);
-  }
   .about-timeline .timeline-card__title {
-    font-size: 20px;
-    margin-top: calc(var(--icon-size) / 2 + 12px);
+    font-size: 48px;
+    margin-top: 80px;
+    font-weight: 700;
   }
   .about-timeline .timeline-card__text {
-    font-size: 16px;
-    line-height: 1.6;
-  }
-  .about-timeline .timeline-grid::before {
-    width: 3px;
+    font-size: 28px;
+    line-height: 1.65;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    margin-top: 40px;
   }
 }
 /* ====== DESKTOP (≥1920) ====== */
@@ -7807,41 +7915,38 @@ body.about .header {
     min-width: 0;
     box-sizing: content-box;
   }
-  .about-timeline .timeline-card {
-    --icon-size: 100px;
-  }
-  .about-timeline .timeline-card__media {
-    aspect-ratio: 4/3;
-  }
-  .about-timeline .timeline-card__icon {
-    width: var(--icon-size);
-    height: var(--icon-size);
-  }
-  .about-timeline .timeline-card__title {
-    font-size: 22px;
-    margin-top: calc(var(--icon-size) / 2 + 14px);
-  }
-  .about-timeline .timeline-card__text {
-    font-size: 16px;
-    line-height: 1.65;
+  .about-timeline .timeline-grid {
+    gap: 190px;
   }
   .about-timeline .timeline-grid::before {
     width: 3.5px;
   }
+  .about-timeline .timeline-card {
+    --icon-size: 100px;
+    --icon-img: 80%;
+    --media-h: 75cqw; /* aspect-ratio 4/3 => 3/4 szerokości karty */
+    /* --icon-nudge: 0px; */
+  }
+  .about-timeline .timeline-card__media {
+    aspect-ratio: 4/3;
+  }
+  .about-timeline .timeline-card__title {
+    font-size: 60px;
+    margin-top: 80px;
+    font-weight: 700;
+  }
+  .about-timeline .timeline-card__text {
+    font-size: 32px;
+    line-height: 1.65;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    margin-top: 40px;
+  }
 }
-/* ---------- Utility ---------- */
-body.about .header {
-  min-height: 0 !important;
-  height: auto;
-}
-
-/* =================================================================
-   ABOUT › PROCESS — progress bar + drawer (mobile-first)
-   ================================================================= */
 .about-process {
   padding: 40px 0;
   background: #F6F1EA;
-  /* KONTENER — MOBILE */
+  /* ===== KONTENER — MOBILE FIRST ===== */
 }
 .about-process .about__container {
   position: relative;
@@ -7856,19 +7961,38 @@ body.about .header {
   min-width: 0;
   box-sizing: content-box;
 }
+.about-process {
+  /* >>> FIX: na mobile intro ma pełną szerokość grida */
+}
+.about-process .process-intro {
+  grid-column: 1/-1; /* pełna szerokość na mobile */
+  display: block; /* bez flexa na mobile */
+}
+.about-process {
+  /* ===== NAGŁÓWEK + OPIS — MOBILE ===== */
+}
 .about-process .section-title {
-  grid-column: 1/-1;
-  margin: 0 0 24px;
+  margin: 0 0 12px;
   text-align: left;
   font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   font-weight: 600;
-  font-size: 24px;
+  font-size: 28px;
   line-height: 1.1;
   letter-spacing: 0.07em;
   color: #1D1F2C;
 }
+.about-process .section-description {
+  margin: 0 0 24px;
+  max-width: 70ch;
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  color: #6B7280;
+}
 .about-process {
-  /* GRID kart — MOBILE: 1 kolumna */
+  /* ===== GRID kart — MOBILE: 1 kolumna ===== */
 }
 .about-process .process-grid {
   grid-column: 1/-1;
@@ -7879,10 +8003,9 @@ body.about .header {
   position: relative;
 }
 .about-process {
-  /* KARTA kroku */
+  /* ===== KARTA ===== */
 }
 .about-process .process-grid article {
-  /* baza */
   --progress: 0%;
   --track: rgba(0,0,0,.12);
   --fill: #DC9B59;
@@ -7890,7 +8013,7 @@ body.about .header {
   background: #fff;
   border-radius: 0 16px 0 0;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
-  padding: 20px 20px 48px; /* +miejsca na progress pod spodem */
+  padding: 20px 20px 56px;
   transition: transform 0.15s ease, box-shadow 0.2s ease;
   overflow: visible;
   isolation: isolate;
@@ -7899,32 +8022,19 @@ body.about .header {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
 }
-.about-process .process-grid article {
-  /* belka-akcent pod nagłówkiem */
-}
-.about-process .process-grid article::after {
-  content: "";
-  display: block;
-  height: 4px;
-  border-radius: 2px;
-  background: linear-gradient(90deg, #DC9B59 0%, #000 100%);
-  opacity: 0.15;
-  margin: 10px 0 0;
-}
 .about-process .process-grid article h3 {
   margin: 0 0 8px;
   font: 600 16px/1.3 "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color: #1D1F2C;
+  padding-bottom: 10px;
+  border-bottom: 4px solid rgba(220, 155, 89, 0.15);
+  border-radius: 2px;
 }
 .about-process .process-grid article p {
   margin: 8px 0 0;
   font: 400 14px/1.5 "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   letter-spacing: 0.05em;
   color: #6B7280;
-}
-.about-process .process-grid article {
-  /* === PROGRESS (szyna + wypełnienie + kropka) === */
-  /* szyna */
 }
 .about-process .process-grid article::before {
   content: "";
@@ -7936,23 +8046,19 @@ body.about .header {
   border-radius: 2px;
   background: var(--track);
   opacity: 0.85;
-}
-.about-process .process-grid article {
-  /* wypełnienie */
+  z-index: 0;
 }
 .about-process .process-grid article .progress-fill {
   position: absolute;
   left: 20px;
   bottom: 14px;
   height: 4px;
-  width: calc((100% - 40px) * var(--progress) / 100);
+  width: 0;
   border-radius: 2px;
   background: linear-gradient(90deg, #DC9B59 0%, #000 100%);
   transition: width 0.25s ease;
   pointer-events: none;
-}
-.about-process .process-grid article {
-  /* kropka */
+  z-index: 1;
 }
 .about-process .process-grid article .progress-dot {
   position: absolute;
@@ -7964,10 +8070,10 @@ body.about .header {
   background: var(--fill);
   box-shadow: 0 0 0 2px #fff;
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
 }
-.about-process .process-grid article {
-  /* DRAWER (szuflada) — domyślnie schowana, pojawia się od ≥1440 w interakcji */
+.about-process .process-grid article:hover .progress-fill, .about-process .process-grid article:focus-within .progress-fill {
+  width: calc((100% - 40px) * var(--progress) / 100);
 }
 .about-process .process-grid article .drawer {
   position: absolute;
@@ -7998,6 +8104,9 @@ body.about .header {
 
 /* ===== TABLET (≥744) ===== */
 @media (min-width: 744px) {
+  .about-process {
+    margin-top: 80px;
+  }
   .about-process .about__container {
     position: relative;
     z-index: 1;
@@ -8011,12 +8120,25 @@ body.about .header {
     min-width: 0;
     box-sizing: content-box;
   }
+  .about-process .section-title {
+    margin-bottom: 12px;
+    font-size: 36px;
+  }
+  .about-process .section-description {
+    grid-column: 1/-1;
+    margin-bottom: 28px;
+    font-size: 18px;
+    line-height: 1.55;
+    max-width: 72ch;
+    font-weight: 600;
+    margin-top: 40px;
+  }
   .about-process .process-grid {
     grid-template-columns: 1fr 1fr;
     gap: 16px;
   }
   .about-process .process-grid article {
-    padding: 24px 24px 52px;
+    padding: 24px 24px 60px;
   }
   .about-process .process-grid article h3 {
     font-size: 18px;
@@ -8040,13 +8162,53 @@ body.about .header {
     margin-inline: auto;
     min-width: 0;
     box-sizing: content-box;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    align-items: stretch;
+    /* ten sam wiersz, pełna wysokość */
+  }
+  .about-process {
+    /* LEWA POŁOWA — 1 wiersz, 4 kolumny */
+  }
+  .about-process .process-intro {
+    grid-column: 1/span 4;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    /* <-- tekst cały doklejony do dołu */
+    align-self: stretch;
+    /* wypełnia pełną wysokość wiersza */
+  }
+  .about-process .section-title {
+    margin: 0 0 12px;
+    text-align: left;
+    font-size: 48px;
+    margin-bottom: 60px;
+  }
+  .about-process .section-description {
+    margin: 0;
+    max-width: none;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.6;
+    margin-bottom: 150px;
+  }
+  .about-process {
+    /* PRAWA POŁOWA — karty 2 kolumny w tym samym wierszu */
   }
   .about-process .process-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-column: 5/-1;
+    /* 5–12 */
+    grid-row: 1;
+    /* ten sam wiersz co lewy panel */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 24px;
+    align-content: start;
   }
   .about-process .process-grid article {
-    padding: 28px 28px 56px;
+    padding: 28px 28px 64px;
   }
   .about-process .process-grid article h3 {
     font-size: 19px;
@@ -8056,7 +8218,9 @@ body.about .header {
     line-height: 1.6;
   }
 }
-/* ===== DESKTOP (≥1920) ===== */
+/* ===== DESKTOP (≥1920) =====
+   Większe oddechy + stabilny podział 6/6 kolumn
+   --------------------------------------------------------------- */
 @media (min-width: 1920px) {
   .about-process .about__container {
     position: relative;
@@ -8071,118 +8235,28 @@ body.about .header {
     min-width: 0;
     box-sizing: content-box;
   }
-  .about-process .process-grid article::before {
-    height: 5px;
+  .about-process .section-title {
+    grid-column: 1/span 5;
+    margin-bottom: 16px;
+  }
+  .about-process .section-description {
+    grid-column: 1/span 5;
+    font-size: 18px;
+    line-height: 1.7;
+    max-width: 80ch;
+    /* komfort czytania na dużych ekranach */
+  }
+  .about-process .process-grid {
+    grid-column: 5/-1;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+  .about-process .process-grid article {
+    padding: 32px 32px 68px;
   }
   .about-process .process-grid article .progress-dot {
     width: 14px;
     height: 14px;
-  }
-}
-/* =================================================================
-   ABOUT › STATS (mobile-first)
-   ================================================================= */
-.about-stats {
-  padding: 40px 0;
-  background: #ffffff;
-}
-.about-stats .about__container {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  column-gap: 16px;
-  row-gap: 16px;
-  padding-inline: 20px;
-  justify-content: center;
-  margin-inline: auto;
-  min-width: 0;
-  box-sizing: content-box;
-}
-.about-stats .stats {
-  grid-column: 1/-1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  text-align: center;
-  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-}
-.about-stats .stat {
-  background: #FAF7F4;
-  border-radius: 12px;
-  padding: 20px;
-}
-.about-stats .stat__value {
-  display: block;
-  margin: 0 0 4px;
-  font-weight: 700;
-  font-size: 20px;
-  line-height: 1.2;
-  color: #1D1F2C;
-}
-.about-stats .stat__label {
-  margin: 0;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 1.5;
-  letter-spacing: 0.05em;
-  color: #6B7280;
-}
-
-/* ===== TABLET (≥744) ===== */
-@media (min-width: 744px) {
-  .about-stats .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-    column-gap: 20px;
-    row-gap: 20px;
-    padding-inline: 42px;
-    justify-content: center;
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-  }
-  .about-stats .stats {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-}
-/* ===== LAPTOP (≥1440) ===== */
-@media (min-width: 1440px) {
-  .about-stats .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: 24px;
-    row-gap: 24px;
-    padding-inline: 40px;
-    justify-content: center;
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-  }
-  .about-stats .stats {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-}
-/* ===== DESKTOP (≥1920) ===== */
-@media (min-width: 1920px) {
-  .about-stats .about__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: 24px;
-    row-gap: 24px;
-    padding-inline: 300px;
-    justify-content: center;
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
   }
 }
 /* =========================================================
@@ -8355,6 +8429,85 @@ MQ .about-cta .btns .btn {
   .about-featured .projects_cards-container {
     grid-template-columns: repeat(3, 1fr);
     gap: 24px;
+  }
+}
+/* ================== ABOUT › STATS ================== */
+.about-stats {
+  background: #fff; /* biały kontener */
+  padding: 40px 0;
+}
+.about-stats .stats {
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns: 1fr; /* mobile: jeden pod drugim */
+  gap: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.about-stats .stats li {
+  background: #F6F1EA; /* beżowe kafelki */
+  border-radius: 12px;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease;
+}
+.about-stats .stats li:hover {
+  transform: translateY(-2px);
+}
+.about-stats .stats li .stat__value {
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  color: #1D1F2C;
+}
+.about-stats .stats li .stat__label {
+  margin-top: 6px;
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #1D1F2C;
+  opacity: 0.9;
+}
+
+/* TABLET (≥744) – 2 kolumny */
+@media (min-width: 744px) {
+  .about-stats .stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .about-stats .stats li .stat__value {
+    font-size: 32px;
+  }
+  .about-stats .stats li .stat__label {
+    font-size: 15px;
+  }
+}
+/* LAPTOP (≥1440) – 4 kolumny */
+@media (min-width: 1440px) {
+  .about-stats .stats {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .about-stats .stats li .stat__value {
+    font-size: 38px;
+  }
+  .about-stats .stats li .stat__label {
+    font-size: 16px;
+  }
+}
+/* DESKTOP (≥1920) – większy oddech */
+@media (min-width: 1920px) {
+  .about-stats .stats {
+    gap: 32px;
   }
 }
 

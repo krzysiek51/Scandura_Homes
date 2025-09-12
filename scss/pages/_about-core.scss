@@ -1,30 +1,92 @@
 @use "../utils/variables" as *;
 
-.about__container {
-  margin-inline: auto;           /* centruje */
-  max-width: $container-max-width;
-  padding-inline: 20px;          /* mobile padding bazowy, i tak nadpisujesz mixinem */
+/* =================================================================
+   ABOUT — GLOBAL CONTAINER (grid + padding per breakpoint)
+   ================================================================= */
+
+/* Bazowo: pełna szerokość, brak max-width, padding 20px */
+body.about .about__container {
+  box-sizing: border-box;
+  margin-inline: auto;
+  width: 100% !important;
+  max-width: none !important;
+  padding-inline: 20px !important;     /* MOBILE */
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
 }
 
+/* Rozpuść wszystkie wewnętrzne "container" z sekcji z indexu,
+   żeby nie zawężały siatki na About */
+body.about .about__container .container {
+  display: contents !important;
+  max-width: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
 @media (min-width: $bp-tablet) {
-  .about__container {
+  body.about .about__container {
     grid-template-columns: repeat(8, minmax(0, 1fr));
     gap: 20px;
-    padding-inline: 42px;
+    padding-inline: 42px !important;   /* TABLET */
   }
 }
 
 @media (min-width: $bp-laptop) {
-  .about__container {
+  body.about .about__container {
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: 24px;
-    padding-inline: 40px;
+    padding-inline: 40px !important;   /* LAPTOP */
   }
 }
 
 @media (min-width: $bp-desktop) {
-  .about__container { padding-inline: 300px; }
+  body.about .about__container {
+    padding-inline: 300px !important;  /* DESKTOP */
+  }
+}
+
+/* =================================================================
+   ABOUT → PROJECTS (embed z indexu) — pełny span + siatka jak na index
+   ================================================================= */
+
+/* Sekcja projects jest dzieckiem about__container → span na cały grid */
+body.about section.about-featured > .about__container > section.projects.projects--embed {
+  grid-column: 1 / -1 !important;
+  width: 100%;
+}
+
+/* Kontener kart — wymuszamy grida (bo MQ z indexu tu nie dochodzą) */
+body.about section.about-featured > .about__container > section.projects.projects--embed
+> .projects__cards-container {
+  display: grid !important;
+  grid-template-columns: 1fr;          /* mobile */
+  gap: 24px !important;
+  max-width: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  justify-items: stretch;
+  align-items: stretch;
+}
+
+/* MQ aliasy — jak na index (tablet/laptop) */
+@media (min-width: 744px) {
+  body.about section.about-featured > .about__container > section.projects.projects--embed
+  > .projects__cards-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+@media (min-width: 1440px) {
+  body.about section.about-featured > .about__container > section.projects.projects--embed
+  > .projects__cards-container {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Karta ma wypełniać kolumnę */
+body.about section.about-featured > .about__container > section.projects.projects--embed
+> .projects__cards-container > .project-card {
+  width: 100% !important;
+  min-width: 0 !important;
 }

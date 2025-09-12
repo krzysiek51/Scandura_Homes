@@ -1,0 +1,79 @@
+@use "../utils/variables" as *;
+@use "../utils/mixins" as *;
+
+/* ================== ABOUT › STATS ================== */
+.about-stats {
+  background: #fff; /* biały kontener */
+  padding: 40px 0;
+
+  .stats {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr; /* mobile: jeden pod drugim */
+    gap: 16px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      background: $color-beige-bg; /* beżowe kafelki */
+      border-radius: 12px;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      transition: transform 0.2s ease;
+
+      &:hover { transform: translateY(-2px); }
+
+      .stat__value {
+        font-family: $ff;
+        font-weight: 700;
+        font-size: 28px;
+        line-height: 1.2;
+        letter-spacing: 0.01em;
+        color: $color-dark-text;
+      }
+
+      .stat__label {
+        margin-top: 6px;
+        font-family: $ff;
+        font-weight: $body-weight;
+        font-size: 14px;
+        line-height: 1.4;
+        color: $color-dark-text;
+        opacity: .9;
+      }
+    }
+  }
+}
+
+/* TABLET (≥744) – 2 kolumny */
+@media (min-width: $bp-tablet) {
+  .about-stats .stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+
+    li .stat__value { font-size: 32px; }
+    li .stat__label { font-size: 15px; }
+  }
+}
+
+/* LAPTOP (≥1440) – 4 kolumny */
+@media (min-width: $bp-laptop) {
+  .about-stats .stats {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+
+    li .stat__value { font-size: 38px; }
+    li .stat__label { font-size: 16px; }
+  }
+}
+
+/* DESKTOP (≥1920) – większy oddech */
+@media (min-width: $bp-desktop) {
+  .about-stats .stats { gap: 32px; }
+}

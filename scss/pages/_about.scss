@@ -1,12 +1,11 @@
 /* ================================================================= 
-   ABOUT — CLEAN, MOBILE-FIRST, BEZ PATCHY
+   ABOUT — CLEAN, MOBILE-FIRST
    ================================================================= */
 
 @use "../utils/variables" as *;
 @use "../utils/mixins" as *;
 
-
-
+/* Divider wspólny dla About */
 .section-divider {
   width: 230px;
   height: 4px;
@@ -16,21 +15,14 @@
   margin: 20px 0;
 }
 
-
-
-/* =========================================================
-   Warstwy/klik — bezpieczeństwo (AI box)
-   ========================================================= */
+/* Warstwy/klik — bezpieczeństwo (AI box) */
 .about-cta {
   position: relative;
   isolation: isolate;
   z-index: 1;
 }
-
 .about-cta::before,
-.about-cta::after {
-  pointer-events: none;
-}
+.about-cta::after { pointer-events: none; }
 
 .configurator-prompt,
 .configurator-prompt__content {
@@ -40,23 +32,14 @@
 }
 
 /* =========================================================
-   =====================  M E D I A   Q U E R I E S  =====================
+   =====================  MEDIA QUERIES  ====================
    ========================================================= */
-
-
 
 /* ====== LAPTOP (≥1440) ====== */
 @media (min-width: $bp-laptop) {
-
- 
- 
-
   /* STATS */
   .about-stats {
-    .about__container {
-      @include section-grid-fluid(12, 24px, 24px, 40px);
-    }
-
+    .about__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
     .stats {
       grid-template-columns: repeat(3, 1fr);
       gap: 24px;
@@ -66,18 +49,9 @@
 
 /* ====== DESKTOP (≥1920) ====== */
 @media (min-width: $bp-desktop) {
-
-  
-
-
-
-/* STATS */
+  /* STATS */
   .about-stats {
-    .about__container {
-      @include section-grid-fluid(8, 20px, 20px, 42px);
-    }
-
-    .stats {
-      gap: 20px;
-    }
-  }}
+    .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+    .stats { gap: 20px; }
+  }
+}

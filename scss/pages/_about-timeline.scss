@@ -1,11 +1,14 @@
 @use "../utils/variables" as *;
 @use "../utils/mixins" as *;
 
-/* Utility */
-body.about .header { min-height: 0 !important; height: auto; }
+/* ---------- Utility ---------- */
+body.about .header {
+  min-height: 0 !important;
+  height: auto;
+}
 
 /* =========================================================
-   TIMELINE — „Moja droga” (mobile-first)
+   TIMELINE — „Moja droga” (mobile-first, full file)
    ========================================================= */
 .about-timeline {
   padding: 40px 0;
@@ -13,14 +16,15 @@ body.about .header { min-height: 0 !important; height: auto; }
 
   /* KONTENER (MOBILE): 4 kol., gap 16, pad 20 */
   .about__container {
-    @include section-grid-fluid(4, 16px, 16px, 20px); /* FIX: 16px zamiast 1px */
+    @include section-grid-fluid(4, 16px, 16px, 20px);
   }
 
-  /* nagłówek */
+  /* Nagłówek sekcji */
   .section-divider {
     grid-column: 1 / -1;
     margin: 0 0 16px;
   }
+
   .section-title {
     grid-column: 1 / -1;
     margin: 5px 0 8px;
@@ -32,6 +36,7 @@ body.about .header { min-height: 0 !important; height: auto; }
     color: $color-dark-text;
     text-align: start;
   }
+
   .section-lead {
     grid-column: 1 / -1;
     margin: 16px 0 32px;
@@ -44,20 +49,20 @@ body.about .header { min-height: 0 !important; height: auto; }
     text-align: start;
   }
 
-  /* siatka kart */
+  /* Siatka kart */
   .timeline-grid {
     grid-column: 1 / -1;
     display: grid;
-    grid-template-columns: 1fr;   /* mobile: karty pod sobą */
+    grid-template-columns: 1fr; /* mobile: jedna kolumna */
     gap: 44px;
     list-style: none;
     padding: 0;
     margin: 0;
 
-    position: relative;           /* baza pod pseudo-linię */
-    counter-reset: step;          /* numeracja kroków */
+    position: relative;   /* baza pod linię czasu */
+    counter-reset: step;  /* numeracja kart */
 
-    /* pionowa przerywana linia */
+    /* pionowa przerywana linia czasu */
     &::before {
       content: "";
       position: absolute;
@@ -75,13 +80,20 @@ body.about .header { min-height: 0 !important; height: auto; }
     }
   }
 
-  /* KARTA */
+  /* Karta na osi czasu */
   .timeline-card {
-    --icon-size: 64px;
+    /* rozmiary ikony + obrazka w kółku */
+    --icon-size: 64px;    /* średnica kółka (mobile) */
+    --icon-img: 70%;      /* procent średnicy dla <img> w środku */
+    /* niezależne kotwiczenie do dołu media: */
+    --media-h: 75cqw;     /* mobile: aspect-ratio 4/3 => 3/4 = 75% szerokości karty */
+    --icon-nudge: 0px;    /* drobna korekta gdyby trzeba było (opcjonalna) */
 
     position: relative;
     z-index: 1;
     counter-increment: step;
+    container-type: inline-size; /* <--- pozwala używać cqw (nie zmienia layoutu) */
+
     background: #FAF7F4;
     border-radius: 0 16px 0 0;
     box-shadow: 0 1px 0 rgba(0, 0, 0, .04);
@@ -97,14 +109,16 @@ body.about .header { min-height: 0 !important; height: auto; }
       left: 50%;
       top: 0;
       transform: translate(-50%, -50%);
-      width: 12px; height: 12px;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
       background: #DC9B59;
       border: 3px solid #fff;
-      box-shadow: 0 2px 6px rgba(0,0,0,.12);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, .12);
       z-index: 2;
     }
-    /* numer kroku */
+
+    /* numer kroku nad markerem */
     &::before {
       content: counter(step);
       position: absolute;
@@ -117,14 +131,15 @@ body.about .header { min-height: 0 !important; height: auto; }
       background: #fff;
       border: 1px solid #E6E2DD;
       border-radius: 999px;
-      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, .08);
       z-index: 2;
     }
 
+    /* zdjęcie */
     &__media {
       position: relative;
       width: 100%;
-      aspect-ratio: 4 / 3;
+      aspect-ratio: 4 / 3; /* MOBILE default */
       height: auto;
       overflow: hidden;
       border-radius: 0 16px 0 0;
@@ -138,11 +153,15 @@ body.about .header { min-height: 0 !important; height: auto; }
       }
     }
 
+    /* kółko z ikoną — zakotwiczone do DOŁU MEDIA (nie do karty, nie do tekstu) */
     &__icon {
       position: absolute;
       left: 50%;
-      bottom: calc(var(--icon-size) / -2); /* pół ikony pod zdjęciem */
+      top: 0; /* kotwica: górna krawędź karty */
       transform: translateX(-50%);
+      /* pozycja = wysokość media - połowa ikony (+ ewentualna korekta) */
+      margin-top: calc(var(--media-h) - (var(--icon-size) / 2) + var(--icon-nudge));
+
       width: var(--icon-size);
       height: var(--icon-size);
       border-radius: 50%;
@@ -151,17 +170,11 @@ body.about .header { min-height: 0 !important; height: auto; }
       place-items: center;
       box-shadow: 0 8px 24px rgba(0, 0, 0, .12), 0 2px 8px rgba(0, 0, 0, .08);
       z-index: 2;
-
-      .timeline-card__icon img {
-        width: 70%; height: 70%;
-        object-fit: contain;
-        display: block;
-        border-radius: 50%;
-      }
     }
 
+    /* tytuł i tekst */
     &__title {
-      margin: calc(var(--icon-size) / 2 + 12px) 16px 6px;
+      margin: calc(var(--icon-size) / 2 + 12px) 16px 6px; /* odsunięcie spod ikony */
       font-weight: 600;
       font-size: 16px;
       line-height: 1.3;
@@ -177,27 +190,47 @@ body.about .header { min-height: 0 !important; height: auto; }
       color: $color-light-text;
     }
   }
+
+  /* IMG w środku kółka (globalnie, by nie zależeć od zagnieżdżenia) */
+  .timeline-card__icon-img {
+    width: var(--icon-img);
+    height: var(--icon-img);
+    display: block;
+    object-fit: contain; /* nie rozciąga proporcji */
+    object-position: center;
+    margin: 0 auto;
+  }
 }
 
 /* ====== TABLET (≥744) ====== */
 @media (min-width: $bp-tablet) {
   .about-timeline {
     .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+
     .timeline-grid { gap: 80px; }
+    .timeline-grid::before { width: 2.5px; }
 
     .section-title { font-size: 42px; }
     .section-lead  { font-size: 24px; }
 
     .timeline-card {
-      --icon-size: 72px;
+      --icon-size: 72px;   /* większe kółko */
+      --icon-img: 72%;
+      --media-h: 50cqw;    /* aspect-ratio 6/3 => 1/2 szerokości karty */
+      /* --icon-nudge: 0px; // opcjonalnie, jeśli potrzebujesz korekty */
 
       &__media { aspect-ratio: 6 / 3; }
-      &__icon  { width: var(--icon-size); height: var(--icon-size); }
-      &__title { font-size: 20px; margin-top: calc(var(--icon-size) / 2 + 12px); }
-      &__text  { font-size: 15px; line-height: 1.55; }
-    }
 
-    .timeline-grid::before { width: 2.5px; }
+      &__title {
+        font-size: 20px;
+        margin-top: calc(var(--icon-size) / 2 + 12px);
+      }
+
+      &__text {
+        font-size: 15px;
+        line-height: 1.55;
+      }
+    }
   }
 }
 
@@ -205,18 +238,32 @@ body.about .header { min-height: 0 !important; height: auto; }
 @media (min-width: $bp-laptop) {
   .about-timeline {
     .about__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
+
     .timeline-grid { gap: 90px; }
+    .timeline-grid::before { width: 3px; }
 
     .timeline-card {
       --icon-size: 92px;
+      --icon-img: 75%;
+      --media-h: 66.6667cqw; /* aspect-ratio 3/2 => 2/3 szerokości karty */
+      /* --icon-nudge: 0px; */
 
       &__media { aspect-ratio: 3 / 2; }
-      &__icon  { width: var(--icon-size); height: var(--icon-size); }
-      &__title { font-size: 20px; margin-top: calc(var(--icon-size) / 2 + 12px); }
-      &__text  { font-size: 16px; line-height: 1.6; }
-    }
 
-    .timeline-grid::before { width: 3px; }
+      &__title {
+        font-size: 48px;
+        margin-top: 80px;
+        font-weight: 700;
+      }
+
+      &__text {
+        font-size: 28px;
+        line-height: 1.65;
+        font-weight: 400;
+        letter-spacing: 0.05em;
+        margin-top: 40px;
+      }
+    }
   }
 }
 
@@ -225,15 +272,30 @@ body.about .header { min-height: 0 !important; height: auto; }
   .about-timeline {
     .about__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
 
+    .timeline-grid { gap: 190px; }
+    .timeline-grid::before { width: 3.5px; }
+
     .timeline-card {
       --icon-size: 100px;
+      --icon-img: 80%;
+      --media-h: 75cqw; /* aspect-ratio 4/3 => 3/4 szerokości karty */
+      /* --icon-nudge: 0px; */
 
       &__media { aspect-ratio: 4 / 3; }
-      &__icon  { width: var(--icon-size); height: var(--icon-size); }
-      &__title { font-size: 22px; margin-top: calc(var(--icon-size) / 2 + 14px); }
-      &__text  { font-size: 16px; line-height: 1.65; }
-    }
 
-    .timeline-grid::before { width: 3.5px; }
+      &__title {
+        font-size: 60px;
+        margin-top: 80px;
+        font-weight: 700;
+      }
+
+      &__text {
+        font-size: 32px;
+        line-height: 1.65;
+        font-weight: 400;
+        letter-spacing: 0.05em;
+        margin-top: 40px;
+      }
+    }
   }
 }

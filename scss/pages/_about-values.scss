@@ -58,7 +58,7 @@
   display: grid;
   grid-template-rows: auto 1fr;
   background: #fff;                 // karta jest biała (sekcja ma #FAF7F4)
-  border-radius: 12px;
+  border-radius: 0 40px 0 0 ;
   overflow: hidden;
   font-family: $ff;
 
@@ -75,7 +75,9 @@
       border-radius: 0 40px 0 0;
     }
 
-    /* Badge przyklejony do dołu zdjęcia */
+    
+  }
+  /* Badge przyklejony do dołu zdjęcia */
     .value-card__badge {
       position: absolute;
       left: 50%;
@@ -89,7 +91,7 @@
       place-items: center;
       z-index: 2;
       box-shadow: 0 8px 24px rgba(0, 0, 0, .12), 0 2px 8px rgba(0, 0, 0, .08);
-      /* USUNIĘTE: margin-bottom: 320px; */
+      margin-bottom: 310px;
     }
 
     .value-card__badge img {
@@ -98,7 +100,6 @@
       object-fit: cover;
       display: block;
     }
-  }
 
   &__body {
     background: #ffffff;
@@ -179,8 +180,6 @@
   }
 }
 
-
-
 @media (min-width: $bp-laptop) {
   .about-values {
     .about__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
@@ -196,8 +195,36 @@
     .about-values__grid > .value-card:nth-of-type(2) { grid-column: 7 / 10; grid-row: 1 / span 2; }
     .about-values__grid > .value-card:nth-of-type(3) { grid-column: 10 / 13; grid-row: 1 / span 2; }
 
+    .value-card { 
+      container-type: inline-size;   /* <— potrzebne do cqw; NIE zmienia layoutu */
+    }
+
     .value-card__media { aspect-ratio: 320 / 218; }
     .value-card__media img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* === BADGE (ikona) — stabilnie na dole zdjęcia ===
+       aspect-ratio 320/218 → wysokość media = 68.125% szerokości karty = 68.125cqw */
+    .value-card__badge {
+      position: absolute;
+      left: 50%;
+      top: calc(68.125cqw - var(--badge-size) / 2); /* ⬅ kluczowa linia */
+      transform: translateX(-50%);
+      width: var(--badge-size);
+      height: var(--badge-size);
+      border-radius: 50%;
+      background: #fff;
+      display: grid;
+      place-items: center;
+      z-index: 2;
+      box-shadow: 0 8px 24px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.08);
+    }
+    .value-card__badge img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+    }
   }
 }
 
@@ -207,4 +234,8 @@
   .about-values .about__container {
     @include section-grid-fluid(12, 24px, 24px, 300px);
   }
+}
+/* About → Testimonials (embed z indexu) */
+body.about section.about-testimonials > .about__container > section.testimonials {
+  grid-column: 1 / -1 !important;
 }
