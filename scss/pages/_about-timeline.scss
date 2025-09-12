@@ -11,7 +11,7 @@ body.about .header {
    TIMELINE — „Moja droga” (mobile-first, full file)
    ========================================================= */
 .about-timeline {
-  padding: 40px 0;
+  padding: 40px 40px;
   background: $color-white;
 
   /* KONTENER (MOBILE): 4 kol., gap 16, pad 20 */
@@ -277,7 +277,7 @@ body.about .header {
 
     .timeline-card {
       --icon-size: 100px;
-      --icon-img: 80%;
+      --icon-img: 80%; border-radius: 0 159px 0 0;
       --media-h: 75cqw; /* aspect-ratio 4/3 => 3/4 szerokości karty */
       /* --icon-nudge: 0px; */
 

@@ -1,0 +1,268 @@
+@use "../utils/variables" as *;
+@use "../utils/mixins" as *;
+
+/* ===== Namespace strony ===== */
+.services-page {
+  .header {
+    position: relative;
+    min-height: 480px; /* dopasuj do Figma */
+    background: url("../../photos/pages/services/services-header.webp") center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 60px;
+  }
+
+  /* Przyciemnienie zdjęcia */
+  .header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 1;
+  }
+
+  .header__wrap,
+  .header__nav {
+    position: relative;
+    z-index: 3;
+  }
+}
+
+/* ===== HERO ===== */
+.services-hero {
+  background: $color-white;
+  padding-block: 40px;
+
+  .services-hero__container { @include section-grid-fluid(4, 16px, 16px, 20px); }
+
+  .services-hero__title {
+    grid-column: 1 / -1;
+    margin: 0 0 8px;
+    font-family: $ff;
+    font-weight: $h-title-weight;
+    font-size: $h-title-size;
+    line-height: $h-title-lh;
+    letter-spacing: $h-title-ls;
+    color: $color-dark-text;
+  }
+
+  .services-hero__lead {
+    grid-column: 1 / -1;
+    margin: 0 0 20px;
+    max-width: 70ch;
+    font-family: $ff;
+    font-weight: $body-weight;
+    font-size: $body-size;
+    line-height: $body-lh;
+    letter-spacing: $body-ls;
+    color: $color-light-text;
+  }
+
+  .services-hero__cta-row {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .services-hero__btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 48px; padding: 0 22px; border-radius: 12px; text-decoration: none;
+    font: 700 15px/1 $ff; letter-spacing: .01em; cursor: pointer;
+    border: 1px solid transparent; transition: filter .2s ease, transform .1s ease;
+    &--primary { background: $color-gradient-start; color: #fff; }
+    &--ghost   { background: #fff; border-color: rgba(0,0,0,.12); color: $color-dark-text; }
+    &:hover { filter: brightness(.97); }
+    &:active { transform: translateY(1px); }
+  }
+
+  @media (min-width: $bp-tablet) {
+    .services-hero__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+    .services-hero__lead { margin-bottom: 24px; }
+  }
+  @media (min-width: $bp-laptop) {
+    .services-hero__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
+  }
+  @media (min-width: $bp-desktop) {
+    .services-hero__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
+  }
+}
+
+/* ===== LISTA USŁUG ===== */
+.services-list {
+  background: $color-beige-light-bg;
+  padding-block: 32px;
+
+  .services-list__container { @include section-grid-fluid(4, 16px, 16px, 20px); }
+
+  .services-list__title {
+    grid-column: 1 / -1;
+    margin: 0 0 16px;
+    font-family: $ff;
+    font-weight: $h-title-weight;
+    font-size: $h-title-size;
+    line-height: $h-title-lh;
+    letter-spacing: $h-title-ls;
+    color: $color-dark-text;
+  }
+
+  .services-grid {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .service-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.06);
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: auto 1fr;
+
+    .service-card__media { position: relative; aspect-ratio: 4 / 3; overflow: hidden; }
+    .service-card__image { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .service-card__body { padding: 20px; }
+
+    .service-card__title {
+      margin: 0 0 8px;
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 1.25;
+      color: $color-dark-text;
+    }
+
+    .service-card__text {
+      margin: 0 0 10px;
+      font-weight: $body-weight;
+      font-size: 14px;
+      line-height: 1.5;
+      letter-spacing: .01em;
+      color: $color-light-text;
+    }
+
+    .service-card__bullets {
+      list-style: none; padding: 0; margin: 0 0 14px; display: grid; gap: 6px;
+    }
+    .service-card__bullet {
+      padding-left: 18px; position: relative; font-size: 14px; color: $color-dark-text;
+      &::before { content: "•"; position: absolute; left: 0; top: 0; }
+    }
+
+    .service-card__btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      height: 44px; padding: 0 18px; border-radius: 10px; text-decoration: none;
+      background: $color-gradient-start; color: #fff; font-weight: 600; font-size: 14px;
+      transition: filter .2s ease, transform .1s ease;
+      &:hover { filter: brightness(.97); }
+      &:active { transform: translateY(1px); }
+    }
+  }
+
+  @media (min-width: $bp-tablet) {
+    .services-list__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+    .services-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+  }
+  @media (min-width: $bp-laptop) {
+    .services-list__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
+    .services-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  }
+  @media (min-width: $bp-desktop) {
+    .services-list__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
+  }
+}
+
+/* ===== PROCES ===== */
+.services-process {
+  background: $color-white;
+  padding-block: 32px;
+
+  .services-process__container { @include section-grid-fluid(4, 16px, 16px, 20px); }
+  .services-process__title {
+    grid-column: 1 / -1;
+    margin: 0 0 12px;
+    font-family: $ff;
+    font-weight: $h-title-weight;
+    font-size: $h-title-size;
+    line-height: $h-title-lh;
+    letter-spacing: $h-title-ls;
+    color: $color-dark-text;
+  }
+
+  .process-steps {
+    grid-column: 1 / -1;
+    list-style: none; padding: 0; margin: 0;
+    display: grid; grid-template-columns: 1fr; gap: 12px;
+  }
+
+  .process-step {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px 16px 18px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.06);
+    text-align: center;
+
+    .process-step__icon { width: 64px; height: 64px; border-radius: 50%; background: #fff; margin: -32px auto 8px; box-shadow: 0 8px 24px rgba(0,0,0,.12); display: grid; place-items: center; }
+    .process-step__icon-img { width: 60%; height: 60%; object-fit: contain; display: block; }
+
+    .process-step__title { margin: 6px 0 4px; font-weight: 600; font-size: 16px; color: $color-dark-text; }
+    .process-step__text  { margin: 0; font-size: 14px; color: $color-light-text; }
+  }
+
+  @media (min-width: $bp-tablet) {
+    .services-process__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+    .process-steps { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  }
+  @media (min-width: $bp-laptop) {
+    .services-process__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
+    .process-steps { grid-template-columns: repeat(5, 1fr); gap: 20px; }
+  }
+  @media (min-width: $bp-desktop) {
+    .services-process__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
+  }
+}
+
+/* ===== FAQ ===== */
+.services-faq {
+  background: $color-beige-bg;
+  padding-block: 40px;
+
+  .services-faq__container { @include section-grid-fluid(4, 16px, 16px, 20px); }
+  .services-faq__title {
+    grid-column: 1 / -1;
+    margin: 0 0 12px;
+    font-family: $ff;
+    font-weight: $h-title-weight;
+    font-size: $h-title-size;
+    line-height: $h-title-lh;
+    letter-spacing: $h-title-ls;
+    color: $color-dark-text;
+  }
+
+  .faq-list { grid-column: 1 / -1; display: grid; gap: 10px; }
+
+  .faq-item {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.06);
+    overflow: hidden;
+  }
+
+  .faq-item__toggle {
+    width: 100%; background: transparent; border: 0; text-align: left;
+    display: grid; grid-template-columns: 1fr auto; align-items: center;
+    padding: 16px 18px; cursor: pointer;
+  }
+  .faq-item__question { font-weight: 600; font-size: 16px; color: $color-dark-text; }
+  .faq-item__icon     { font-weight: 700; font-size: 20px; color: $color-dark-text; }
+
+  .faq-item__content { padding: 0 18px 16px; }
+  .faq-item__answer  { margin: 0; font-size: 14px; color: $color-light-text; }
+
+  @media (min-width: $bp-tablet)  { .services-faq__container { @include section-grid-fluid(8, 20px, 20px, 42px); } }
+  @media (min-width: $bp-laptop)  { .services-faq__container { @include section-grid-fluid(12, 24px, 24px, 40px); } }
+  @media (min-width: $bp-desktop) { .services-faq__container { @include section-grid-fluid(12, 24px, 24px, 300px); } }
+}
