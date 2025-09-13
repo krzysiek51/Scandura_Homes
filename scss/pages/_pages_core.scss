@@ -5,23 +5,24 @@
    GLOBAL GRID DLA STRON W /pages (contact, services, projects itd.)
    ================================================================= */
 
+/* Kontener główny podstron */
 .pages__container {
   box-sizing: border-box;
   margin-inline: auto;
-  width: 100% !important;
-  max-width: none !important;
-  padding-inline: 20px !important;   /* MOBILE */
+  width: 100%;
+  max-width: none;
+  padding-inline: 20px;   /* MOBILE */
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
 }
 
-/* Rozpuść wewnętrzne .container (importowane z indexu), żeby nie zawężały */
-.pages__container .container {
-  display: contents !important;
-  max-width: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
+/* Rozpuść wewnętrzne .container WYŁĄCZNIE w treści (nie header/footer) */
+main.pages__container > .container {
+  display: contents;
+  max-width: none;
+  padding: 0;
+  margin: 0;
 }
 
 /* TABLET */
@@ -29,7 +30,7 @@
   .pages__container {
     grid-template-columns: repeat(8, minmax(0, 1fr));
     gap: 20px;
-    padding-inline: 42px !important;
+    padding-inline: 42px;
   }
 }
 
@@ -38,13 +39,13 @@
   .pages__container {
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: 24px;
-    padding-inline: 40px !important;
+    padding-inline: 40px;
   }
 }
 
 /* DESKTOP */
 @media (min-width: $bp-desktop) {
   .pages__container {
-    padding-inline: 300px !important;
+    padding-inline: 300px;
   }
 }

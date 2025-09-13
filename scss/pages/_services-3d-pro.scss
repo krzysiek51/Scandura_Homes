@@ -1,0 +1,193 @@
+@use "../utils/variables" as *;
+@use "../utils/mixins" as *;
+
+/* ===========================
+   SERVICES 3D PRO (Three.js)
+   =========================== */
+.services-3d-pro {
+  padding: 40px 0;
+  background: $color-white;
+
+  /* Kontener sekcji (mobile: 4 kolumny, 16px gap, padding inline z tokens) */
+  &__container {
+    @include section-grid-fluid($grid-columns, $grid-gap, 16px, $container-padding-left);
+    max-width: $container-max-width;
+  }
+
+  /* Header pełnej szerokości grida */
+  &__header {
+    grid-column: 1 / -1;
+    margin-bottom: 16px;
+  }
+
+  &__title {
+    margin: 0 0 6px;
+    font-family: $ff;
+    font-weight: $h-title-weight;
+    font-size: $h-title-size;
+    line-height: $h-title-lh;
+    letter-spacing: $h-title-ls;
+    color: $color-dark-text;
+  }
+
+  &__lead {
+    margin: 0;
+    font-family: $ff;
+    font-weight: $body-weight;
+    font-size: $body-size;
+    line-height: $body-lh;
+    letter-spacing: $body-ls;
+    color: $color-light-text;
+  }
+
+  /* Layout: viewer + panel (na mobile jeden pod drugim) */
+  &__layout {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* Viewer (canvas) */
+  &__viewer {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #f6f6f6;
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto; // JS ustawia wysokość przez renderer.setSize
+    }
+  }
+
+  /* Toolbar na viewerze */
+  &__toolbar {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    background: rgba(0, 0, 0, .65);
+    backdrop-filter: blur(6px);
+    padding: 8px;
+    border-radius: 999px;
+
+    .s3d-btn {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      font-family: $ff;
+      font-weight: $btn-weight;
+      font-size: $btn-size;
+      line-height: $btn-lh;
+      letter-spacing: $btn-ls;
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: $color-black;
+      background: $color-gradient-start;
+
+      &:hover { filter: brightness(1.06); }
+      &:active { transform: translateY(1px); }
+    }
+  }
+
+  /* Panel z opisem */
+  &__panel {
+    background: #101010;
+    color: $color-white;
+    border-radius: 16px;
+    padding: 16px;
+
+    .panel__title {
+      margin: 0 0 6px;
+      font-family: $ff;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 1.2;
+    }
+
+    .panel__text {
+      margin: 0 0 12px;
+      font-family: $ff;
+      font-weight: $body-weight;
+      font-size: $body-size;
+      line-height: $body-lh;
+      opacity: .9;
+    }
+
+    .panel__media {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #222;
+      border-radius: 12px;
+      margin: 12px 0;
+    }
+
+    .panel__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: $color-gradient-start;
+      color: #101010;
+      text-decoration: none;
+      font-family: $ff;
+      font-weight: 700;
+    }
+
+    /* Fallback 2D */
+    .s3d-fallback {
+      margin-top: 12px;
+      background: $color-white;
+      color: $color-dark-text;
+      border-radius: 12px;
+      padding: 8px;
+    }
+
+    .s3d-fallback__svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .s2d.clickable { cursor: pointer; }
+  }
+
+  /* ========= BREAKPOINTS ========= */
+
+  /* Tablet: 12 kolumn + układ 7/5 */
+  @media (min-width: $bp-tablet) {
+    &__container {
+      @include section-grid-fluid(12, 20px, 20px, $container-padding-left);
+      max-width: $container-max-width;
+    }
+
+    &__title { font-size: 28px; }
+
+    &__layout {
+      grid-template-columns: 7fr 5fr;
+      gap: 24px;
+    }
+  }
+
+  /* Laptop: więcej oddechu + większe tytuły */
+  @media (min-width: $bp-laptop) {
+    padding: 56px 0 64px;
+
+    &__title { font-size: 32px; }
+
+    &__container {
+      @include section-grid-fluid(12, 24px, 24px, $container-padding-left);
+      max-width: $container-max-width;
+    }
+  }
+
+  /* Desktop: typografia */
+  @media (min-width: $bp-desktop) {
+    &__title { font-size: 36px; }
+  }
+}

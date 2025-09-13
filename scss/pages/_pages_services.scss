@@ -1,8 +1,23 @@
 @use "../utils/variables" as *;
 @use "../utils/mixins" as *;
 
+
+
+
+
 /* ===== Namespace strony ===== */
 .services-page {
+  /* FIX: kontenery sekcji nie mogą wychodzić poza viewport */
+  .services-hero__container,
+  .services-list__container,
+  .services-process__container,
+  .services-faq__container {
+    box-sizing: border-box !important; /* przebiwa mixin (content-box) */
+    width: 100%;
+    max-width: none;
+    margin-inline: auto;
+  }
+
   .header {
     position: relative;
     min-height: 480px; /* dopasuj do Figma */

@@ -8742,23 +8742,24 @@ body.contact-page .header::after {
 /* =================================================================
    GLOBAL GRID DLA STRON W /pages (contact, services, projects itd.)
    ================================================================= */
+/* Kontener główny podstron */
 .pages__container {
   box-sizing: border-box;
   margin-inline: auto;
-  width: 100% !important;
-  max-width: none !important;
-  padding-inline: 20px !important; /* MOBILE */
+  width: 100%;
+  max-width: none;
+  padding-inline: 20px; /* MOBILE */
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
 }
 
-/* Rozpuść wewnętrzne .container (importowane z indexu), żeby nie zawężały */
-.pages__container .container {
-  display: contents !important;
-  max-width: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
+/* Rozpuść wewnętrzne .container WYŁĄCZNIE w treści (nie header/footer) */
+main.pages__container > .container {
+  display: contents;
+  max-width: none;
+  padding: 0;
+  margin: 0;
 }
 
 /* TABLET */
@@ -8766,7 +8767,7 @@ body.contact-page .header::after {
   .pages__container {
     grid-template-columns: repeat(8, minmax(0, 1fr));
     gap: 20px;
-    padding-inline: 42px !important;
+    padding-inline: 42px;
   }
 }
 /* LAPTOP */
@@ -8774,16 +8775,28 @@ body.contact-page .header::after {
   .pages__container {
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: 24px;
-    padding-inline: 40px !important;
+    padding-inline: 40px;
   }
 }
 /* DESKTOP */
 @media (min-width: 1920px) {
   .pages__container {
-    padding-inline: 300px !important;
+    padding-inline: 300px;
   }
 }
 /* ===== Namespace strony ===== */
+.services-page {
+  /* FIX: kontenery sekcji nie mogą wychodzić poza viewport */
+}
+.services-page .services-hero__container,
+.services-page .services-list__container,
+.services-page .services-process__container,
+.services-page .services-faq__container {
+  box-sizing: border-box !important; /* przebiwa mixin (content-box) */
+  width: 100%;
+  max-width: none;
+  margin-inline: auto;
+}
 .services-page .header {
   position: relative;
   min-height: 480px; /* dopasuj do Figma */
@@ -9332,6 +9345,390 @@ body.contact-page .header::after {
     margin-inline: auto;
     min-width: 0;
     box-sizing: content-box;
+  }
+}
+
+/* ===========================
+   SERVICES 3D PRO (Three.js)
+   =========================== */
+.services-3d-pro {
+  padding: 40px 0;
+  background: #ffffff;
+  /* Kontener sekcji (mobile: 4 kolumny, 16px gap, padding inline z tokens) */
+}
+.services-3d-pro__container {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: 16px;
+  row-gap: 16px;
+  padding-inline: 20px;
+  justify-content: center;
+  margin-inline: auto;
+  min-width: 0;
+  box-sizing: content-box;
+  max-width: 1320px;
+}
+.services-3d-pro {
+  /* Header pełnej szerokości grida */
+}
+.services-3d-pro__header {
+  grid-column: 1/-1;
+  margin-bottom: 16px;
+}
+.services-3d-pro__title {
+  margin: 0 0 6px;
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.1;
+  letter-spacing: 0.07em;
+  color: #1D1F2C;
+}
+.services-3d-pro__lead {
+  margin: 0;
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  color: #6B7280;
+}
+.services-3d-pro {
+  /* Layout: viewer + panel (na mobile jeden pod drugim) */
+}
+.services-3d-pro__layout {
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+.services-3d-pro {
+  /* Viewer (canvas) */
+}
+.services-3d-pro__viewer {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #f6f6f6;
+}
+.services-3d-pro__viewer canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.services-3d-pro {
+  /* Toolbar na viewerze */
+}
+.services-3d-pro__toolbar {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  padding: 8px;
+  border-radius: 999px;
+}
+.services-3d-pro__toolbar .s3d-btn {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1;
+  letter-spacing: 0;
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: #000000;
+  background: #DC9B59;
+}
+.services-3d-pro__toolbar .s3d-btn:hover {
+  filter: brightness(1.06);
+}
+.services-3d-pro__toolbar .s3d-btn:active {
+  transform: translateY(1px);
+}
+.services-3d-pro {
+  /* Panel z opisem */
+}
+.services-3d-pro__panel {
+  background: #101010;
+  color: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+}
+.services-3d-pro__panel .panel__title {
+  margin: 0 0 6px;
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.2;
+}
+.services-3d-pro__panel .panel__text {
+  margin: 0 0 12px;
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+.services-3d-pro__panel .panel__media {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #222;
+  border-radius: 12px;
+  margin: 12px 0;
+}
+.services-3d-pro__panel .panel__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #DC9B59;
+  color: #101010;
+  text-decoration: none;
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 700;
+}
+.services-3d-pro__panel {
+  /* Fallback 2D */
+}
+.services-3d-pro__panel .s3d-fallback {
+  margin-top: 12px;
+  background: #ffffff;
+  color: #1D1F2C;
+  border-radius: 12px;
+  padding: 8px;
+}
+.services-3d-pro__panel .s3d-fallback__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.services-3d-pro__panel .s2d.clickable {
+  cursor: pointer;
+}
+.services-3d-pro {
+  /* ========= BREAKPOINTS ========= */
+  /* Tablet: 12 kolumn + układ 7/5 */
+}
+@media (min-width: 744px) {
+  .services-3d-pro__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 20px;
+    row-gap: 20px;
+    padding-inline: 20px;
+    justify-content: center;
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    max-width: 1320px;
+  }
+  .services-3d-pro__title {
+    font-size: 28px;
+  }
+  .services-3d-pro__layout {
+    grid-template-columns: 7fr 5fr;
+    gap: 24px;
+  }
+}
+.services-3d-pro {
+  /* Laptop: więcej oddechu + większe tytuły */
+}
+@media (min-width: 1440px) {
+  .services-3d-pro {
+    padding: 56px 0 64px;
+  }
+  .services-3d-pro__title {
+    font-size: 32px;
+  }
+  .services-3d-pro__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 24px;
+    row-gap: 24px;
+    padding-inline: 20px;
+    justify-content: center;
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+    max-width: 1320px;
+  }
+}
+.services-3d-pro {
+  /* Desktop: typografia */
+}
+@media (min-width: 1920px) {
+  .services-3d-pro__title {
+    font-size: 36px;
+  }
+}
+
+/* ===============================
+   Sekcja: interaktywny obraz + hotspoty
+   Plik:   scss/pages/_interactive-house.scss
+   =============================== */
+.interactive-house {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: #FAF7F4; /* bezpieczne tło zanim załaduje się obraz */
+  isolation: isolate; /* pewny stacking context */
+  /* Obraz na pełną szerokość */
+}
+.interactive-house__image {
+  width: 100%;
+  /* jeśli chcesz stałe proporcje sekcji — odkomentuj:
+  aspect-ratio: 16 / 9; 
+  */
+}
+.interactive-house__image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.interactive-house {
+  /* Warstwa na hotspoty */
+}
+.interactive-house .hotspots {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; /* same hotspoty włączają zdarzenia */
+  z-index: 2;
+}
+.interactive-house {
+  /* Pojedynczy hotspot */
+}
+.interactive-house .hotspot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid #DC9B59;
+  background: rgba(255, 255, 255, 0.9);
+  color: #DC9B59;
+  display: grid;
+  place-items: center;
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  /* Stan :hover / :focus */
+}
+.interactive-house .hotspot:hover, .interactive-house .hotspot:focus-visible {
+  background: #DC9B59;
+  color: #ffffff;
+  transform: scale(1.06);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+  outline: none;
+}
+.interactive-house .hotspot {
+  /* Aktywne (np. po kliknięciu — możesz dodać klasę .is-active w JS) */
+}
+.interactive-house .hotspot.is-active {
+  background: #DC9B59;
+  color: #ffffff;
+  transform: scale(1.08);
+}
+.interactive-house .hotspot {
+  /* Prost y tooltip (tytuł) — czyta atrybut data-title */
+}
+.interactive-house .hotspot::after {
+  content: attr(data-title);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  translate: -50% 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #ffffff;
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease, visibility 0.15s ease;
+  pointer-events: none;
+}
+.interactive-house .hotspot {
+  /* Strzałka pod tooltipem */
+}
+.interactive-house .hotspot::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  translate: -50% 0;
+  border: 6px solid transparent;
+  border-top-color: rgba(0, 0, 0, 0.75);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease, visibility 0.15s ease;
+  pointer-events: none;
+}
+.interactive-house .hotspot {
+  /* Pokazuj tooltip na hover/focus */
+}
+.interactive-house .hotspot:hover::after, .interactive-house .hotspot:hover::before, .interactive-house .hotspot:focus-visible::after, .interactive-house .hotspot:focus-visible::before, .interactive-house .hotspot.is-active::after, .interactive-house .hotspot.is-active::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ====== TABLET (≥744px) ====== */
+@media (min-width: 744px) {
+  .interactive-house .hotspot {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    border-width: 2px;
+  }
+  .interactive-house .hotspot::after {
+    font-size: 13px;
+    padding: 9px 12px;
+  }
+}
+/* ====== LAPTOP (≥1440px) ====== */
+@media (min-width: 1440px) {
+  .interactive-house .hotspot {
+    width: 48px;
+    height: 48px;
+    font-size: 22px;
+    border-width: 2px;
+  }
+  .interactive-house .hotspot::after {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+}
+/* Preferencje dostępności: ogranicz animacje */
+@media (prefers-reduced-motion: reduce) {
+  .interactive-house .hotspot {
+    transition: none;
   }
 }
 
