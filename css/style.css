@@ -8784,6 +8784,29 @@ main.pages__container > .container {
     padding-inline: 300px;
   }
 }
+/* ================================================================
+   LOKALNE USTAWIENIA DLA PODSTRON (bez wpływu na index)
+   ================================================================ */
+.services-page {
+  /* Hero nigdy nie przykrywa nawigacji; unikanie nowych stacking contexts */
+}
+.services-page .services-hero,
+.services-page .services-hero__container {
+  position: relative;
+  z-index: 0;
+  transform: none;
+  filter: none;
+}
+.services-page {
+  /* Overlay/gradient w hero pod nawigacją */
+}
+.services-page .hero__overlay {
+  position: absolute;
+  inset: auto 0 0 0; /* overlay przy dole hero – dostosuj jeśli masz inny */
+  z-index: 1;
+  pointer-events: none;
+}
+
 /* ===== Namespace strony ===== */
 .services-page {
   /* FIX: kontenery sekcji nie mogą wychodzić poza viewport */
@@ -8799,11 +8822,12 @@ main.pages__container > .container {
 }
 .services-page .header {
   position: relative;
-  min-height: 480px; /* dopasuj do Figma */
+  min-height: 300px; /* wysokość banera */
   background: url("../../photos/pages/services/services-header.webp") center/cover no-repeat;
+  /* belka leży NA zdjęciu */
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-start;
   padding-bottom: 60px;
 }
 .services-page {
@@ -8813,7 +8837,6 @@ main.pages__container > .container {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.35);
   z-index: 1;
 }
 .services-page .header__wrap,
@@ -8873,7 +8896,7 @@ main.pages__container > .container {
   justify-content: center;
   height: 48px;
   padding: 0 22px;
-  border-radius: 12px;
+  border-radius: 0 12px 0 0;
   text-decoration: none;
   font: 700 15px/1 "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   letter-spacing: 0.01em;
@@ -8973,19 +8996,144 @@ main.pages__container > .container {
   letter-spacing: 0.07em;
   color: #1D1F2C;
 }
+.services-list {
+  /* GRID + tryb slidera (aktywny tylko na mniejszych ekranach przez JS) */
+}
 .services-list .services-grid {
   grid-column: 1/-1;
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
+  overflow: visible;
+}
+.services-list .services-grid.is-slider {
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  gap: 16px;
+  padding-bottom: 12px;
+}
+.services-list .services-grid.is-slider .service-card {
+  flex: 0 0 80%; /* ~80% viewportu */
+  scroll-snap-align: start;
+}
+.services-list {
+  /* ===== Strzałki (rodzeństwo grida) ===== */
+}
+.services-list .services-slider-nav {
+  /* kluczowe dwie linie poniżej */
+  grid-column: 1/-1;
+  width: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+.services-list .snav {
+  appearance: none;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: #fff;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 4px 3px rgba(0, 0, 0, 0.035);
+  cursor: pointer;
+  transition: transform 0.12s ease, filter 0.2s;
+}
+.services-list .snav img {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+.services-list .snav:hover {
+  filter: brightness(0.97);
+}
+.services-list .snav:active {
+  transform: translateY(1px);
+}
+.services-list {
+  /* pokaż strzałki tylko w trybie slidera */
+}
+.services-list .services-grid.is-slider + .services-slider-nav {
+  display: flex;
+}
+@media (min-width: 744px) {
+  .services-list .services-list__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    column-gap: 20px;
+    row-gap: 20px;
+    padding-inline: 42px;
+    justify-content: center;
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+  }
+  .services-list .services-grid:not(.is-slider) {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .services-list .services-slider-nav {
+    margin-top: 14px;
+    gap: 14px;
+  }
+  .services-list .snav {
+    width: 48px;
+    height: 48px;
+  }
+  .services-list .snav img {
+    width: 22px;
+    height: 22px;
+  }
+}
+@media (min-width: 1440px) {
+  .services-list .services-list__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 24px;
+    row-gap: 24px;
+    padding-inline: 40px;
+    justify-content: center;
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+  }
+  .services-list .services-grid:not(.is-slider) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+}
+@media (min-width: 1920px) {
+  .services-list .services-list__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 24px;
+    row-gap: 24px;
+    padding-inline: 300px;
+    justify-content: center;
+    margin-inline: auto;
+    min-width: 0;
+    box-sizing: content-box;
+  }
 }
 .services-list .service-card {
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  border-radius: 0 42px 0 0;
+  box-shadow: 0 4px 3px rgba(0, 0, 0, 0.035);
   overflow: hidden;
   display: grid;
   grid-template-rows: auto 1fr;
+  margin-top: 30px;
 }
 .services-list .service-card .service-card__media {
   position: relative;
@@ -9041,7 +9189,7 @@ main.pages__container > .container {
   justify-content: center;
   height: 44px;
   padding: 0 18px;
-  border-radius: 10px;
+  border-radius: 0 12px 0 0;
   text-decoration: none;
   background: #DC9B59;
   color: #fff;
@@ -9054,59 +9202,6 @@ main.pages__container > .container {
 }
 .services-list .service-card .service-card__btn:active {
   transform: translateY(1px);
-}
-@media (min-width: 744px) {
-  .services-list .services-list__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-    column-gap: 20px;
-    row-gap: 20px;
-    padding-inline: 42px;
-    justify-content: center;
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-  }
-  .services-list .services-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-}
-@media (min-width: 1440px) {
-  .services-list .services-list__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: 24px;
-    row-gap: 24px;
-    padding-inline: 40px;
-    justify-content: center;
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-  }
-  .services-list .services-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-}
-@media (min-width: 1920px) {
-  .services-list .services-list__container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: 24px;
-    row-gap: 24px;
-    padding-inline: 300px;
-    justify-content: center;
-    margin-inline: auto;
-    min-width: 0;
-    box-sizing: content-box;
-  }
 }
 
 /* ===== PROCES ===== */
@@ -9147,11 +9242,12 @@ main.pages__container > .container {
   gap: 12px;
 }
 .services-process .process-step {
-  background: #fff;
-  border-radius: 12px;
+  background: #FAF7F4;
+  border-radius: 0 18px 0 0;
   padding: 16px 16px 18px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 3px rgba(0, 0, 0, 0.035);
   text-align: center;
+  margin-top: 38px;
 }
 .services-process .process-step .process-step__icon {
   width: 64px;
@@ -9585,6 +9681,7 @@ main.pages__container > .container {
   overflow: hidden;
   background: #FAF7F4; /* bezpieczne tło zanim załaduje się obraz */
   isolation: isolate; /* pewny stacking context */
+  padding: 40px 20px;
   /* Obraz na pełną szerokość */
 }
 .interactive-house__image {

@@ -9,7 +9,7 @@
 </head>
 
 <body class="services-page">
-  <!-- ===== HEADER (jak na innych podstronach) ===== -->
+  <!-- ===== NAV (tak jak na innych podstronach) ===== -->
   <header class="header">
     <div class="header__wrap">
       <div class="container header__top">
@@ -43,13 +43,17 @@
   </header>
 
 
+  <!-- ===== TREŚĆ PODSTRONY ===== -->
   <main class="services-main" id="main">
-    <!-- ===== HERO ===== -->
+    <!-- ===== HERO (osobna sekcja, NIE w <header>) ===== -->
     <section class="services-hero" aria-labelledby="services-hero-title">
       <div class="pages__container services-hero__container">
-        <h1 class="services-hero__title" id="services-hero-title">Usługi budowy domów drewnianych</h1>
-        <p class="services-hero__lead">Od koncepcji po odbiór — kompleksowo prowadzimy proces budowy w technologii
-          timber frame.</p>
+        <h1 class="services-hero__title" id="services-hero-title">
+          Usługi budowy domów drewnianych
+        </h1>
+        <p class="services-hero__lead">
+          Od koncepcji po odbiór — kompleksowo prowadzimy proces budowy w technologii timber frame.
+        </p>
         <div class="services-hero__cta-row">
           <a class="services-hero__btn services-hero__btn--primary" href="../pages/contact.html">Wyceń projekt</a>
           <a class="services-hero__btn services-hero__btn--ghost" href="../index.html#projects">Zobacz realizacje</a>
@@ -57,119 +61,124 @@
       </div>
     </section>
 
-    <!-- ===== LISTA USŁUG (karty) ===== -->
-    <section class="services-list" aria-labelledby="services-list-title">
-      <div class="pages__container services-list__container">
-        <h2 class="services-list__title" id="services-list-title">Co robimy</h2>
 
-        <div class="services-grid">
-          <!-- KARTA -->
-          <article class="service-card">
-            <div class="service-card__media">
-              <img class="service-card__image" src="../photos/pages/services/services-header.jpg"
-                alt="Projekt koncepcyjny" />
-            </div>
-            <div class="service-card__body">
-              <h3 class="service-card__title">Projekt koncepcyjny</h3>
-              <p class="service-card__text">Funkcjonalne układy, bryła, technologia i wstępny kosztorys dopasowany do
-                budżetu.</p>
-              <ul class="service-card__bullets">
-                <li class="service-card__bullet">2–3 warianty układu</li>
-                <li class="service-card__bullet">Dobór technologii i materiałów</li>
-                <li class="service-card__bullet">Szacunkowa wycena</li>
-              </ul>
-              <a class="service-card__btn" href="../pages/contact.html">Zapytaj o termin</a>
-            </div>
-          </article>
+<!-- ===== LISTA USŁUG (karty) ===== -->
+<section class="services-list" aria-labelledby="services-list-title">
+  <div class="pages__container services-list__container">
+    <h2 class="services-list__title" id="services-list-title">Co robimy</h2>
 
-          <article class="service-card">
-            <div class="service-card__media">
-              <img class="service-card__image"
-                src="../photos/pages/services/Gemini_Generated_Image_i0pbnqi0pbnqi0pb.png" alt="Projekt wykonawczy" />
-            </div>
-            <div class="service-card__body">
-              <h3 class="service-card__title">Projekt wykonawczy</h3>
-              <p class="service-card__text">Dokumentacja warsztatowa i rysunki montażowe pod prefabrykację i budowę.</p>
-              <ul class="service-card__bullets">
-                <li class="service-card__bullet">Rysunki detali</li>
-                <li class="service-card__bullet">Specyfikacje materiałowe</li>
-                <li class="service-card__bullet">Koordynacja branż</li>
-              </ul>
-              <a class="service-card__btn" href="../pages/contact.html">Poznaj zakres</a>
-            </div>
-          </article>
-
-          <article class="service-card">
-            <div class="service-card__media">
-              <img class="service-card__image" src="../photos/pages/services/services-header.webp"
-                alt="Prefabrykacja elementów" />
-            </div>
-            <div class="service-card__body">
-              <h3 class="service-card__title">Prefabrykacja elementów</h3>
-              <p class="service-card__text">Produkcja ścian, stropów i więźb w kontrolowanych warunkach hali.</p>
-              <ul class="service-card__bullets">
-                <li class="service-card__bullet">Powtarzalna jakość</li>
-                <li class="service-card__bullet">Skrócony czas budowy</li>
-                <li class="service-card__bullet">Mniejsza ilość odpadów</li>
-              </ul>
-              <a class="service-card__btn" href="../pages/contact.html">Umów oględziny</a>
-            </div>
-          </article>
-
-          <article class="service-card">
-            <div class="service-card__media">
-              <img class="service-card__image" src="../photos/pages/kt-snickers-mobile-desktop.webp"
-                alt="Montaż na działce" />
-            </div>
-            <div class="service-card__body">
-              <h3 class="service-card__title">Montaż na działce</h3>
-              <p class="service-card__text">Ekipa montażowa realizuje prace w ścisłym harmonogramie i standardzie
-                jakości.</p>
-              <ul class="service-card__bullets">
-                <li class="service-card__bullet">Koordynacja dostaw</li>
-                <li class="service-card__bullet">Bezpieczeństwo i BHP</li>
-                <li class="service-card__bullet">Stały nadzór</li>
-              </ul>
-              <a class="service-card__btn" href="../pages/contact.html">Zapytaj o wolne sloty</a>
-            </div>
-          </article>
-
-          <article class="service-card">
-            <div class="service-card__media">
-              <img class="service-card__image" src="../photos/pages/kt-snickers-mobile-desktop.webp"
-                alt="Wykończenie" />
-            </div>
-            <div class="service-card__body">
-              <h3 class="service-card__title">Wykończenie</h3>
-              <p class="service-card__text">Standardy materiałowe dobrane do preferencji estetycznych i użytkowych.</p>
-              <ul class="service-card__bullets">
-                <li class="service-card__bullet">Podłogi, stolarka, łazienki</li>
-                <li class="service-card__bullet">Instalacje i AGD</li>
-                <li class="service-card__bullet">Checklisty jakości</li>
-              </ul>
-              <a class="service-card__btn" href="../pages/contact.html">Poproś o katalog</a>
-            </div>
-          </article>
-
-          <article class="service-card">
-            <div class="service-card__media">
-              <img class="service-card__image" src="../photos/pages/kt-snickers-mobile-desktop.webp"
-                alt="Serwis i opieka" />
-            </div>
-            <div class="service-card__body">
-              <h3 class="service-card__title">Serwis i opieka</h3>
-              <p class="service-card__text">Gwarancja, przeglądy okresowe i wsparcie przy modernizacjach.</p>
-              <ul class="service-card__bullets">
-                <li class="service-card__bullet">Gwarancyjne i pogwarancyjne</li>
-                <li class="service-card__bullet">Modernizacje i rozbudowy</li>
-                <li class="service-card__bullet">Wsparcie techniczne</li>
-              </ul>
-              <a class="service-card__btn" href="../pages/contact.html">Zgłoś potrzebę</a>
-            </div>
-          </article>
+    <!-- GRID z kartami (bez strzałek w środku) -->
+    <div class="services-grid">
+      <!-- KARTA -->
+      <article class="service-card">
+        <div class="service-card__media">
+          <img class="service-card__image" src="../photos/pages/services/services-header.jpg" alt="Projekt koncepcyjny" />
         </div>
-      </div>
-    </section>
+        <div class="service-card__body">
+          <h3 class="service-card__title">Projekt koncepcyjny</h3>
+          <p class="service-card__text">Funkcjonalne układy, bryła, technologia i wstępny kosztorys dopasowany do budżetu.</p>
+          <ul class="service-card__bullets">
+            <li class="service-card__bullet">2–3 warianty układu</li>
+            <li class="service-card__bullet">Dobór technologii i materiałów</li>
+            <li class="service-card__bullet">Szacunkowa wycena</li>
+          </ul>
+          <a class="service-card__btn" href="../pages/contact.html">Zapytaj o termin</a>
+        </div>
+      </article>
+
+      <article class="service-card">
+        <div class="service-card__media">
+          <img class="service-card__image" src="../photos/pages/services/Gemini_Generated_Image_i0pbnqi0pbnqi0pb.png" alt="Projekt wykonawczy" />
+        </div>
+        <div class="service-card__body">
+          <h3 class="service-card__title">Projekt wykonawczy</h3>
+          <p class="service-card__text">Dokumentacja warsztatowa i rysunki montażowe pod prefabrykację i budowę.</p>
+          <ul class="service-card__bullets">
+            <li class="service-card__bullet">Rysunki detali</li>
+            <li class="service-card__bullet">Specyfikacje materiałowe</li>
+            <li class="service-card__bullet">Koordynacja branż</li>
+          </ul>
+          <a class="service-card__btn" href="../pages/contact.html">Poznaj zakres</a>
+        </div>
+      </article>
+
+      <article class="service-card">
+        <div class="service-card__media">
+          <img class="service-card__image" src="../photos/pages/services/services-header.webp" alt="Prefabrykacja elementów" />
+        </div>
+        <div class="service-card__body">
+          <h3 class="service-card__title">Prefabrykacja elementów</h3>
+          <p class="service-card__text">Produkcja ścian, stropów i więźb w kontrolowanych warunkach hali.</p>
+          <ul class="service-card__bullets">
+            <li class="service-card__bullet">Powtarzalna jakość</li>
+            <li class="service-card__bullet">Skrócony czas budowy</li>
+            <li class="service-card__bullet">Mniejsza ilość odpadów</li>
+          </ul>
+          <a class="service-card__btn" href="../pages/contact.html">Umów oględziny</a>
+        </div>
+      </article>
+
+      <article class="service-card">
+        <div class="service-card__media">
+          <img class="service-card__image" src="../photos/pages/kt-snickers-mobile-desktop.webp" alt="Montaż na działce" />
+        </div>
+        <div class="service-card__body">
+          <h3 class="service-card__title">Montaż na działce</h3>
+          <p class="service-card__text">Ekipa montażowa realizuje prace w ścisłym harmonogramie i standardzie jakości.</p>
+          <ul class="service-card__bullets">
+            <li class="service-card__bullet">Koordynacja dostaw</li>
+            <li class="service-card__bullet">Bezpieczeństwo i BHP</li>
+            <li class="service-card__bullet">Stały nadzór</li>
+          </ul>
+          <a class="service-card__btn" href="../pages/contact.html">Zapytaj o wolne sloty</a>
+        </div>
+      </article>
+
+      <article class="service-card">
+        <div class="service-card__media">
+          <img class="service-card__image" src="../photos/pages/kt-snickers-mobile-desktop.webp" alt="Wykończenie" />
+        </div>
+        <div class="service-card__body">
+          <h3 class="service-card__title">Wykończenie</h3>
+          <p class="service-card__text">Standardy materiałowe dobrane do preferencji estetycznych i użytkowych.</p>
+          <ul class="service-card__bullets">
+            <li class="service-card__bullet">Podłogi, stolarka, łazienki</li>
+            <li class="service-card__bullet">Instalacje i AGD</li>
+            <li class="service-card__bullet">Checklisty jakości</li>
+          </ul>
+          <a class="service-card__btn" href="../pages/contact.html">Poproś o katalog</a>
+        </div>
+      </article>
+
+      <article class="service-card">
+        <div class="service-card__media">
+          <img class="service-card__image" src="../photos/pages/kt-snickers-mobile-desktop.webp" alt="Serwis i opieka" />
+        </div>
+        <div class="service-card__body">
+          <h3 class="service-card__title">Serwis i opieka</h3>
+          <p class="service-card__text">Gwarancja, przeglądy okresowe i wsparcie przy modernizacjach.</p>
+          <ul class="service-card__bullets">
+            <li class="service-card__bullet">Gwarancyjne i pogwarancyjne</li>
+            <li class="service-card__bullet">Modernizacje i rozbudowy</li>
+            <li class="service-card__bullet">Wsparcie techniczne</li>
+          </ul>
+          <a class="service-card__btn" href="../pages/contact.html">Zgłoś potrzebę</a>
+        </div>
+      </article>
+    </div>
+
+    <!-- WYŚRODKOWANA nawigacja – rodzeństwo grida -->
+    <div class="services-slider-nav" aria-label="Nawigacja karuzeli">
+      <button class="snav snav--prev" type="button" aria-label="Poprzednie">
+        <img src="../photos/svg/arow-left-testim.svg" alt="">
+      </button>
+      <button class="snav snav--next" type="button" aria-label="Następne">
+        <img src="../photos/svg/arow-right-testim.svg" alt="">
+      </button>
+    </div>
+
+  </div>
+</section>
 
     <!-- ===== PROCES (kroki) ===== -->
     <section class="services-process" aria-labelledby="services-process-title">
@@ -357,6 +366,8 @@
 
   <!-- <script src="../js/services.js" type="module"></script> -->
   <script type="module" src="../js/services-3d-pro.js"></script>
+  <script src="../js/pages_services-slider.js"></script>
+
 
 
 

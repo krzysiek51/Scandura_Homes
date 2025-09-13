@@ -12,6 +12,7 @@
   overflow: hidden;
   background:$color-beige-light-bg; /* bezpieczne tło zanim załaduje się obraz */
   isolation: isolate;       /* pewny stacking context */
+  padding: 40px 20px;
 
   /* Obraz na pełną szerokość */
   &__image {
