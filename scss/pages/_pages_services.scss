@@ -6,9 +6,9 @@
   /* FIX: kontenery sekcji nie mogą wychodzić poza viewport */
   .services-hero__container,
   .services-list__container,
-  .services-process__container,
+  .services-process__container, /* zostawione: neutralny reset kontenera */
   .services-faq__container {
-    box-sizing: border-box !important; /* przebiwa mixin (content-box) */
+    box-sizing: border-box !important; /* przebija mixin (content-box) */
     width: 100%;
     max-width: none;
     margin-inline: auto;
@@ -16,23 +16,21 @@
 
   .header {
     position: relative;
-    min-height: 300px; /* wysokość banera */
+    min-height: 450px; /* MOBILE */
     background: url("../../photos/pages/services/services-header.webp") center/cover no-repeat;
 
     /* belka leży NA zdjęciu */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    //padding-top: 20px;   /* trochę oddechu od góry */
     padding-bottom: 60px;
   }
 
-  /* Przyciemnienie zdjęcia */
+  /* Przyciemnienie zdjęcia – opcjonalnie */
   .header::after {
     content: "";
     position: absolute;
     inset: 0;
-    //background: rgba(0, 0, 0, 0.35);
     z-index: 1;
   }
 
@@ -90,17 +88,6 @@
     &:hover { filter: brightness(.97); }
     &:active { transform: translateY(1px); }
   }
-
-  @media (min-width: $bp-tablet) {
-    .services-hero__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
-    .services-hero__lead { margin-bottom: 24px; }
-  }
-  @media (min-width: $bp-laptop) {
-    .services-hero__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
-  }
-  @media (min-width: $bp-desktop) {
-    .services-hero__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
-  }
 }
 
 /* ===== LISTA USŁUG ===== */
@@ -127,7 +114,7 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: 16px;
-    overflow: visible; // bez wpływu na wygląd kart
+    overflow: visible;
 
     &.is-slider {
       display: flex;
@@ -138,24 +125,22 @@
       padding-bottom: 12px;
 
       .service-card {
-        flex: 0 0 80%;   /* ~80% viewportu */
+        flex: 0 0 80%;   /* ~80% viewportu na mobile */
         scroll-snap-align: start;
       }
     }
   }
 
-  /* ===== Strzałki (rodzeństwo grida) ===== */
-.services-slider-nav {
-  /* kluczowe dwie linie poniżej */
-  grid-column: 1 / -1;
-  width: 100%;
-
-  display: none;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  margin-top: 12px;
-}
+  /* Strzałki (rodzeństwo grida) */
+  .services-slider-nav {
+    grid-column: 1 / -1;
+    width: 100%;
+    display: none; /* pokaż tylko gdy grid ma .is-slider */
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+  }
   .snav {
     appearance: none;
     border: 1px solid rgba(0,0,0,.12);
@@ -172,26 +157,7 @@
     &:hover  { filter: brightness(.97); }
     &:active { transform: translateY(1px); }
   }
-  /* pokaż strzałki tylko w trybie slidera */
   .services-grid.is-slider + .services-slider-nav { display: flex; }
-
-  @media (min-width: $bp-tablet) {
-    .services-list__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
-    .services-grid:not(.is-slider) { grid-template-columns: 1fr 1fr; gap: 20px; }
-    .services-slider-nav { margin-top: 14px; gap: 14px; }
-    .snav { width: 48px; height: 48px;
-      img { width: 22px; height: 22px; }
-    }
-  }
-
-  @media (min-width: $bp-laptop) {
-    .services-list__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
-    .services-grid:not(.is-slider) { grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  }
-
-  @media (min-width: $bp-desktop) {
-    .services-list__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
-  }
 
   .service-card {
     background: #fff;
@@ -243,63 +209,13 @@
   }
 }
 
-/* ===== PROCES ===== */
-.services-process {
-  background: $color-white;
-  padding-block: 32px;
-
-  .services-process__container { @include section-grid-fluid(4, 16px, 16px, 20px); }
-  .services-process__title {
-    grid-column: 1 / -1;
-    margin: 0 0 12px;
-    font-family: $ff;
-    font-weight: $h-title-weight;
-    font-size: $h-title-size;
-    line-height: $h-title-lh;
-    letter-spacing: $h-title-ls;
-    color: $color-dark-text;
-  }
-
-  .process-steps {
-    grid-column: 1 / -1;
-    list-style: none; padding: 0; margin: 0;
-    display: grid; grid-template-columns: 1fr; gap: 12px;
-  }
-
-  .process-step {
-    background: $color-beige-light-bg; // jasny beż dla tla bloku services
-    border-radius: 0 18px 0 0;
-    padding: 16px 16px 18px;
-    box-shadow: 0 4px 3px rgba(0,0,0,.035);
-    text-align: center;
-    margin-top: 38px;
-
-    .process-step__icon { width: 64px; height: 64px; border-radius: 50%; background: #fff; margin: -32px auto 8px; box-shadow: 0 8px 24px rgba(0,0,0,.12); display: grid; place-items: center; }
-    .process-step__icon-img { width: 60%; height: 60%; object-fit: contain; display: block; }
-
-    .process-step__title { margin: 6px 0 4px; font-weight: 600; font-size: 16px; color: $color-dark-text; }
-    .process-step__text  { margin: 0; font-size: 14px; color: $color-light-text; }
-  }
-
-  @media (min-width: $bp-tablet) {
-    .services-process__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
-    .process-steps { grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  }
-  @media (min-width: $bp-laptop) {
-    .services-process__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
-    .process-steps { grid-template-columns: repeat(5, 1fr); gap: 20px; }
-  }
-  @media (min-width: $bp-desktop) {
-    .services-process__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
-  }
-}
-
 /* ===== FAQ ===== */
 .services-faq {
   background: $color-beige-bg;
   padding-block: 40px;
 
   .services-faq__container { @include section-grid-fluid(4, 16px, 16px, 20px); }
+
   .services-faq__title {
     grid-column: 1 / -1;
     margin: 0 0 12px;
@@ -330,8 +246,122 @@
 
   .faq-item__content { padding: 0 18px 16px; }
   .faq-item__answer  { margin: 0; font-size: 14px; color: $color-light-text; }
+}
 
-  @media (min-width: $bp-tablet)  { .services-faq__container { @include section-grid-fluid(8, 20px, 20px, 42px); } }
-  @media (min-width: $bp-laptop)  { .services-faq__container { @include section-grid-fluid(12, 24px, 24px, 40px); } }
-  @media (min-width: $bp-desktop) { .services-faq__container { @include section-grid-fluid(12, 24px, 24px, 300px); } }
+/* =============================================================================
+   MEDIA QUERIES — T / L / D
+   ========================================================================== */
+
+/* ===== Tablet ===== */
+@media (min-width: $bp-tablet) {
+  .services-page {
+    .header { min-height: 536px; padding-bottom: 72px; }
+  }
+
+  .services-hero {
+    .services-hero__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+    .services-hero__title { font-size: calc(#{$h-title-size} + 2px); }
+    .services-hero__lead  { margin-bottom: 24px; font-size: 15px; }
+    .services-hero__btn   { height: 50px; padding: 0 24px; font-size: 15px; }
+  }
+
+  .services-list {
+    .services-list__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+    .services-list__title { font-size: calc(#{$h-title-size} + 2px); margin-bottom: 18px; }
+
+    .services-grid:not(.is-slider) { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .services-grid.is-slider .service-card { flex-basis: 70%; }
+
+    .services-slider-nav { margin-top: 14px; gap: 14px; }
+    .snav { width: 48px; height: 48px;
+      img { width: 22px; height: 22px; }
+    }
+
+    .service-card {
+      .service-card__body  { padding: 22px; }
+      .service-card__title { font-size: 19px; }
+      .service-card__text  { font-size: 15px; }
+      .service-card__btn   { height: 46px; padding: 0 20px; }
+    }
+  }
+
+  /* (USUNIĘTO: tabletowe reguły dla services-process/timeline) */
+
+  .services-faq {
+    .services-faq__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+    .services-faq__title { font-size: calc(#{$h-title-size} + 2px); }
+    .faq-item__toggle { padding: 18px 20px; }
+    .faq-item__answer { font-size: 15px; }
+  }
+}
+
+/* ===== Laptop ===== */
+@media (min-width: $bp-laptop) {
+  .services-page {
+    .header { min-height: 860px; padding-bottom: 84px; }
+  }
+
+  .services-hero {
+    .services-hero__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
+    .services-hero__title { font-size: calc(#{$h-title-size} + 6px); }
+    .services-hero__lead  { font-size: 16px; max-width: 75ch; }
+    .services-hero__btn   { height: 52px; padding: 0 26px; font-size: 16px; }
+  }
+
+  .services-list {
+    .services-list__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
+    .services-list__title { font-size: calc(#{$h-title-size} + 6px); margin-bottom: 20px; }
+
+    .services-grid:not(.is-slider) { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .services-grid.is-slider .service-card { flex-basis: 60%; }
+
+    .service-card {
+      .service-card__body  { padding: 24px; }
+      .service-card__title { font-size: 20px; }
+      .service-card__text  { font-size: 16px; }
+      .service-card__btn   { height: 48px; padding: 0 22px; font-size: 15px; }
+    }
+  }
+
+  /* (USUNIĘTO: laptopowe reguły dla services-process/timeline) */
+
+  .services-faq {
+    .services-faq__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
+    .services-faq__title { font-size: calc(#{$h-title-size} + 6px); }
+    .faq-item__toggle { padding: 20px 22px; }
+  }
+}
+
+/* ===== Desktop ===== */
+@media (min-width: $bp-desktop) {
+  .services-page {
+    .header { min-height: 860px; padding-bottom: 96px; }
+  }
+
+  .services-hero {
+    .services-hero__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
+    .services-hero__title { font-size: calc(#{$h-title-size} + 10px); }
+    .services-hero__lead  { font-size: 17px; max-width: 80ch; }
+    .services-hero__btn   { height: 54px; padding: 0 28px; font-size: 16px; }
+  }
+
+  .services-list {
+    .services-list__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
+    .services-list__title { font-size: calc(#{$h-title-size} + 10px); }
+
+    .services-grid.is-slider .service-card { flex-basis: 50%; }
+
+    .service-card {
+      .service-card__body  { padding: 26px; }
+      .service-card__title { font-size: 21px; }
+      .service-card__text  { font-size: 17px; }
+      .service-card__btn   { height: 50px; padding: 0 24px; }
+    }
+  }
+
+  /* (USUNIĘTO: desktopowe reguły dla services-process/timeline) */
+
+  .services-faq {
+    .services-faq__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
+  }
 }

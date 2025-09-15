@@ -61,18 +61,24 @@
       </div>
     </section>
 
-
 <!-- ===== LISTA USŁUG (karty) ===== -->
+<!-- ======================================================================
+     [SECTION] LISTA USŁUG (karty + przycisk "Szczegóły" -> #service-modal)
+     Każdy kafelek ma własny <template.service-card__details-template> z .qv-*:
+       .qv-image  | .qv-title | .qv-lead | .qv-bullets li | .qv-cta
+     ====================================================================== -->
 <section class="services-list" aria-labelledby="services-list-title">
   <div class="pages__container services-list__container">
     <h2 class="services-list__title" id="services-list-title">Co robimy</h2>
 
-    <!-- GRID z kartami (bez strzałek w środku) -->
     <div class="services-grid">
-      <!-- KARTA -->
-      <article class="service-card">
+      <!-- ===== KARTA 1 — PROJEKT KONCEPCYJNY ===== -->
+      <article class="service-card" data-service="koncepcyjny">
         <div class="service-card__media">
-          <img class="service-card__image" src="../photos/pages/services/services-header.jpg" alt="Projekt koncepcyjny" />
+          <img class="service-card__image"
+               src="../photos/pages/services/services-header.jpg"
+               alt="Miniatura: projekt koncepcyjny"
+               loading="lazy" decoding="async" />
         </div>
         <div class="service-card__body">
           <h3 class="service-card__title">Projekt koncepcyjny</h3>
@@ -82,13 +88,45 @@
             <li class="service-card__bullet">Dobór technologii i materiałów</li>
             <li class="service-card__bullet">Szacunkowa wycena</li>
           </ul>
-          <a class="service-card__btn" href="../pages/contact.html">Zapytaj o termin</a>
+
+          <div class="service-card__actions">
+            <a class="service-card__btn" href="../pages/contact.html">Zapytaj o termin</a>
+            <button class="service-card__more-btn" type="button"
+                    data-quickview-open aria-controls="service-modal"
+                    aria-label="Szczegóły: Projekt koncepcyjny">Szczegóły</button>
+          </div>
+
+          <!-- DEDYKOWANE TREŚCI DO MODALA -->
+          <template class="service-card__details-template">
+            <div class="qv">
+              <img class="qv-image"
+                   src="../photos/pages/services/services-header.jpg"
+                   alt="Projekt koncepcyjny — rozwinięcie" loading="lazy" decoding="async">
+              <h4 class="qv-title">Projekt koncepcyjny – pakiet rozszerzony</h4>
+              <p class="qv-lead">
+                Warsztaty startowe i analiza działki (MPZP/WT/media). Definiujemy wymagania,
+                ryzyka oraz kierunek projektowy. Efekt: rysunki koncepcyjne + model bryły,
+                punkt wyjścia do wyceny i projektu wykonawczego.
+              </p>
+              <ul class="qv-bullets">
+                <li>3 rundy iteracji koncepcji w krótkich sprintach</li>
+                <li>Moodboardy materiałowe i wstępna paleta kolorów</li>
+                <li>Wstępna tabela powierzchni i estymacja kosztów</li>
+                <li>Sprawdzenie pod kątem MPZP/WT i przyłączy</li>
+              </ul>
+              <a class="qv-cta" href="../pages/contact.html">Zamów pakiet koncepcyjny</a>
+            </div>
+          </template>
         </div>
       </article>
 
-      <article class="service-card">
+      <!-- ===== KARTA 2 — PROJEKT WYKONAWCZY ===== -->
+      <article class="service-card" data-service="wykonawczy">
         <div class="service-card__media">
-          <img class="service-card__image" src="../photos/pages/services/Gemini_Generated_Image_i0pbnqi0pbnqi0pb.png" alt="Projekt wykonawczy" />
+          <img class="service-card__image"
+               src="../photos/pages/services/Gemini_Generated_Image_i0pbnqi0pbnqi0pb.png"
+               alt="Miniatura: projekt wykonawczy"
+               loading="lazy" decoding="async" />
         </div>
         <div class="service-card__body">
           <h3 class="service-card__title">Projekt wykonawczy</h3>
@@ -98,13 +136,43 @@
             <li class="service-card__bullet">Specyfikacje materiałowe</li>
             <li class="service-card__bullet">Koordynacja branż</li>
           </ul>
-          <a class="service-card__btn" href="../pages/contact.html">Poznaj zakres</a>
+
+          <div class="service-card__actions">
+            <a class="service-card__btn" href="../pages/contact.html">Poznaj zakres</a>
+            <button class="service-card__more-btn" type="button"
+                    data-quickview-open aria-controls="service-modal"
+                    aria-label="Szczegóły: Projekt wykonawczy">Szczegóły</button>
+          </div>
+
+          <template class="service-card__details-template">
+            <div class="qv">
+              <img class="qv-image"
+                   src="../photos/pages/services/Gemini_Generated_Image_i0pbnqi0pbnqi0pb.png"
+                   alt="Projekt wykonawczy — rozwinięcie" loading="lazy" decoding="async">
+              <h4 class="qv-title">Projekt wykonawczy – prefab gotowy do produkcji</h4>
+              <p class="qv-lead">
+                Kompletna dokumentacja pod produkcję i montaż: zestawy rysunkowe, listy cięć,
+                specyfikacje i karty technologiczne zoptymalizowane pod prefabrykację.
+              </p>
+              <ul class="qv-bullets">
+                <li>Rysunki konstrukcyjne ścian, stropów i dachu</li>
+                <li>Zestawienia materiałowe oraz listy cięć</li>
+                <li>Koordynacja z instalacjami (przejścia, otwory)</li>
+                <li>Checklisty kontroli jakości na produkcji i montażu</li>
+              </ul>
+              <a class="qv-cta" href="../pages/contact.html">Poproś o wycenę projektu</a>
+            </div>
+          </template>
         </div>
       </article>
 
-      <article class="service-card">
+      <!-- ===== KARTA 3 — PREFABRYKACJA ELEMENTÓW ===== -->
+      <article class="service-card" data-service="prefabrykacja">
         <div class="service-card__media">
-          <img class="service-card__image" src="../photos/pages/services/services-header.webp" alt="Prefabrykacja elementów" />
+          <img class="service-card__image"
+               src="../photos/pages/services/services-header.webp"
+               alt="Miniatura: prefabrykacja elementów"
+               loading="lazy" decoding="async" />
         </div>
         <div class="service-card__body">
           <h3 class="service-card__title">Prefabrykacja elementów</h3>
@@ -114,13 +182,43 @@
             <li class="service-card__bullet">Skrócony czas budowy</li>
             <li class="service-card__bullet">Mniejsza ilość odpadów</li>
           </ul>
-          <a class="service-card__btn" href="../pages/contact.html">Umów oględziny</a>
+
+          <div class="service-card__actions">
+            <a class="service-card__btn" href="../pages/contact.html">Umów oględziny</a>
+            <button class="service-card__more-btn" type="button"
+                    data-quickview-open aria-controls="service-modal"
+                    aria-label="Szczegóły: Prefabrykacja elementów">Szczegóły</button>
+          </div>
+
+          <template class="service-card__details-template">
+            <div class="qv">
+              <img class="qv-image"
+                   src="../photos/pages/services/services-header.webp"
+                   alt="Prefabrykacja — rozwinięcie" loading="lazy" decoding="async">
+              <h4 class="qv-title">Prefabrykacja w hali – proces i kontrola jakości</h4>
+              <p class="qv-lead">
+                Produkcja w stabilnych warunkach: cięcie CNC, montaż na stołach, kontrola połączeń,
+                foliowanie i pakowanie modułów do transportu.
+              </p>
+              <ul class="qv-bullets">
+                <li>Kontrola wilgotności i wytrzymałości łączeń</li>
+                <li>Dokumentacja jakościowa do każdego modułu</li>
+                <li>Optymalizacja logistyki i układu transportu</li>
+                <li>Minimalizacja strat materiałowych</li>
+              </ul>
+              <a class="qv-cta" href="../pages/contact.html">Zobacz halę produkcyjną</a>
+            </div>
+          </template>
         </div>
       </article>
 
-      <article class="service-card">
+      <!-- ===== KARTA 4 — MONTAŻ NA DZIAŁCE ===== -->
+      <article class="service-card" data-service="montaz">
         <div class="service-card__media">
-          <img class="service-card__image" src="../photos/pages/kt-snickers-mobile-desktop.webp" alt="Montaż na działce" />
+          <img class="service-card__image"
+               src="../photos/pages/kt-snickers-mobile-desktop.webp"
+               alt="Miniatura: montaż na działce"
+               loading="lazy" decoding="async" />
         </div>
         <div class="service-card__body">
           <h3 class="service-card__title">Montaż na działce</h3>
@@ -130,13 +228,42 @@
             <li class="service-card__bullet">Bezpieczeństwo i BHP</li>
             <li class="service-card__bullet">Stały nadzór</li>
           </ul>
-          <a class="service-card__btn" href="../pages/contact.html">Zapytaj o wolne sloty</a>
+
+          <div class="service-card__actions">
+            <a class="service-card__btn" href="../pages/contact.html">Zapytaj o wolne sloty</a>
+            <button class="service-card__more-btn" type="button"
+                    data-quickview-open aria-controls="service-modal"
+                    aria-label="Szczegóły: Montaż na działce">Szczegóły</button>
+          </div>
+
+          <template class="service-card__details-template">
+            <div class="qv">
+              <img class="qv-image"
+                   src="../photos/pages/kt-snickers-mobile-desktop.webp"
+                   alt="Montaż — rozwinięcie" loading="lazy" decoding="async">
+              <h4 class="qv-title">Montaż na działce – standard wykonania</h4>
+              <p class="qv-lead">
+                Składanie modułów, montaż stolarki, uszczelnienia i obróbki zgodnie z kartami technologii.
+                Transparentny harmonogram i protokoły etapowe.
+              </p>
+              <ul class="qv-bullets">
+                <li>Harmonogram dzienny + raporty postępu</li>
+                <li>Test szczelności połączeń i przeglądy BHP</li>
+                <li>Odbiór międzybranżowy na koniec montażu</li>
+              </ul>
+              <a class="qv-cta" href="../pages/contact.html">Zarezerwuj termin montażu</a>
+            </div>
+          </template>
         </div>
       </article>
 
-      <article class="service-card">
+      <!-- ===== KARTA 5 — WYKOŃCZENIE ===== -->
+      <article class="service-card" data-service="wykonczenie">
         <div class="service-card__media">
-          <img class="service-card__image" src="../photos/pages/kt-snickers-mobile-desktop.webp" alt="Wykończenie" />
+          <img class="service-card__image"
+               src="../photos/pages/kt-snickers-mobile-desktop.webp"
+               alt="Miniatura: wykończenie"
+               loading="lazy" decoding="async" />
         </div>
         <div class="service-card__body">
           <h3 class="service-card__title">Wykończenie</h3>
@@ -146,13 +273,42 @@
             <li class="service-card__bullet">Instalacje i AGD</li>
             <li class="service-card__bullet">Checklisty jakości</li>
           </ul>
-          <a class="service-card__btn" href="../pages/contact.html">Poproś o katalog</a>
+
+          <div class="service-card__actions">
+            <a class="service-card__btn" href="../pages/contact.html">Poproś o katalog</a>
+            <button class="service-card__more-btn" type="button"
+                    data-quickview-open aria-controls="service-modal"
+                    aria-label="Szczegóły: Wykończenie">Szczegóły</button>
+          </div>
+
+          <template class="service-card__details-template">
+            <div class="qv">
+              <img class="qv-image"
+                   src="../photos/pages/kt-snickers-mobile-desktop.webp"
+                   alt="Wykończenie — rozwinięcie" loading="lazy" decoding="async">
+              <h4 class="qv-title">Pakiety wykończeniowe – od Basic po Premium</h4>
+              <p class="qv-lead">
+                Konfigurujemy materiały i detale pod Twój styl życia. Każdy pakiet ma jasno
+                zdefiniowany zakres, gwarantując przewidywalny koszt i termin.
+              </p>
+              <ul class="qv-bullets">
+                <li>Dobór okładzin, stolarki, armatury i oświetlenia</li>
+                <li>Warianty: Basic / Comfort / Premium</li>
+                <li>Checklisty odbiorowe dla każdego pomieszczenia</li>
+              </ul>
+              <a class="qv-cta" href="../pages/contact.html">Dobierz pakiet wykończenia</a>
+            </div>
+          </template>
         </div>
       </article>
 
-      <article class="service-card">
+      <!-- ===== KARTA 6 — SERWIS I OPIEKA ===== -->
+      <article class="service-card" data-service="serwis">
         <div class="service-card__media">
-          <img class="service-card__image" src="../photos/pages/kt-snickers-mobile-desktop.webp" alt="Serwis i opieka" />
+          <img class="service-card__image"
+               src="../photos/pages/kt-snickers-mobile-desktop.webp"
+               alt="Miniatura: serwis i opieka"
+               loading="lazy" decoding="async" />
         </div>
         <div class="service-card__body">
           <h3 class="service-card__title">Serwis i opieka</h3>
@@ -162,12 +318,37 @@
             <li class="service-card__bullet">Modernizacje i rozbudowy</li>
             <li class="service-card__bullet">Wsparcie techniczne</li>
           </ul>
-          <a class="service-card__btn" href="../pages/contact.html">Zgłoś potrzebę</a>
+
+          <div class="service-card__actions">
+            <a class="service-card__btn" href="../pages/contact.html">Zgłoś potrzebę</a>
+            <button class="service-card__more-btn" type="button"
+                    data-quickview-open aria-controls="service-modal"
+                    aria-label="Szczegóły: Serwis i opieka">Szczegóły</button>
+          </div>
+
+          <template class="service-card__details-template">
+            <div class="qv">
+              <img class="qv-image"
+                   src="../photos/pages/kt-snickers-mobile-desktop.webp"
+                   alt="Serwis — rozwinięcie" loading="lazy" decoding="async">
+              <h4 class="qv-title">Opieka posprzedażowa – dom zawsze w formie</h4>
+              <p class="qv-lead">
+                Po odbiorze nie znikamy: cykliczne przeglądy, regulacje, szybkie naprawy i doradztwo
+                przy modernizacjach oraz rozbudowie domu.
+              </p>
+              <ul class="qv-bullets">
+                <li>Przeglądy okresowe (6–12 miesięcy)</li>
+                <li>Program drobnych napraw i regulacji</li>
+                <li>Audyt przed modernizacją lub rozbudową</li>
+              </ul>
+              <a class="qv-cta" href="../pages/contact.html">Umów przegląd/serwis</a>
+            </div>
+          </template>
         </div>
       </article>
     </div>
 
-    <!-- WYŚRODKOWANA nawigacja – rodzeństwo grida -->
+    <!-- WYŚRODKOWANA nawigacja slidera (rodzeństwo grida) -->
     <div class="services-slider-nav" aria-label="Nawigacja karuzeli">
       <button class="snav snav--prev" type="button" aria-label="Poprzednie">
         <img src="../photos/svg/arow-left-testim.svg" alt="">
@@ -176,49 +357,129 @@
         <img src="../photos/svg/arow-right-testim.svg" alt="">
       </button>
     </div>
-
   </div>
 </section>
 
-    <!-- ===== PROCES (kroki) ===== -->
-    <section class="services-process" aria-labelledby="services-process-title">
-      <div class="pages__container services-process__container">
-        <h2 class="services-process__title" id="services-process-title">Jak pracujemy</h2>
 
-        <ol class="process-steps">
-          <li class="process-step">
-            <div class="process-step__icon"><img class="process-step__icon-img" src="../photos/svg/partners/glava.svg"
-                alt="Brief"></div>
-            <h3 class="process-step__title">Brief</h3>
-            <p class="process-step__text">Zbieramy wymagania i ograniczenia.</p>
-          </li>
-          <li class="process-step">
-            <div class="process-step__icon"><img class="process-step__icon-img" src="../photos/svg/socials/in.svg"
-                alt="Koncepcja"></div>
-            <h3 class="process-step__title">Koncepcja</h3>
-            <p class="process-step__text">Warianty układu i technologii.</p>
-          </li>
-          <li class="process-step">
-            <div class="process-step__icon"><img class="process-step__icon-img" src="../photos/svg/partners/nordan.svg"
-                alt="Wycena"></div>
-            <h3 class="process-step__title">Wycena</h3>
-            <p class="process-step__text">Transparentny kosztorys i harmonogram.</p>
-          </li>
-          <li class="process-step">
-            <div class="process-step__icon"><img class="process-step__icon-img"
-                src="../photos/svg/arow-right-testim.svg" alt="Realizacja"></div>
-            <h3 class="process-step__title">Realizacja</h3>
-            <p class="process-step__text">Prefabrykacja + montaż na działce.</p>
-          </li>
-          <li class="process-step">
-            <div class="process-step__icon"><img class="process-step__icon-img" src="../photos/svg/burger.svg"
-                alt="Odbiór"></div>
-            <h3 class="process-step__title">Odbiór</h3>
-            <p class="process-step__text">Checklisty jakości i wsparcie gwarancyjne.</p>
-          </li>
-        </ol>
+
+<!-- ====== QUICK-VIEW MODAL (wklej na końcu <body>) ====== -->
+<div id="service-modal" class="service-modal" role="dialog" aria-modal="true" aria-hidden="true" hidden>
+  <div class="service-modal__backdrop" data-close></div>
+
+  <div class="service-modal__panel" role="document" tabindex="-1">
+    <button class="service-modal__close" type="button" aria-label="Zamknij" data-close>
+      <span aria-hidden="true">×</span>
+    </button>
+
+    <div class="service-modal__media">
+      <img class="service-modal__image" alt="" />
+    </div>
+
+    <div class="service-modal__body">
+      <h3 class="service-modal__title"></h3>
+      <p class="service-modal__lead"></p>
+
+      <ul class="service-modal__bullets"></ul>
+
+      <div class="service-modal__cta">
+        <a class="service-modal__btn" href="#" target="_self" rel="noopener">Poznaj zakres</a>
       </div>
-    </section>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PROCES (kroki) ===== -->
+<section class="services-process" aria-labelledby="services-process-title">
+  <div class="pages__container services-process__container">
+    <h2 class="services-process__title" id="services-process-title">Jak pracujemy</h2>
+
+    <!-- OŚ timeline (SVG) – JEDYNA oś -->
+    <svg class="process-spine" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="spineGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#DC9B59"/>
+          <stop offset="100%" stop-color="#000000"/>
+        </linearGradient>
+      </defs>
+      <path class="spine-bg" d="M50 2 L50 98" />
+      <path class="spine-fg" d="M50 2 L50 98" />
+    </svg>
+
+    <ol class="process-steps timeline" aria-labelledby="services-process-title">
+      <!-- 1 -->
+      <li class="process-step" data-step="1">
+        <button class="process-card" type="button" aria-expanded="false" aria-controls="step1-more">
+          <span class="process-card__icon">
+            <img class="process-card__icon-img" src="../photos/svg/partners/glava.svg" alt="">
+          </span>
+          <span class="process-card__title">Brief</span>
+          <span class="process-card__text">Zbieramy wymagania i ograniczenia.</span>
+          <span class="process-card__more" id="step1-more" hidden>
+            Ustalamy cele, budżet, priorytety oraz ograniczenia działki i formalności.
+          </span>
+        </button>
+      </li>
+
+      <!-- 2 -->
+      <li class="process-step" data-step="2">
+        <button class="process-card" type="button" aria-expanded="false" aria-controls="step2-more">
+          <span class="process-card__icon">
+            <img class="process-card__icon-img" src="../photos/svg/socials/in.svg" alt="">
+          </span>
+          <span class="process-card__title">Koncepcja</span>
+          <span class="process-card__text">Warianty układu i technologii.</span>
+          <span class="process-card__more" id="step2-more" hidden>
+            2–3 warianty, wstępne rzuty, bryła i dobór systemów.
+          </span>
+        </button>
+      </li>
+
+      <!-- 3 -->
+      <li class="process-step" data-step="3">
+        <button class="process-card" type="button" aria-expanded="false" aria-controls="step3-more">
+          <span class="process-card__icon">
+            <img class="process-card__icon-img" src="../photos/svg/partners/nordan.svg" alt="">
+          </span>
+          <span class="process-card__title">Wycena</span>
+          <span class="process-card__text">Transparentny kosztorys i harmonogram.</span>
+          <span class="process-card__more" id="step3-more" hidden>
+            Zakres, terminy i koszt całości + opcjonalne pakiety.
+          </span>
+        </button>
+      </li>
+
+      <!-- 4 -->
+      <li class="process-step" data-step="4">
+        <button class="process-card" type="button" aria-expanded="false" aria-controls="step4-more">
+          <span class="process-card__icon">
+            <img class="process-card__icon-img" src="../photos/svg/arow-right-testim.svg" alt="">
+          </span>
+          <span class="process-card__title">Realizacja</span>
+          <span class="process-card__text">Prefabrykacja + montaż na działce.</span>
+          <span class="process-card__more" id="step4-more" hidden>
+            Koordynacja dostaw, BHP i stały nadzór kierownika.
+          </span>
+        </button>
+      </li>
+
+      <!-- 5 -->
+      <li class="process-step" data-step="5">
+        <button class="process-card" type="button" aria-expanded="false" aria-controls="step5-more">
+          <span class="process-card__icon">
+            <img class="process-card__icon-img" src="../photos/svg/burger.svg" alt="">
+          </span>
+          <span class="process-card__title">Odbiór</span>
+          <span class="process-card__text">Checklisty jakości i wsparcie gwarancyjne.</span>
+          <span class="process-card__more" id="step5-more" hidden>
+            Odbiór, gwarancja i pomoc przy modernizacjach.
+          </span>
+        </button>
+      </li>
+    </ol>
+  </div>
+</section>
+
+
 
 
     <!-- Sekcja z pełnoekranowym zdjęciem i hotspotami -->
@@ -367,6 +628,12 @@
   <!-- <script src="../js/services.js" type="module"></script> -->
   <script type="module" src="../js/services-3d-pro.js"></script>
   <script src="../js/pages_services-slider.js"></script>
+  <script type="module" src="../js/services-process-timeline.js"></script>
+  <script src="../js/service-modal.js" defer></script>
+  <script src="../js/service-modal.js?v=5" defer></script>
+
+
+
 
 
 

@@ -1,0 +1,157 @@
+{
+  "services": [
+    {
+      "slug": "koncepcyjny",
+      "title": "Projekt koncepcyjny",
+      "image": "../photos/pages/services/services-header.jpg",
+      "excerpt": "Funkcjonalne układy, bryła, technologia i wstępny kosztorys dopasowany do budżetu.",
+      "bullets": [
+        "2–3 warianty układu",
+        "Dobór technologii i materiałów",
+        "Szacunkowa wycena"
+      ],
+      "cta": { "text": "Zapytaj o termin", "href": "../pages/contact.html" },
+      "modal": {
+        "image": "../photos/pages/services/services-header.jpg",
+        "title": "Projekt koncepcyjny – pakiet rozszerzony",
+        "lead": "Warsztaty startowe i analiza działki (MPZP/WT/media). Definiujemy wymagania, ryzyka oraz kierunek projektowy. Efekt: rysunki koncepcyjne + model bryły, punkt wyjścia do wyceny i projektu wykonawczego.",
+        "bullets": [
+          "3 rundy iteracji koncepcji w sprintach",
+          "Moodboardy materiałowe i paleta kolorów",
+          "Wstępna tabela powierzchni i estymacja kosztów",
+          "Weryfikacja MPZP/WT i przyłączy"
+        ],
+        "cta": { "text": "Zamów pakiet koncepcyjny", "href": "../pages/contact.html" }
+      }
+    },
+    {
+      "slug": "wykonawczy",
+      "title": "Projekt wykonawczy",
+      "image": "../photos/pages/services/Gemini_Generated_Image_i0pbnqi0pbnqi0pb.png",
+      "excerpt": "Dokumentacja warsztatowa i rysunki montażowe pod prefabrykację i budowę.",
+      "bullets": ["Rysunki detali", "Specyfikacje materiałowe", "Koordynacja branż"],
+      "cta": { "text": "Poznaj zakres", "href": "../pages/contact.html" },
+      "modal": {
+        "image": "../photos/pages/services/Gemini_Generated_Image_i0pbnqi0pbnqi0pb.png",
+        "title": "Projekt wykonawczy – prefab gotowy do produkcji",
+        "lead": "Kompletna dokumentacja pod produkcję i montaż: zestawy rysunkowe, listy cięć, specyfikacje i karty technologiczne zoptymalizowane pod prefabrykację.",
+        "bullets": [
+          "Rysunki konstrukcyjne ścian/stropów/dachu",
+          "Zestawienia materiałowe + listy cięć",
+          "Koordynacja z instalacjami",
+          "Checklisty kontroli jakości"
+        ],
+        "cta": { "text": "Poproś o wycenę projektu", "href": "../pages/contact.html" }
+      }
+    },
+    {
+      "slug": "prefabrykacja",
+      "title": "Prefabrykacja elementów",
+      "image": "../photos/pages/services/services-header.webp",
+      "excerpt": "Produkcja ścian, stropów i więźb w kontrolowanych warunkach hali.",
+      "bullets": ["Powtarzalna jakość", "Skrócony czas budowy", "Mniejsza ilość odpadów"],
+      "cta": { "text": "Umów oględziny", "href": "../pages/contact.html" },
+      "modal": {
+        "image": "../photos/pages/services/services-header.webp",
+        "title": "Prefabrykacja w hali – proces i kontrola jakości",
+        "lead": "Cięcie CNC, montaż na stołach, kontrola łączeń, foliowanie i pakowanie modułów do transportu.",
+        "bullets": [
+          "Kontrola wilgotności i łączeń",
+          "Dokumentacja jakościowa do modułów",
+          "Optymalizacja logistyki i transportu",
+          "Minimalizacja strat materiałowych"
+        ],
+        "cta": { "text": "Zobacz halę produkcyjną", "href": "../pages/contact.html" }
+      }
+    },
+    {
+      "slug": "montaz",
+      "title": "Montaż na działce",
+      "image": "../photos/pages/kt-snickers-mobile-desktop.webp",
+      "excerpt": "Ekipa montażowa realizuje prace w ścisłym harmonogramie i standardzie jakości.",
+      "bullets": ["Koordynacja dostaw", "Bezpieczeństwo i BHP", "Stały nadzór"],
+      "cta": { "text": "Zapytaj o wolne sloty", "href": "../pages/contact.html" },
+      "modal": {
+        "image": "../photos/pages/kt-snickers-mobile-desktop.webp",
+        "title": "Montaż – standard wykonania",
+        "lead": "Składanie modułów, montaż stolarki i uszczelnienia zgodnie z kartami technologii. Transparentny harmonogram i protokoły etapowe.",
+        "bullets": [
+          "Harmonogram dzienny + raporty postępu",
+          "Test szczelności połączeń",
+          "Przeglądy BHP i odbiór międzybranżowy"
+        ],
+        "cta": { "text": "Zarezerwuj termin montażu", "href": "../pages/contact.html" }
+      }
+    },
+    {
+      "slug": "wykonczenie",
+      "title": "Wykończenie",
+      "image": "../photos/pages/kt-snickers-mobile-desktop.webp",
+      "excerpt": "Standardy materiałowe dobrane do preferencji estetycznych i użytkowych.",
+      "bullets": ["Podłogi, stolarka, łazienki", "Instalacje i AGD", "Checklisty jakości"],
+      "cta": { "text": "Poproś o katalog", "href": "../pages/contact.html" },
+      "modal": {
+        "image": "../photos/pages/kt-snickers-mobile-desktop.webp",
+        "title": "Pakiety wykończeniowe – Basic / Comfort / Premium",
+        "lead": "Konfigurujemy materiały i detale pod Twój styl życia. Każdy pakiet ma jasno zdefiniowany zakres, przewidywalny koszt i termin.",
+        "bullets": [
+          "Dobór okładzin, stolarki, armatury i oświetlenia",
+          "Warianty: Basic / Comfort / Premium",
+          "Checklisty odbiorowe pomieszczeń"
+        ],
+        "cta": { "text": "Dobierz pakiet wykończenia", "href": "../pages/contact.html" }
+      }
+    },
+    {
+      "slug": "serwis",
+      "title": "Serwis i opieka",
+      "image": "../photos/pages/kt-snickers-mobile-desktop.webp",
+      "excerpt": "Gwarancja, przeglądy okresowe i wsparcie przy modernizacjach.",
+      "bullets": ["Gwarancyjne i pogwarancyjne", "Modernizacje i rozbudowy", "Wsparcie techniczne"],
+      "cta": { "text": "Zgłoś potrzebę", "href": "../pages/contact.html" },
+      "modal": {
+        "image": "../photos/pages/kt-snickers-mobile-desktop.webp",
+        "title": "Opieka posprzedażowa – dom zawsze w formie",
+        "lead": "Przeglądy, regulacje, szybkie naprawy i doradztwo przy modernizacjach oraz rozbudowie domu.",
+        "bullets": [
+          "Przeglądy okresowe (6–12 miesięcy)",
+          "Program drobnych napraw i regulacji",
+          "Audyt przed modernizacją/rozbudową"
+        ],
+        "cta": { "text": "Umów przegląd/serwis", "href": "../pages/contact.html" }
+      }
+    }
+  ],
+  "timeline": [
+    {
+      "icon": "../photos/svg/partners/glava.svg",
+      "title": "Brief",
+      "text": "Zbieramy wymagania i ograniczenia.",
+      "more": "Ustalamy cele, budżet, priorytety i ograniczenia działki."
+    },
+    {
+      "icon": "../photos/svg/socials/in.svg",
+      "title": "Koncepcja",
+      "text": "Warianty układu i technologii.",
+      "more": "2–3 warianty, wstępne rzuty, bryła i dobór systemów."
+    },
+    {
+      "icon": "../photos/svg/partners/nordan.svg",
+      "title": "Wycena",
+      "text": "Kosztorys i harmonogram.",
+      "more": "Zakres, terminy i koszt całości + opcjonalne pakiety."
+    },
+    {
+      "icon": "../photos/svg/arow-right-testim.svg",
+      "title": "Realizacja",
+      "text": "Prefabrykacja + montaż.",
+      "more": "Koordynacja dostaw, BHP i nadzór kierownika."
+    },
+    {
+      "icon": "../photos/svg/burger.svg",
+      "title": "Odbiór",
+      "text": "Checklisty jakości i wsparcie.",
+      "more": "Odbiór, gwarancja i pomoc przy modernizacjach."
+    }
+  ]
+}

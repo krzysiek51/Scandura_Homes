@@ -1,0 +1,244 @@
+@use "../utils/variables" as *;
+@use "../utils/mixins" as *;
+
+/* ============================================================================
+   SERVICES — PROCESS / TIMELINE (mobile-first)
+   - Mobile   (<744):  1 kolumna, brak osi i pinów
+   - Tablet   (≥744):  1 kolumna, karty szersze i wycentrowane, wciąż bez osi/pinów
+   - Laptop   (≥1440): 2 kolumny naprzemiennie, oś SVG na środku, piny przy osi
+   - Desktop  (≥1920): więcej oddechu, lekko większa typografia/padding
+   ========================================================================== */
+
+.services-process {
+  position: relative;
+  background: $color-white;
+  padding-block: 32px;
+
+  /* PRZYCINANIE zawartości sekcji (oś/piny nie wejdą w następną sekcję) */
+  overflow: clip;
+  @supports not (overflow: clip) {
+    overflow: hidden;
+  }
+
+  /* kontener sekcji */
+  .services-process__container {
+    @include section-grid-fluid(4, 16px, 16px, 20px);
+    box-sizing: border-box; /* bez !important */
+  }
+
+  /* tytuł sekcji */
+  .services-process__title {
+    grid-column: 1 / -1;
+    margin: 0 0 12px;
+    font-family: $ff;
+    font-weight: $h-title-weight;
+    font-size: $h-title-size;
+    line-height: $h-title-lh;
+    letter-spacing: $h-title-ls;
+    color: $color-dark-text;
+  }
+
+  /* Jedyna oś — SVG w tle sekcji.
+     Na mobile/tablet ukryta, pokazujemy od laptopa. */
+  .process-spine {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    display: none; /* mobile + tablet */
+
+    .spine-bg {
+      stroke: rgba(0,0,0,.08);
+      stroke-width: 1.5;
+      fill: none;
+    }
+    .spine-fg {
+      stroke: url(#spineGrad);
+      stroke-width: 2.5;
+      fill: none;
+      stroke-linecap: round;
+      /* 96 = umowna "długość" — JS wpisuje var(--spine-progress) w [0..1] */
+      stroke-dasharray: 96;
+      stroke-dashoffset: calc(96 - (var(--spine-progress, 0) * 96));
+      transition: stroke-dashoffset .12s linear;
+    }
+  }
+
+  /* Lista kroków */
+  .process-steps {
+    grid-column: 1 / -1;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+
+    display: grid;
+    grid-template-columns: 1fr; /* mobile: pojedyncza kolumna */
+    gap: 16px;
+  }
+
+  /* Pojedynczy krok — reveal na scroll (sterowany przez JS: --reveal) */
+  .process-step {
+    --reveal: 0;
+    position: relative;
+    opacity: calc(.35 + .65 * var(--reveal));
+    transform: translateY(calc(8px * (1 - var(--reveal))));
+    transition: opacity .45s ease, transform .45s ease;
+    margin-top: 32px;
+
+    /* PINEZKA przy osi — ukryta na mobile/tablet, pokazana od laptopa */
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -10px);
+      width: 10px;
+      height: 10px;
+      background: #fff;
+      border: 2px solid rgba(0,0,0,.10);
+      border-radius: 50%;
+      z-index: 2;
+      display: none; /* mobile + tablet */
+    }
+
+    &.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Karta wewnątrz kroku */
+  .process-card {
+    width: 100%;
+    text-align: center;
+    background: $color-beige-light-bg;
+    border-radius: 0 18px 0 0;
+    padding: 16px 16px 18px;
+    box-shadow: 0 4px 3px rgba(0,0,0,.035);
+    border: 0;
+    cursor: pointer;
+
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    gap: 8px;
+
+    position: relative;
+    isolation: isolate;
+    transition: transform .18s ease, box-shadow .18s ease;
+
+    &:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,0,0,.06); }
+    &:active { transform: translateY(0); }
+    &:focus-visible {
+      outline: 2px solid rgba(220,155,89,.6);
+      outline-offset: 2px;
+    }
+  }
+
+  .process-card__icon {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: #fff;
+    margin: -32px auto 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.12);
+    display: grid; place-items: center;
+    transform: translateY(calc(-6px * (1 - var(--reveal))));
+    transition: transform .45s cubic-bezier(.22,.61,.36,1);
+  }
+  .process-card__icon-img { width: 60%; height: 60%; object-fit: contain; display: block; }
+
+  .process-card__title {
+    margin: 6px 0 4px;
+    font-weight: 600;
+    font-size: 16px;
+    color: $color-dark-text;
+  }
+  .process-card__text  { margin: 0; font-size: 14px; color: $color-light-text; }
+
+  /* „Więcej” (rozwijane) — jeśli używasz aria-expanded w HTML/JS */
+  .process-card__more { display: block; margin-top: 8px; font-size: 14px; color: $color-dark-text; }
+  .process-card[aria-expanded="false"] .process-card__more { display: none; }
+  .process-card[aria-expanded="true"]  .process-card__more { display: inline; }
+
+  /* ===== TABLET (≥744) — wciąż jedna kolumna, karty szersze i wycentrowane ===== */
+  @media (min-width: $bp-tablet) {
+    .services-process__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+
+    .process-steps { gap: 20px; }
+
+    .process-card {
+      max-width: 640px;
+      margin-inline: auto;
+    }
+
+    .process-card__icon  { width: 72px; height: 72px; margin-top: -36px; }
+    .process-card__title { font-size: 17px; }
+    .process-card__text,
+    .process-card__more  { font-size: 15px; }
+  }
+
+  /* ===== LAPTOP (≥1440) — 2 kolumny naprzemiennie + oś i piny ===== */
+  @media (min-width: $bp-laptop) {
+    .services-process__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
+
+    /* pokazujemy oś SVG */
+    .process-spine { display: block; }
+    .process-spine .spine-fg { stroke-width: 3; }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px 96px; /* rzędy, kolumny */
+      position: relative;
+      padding-top: 10px; /* miejsce na badge ikony nad kartą */
+    }
+
+    .process-step {
+      margin-top: 22px;
+
+      /* pokaż piny przy osi */
+      &::after { display: block; }
+
+      /* lewa kolumna */
+      &:nth-child(odd) {
+        grid-column: 1;
+        &::after  { left: auto; right: -6px; transform: none; }
+      }
+      /* prawa kolumna */
+      &:nth-child(even) {
+        grid-column: 2;
+        &::after  { left: -6px; transform: none; }
+      }
+    }
+
+    .process-card { padding: 18px 18px 20px; }
+    .process-card__icon  { width: 80px; height: 80px; margin-top: -40px; }
+    .process-card__title { font-size: 18px; }
+    .process-card__text,
+    .process-card__more  { font-size: 16px; }
+  }
+
+  /* ===== DESKTOP (≥1920) — więcej powietrza / rozm. kart ===== */
+  @media (min-width: $bp-desktop) {
+    .services-process__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
+
+    .process-steps { gap: 32px 120px; }
+
+    .process-card {
+      padding: 22px 24px 26px;
+      max-width: 720px;
+    }
+
+    .process-card__title { font-size: 20px; }
+    .process-card__text,
+    .process-card__more  { font-size: 17px; }
+  }
+
+  /* ===== Dostępność: ograniczenie animacji ===== */
+  @media (prefers-reduced-motion: reduce) {
+    .process-step { transition: none; transform: none; opacity: 1; }
+    .process-card__icon { transition: none; transform: none; }
+    .process-spine .spine-fg { transition: none; }
+  }
+}

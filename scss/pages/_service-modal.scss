@@ -1,0 +1,113 @@
+@use "../utils/variables" as *;
+
+/* =========================================
+   SERVICE QUICK-VIEW MODAL (mobile-first)
+   ========================================= */
+.service-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  grid-template-rows: 1fr;
+  align-items: end;        /* sheet od dołu na mobile */
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .24s ease, visibility .24s ease;
+
+  &[data-open="true"] {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.service-modal__backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.36);
+  backdrop-filter: saturate(110%) blur(4px);
+  opacity: 0;
+  transition: opacity .24s ease;
+}
+
+.service-modal__panel {
+  position: relative;
+  background: #fff;
+  border-radius: 18px 18px 0 0;
+  box-shadow: 0 24px 60px rgba(0,0,0,.18);
+  transform: translateY(8%);
+  opacity: .98;
+  transition: transform .28s cubic-bezier(.22,.61,.36,1), opacity .28s ease;
+  max-height: min(92vh, 860px);
+  overflow: auto;
+}
+
+.service-modal[data-open="true"] .service-modal__backdrop { opacity: 1; }
+.service-modal[data-open="true"] .service-modal__panel    { transform: translateY(0); opacity: 1; }
+
+/* Zawartość */
+.service-modal__close {
+  position: absolute; top: 8px; right: 8px;
+  width: 38px; height: 38px; border-radius: 999px;
+  background: #fff; border: 1px solid rgba(0,0,0,.08);
+  box-shadow: 0 6px 14px rgba(0,0,0,.08);
+  font: 700 22px/1 $ff; color: $color-dark-text;
+  cursor: pointer;
+}
+.service-modal__media { width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: #f4f4f4; }
+.service-modal__image { width: 100%; height: 100%; object-fit: cover; display: block; }
+.service-modal__body  { padding: 18px 18px 22px; }
+
+.service-modal__title { margin: 0 0 8px; font-weight: 700; font-size: 18px; color: $color-dark-text; }
+.service-modal__lead  { margin: 0 0 12px; font-size: 15px; color: $color-light-text; }
+
+.service-modal__bullets { list-style: none; padding: 0; margin: 0 0 16px; display: grid; gap: 8px; }
+.service-modal__bullets li { padding-left: 18px; position: relative; font-size: 15px; color: $color-dark-text; }
+.service-modal__bullets li::before { content: "•"; position: absolute; left: 0; top: 0; }
+
+.service-modal__cta { display: flex; gap: 10px; flex-wrap: wrap; }
+.service-modal__btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 44px; padding: 0 18px; border-radius: 0 12px 0 0; text-decoration: none;
+  background: $color-gradient-start; color: #fff; font-weight: 700; font-size: 14px;
+  border: 1px solid transparent;
+  transition: filter .2s ease, transform .1s ease;
+}
+.service-modal__btn:hover { filter: brightness(.97); }
+.service-modal__btn:active { transform: translateY(1px); }
+
+/* mały sygnał „to jest klikalne” na kartach z quickview */
+.service-card[data-quickview] { cursor: pointer; }
+
+/* ====== TABLET (≥744) ====== */
+@media (min-width: $bp-tablet) {
+  .service-modal { align-items: center; } /* modal na środku */
+  .service-modal__panel { border-radius: 18px; max-width: 720px; margin-inline: auto; }
+  .service-modal__title { font-size: 19px; }
+  .service-modal__lead  { font-size: 16px; }
+}
+
+/* ====== LAPTOP (≥1440) ====== */
+@media (min-width: $bp-laptop) {
+  .service-modal__panel {
+    max-width: 920px;
+    border-radius: 22px;
+    transform: translateY(0) scale(.98);
+  }
+  .service-modal[data-open="true"] .service-modal__panel { transform: scale(1); }
+  .service-modal__body { padding: 22px 24px 26px; }
+  .service-modal__title { font-size: 21px; }
+  .service-modal__lead  { font-size: 17px; }
+}
+
+/* ====== DESKTOP (≥1920) ====== */
+@media (min-width: $bp-desktop) {
+  .service-modal__panel { max-width: 1080px; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .service-modal,
+  .service-modal__backdrop,
+  .service-modal__panel { transition: none; }
+}
