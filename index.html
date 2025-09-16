@@ -759,7 +759,7 @@
           action="/thank-you.html"
           class="contact__form"
         >
-          <!-- Wymagane przez Netlify -->
+          <!-- wymagane przez Netlify -->
           <input type="hidden" name="form-name" value="contact">
           <p hidden aria-hidden="true">
             <label>Nie wypełniaj: <input name="bot-field"></label>
@@ -795,15 +795,24 @@
             <label for="terms" class="contact__checkbox-label">Zgadzam się na warunki korzystania z usługi.</label>
           </div>
 
-          <!-- (opcjonalnie, jeśli chcesz włączyć reCAPTCHA Netlify)
-          <div data-netlify-recaptcha="true"></div>
-          -->
-
           <button type="submit" class="contact__submit-button">Wyślij</button>
         </form>
       </div>
     </div>
   </div>
+</section>
+
+<!-- Netlify fallback do detekcji formularza przy buildzie (ukryty). 
+     MUSI mieć te same name oraz pola, inaczej nie zadziała. -->
+<form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="contact">
+  <input type="text"   name="name">
+  <input type="email"  name="email">
+  <input type="tel"    name="phone">
+  <textarea name="message"></textarea>
+  <input type="checkbox" name="terms" value="accepted">
+</form>
+
   
 </section>
 
