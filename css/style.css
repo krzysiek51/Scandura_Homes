@@ -5716,6 +5716,64 @@ nav#mobile-menu .button--nav {
     color: rgb(255, 255, 255) !important;
   }
 }
+/* Start: ukryj wszystkie elementy (opacity 0 + translateY) */
+.configurator-prompt.ai-armed .configurator-prompt__badge,
+.configurator-prompt.ai-armed .configurator-prompt__title,
+.configurator-prompt.ai-armed .configurator-prompt__sub,
+.configurator-prompt.ai-armed .configurator-prompt__benefits,
+.configurator-prompt.ai-armed .configurator-prompt__benefits li,
+.configurator-prompt.ai-armed .configurator-prompt__cta,
+.configurator-prompt.ai-armed .configurator-prompt__button,
+.configurator-prompt.ai-armed .configurator-prompt__link {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+/* Po dodaniu .ai-animate — aktywuj transition */
+.configurator-prompt.ai-animate .configurator-prompt__badge,
+.configurator-prompt.ai-animate .configurator-prompt__title,
+.configurator-prompt.ai-animate .configurator-prompt__sub,
+.configurator-prompt.ai-animate .configurator-prompt__benefits,
+.configurator-prompt.ai-animate .configurator-prompt__benefits li,
+.configurator-prompt.ai-animate .configurator-prompt__cta,
+.configurator-prompt.ai-animate .configurator-prompt__button,
+.configurator-prompt.ai-animate .configurator-prompt__link {
+  transition: opacity 0.55s cubic-bezier(0.2, 0.6, 0.2, 1), transform 0.55s cubic-bezier(0.2, 0.6, 0.2, 1);
+  will-change: transform, opacity;
+}
+.configurator-prompt.ai-animate .configurator-prompt__button {
+  transition: opacity 0.55s cubic-bezier(0.2, 0.6, 0.2, 1), transform 0.55s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+
+/* Element z .ai-revealed staje się widoczny */
+.configurator-prompt .ai-revealed {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* A11y */
+@media (prefers-reduced-motion: reduce) {
+  .configurator-prompt.ai-armed .configurator-prompt__badge,
+  .configurator-prompt.ai-armed .configurator-prompt__title,
+  .configurator-prompt.ai-armed .configurator-prompt__sub,
+  .configurator-prompt.ai-armed .configurator-prompt__benefits,
+  .configurator-prompt.ai-armed .configurator-prompt__benefits li,
+  .configurator-prompt.ai-armed .configurator-prompt__cta,
+  .configurator-prompt.ai-armed .configurator-prompt__button,
+  .configurator-prompt.ai-armed .configurator-prompt__link,
+  .configurator-prompt.ai-animate .configurator-prompt__badge,
+  .configurator-prompt.ai-animate .configurator-prompt__title,
+  .configurator-prompt.ai-animate .configurator-prompt__sub,
+  .configurator-prompt.ai-animate .configurator-prompt__benefits,
+  .configurator-prompt.ai-animate .configurator-prompt__benefits li,
+  .configurator-prompt.ai-animate .configurator-prompt__cta,
+  .configurator-prompt.ai-animate .configurator-prompt__button,
+  .configurator-prompt.ai-animate .configurator-prompt__link {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
 /* =========================================================
    Mission — scroll-synced wejścia (Apple vibe)
    WYMAGA klas z Twojej sekcji .mission (już masz w HTML)
