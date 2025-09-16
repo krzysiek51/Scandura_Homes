@@ -1,4 +1,6 @@
 // /js/projects-slider.js
+// v7: bez migotania (brak recyklingu podczas drag), center względem KONTENERA,
+// hard-snap z łagodniejszym przyspieszeniem + regulowana pauza, pointer events + axis-lock
 (() => {
   const section = document.querySelector('.projects');
   if (!section) return;
@@ -9,42 +11,38 @@
   const cards = Array.from(slider.querySelectorAll('.project-card'));
   if (cards.length === 0) return;
 
-  // Usuń poprzedni track i zbuduj nowy
+  // Track (czyści stary jeśli istniał)
   const oldTrack = slider.querySelector('.projects__track');
   if (oldTrack) oldTrack.remove();
   const track = document.createElement('div');
   track.className = 'projects__track';
   cards.forEach(c => track.appendChild(c));
   slider.appendChild(track);
-  track.style.transition = 'none';
   track.style.willChange = 'transform';
+  track.style.transition = 'none';
 
-  // ── Parametry strojenia ────────────────────────────────────────
-  const CRUISE_SPEED = 200;   // px/s
-  const TRIGGER_DIST = 110;   // px
-  const MAX_BOUNCES  = 8;
-  const RESTITUTION  = 0.52;  // 0..1
-  const FRICTION     = 1.8;   // 1/s
-  const V_STOP       = 8;     // px/s
-  const X_STOP       = 0.8;   // px
-  const RECYCLE_PAD  = 2;     // step * N
-  const DWELL_MS     = 800;   // ms
-
-  // Bezpieczniki
+  // ── Parametry ──────────────────────────────────────────────────
+  const CRUISE_SPEED = 200;            // px/s – prędkość rejsowa
+  const TRIGGER_DIST = 110;            // px – w jakiej odległości auto-snap do next (w CRUISE)
+  const FRICTION     = 1.8;            // 1/s – „wygaszanie” prędkości w cruise
   const SAFE_TRIGGER_MIN = 30;
   const SAFE_TRIGGER_MAX_RATIO = 0.8;
   const STALL_TIMEOUT_MS = 1500;
-  const UNSTICK_KICK = 80;
-  const MAX_RELEASE_SPEED = 1200;
+  const RECYCLE_PAD  = 2;
+  const PAUSE_BETWEEN_SLIDES = 1200;   // ms – pauza po dociągnięciu (0 = brak pauzy)
 
-  // ── Pomiary ────────────────────────────────────────────────────
-  const isTablet = () => {
-    const w = window.innerWidth;
-    return w >= 744 && w < 1440;
+  // Łagodniejsze dociąganie (mniej „szarpie”):
+  const SNAP_DURATION = 560;           // ms (wcześniej ~220)
+  const SNAP_EASING   = 'cubic-bezier(.15,.65,.1,1)'; // miękki ease-out (mniej agresywny)
+
+  // ── Helpers względem KONTENERA ─────────────────────────────────
+  const isTablet = () => (innerWidth >= 744 && innerWidth < 1440);
+  const sliderRect = () => slider.getBoundingClientRect();
+  const vpCenter = () => {
+    const r = sliderRect();
+    const tabletOffset = isTablet() ? -60 : 0;  // zgodnie z Twoją wcześniejszą logiką
+    return r.left + r.width / 2 + tabletOffset;
   };
-
-  // Środek viewportu z offsetem na tablet (−60 px w lewo)
-  const vpCenter = () => window.innerWidth / 2 + (isTablet() ? -60 : 0);
 
   const getGap = () => {
     const cs = getComputedStyle(track);
@@ -55,243 +53,270 @@
   const getStep = () => {
     const a = track.children[0], b = track.children[1];
     if (a && b) {
-      const r1 = a.getBoundingClientRect();
-      const r2 = b.getBoundingClientRect();
+      const r1 = a.getBoundingClientRect(), r2 = b.getBoundingClientRect();
       const dx = r2.left - r1.left;
       if (dx > 0 && Number.isFinite(dx)) return dx;
     }
-    const w = a ? a.getBoundingClientRect().width : 0;
-    return w + getGap();
+    if (a) return a.getBoundingClientRect().width + getGap();
+    return 0;
+  };
+
+  const getClosestCardToCenter = () => {
+    if (!track.children.length) return null;
+    const c = vpCenter();
+    let best=null, dist=Infinity;
+    Array.from(track.children).forEach(el=>{
+      const r = el.getBoundingClientRect();
+      const d = Math.abs((r.left + r.width/2) - c);
+      if (d < dist) { dist = d; best = el; }
+    });
+    return best;
   };
 
   const computeTxForCentering = (cardEl, currentTx) => {
-    const r = cardEl.getBoundingClientRect();
-    const delta = vpCenter() - (r.left + r.width / 2);
+    const el = cardEl || getClosestCardToCenter();
+    if (!el) return currentTx;
+    const r = el.getBoundingClientRect();
+    const delta = vpCenter() - (r.left + r.width/2);
     return currentTx + delta;
   };
 
   const getNextRightCard = () => {
+    if (!track.children.length) return null;
     const c = vpCenter();
-    let candidate = null, bestDx = Infinity;
-    Array.from(track.children).forEach(el => {
+    let cand=null, bestDx=Infinity;
+    Array.from(track.children).forEach(el=>{
       const r = el.getBoundingClientRect();
-      const dx = (r.left + r.width / 2) - c;
-      if (dx > 0 && dx < bestDx) { bestDx = dx; candidate = el; }
+      const dx = (r.left + r.width/2) - c;
+      if (dx > 0 && dx < bestDx) { bestDx = dx; cand = el; }
     });
-    if (!candidate) {
-      let best = null, dist = Infinity;
-      Array.from(track.children).forEach(el => {
-        const r = el.getBoundingClientRect();
-        const d = Math.abs((r.left + r.width / 2) - c);
-        if (d < dist) { dist = d; best = el; }
-      });
-      candidate = best || track.children[0];
-    }
-    return candidate;
+    return cand || getClosestCardToCenter();
   };
 
   const getPrevLeftCard = () => {
+    if (!track.children.length) return null;
     const c = vpCenter();
-    let candidate = null, bestDx = -Infinity;
-    Array.from(track.children).forEach(el => {
+    let cand=null, bestDx=-Infinity;
+    Array.from(track.children).forEach(el=>{
       const r = el.getBoundingClientRect();
-      const dx = (r.left + r.width / 2) - c;
-      if (dx < 0 && dx > bestDx) { bestDx = dx; candidate = el; }
+      const dx = (r.left + r.width/2) - c;
+      if (dx < 0 && dx > bestDx) { bestDx = dx; cand = el; }
     });
-    return candidate || track.children[0];
+    return cand || getClosestCardToCenter();
   };
 
-  // Najbliższa karta do środka (używane przy resize)
-  const getClosestCardToCenter = () => {
-    const c = vpCenter();
-    let best = null, dist = Infinity;
-    Array.from(track.children).forEach(el => {
-      const r = el.getBoundingClientRect();
-      const mid = r.left + r.width / 2;
-      const d = Math.abs(mid - c);
-      if (d < dist) { dist = d; best = el; }
-    });
-    return best || track.children[0];
-  };
-
-  // ── Stan ────────────────────────────────────────────────────────
-  let tx = 0;                 // bieżący translateX toru
-  let wallTx = 0;             // cel dla bounce (dokładne centrum karty)
-  let v = -CRUISE_SPEED;      // px/s
-  let mode = 'CRUISE';        // CRUISE | BOUNCE | HOLD | DRAG
-  let bounces = 0;
-  let dwellUntil = 0;
-
+  // ── Stan ───────────────────────────────────────────────────────
+  let tx = 0;
+  let v  = -CRUISE_SPEED;
+  let mode = 'CRUISE'; // CRUISE | DRAG | SNAP | PAUSE
   let step = getStep();
-  let gap = getGap();
+  let gap  = getGap();
 
   const apply = () => { track.style.transform = `translate3d(${tx}px,0,0)`; };
 
-  // Watchdog postępu
-  let lastProgressTx = 0;
-  let lastProgressTs = performance.now();
-
-  // Start: wycentruj 1. kartę po 1 klatce (gdy layout gotowy)
-  tx = 0; apply();
-  requestAnimationFrame(() => {
-    tx = computeTxForCentering(track.children[0], tx);
+  // start: wycentruj 1. kartę
+  apply();
+  requestAnimationFrame(()=>{
+    const first = track.children[0] || getClosestCardToCenter();
+    tx = computeTxForCentering(first, tx);
     apply();
-    lastProgressTx = tx;
-    lastProgressTs = performance.now();
   });
 
-  // Bounce z gwarancją energii
-  const startBounceTo = (targetTx) => {
-    wallTx = targetTx;
-    bounces = 0;
-    const dist = Math.abs(wallTx - tx);
-    const dir  = wallTx >= tx ? 1 : -1;
-    const vNeeded = Math.max(UNSTICK_KICK, FRICTION * dist * 1.05);
-    const vProj   = Math.abs(v);
-    v = dir * Math.max(vProj, vNeeded);
-    mode = 'BOUNCE';
+  // ── Snap (twardy) + pauza ──────────────────────────────────────
+  let snapPauseTimer = 0;
+
+  const snapToCard = (cardEl, { animate = true, duration = SNAP_DURATION } = {}) => {
+    if (!cardEl) return;
+    const target = computeTxForCentering(cardEl, tx);
+
+    const startPauseThenCruise = () => {
+      if (PAUSE_BETWEEN_SLIDES > 0) {
+        mode = 'PAUSE';
+        clearTimeout(snapPauseTimer);
+        snapPauseTimer = setTimeout(() => {
+          mode = 'CRUISE';
+          v = -CRUISE_SPEED;
+        }, PAUSE_BETWEEN_SLIDES);
+      } else {
+        mode = 'CRUISE';
+        v = -CRUISE_SPEED;
+      }
+    };
+
+    if (animate) {
+      // defer o 1 klatkę – stabilizacja layoutu po drag (eliminuje "flash")
+      void track.getBoundingClientRect();
+      requestAnimationFrame(() => {
+        track.style.transition = `transform ${duration}ms ${SNAP_EASING}`;
+        tx = target;
+        apply();
+        const done = () => {
+          track.style.transition = 'none';
+          track.removeEventListener('transitionend', done);
+          startPauseThenCruise();
+        };
+        track.addEventListener('transitionend', done);
+      });
+    } else {
+      tx = target; apply();
+      startPauseThenCruise();
+    }
   };
 
-  // ── DRAG (koaleskowany do rAF, bez migotania) ──────────────────
-  let dragging = false, dragStartX = 0, dragTx0 = 0;
-  let lastMoveTs = 0, lastMoveX = 0;
-  let dragPending = false, dragNextTx = 0;
+  // ── Pointer Events + axis-lock ─────────────────────────────────
+  slider.style.touchAction = 'pan-y';
 
+  let dragging=false, dragStartX=0, dragStartY=0, dragTx0=0;
+  let lastMoveTs=0, lastMoveX=0, dragPending=false, dragNextTx=0;
+  let gestureLocked=false, lockHorizontal=false;
+  const H_LOCK_THRESHOLD=10;
+
+  // NIE recyklingujemy podczas drag (eliminuje flash)
   const dragRecycleOnce = () => {
+    if (!track.children.length) return;
     step = getStep(); gap = getGap();
-    const buffer = step * 1.1;
-    const sliderLeft = slider.getBoundingClientRect().left;
 
-    const estFirstRight = sliderLeft + tx + Math.max(10, step - gap);
+    const r = sliderRect();
+    const leftEdge  = r.left;
+    const rightEdge = r.right;
+    const buffer = step * 1.1;
+
     let guard = 0;
-    while (estFirstRight < -buffer && guard++ < 20) {
-      track.appendChild(track.firstElementChild);
-      tx     += step;
-      dragTx0 += step;
+    while (track.firstElementChild) {
+      const fr = track.firstElementChild.getBoundingClientRect();
+      if (fr.right + 1 < leftEdge - buffer && guard++ < 20) {
+        track.appendChild(track.firstElementChild);
+        tx += step; dragTx0 += step;
+      } else break;
     }
 
-    let lastLeftEst = sliderLeft + tx + (track.children.length - 1) * step;
     guard = 0;
-    while (lastLeftEst > window.innerWidth + buffer && guard++ < 20) {
-      track.insertBefore(track.lastElementChild, track.firstElementChild);
-      tx     -= step;
-      dragTx0 -= step;
-      lastLeftEst -= step;
+    while (track.lastElementChild) {
+      const lr = track.lastElementChild.getBoundingClientRect();
+      if (lr.left - 1 > rightEdge + buffer && guard++ < 20) {
+        track.insertBefore(track.lastElementChild, track.firstElementChild);
+        tx -= step; dragTx0 -= step;
+      } else break;
     }
   };
 
   const scheduleDragFrame = () => {
     if (dragPending) return;
     dragPending = true;
-    requestAnimationFrame(() => {
+    requestAnimationFrame(()=>{
       dragPending = false;
       tx = dragNextTx;
-      dragRecycleOnce();
-      apply();
+      apply(); // recykling dopiero po puszczeniu palca
     });
   };
 
-  const onDown = (x) => {
-    dragging = true;
-    dragStartX = x;
-    dragTx0 = tx;
-    lastMoveTs = performance.now();
-    lastMoveX  = x;
-    mode = 'DRAG';
+  const onPointerDown = (e) => {
+    if (e.pointerType==='mouse' && e.button!==0) return;
+    slider.setPointerCapture?.(e.pointerId);
+    gestureLocked=false; lockHorizontal=false;
+    dragging=false;
+    dragStartX=e.clientX; dragStartY=e.clientY; dragTx0=tx;
+    lastMoveTs=performance.now(); lastMoveX=e.clientX;
+    clearTimeout(snapPauseTimer); // przerwij pauzę jeśli była
   };
 
-  const onMove = (x) => {
-    if (!dragging) return;
-    const dx = x - dragStartX;
-    dragNextTx = dragTx0 + dx;
+  const onPointerMove = (e) => {
+    if (!slider.hasPointerCapture?.(e.pointerId)) return;
+    const dx0 = e.clientX - dragStartX;
+    const dy0 = e.clientY - dragStartY;
+
+    if (!gestureLocked) {
+      if (Math.abs(dx0) > H_LOCK_THRESHOLD || Math.abs(dy0) > H_LOCK_THRESHOLD) {
+        gestureLocked = true;
+        lockHorizontal = Math.abs(dx0) > Math.abs(dy0);
+        if (!lockHorizontal) { slider.releasePointerCapture?.(e.pointerId); return; }
+        dragging = true;
+        mode = 'DRAG';
+        dragTx0 = tx;
+      }
+    }
+    if (!dragging || !lockHorizontal) return;
+
+    dragNextTx = dragTx0 + dx0;
     lastMoveTs = performance.now();
-    lastMoveX  = x;
+    lastMoveX  = e.clientX;
     scheduleDragFrame();
   };
 
-  const onUp = () => {
+  const onPointerUp = (e) => {
+    if (slider.hasPointerCapture?.(e.pointerId)) slider.releasePointerCapture?.(e.pointerId);
     if (!dragging) return;
     dragging = false;
 
-    if (dragPending) {
-      // pozwól rAF dokończyć
-    } else {
+    if (!dragPending) {
       tx = dragNextTx;
+      // porządkowanie DOM *po* drag – bez flasha
       dragRecycleOnce();
+      dragRecycleOnce(); // drugi raz, gdy przesunięcie było duże
       apply();
     }
 
+    // wybór celu wg prędkości/kierunku albo najbliższa
     const dt = Math.max(16, performance.now() - lastMoveTs) / 1000;
     const vx = (lastMoveX - dragStartX) / Math.max(dt, 0.016);
-    const vxClamped = Math.max(-MAX_RELEASE_SPEED, Math.min(MAX_RELEASE_SPEED, vx));
-    v = -CRUISE_SPEED + vxClamped * 0.4;
+    const MIN_VX_FOR_DIRECTION = 120;
 
-    mode = 'CRUISE';
+    let targetCard = null;
+    if (Math.abs(vx) > MIN_VX_FOR_DIRECTION) {
+      targetCard = vx > 0 ? getPrevLeftCard() : getNextRightCard();
+    }
+    if (!targetCard) targetCard = getClosestCardToCenter();
+
+    mode = 'SNAP';
+    snapToCard(targetCard, { animate: true, duration: SNAP_DURATION });
   };
 
-  slider.addEventListener('mousedown', e => onDown(e.clientX));
-  window.addEventListener('mousemove', e => onMove(e.clientX));
-  window.addEventListener('mouseup',   onUp);
-
-  slider.addEventListener('touchstart', e => onDown(e.touches[0].clientX), { passive: true });
-  slider.addEventListener('touchmove',  e => onMove(e.touches[0].clientX),  { passive: true });
-  slider.addEventListener('touchend',   onUp);
+  slider.addEventListener('pointerdown', onPointerDown);
+  slider.addEventListener('pointermove',  onPointerMove);
+  slider.addEventListener('pointerup',    onPointerUp);
+  slider.addEventListener('pointercancel', onPointerUp);
 
   // Strzałki
-  Array.from(track.querySelectorAll('.project-card')).forEach(card => {
+  Array.from(track.querySelectorAll('.project-card')).forEach(card=>{
     const arrow = card.querySelector('img.project-card_header-arrow, .project-card__header-arrow');
     if (!arrow) return;
-    arrow.addEventListener('click', (e) => {
+    arrow.addEventListener('click',(e)=>{
       e.preventDefault();
       const next = getNextRightCard();
-      startBounceTo(computeTxForCentering(next, tx));
+      if (!next) return;
+      clearTimeout(snapPauseTimer);
+      mode='SNAP';
+      snapToCard(next, { animate:true, duration: SNAP_DURATION });
     });
   });
 
   // Klawiatura
   slider.tabIndex = 0;
-  slider.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight') {
+  slider.addEventListener('keydown',(e)=>{
+    if (e.key==='ArrowRight') {
       e.preventDefault();
-      const next = getNextRightCard();
-      startBounceTo(computeTxForCentering(next, tx));
+      const n=getNextRightCard();
+      if (n){ clearTimeout(snapPauseTimer); mode='SNAP'; snapToCard(n,{animate:true}); }
     }
-    if (e.key === 'ArrowLeft') {
+    if (e.key==='ArrowLeft')  {
       e.preventDefault();
-      const prev = getPrevLeftCard();
-      startBounceTo(computeTxForCentering(prev, tx));
+      const p=getPrevLeftCard();
+      if (p){ clearTimeout(snapPauseTimer); mode='SNAP'; snapToCard(p,{animate:true}); }
     }
   });
 
-  // ===== Resize handling (debounce + rekalkulacja i re-centrowanie) =====
+  // ===== Resize/orientation =====
   let resizeTimer = 0;
-  let resizing = false;
-
   const handleResize = () => {
-    resizing = false;
-
-    // odśwież kroki toru
     step = getStep();
     gap  = getGap();
-
-    // zakończ ewentualny drag
-    dragging = false;
-    dragPending = false;
-
-    // wycentruj najbliższą kartę (z offsetem tablet −60)
+    clearTimeout(snapPauseTimer);
     const closest = getClosestCardToCenter();
-    tx = computeTxForCentering(closest, tx);
-    apply();
-
-    // restart „cruise”
-    lastProgressTx = tx;
-    lastProgressTs = performance.now();
-    v = -CRUISE_SPEED;
+    if (closest) { tx = computeTxForCentering(closest, tx); apply(); }
     mode = 'CRUISE';
+    v = -CRUISE_SPEED;
   };
-
   window.addEventListener('resize', () => {
-    resizing = true;
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(handleResize, 180);
   });
@@ -300,21 +325,34 @@
     resizeTimer = setTimeout(handleResize, 180);
   });
 
-  // ── Pętla animacji ─────────────────────────────────────────────
+  // ── Pętla animacji (CRUISE) ────────────────────────────────────
   let lastTs = performance.now();
+  let lastProgressTx = 0, lastProgressTs = performance.now();
 
   const recycleInCruise = () => {
+    if (!track.children.length) return;
     step = getStep();
-    const thresholdLeft = -step * RECYCLE_PAD;
-    const firstRect = track.firstElementChild.getBoundingClientRect();
-    if (firstRect.right + 1 < thresholdLeft) {
-      track.appendChild(track.firstElementChild);
-      tx += step; apply();
+
+    const r = sliderRect();
+    const leftEdge  = r.left;
+    const rightEdge = r.right;
+    const buffer    = step * RECYCLE_PAD;
+
+    const firstEl = track.firstElementChild;
+    if (firstEl) {
+      const fr = firstEl.getBoundingClientRect();
+      if (fr.right + 1 < leftEdge - buffer) {
+        track.appendChild(firstEl);
+        tx += step; apply();
+      }
     }
-    const lastRect = track.lastElementChild.getBoundingClientRect();
-    if (lastRect.left - 1 > window.innerWidth + step * RECYCLE_PAD) {
-      track.insertBefore(track.lastElementChild, track.firstElementChild);
-      tx -= step; apply();
+    const lastEl = track.lastElementChild;
+    if (lastEl) {
+      const lr = lastEl.getBoundingClientRect();
+      if (lr.left - 1 > rightEdge + buffer) {
+        track.insertBefore(lastEl, track.firstElementChild);
+        tx -= step; apply();
+      }
     }
   };
 
@@ -323,25 +361,7 @@
     const dt = Math.min(0.05, Math.max(0.001, dtRaw));
     lastTs = ts;
 
-    // pauza na czas aktywnego resize (pozwalamy handleResize zrobić swoje)
-    if (resizing && mode !== 'DRAG') {
-      requestAnimationFrame(tick);
-      return;
-    }
-
-    // Watchdog postępu
-    if (mode === 'CRUISE') {
-      if (Math.abs(tx - lastProgressTx) > 2) {
-        lastProgressTx = tx; lastProgressTs = ts;
-      } else if (ts - lastProgressTs > STALL_TIMEOUT_MS) {
-        const next = getNextRightCard();
-        startBounceTo(computeTxForCentering(next, tx));
-        lastProgressTs = ts;
-      }
-    }
-
-    // Aktualizacja step/gap na żywo (dla resize/zmian stylów)
-    step = getStep(); gap = getGap();
+    if (mode === 'PAUSE') { requestAnimationFrame(tick); return; }
 
     if (mode === 'CRUISE') {
       v = -CRUISE_SPEED + (v + CRUISE_SPEED) * Math.exp(-FRICTION * dt);
@@ -350,45 +370,22 @@
 
       recycleInCruise();
 
-      const safeMax = Math.max(SAFE_TRIGGER_MIN, Math.min(TRIGGER_DIST, step * SAFE_TRIGGER_MAX_RATIO));
+      const safeMax = Math.max(SAFE_TRIGGER_MIN, Math.min(TRIGGER_DIST, getStep() * SAFE_TRIGGER_MAX_RATIO));
       const next = getNextRightCard();
-      const target = computeTxForCentering(next, tx);
-      const dist = Math.abs(tx - target);
-      if (dist <= safeMax) startBounceTo(target);
-
-    } else if (mode === 'BOUNCE') {
-      const prevTx = tx;
-      tx += v * dt;
-      v  *= Math.exp(-FRICTION * dt);
-
-      const crossed = (prevTx - wallTx) * (tx - wallTx) <= 0;
-      if (crossed) {
-        tx = wallTx + (wallTx - tx);
-        v  = -v * RESTITUTION;
-        bounces += 1;
-        if (bounces >= MAX_BOUNCES) {
-          tx = wallTx; v = 0; apply();
-          mode = 'HOLD'; dwellUntil = ts + DWELL_MS;
-        }
+      if (next) {
+        const target = computeTxForCentering(next, tx);
+        const dist = Math.abs(tx - target);
+        if (dist <= safeMax) { mode='SNAP'; snapToCard(next, { animate:true, duration: Math.max(140, SNAP_DURATION - 80) }); }
       }
 
-      if (Math.abs(v) < V_STOP && Math.abs(tx - wallTx) < X_STOP) {
-        tx = wallTx; v = 0; apply();
-        mode = 'HOLD'; dwellUntil = ts + DWELL_MS;
-      }
-
-      apply();
-
-    } else if (mode === 'HOLD') {
-      if (ts >= dwellUntil) {
-        mode = 'CRUISE'; v = -CRUISE_SPEED;
-        lastProgressTx = tx; lastProgressTs = ts;
+      if (Math.abs(tx - lastProgressTx) > 2) { lastProgressTx = tx; lastProgressTs = ts; }
+      else if (ts - lastProgressTs > STALL_TIMEOUT_MS) {
+        const n = getNextRightCard(); if (n) { mode='SNAP'; snapToCard(n, { animate:false }); }
+        lastProgressTs = ts;
       }
     }
-    // DRAG rysuje rAF z onMove()
 
     requestAnimationFrame(tick);
   };
-
   requestAnimationFrame(tick);
 })();
