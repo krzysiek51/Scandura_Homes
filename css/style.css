@@ -2353,7 +2353,7 @@ html.nav-open, body.nav-open {
   padding-bottom: 28px;
   overflow: visible;
   flex-shrink: 0;
-  width: 336px; /* 336 */
+  width: 300px; /* 336 */
   box-sizing: border-box;
   background-color: #FAF7F4;
   scroll-snap-align: start;
