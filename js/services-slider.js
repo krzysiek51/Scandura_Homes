@@ -162,7 +162,7 @@
     let targetX;
     if (cpv === 1) {
       // center-based
-      targetX = -(centers[index] - viewportW / 2);
+      targetX = -(centers[index] - viewportW / 2) -22;
     } else {
       // left-edge snap
       targetX = -lefts[index];
