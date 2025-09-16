@@ -40,8 +40,8 @@ desktop.ini
 .next/
 out/
 
-# --- Projektowe duże pliki ---
-photos/header_video.mp4
+# # --- Projektowe duże pliki ---
+# photos/header_video.mp4
 # --- Windows duplicate files ---
 css/style(*).css
 css/style(*).map
