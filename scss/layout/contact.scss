@@ -1,62 +1,57 @@
 @use '../utils/variables' as *;
 @use 'sass:color';
 
-/* Fallbacki breakpointów — tylko jeśli nie masz ich w variables */
+/* Fallbacki breakpointów */
 $bp-tablet: 744px !default;
 $bp-laptop: 1440px !default;
 $bp-desktop: 1920px !default;
 
 /* =========================================================
    Sekcja: CONTACT — MOBILE FIRST (375px)
-   Grid: 0–743: 4×72 + 16; 744–1439: 8×65 + 20;
-         1440–1919: 12×78 + 24; ≥1920: 12×88 + 24
    ========================================================= */
 
 .contact {
   position: relative;
+  isolation: isolate;
   padding: 60px 0;
 
-  /* Tło */
-  background-image: url('../photos/main/contact.jpg');
+  /* Sekcja nie przechwytuje klików */
+  pointer-events: none;
+
+  /* Tło z overlayem */
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
+    url('../photos/main/contact.jpg');
   background-size: cover;
-  background-position: center center;
+  background-position: center;
 
   color: $color-white;
 
-  /* Overlay */
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-color: rgba($color-black, 0.06);
-    z-index: 1;
-  }
-
-  .container {
+  /* Treść sekcji – włączamy interakcje */
+  > .container {
     position: relative;
-    z-index: 2;
+    z-index: 1;
+    pointer-events: auto;
   }
 
-  /* ============ GRID (mobile-first) ============ */
+  /* GRID */
   &__main {
     display: grid;
     grid-template-columns: repeat(4, 72px);
     column-gap: 16px;
     row-gap: 16px;
-    justify-content: center;   /* centrowanie torów */
+    justify-content: center;
     margin-inline: auto;
     min-width: 0;
     align-items: start;
   }
 
-  /* Dzieci grida (stack) */
   &__intro,
   &__form-wrapper {
     grid-column: 1 / -1;
     min-width: 0;
   }
 
-  /* Intro */
   &__intro { text-align: left; }
 
   &__title {
@@ -64,7 +59,7 @@ $bp-desktop: 1920px !default;
     font-weight: 600;
     text-align: left;
     line-height: 1.2;
-    letter-spacing: 0.06; /* wg wejścia */
+    letter-spacing: 0.06em;
     margin-bottom: 24px;
   }
 
@@ -107,7 +102,7 @@ $bp-desktop: 1920px !default;
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     width: 100%;
-    max-width: 400px; /* mobile limit */
+    max-width: 400px;
     box-sizing: border-box;
   }
 
@@ -115,7 +110,11 @@ $bp-desktop: 1920px !default;
 
   &__form-header { text-align: left; margin-bottom: 24px; }
 
-  &__form-supertitle { font-size: 14px; color: rgba($color-white, 0.8); margin-bottom: 10px; }
+  &__form-supertitle {
+    font-size: 14px;
+    color: rgba($color-white, 0.8);
+    margin-bottom: 10px;
+  }
 
   &__form-title {
     font-family: 'DM Sans', sans-serif;
@@ -125,8 +124,13 @@ $bp-desktop: 1920px !default;
   }
 
   &__label {
-    position: absolute; width: 1px; height: 1px; margin: -1px;
-    overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
   }
 
   &__input, &__textarea {
@@ -146,36 +150,74 @@ $bp-desktop: 1920px !default;
 
   /* Checkbox */
   &__form-group--checkbox {
-    display: flex; align-items: center; gap: 12px;
-    cursor: pointer; user-select: none; position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
   }
-  &__checkbox-label { font-size: 14px; color: rgba($color-white, 0.9); padding-left: 32px; }
+  &__checkbox-label {
+    font-size: 14px;
+    color: rgba($color-white, 0.9);
+    padding-left: 32px;
+  }
   &__checkbox-input {
-    font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 150%;
-    position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0;
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
   }
   &__checkbox-label::before {
-    content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
-    height: 20px; width: 20px; background-color: transparent;
-    border: 1px solid rgba($color-white, 0.8); border-radius: 4px;
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 20px;
+    width: 20px;
+    background-color: transparent;
+    border: 1px solid rgba($color-white, 0.8);
+    border-radius: 4px;
     transition: background-color 0.2s ease, border-color 0.2s ease;
   }
-  &__checkbox-input:checked + &__checkbox-label::before { background-color: $color-white; border-color: $color-white; }
+  &__checkbox-input:checked + &__checkbox-label::before {
+    background-color: $color-white;
+    border-color: $color-white;
+  }
   &__checkbox-label::after {
-    content: ''; position: absolute; left: 7px; top: 50%; transform: translateY(-60%) rotate(45deg);
-    width: 5px; height: 10px; border: solid $color-dark-text; border-width: 0 2px 2px 0; opacity: 0; transition: opacity 0.2s ease;
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 50%;
+    transform: translateY(-60%) rotate(45deg);
+    width: 5px;
+    height: 10px;
+    border: solid $color-dark-text;
+    border-width: 0 2px 2px 0;
+    opacity: 0;
+    transition: opacity 0.2s ease;
   }
   &__checkbox-input:checked + &__checkbox-label::after { opacity: 1; }
 
   &__submit-button {
-    width: 100%; height: 50px; border-radius: 8px; border: none;
-    background-color: #DC9B59; color: $color-white;
-    font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500;
-    cursor: pointer; transition: background-color 0.3s ease; margin-top: 36px;
+    width: 100%;
+    height: 50px;
+    border-radius: 8px;
+    border: none;
+    background-color: #DC9B59;
+    color: $color-white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 36px;
     &:hover { background-color: color.adjust(#DC9B59, $lightness: -5%); }
   }
 
-  /* ===================== TABLET (≥744) — STACK ===================== */
+  /* TABLET */
   @media (min-width: $bp-tablet) {
     &__main {
       grid-template-columns: repeat(8, 65px);
@@ -183,17 +225,11 @@ $bp-desktop: 1920px !default;
       row-gap: 20px;
       justify-content: center;
     }
-
-    /* >>> JEDNA KOLUMNA (stack) jak na mobile <<< */
     &__intro { grid-column: 1 / -1; }
-    &__form-wrapper {
-      grid-column: 1 / -1;
-      max-width: none;   /* od tabletu karta pracuje w siatce */
-      width: 100%;
-    }
+    &__form-wrapper { grid-column: 1 / -1; max-width: none; width: 100%; }
   }
 
-  /* ===================== LAPTOP (≥1440) — 2 kolumny ===================== */
+  /* LAPTOP */
   @media (min-width: $bp-laptop) {
     &__main {
       grid-template-columns: repeat(12, 78px);
@@ -201,17 +237,13 @@ $bp-desktop: 1920px !default;
       row-gap: 24px;
       justify-content: center;
     }
-
     &__intro { grid-column: 1 / span 6; }
     &__form-wrapper { grid-column: 7 / span 6; }
   }
 
-  /* ===================== DESKTOP (≥1920) ===================== */
+  /* DESKTOP */
   @media (min-width: $bp-desktop) {
-    &__main {
-      grid-template-columns: repeat(12, 88px);
-      /* gap pozostaje 24px */
-    }
+    &__main { grid-template-columns: repeat(12, 88px); }
     &__intro { grid-column: 1 / span 6; }
     &__form-wrapper { grid-column: 7 / span 6; }
   }

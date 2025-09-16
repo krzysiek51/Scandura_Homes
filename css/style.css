@@ -4356,55 +4356,44 @@ html.nav-open, body.nav-open {
     height: 62px;
   }
 }
-/* Fallbacki breakpointów — tylko jeśli nie masz ich w variables */
+/* Fallbacki breakpointów */
 /* =========================================================
    Sekcja: CONTACT — MOBILE FIRST (375px)
-   Grid: 0–743: 4×72 + 16; 744–1439: 8×65 + 20;
-         1440–1919: 12×78 + 24; ≥1920: 12×88 + 24
    ========================================================= */
 .contact {
   position: relative;
+  isolation: isolate;
   padding: 60px 0;
-  /* Tło */
-  background-image: url("../photos/main/contact.jpg");
+  /* Sekcja nie przechwytuje klików */
+  pointer-events: none;
+  /* Tło z overlayem */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url("../photos/main/contact.jpg");
   background-size: cover;
-  background-position: center center;
+  background-position: center;
   color: #ffffff;
-  /* Overlay */
+  /* Treść sekcji – włączamy interakcje */
 }
-.contact::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.06);
-  z-index: 1;
-}
-.contact .container {
+.contact > .container {
   position: relative;
-  z-index: 2;
+  z-index: 1;
+  pointer-events: auto;
 }
 .contact {
-  /* ============ GRID (mobile-first) ============ */
+  /* GRID */
 }
 .contact__main {
   display: grid;
   grid-template-columns: repeat(4, 72px);
   column-gap: 16px;
   row-gap: 16px;
-  justify-content: center; /* centrowanie torów */
+  justify-content: center;
   margin-inline: auto;
   min-width: 0;
   align-items: start;
 }
-.contact {
-  /* Dzieci grida (stack) */
-}
 .contact__intro, .contact__form-wrapper {
   grid-column: 1/-1;
   min-width: 0;
-}
-.contact {
-  /* Intro */
 }
 .contact__intro {
   text-align: left;
@@ -4414,7 +4403,7 @@ html.nav-open, body.nav-open {
   font-weight: 600;
   text-align: left;
   line-height: 1.2;
-  letter-spacing: 0.06; /* wg wejścia */
+  letter-spacing: 0.06em;
   margin-bottom: 24px;
 }
 .contact__description {
@@ -4457,7 +4446,7 @@ html.nav-open, body.nav-open {
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   width: 100%;
-  max-width: 400px; /* mobile limit */
+  max-width: 400px;
   box-sizing: border-box;
 }
 .contact__form {
@@ -4528,9 +4517,6 @@ html.nav-open, body.nav-open {
   padding-left: 32px;
 }
 .contact__checkbox-input {
-  font-family: "DM Sans", sans-serif;
-  font-size: 14px;
-  line-height: 150%;
   position: absolute;
   opacity: 0;
   cursor: pointer;
@@ -4588,7 +4574,7 @@ html.nav-open, body.nav-open {
   background-color: rgb(215.5597014925, 142.3134328358, 67.9402985075);
 }
 .contact {
-  /* ===================== TABLET (≥744) — STACK ===================== */
+  /* TABLET */
 }
 @media (min-width: 744px) {
   .contact__main {
@@ -4597,20 +4583,17 @@ html.nav-open, body.nav-open {
     row-gap: 20px;
     justify-content: center;
   }
-  .contact {
-    /* >>> JEDNA KOLUMNA (stack) jak na mobile <<< */
-  }
   .contact__intro {
     grid-column: 1/-1;
   }
   .contact__form-wrapper {
     grid-column: 1/-1;
-    max-width: none; /* od tabletu karta pracuje w siatce */
+    max-width: none;
     width: 100%;
   }
 }
 .contact {
-  /* ===================== LAPTOP (≥1440) — 2 kolumny ===================== */
+  /* LAPTOP */
 }
 @media (min-width: 1440px) {
   .contact__main {
@@ -4627,12 +4610,11 @@ html.nav-open, body.nav-open {
   }
 }
 .contact {
-  /* ===================== DESKTOP (≥1920) ===================== */
+  /* DESKTOP */
 }
 @media (min-width: 1920px) {
   .contact__main {
     grid-template-columns: repeat(12, 88px);
-    /* gap pozostaje 24px */
   }
   .contact__intro {
     grid-column: 1/span 6;
