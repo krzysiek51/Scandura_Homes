@@ -1,0 +1,56 @@
+/* ==========================================================================
+   HERO STEPS — final working version
+   ========================================================================== */
+
+.hero-steps {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Overlay fade */
+.hero-steps .header__overlay {
+  transition: background 300ms cubic-bezier(.2,.7,.3,1);
+}
+
+/* Tytuł + opis + CTA */
+.hero-steps .header__title,
+.hero-steps .header__description,
+.hero-steps .button--header {
+  transition:
+    color 300ms cubic-bezier(.2,.7,.3,1),
+    transform 300ms cubic-bezier(.2,.7,.3,1);
+  will-change: color, transform;
+}
+
+/* ===== KROK 1 ===== */
+.hero-steps.hs-step-1 .header__overlay { background: rgba(0,0,0,0.4); }
+
+.hero-steps.hs-step-1 .header__title       { color: rgba(255,255,255,1);    transform: translateY(0); }
+.hero-steps.hs-step-1 .header__description { color: rgba(255,255,255,0.95); transform: translateY(0); }
+.hero-steps.hs-step-1 .button--header      { color: rgba(255,255,255,1);    transform: translateY(0); }
+
+/* ===== KROK 2 ===== */
+.hero-steps.hs-step-2 .header__overlay { background: rgba(0,0,0,0.55); }
+
+.hero-steps.hs-step-2 .header__title       { color: rgba(255,255,255,0.85); transform: translateY(-10px); }
+.hero-steps.hs-step-2 .header__description { color: rgba(255,255,255,0.75); transform: translateY(-6px); }
+.hero-steps.hs-step-2 .button--header      { color: rgba(255,255,255,1);    transform: translateY(0); }
+
+/* ===== KROK 3 ===== */
+.hero-steps.hs-step-3 .header__overlay { background: rgba(0,0,0,0.7); }
+
+.hero-steps.hs-step-3 .header__title       { color: rgba(255,255,255,0.7); transform: translateY(-20px); }
+.hero-steps.hs-step-3 .header__description { color: rgba(255,255,255,0.6); transform: translateY(-12px); }
+.hero-steps.hs-step-3 .button--header      { color: rgba(255,255,255,1);   transform: translateY(0); }
+
+/* ===== prefers-reduced-motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .hero-steps .header__overlay,
+  .hero-steps .header__title,
+  .hero-steps .header__description,
+  .hero-steps .button--header {
+    transition: none !important;
+    transform: none !important;
+    color: rgba(255,255,255,1) !important;
+  }
+}

@@ -1,0 +1,128 @@
+@use "../utils/variables" as v;
+
+/* =========================================================
+   AI BOX — apple-style scroll entrance (tylko animacje)
+   Zero zmian w wymiarach/układzie. Tylko transform/opacity.
+   Cel: badge → tytuł → sub → korzyści (stagger) → CTA (pop) → link
+   ========================================================= */
+
+/* Keyframes: delikatny fade-up + lekki pop dla przycisku */
+@keyframes ai-fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes ai-pop {
+  0%   { opacity: 0; transform: translateY(12px) scale(.98); }
+  60%  { opacity: 1; transform: translateY(0)    scale(1.005); }
+  100% { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* Progressive enhancement — tylko gdy wspierane scroll-driven animacje */
+@supports (animation-timeline: view()) {
+  /* Spinamy animacje z widocznością całej sekcji AI */
+  .configurator-prompt {
+    view-timeline-name: --aiBox;
+    view-timeline-axis: block;
+  }
+
+  /* Wspólne parametry „apple feel” */
+  .configurator-prompt__badge,
+  .configurator-prompt__title,
+  .configurator-prompt__sub,
+  .configurator-prompt__benefits,
+  .configurator-prompt__benefits li,
+  .configurator-prompt__cta,
+  .configurator-prompt__button,
+  .configurator-prompt__link {
+    animation-timeline: --aiBox;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(.2,.6,.2,1);
+    will-change: transform, opacity; /* tylko na elementach animowanych */
+  }
+
+  /* 1) Badge: bardzo wcześnie, szybki rise */
+  .configurator-prompt__badge {
+    animation-name: ai-fade-up;
+    animation-range: entry 6% cover 16%;
+    animation-duration: .9s;
+  }
+
+  /* 2) Tytuł: mocniejszy akcent, trochę dłużej */
+  .configurator-prompt__title {
+    animation-name: ai-fade-up;
+    animation-range: entry 10% cover 28%;
+    animation-duration: 1s;
+  }
+
+  /* 3) Subhead: po tytule, krótszy dystans */
+  .configurator-prompt__sub {
+    animation-name: ai-fade-up;
+    animation-range: entry 18% cover 34%;
+    animation-duration: .9s;
+  }
+
+  /* 4) Lista korzyści — najpierw kontener… */
+  .configurator-prompt__benefits {
+    animation-name: ai-fade-up;
+    animation-range: entry 24% cover 40%;
+    animation-duration: .8s;
+  }
+  /* …potem li ze staggerem (wewnętrzny timeline „view()” dla każdego li) */
+  .configurator-prompt__benefits li {
+    animation-name: ai-fade-up;
+    animation-timeline: view();             /* każdy li reaguje na własne wejście */
+    animation-range: entry 0% cover 50%;
+    animation-duration: .6s;
+  }
+  .configurator-prompt__benefits li:nth-child(1) { animation-delay:  80ms; }
+  .configurator-prompt__benefits li:nth-child(2) { animation-delay: 160ms; }
+  .configurator-prompt__benefits li:nth-child(3) { animation-delay: 240ms; }
+  .configurator-prompt__benefits li:nth-child(4) { animation-delay: 320ms; }
+
+  /* 5) CTA wrapper: pojawia się po li */
+  .configurator-prompt__cta {
+    animation-name: ai-fade-up;
+    animation-range: entry 36% cover 52%;
+    animation-duration: .8s;
+  }
+
+  /* 6) Button: lekki „pop” jak u Apple (ale bardzo subtelny) */
+  .configurator-prompt__button {
+    animation-name: ai-pop;
+    animation-range: entry 40% cover 58%;
+    animation-duration: .9s;
+  }
+
+  /* 7) Link sekundarny: po przycisku */
+  .configurator-prompt__link {
+    animation-name: ai-fade-up;
+    animation-range: entry 46% cover 64%;
+    animation-duration: .7s;
+  }
+
+  /* Mikro-interakcja (bez layout shift) */
+  .configurator-prompt__button:is(:hover, :focus-visible) {
+    transform: translateY(-1px) scale(1.01);
+  }
+}
+
+/* Fallback: jeśli UA nie wspiera scroll-driven — nic nie ukrywamy, brak zmian */
+@supports not (animation-timeline: view()) {
+  /* celowo pusto — zachowujemy Twoje aktualne style 1:1 */
+}
+
+/* A11y: użytkownicy z ograniczonym ruchem dostają stan statyczny */
+@media (prefers-reduced-motion: reduce) {
+  .configurator-prompt__badge,
+  .configurator-prompt__title,
+  .configurator-prompt__sub,
+  .configurator-prompt__benefits,
+  .configurator-prompt__benefits li,
+  .configurator-prompt__cta,
+  .configurator-prompt__button,
+  .configurator-prompt__link {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}

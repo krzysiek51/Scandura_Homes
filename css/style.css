@@ -1314,36 +1314,40 @@ html.nav-open, body.nav-open {
     gap: 18px 24px;
   }
 }
-/* ===== Fallbacki (gdyby brakowało w utils/variables) ===== */
+/* ===== Fallbacki ===== */
 /* ===================== TOKENS — MOBILE ===================== */
 /* ===================== TOKENS — TABLET (744) ===================== */
 /* ===================== TOKENS — LAPTOP (1440–1919) ===================== */
 /* ===================== TOKENS — DESKTOP (≥1920) ===================== */
 /* =========================================================
-   FOOTER — mobile-first; grid płynny (wypełnia 100% do paddingów)
+   FOOTER — mobile-first; płynny grid
    ========================================================= */
 .footer {
+  position: relative;
+  isolation: isolate;
   background-color: #000000;
   color: #ffffff;
   padding: 60px 0 30px;
-  /* ——— CONTAINER (wspólne) ——— */
+  /* Korzeń nie przechwytuje klików — interakcje tylko w zawartości */
+  pointer-events: none;
+  /* ——— CONTAINER ——— */
 }
-.footer .container {
-  /* Zerujemy globalne ograniczenia kontenera wyżej w kaskadzie */
+.footer > .container {
   max-width: none;
   width: 100%;
   box-sizing: border-box;
   padding-inline: 20px; /* mobile padding */
   margin-inline: auto;
   display: grid;
-  /* PŁYNNY GRID: 4 kolumny które zawsze wypełniają szerokość do paddingów */
   grid-template-columns: repeat(4, minmax(0, 1fr));
   column-gap: 16px;
   row-gap: 16px;
-  /* ważne: nie centruj torów – pozwól im wypełnić szerokość */
   justify-content: normal;
   align-items: start;
   min-width: 0;
+  position: relative;
+  z-index: 1;
+  pointer-events: auto; /* zawartość klikalna */
 }
 .footer {
   /* BRAND */
@@ -1470,6 +1474,9 @@ html.nav-open, body.nav-open {
 .footer__main-content {
   display: contents;
 }
+.footer__bottom-nav {
+  display: none;
+}
 .footer {
   /* =================== TABLET (≥744) =================== */
 }
@@ -1478,16 +1485,12 @@ html.nav-open, body.nav-open {
     padding-top: 48px;
     padding-bottom: 48px;
   }
-  .footer .container {
+  .footer > .container {
     padding-inline: 42px;
-    /* 8 kolumn – płynne do paddingów */
     grid-template-columns: repeat(8, minmax(0, 1fr));
     column-gap: 20px;
     row-gap: 20px;
     justify-content: normal;
-  }
-  .footer {
-    /* mapa bloków */
   }
   .footer__top {
     grid-column: 1/-1;
@@ -1516,9 +1519,6 @@ html.nav-open, body.nav-open {
     grid-template-columns: repeat(8, minmax(0, 1fr));
     gap: 20px;
     text-align: left;
-  }
-  .footer__bottom::before {
-    content: none;
   }
   .footer__copyright {
     grid-column: 1/span 4;
@@ -1570,11 +1570,11 @@ html.nav-open, body.nav-open {
   /* =================== LAPTOP (1440–1919) =================== */
 }
 @media (min-width: 1440px) and (max-width: 1919px) {
-  .footer .footer {
+  .footer {
     padding-top: 80px;
     padding-bottom: 40px;
   }
-  .footer .footer .container {
+  .footer > .container {
     max-width: 100%;
     padding-inline: 40px;
     grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -1582,23 +1582,23 @@ html.nav-open, body.nav-open {
     row-gap: 24px;
     justify-content: normal;
   }
-  .footer .footer__top {
+  .footer__top {
     grid-column: 1/span 4;
     grid-row: 1;
   }
-  .footer .footer__links {
+  .footer__links {
     grid-column: 5/span 2;
     grid-row: 1;
   }
-  .footer .footer__contact {
+  .footer__contact {
     grid-column: 7/span 3;
     grid-row: 1;
   }
-  .footer .footer__socials {
+  .footer__socials {
     grid-column: 10/span 3;
     grid-row: 1;
   }
-  .footer .footer__bottom {
+  .footer__bottom {
     grid-column: 1/-1;
     grid-row: 2;
     margin-top: 24px;
@@ -1606,34 +1606,34 @@ html.nav-open, body.nav-open {
     border-top: 1px solid rgba(255, 255, 255, 0.2);
     text-align: left;
   }
-  .footer .footer__logo {
+  .footer__logo {
     width: 160px;
     margin-bottom: 24px;
   }
-  .footer .footer__description {
+  .footer__description {
     font-size: 16px;
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.85);
   }
-  .footer .footer__heading {
+  .footer__heading {
     font-size: 24px;
     margin-bottom: 24px;
   }
-  .footer .footer__list {
+  .footer__list {
     gap: 14px;
   }
-  .footer .footer__link, .footer .footer__contact a, .footer .footer__address {
+  .footer__link, .footer__contact a, .footer__address {
     font-size: 16px;
     line-height: 1.6;
   }
-  .footer .footer__social-icons {
+  .footer__social-icons {
     gap: 16px;
   }
-  .footer .footer__social-link {
+  .footer__social-link {
     width: 44px;
     height: 44px;
   }
-  .footer .footer__copyright {
+  .footer__copyright {
     font-size: 14px;
   }
 }
@@ -1645,10 +1645,9 @@ html.nav-open, body.nav-open {
     padding-top: 88px;
     padding-bottom: 40px;
   }
-  .footer .container {
+  .footer > .container {
     max-width: 100%;
     padding-inline: 300px;
-    /* 12 płynnych kolumn */
     grid-template-columns: repeat(12, minmax(0, 1fr));
     column-gap: 24px;
     row-gap: 24px;
@@ -5625,6 +5624,351 @@ nav#mobile-menu .button--nav {
     font-size: 18px;
   }
 }
+/* ==========================================================================
+   HERO STEPS — final working version
+   ========================================================================== */
+.hero-steps {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Overlay fade */
+.hero-steps .header__overlay {
+  transition: background 300ms cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+/* Tytuł + opis + CTA */
+.hero-steps .header__title,
+.hero-steps .header__description,
+.hero-steps .button--header {
+  transition: color 300ms cubic-bezier(0.2, 0.7, 0.3, 1), transform 300ms cubic-bezier(0.2, 0.7, 0.3, 1);
+  will-change: color, transform;
+}
+
+/* ===== KROK 1 ===== */
+.hero-steps.hs-step-1 .header__overlay {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.hero-steps.hs-step-1 .header__title {
+  color: rgb(255, 255, 255);
+  transform: translateY(0);
+}
+
+.hero-steps.hs-step-1 .header__description {
+  color: rgba(255, 255, 255, 0.95);
+  transform: translateY(0);
+}
+
+.hero-steps.hs-step-1 .button--header {
+  color: rgb(255, 255, 255);
+  transform: translateY(0);
+}
+
+/* ===== KROK 2 ===== */
+.hero-steps.hs-step-2 .header__overlay {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.hero-steps.hs-step-2 .header__title {
+  color: rgba(255, 255, 255, 0.85);
+  transform: translateY(-10px);
+}
+
+.hero-steps.hs-step-2 .header__description {
+  color: rgba(255, 255, 255, 0.75);
+  transform: translateY(-6px);
+}
+
+.hero-steps.hs-step-2 .button--header {
+  color: rgb(255, 255, 255);
+  transform: translateY(0);
+}
+
+/* ===== KROK 3 ===== */
+.hero-steps.hs-step-3 .header__overlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.hero-steps.hs-step-3 .header__title {
+  color: rgba(255, 255, 255, 0.7);
+  transform: translateY(-20px);
+}
+
+.hero-steps.hs-step-3 .header__description {
+  color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-12px);
+}
+
+.hero-steps.hs-step-3 .button--header {
+  color: rgb(255, 255, 255);
+  transform: translateY(0);
+}
+
+/* ===== prefers-reduced-motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .hero-steps .header__overlay,
+  .hero-steps .header__title,
+  .hero-steps .header__description,
+  .hero-steps .button--header {
+    transition: none !important;
+    transform: none !important;
+    color: rgb(255, 255, 255) !important;
+  }
+}
+/* Start: ukryj wszystkie elementy (opacity 0 + translateY) */
+.configurator-prompt.ai-armed .configurator-prompt__badge,
+.configurator-prompt.ai-armed .configurator-prompt__title,
+.configurator-prompt.ai-armed .configurator-prompt__sub,
+.configurator-prompt.ai-armed .configurator-prompt__benefits,
+.configurator-prompt.ai-armed .configurator-prompt__benefits li,
+.configurator-prompt.ai-armed .configurator-prompt__cta,
+.configurator-prompt.ai-armed .configurator-prompt__button,
+.configurator-prompt.ai-armed .configurator-prompt__link {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+/* Po dodaniu .ai-animate — aktywuj transition */
+.configurator-prompt.ai-animate .configurator-prompt__badge,
+.configurator-prompt.ai-animate .configurator-prompt__title,
+.configurator-prompt.ai-animate .configurator-prompt__sub,
+.configurator-prompt.ai-animate .configurator-prompt__benefits,
+.configurator-prompt.ai-animate .configurator-prompt__benefits li,
+.configurator-prompt.ai-animate .configurator-prompt__cta,
+.configurator-prompt.ai-animate .configurator-prompt__button,
+.configurator-prompt.ai-animate .configurator-prompt__link {
+  transition: opacity 0.55s cubic-bezier(0.2, 0.6, 0.2, 1), transform 0.55s cubic-bezier(0.2, 0.6, 0.2, 1);
+  will-change: transform, opacity;
+}
+.configurator-prompt.ai-animate .configurator-prompt__button {
+  transition: opacity 0.55s cubic-bezier(0.2, 0.6, 0.2, 1), transform 0.55s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+
+/* Element z .ai-revealed staje się widoczny */
+.configurator-prompt .ai-revealed {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* A11y */
+@media (prefers-reduced-motion: reduce) {
+  .configurator-prompt.ai-armed .configurator-prompt__badge,
+  .configurator-prompt.ai-armed .configurator-prompt__title,
+  .configurator-prompt.ai-armed .configurator-prompt__sub,
+  .configurator-prompt.ai-armed .configurator-prompt__benefits,
+  .configurator-prompt.ai-armed .configurator-prompt__benefits li,
+  .configurator-prompt.ai-armed .configurator-prompt__cta,
+  .configurator-prompt.ai-armed .configurator-prompt__button,
+  .configurator-prompt.ai-armed .configurator-prompt__link,
+  .configurator-prompt.ai-animate .configurator-prompt__badge,
+  .configurator-prompt.ai-animate .configurator-prompt__title,
+  .configurator-prompt.ai-animate .configurator-prompt__sub,
+  .configurator-prompt.ai-animate .configurator-prompt__benefits,
+  .configurator-prompt.ai-animate .configurator-prompt__benefits li,
+  .configurator-prompt.ai-animate .configurator-prompt__cta,
+  .configurator-prompt.ai-animate .configurator-prompt__button,
+  .configurator-prompt.ai-animate .configurator-prompt__link {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+/* =========================================================
+   Mission — scroll-synced wejścia (Apple vibe)
+   WYMAGA klas z Twojej sekcji .mission (już masz w HTML)
+   ========================================================= */
+/* Domyślne 0, JS nadpisze w trakcie scrolla */
+.mission {
+  --p: 0;
+  --p-img: 0;
+  --p-dots: 0;
+  --p-div: 0;
+  --p-title: 0;
+  --p-sub: 0;
+  --p-text: 0;
+  --p-btn: 0;
+  /* Lepsza wydajność dla mobilnych */
+  contain: layout paint style;
+  will-change: transform;
+  /* Parallax/odsłona obrazu */
+}
+.mission__image-wrapper {
+  transform: translateY(calc((1 - var(--p-img)) * 24px));
+  /* delikatne przyciemnienie, które znika */
+}
+.mission__image-wrapper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, calc(0.18 * (1 - var(--p-img))));
+  pointer-events: none;
+}
+.mission__image {
+  transform: scale(calc(1.06 - 0.06 * var(--p-img)));
+  transition: none;
+  will-change: transform;
+}
+.mission {
+  /* Kropki wjeżdżają z prawej (w padding kontenera) i wyłaniają się */
+}
+.mission__dots {
+  transform: translateX(calc((1 - var(--p-dots)) * 24px));
+  opacity: var(--p-dots);
+  transition: none;
+  will-change: transform, opacity;
+}
+.mission {
+  /* Divider „rośnie” od lewej */
+}
+.mission__divider {
+  transform-origin: left center;
+  transform: scaleX(var(--p-div));
+  opacity: calc(0.4 + 0.6 * var(--p-div));
+  will-change: transform, opacity;
+}
+.mission {
+  /* Tytuł, podtytuł, tekst, przycisk — sekwencja */
+}
+.mission__title, .mission__text-title, .mission__text, .mission__button {
+  transition: none;
+  will-change: transform, opacity, filter;
+}
+.mission__title {
+  opacity: var(--p-title);
+  transform: translateY(calc((1 - var(--p-title)) * 22px));
+  filter: blur(calc((1 - var(--p-title)) * 2px));
+}
+.mission__text-title {
+  opacity: var(--p-sub);
+  transform: translateY(calc((1 - var(--p-sub)) * 20px));
+  filter: blur(calc((1 - var(--p-sub)) * 2px));
+}
+.mission__text {
+  opacity: var(--p-text);
+  transform: translateY(calc((1 - var(--p-text)) * 18px));
+  filter: blur(calc((1 - var(--p-text)) * 2px));
+}
+.mission__button {
+  opacity: var(--p-btn);
+  transform: translateY(calc((1 - var(--p-btn)) * 16px));
+  /* subtelny „pop” w końcówce */
+  scale: calc(0.98 + 0.02 * var(--p-btn));
+}
+.mission {
+  /* Bezpieczne zachowanie przy prefers-reduced-motion */
+}
+@media (prefers-reduced-motion: reduce) {
+  .mission__image-wrapper, .mission__image, .mission__dots, .mission__divider, .mission__title, .mission__text-title, .mission__text, .mission__button {
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    transition: none !important;
+  }
+}
+
+/* WHY-US — kolejka zdjęć + counter + scroll-synced copy
+   Startowy stan ukrycia obowiązuje TYLKO, gdy sekcja ma klasę .reveal-queue.
+   Dzięki temu nie ma „migania”, jeśli JS się nie załaduje. */
+.why-us {
+  /* zmienne dla części scroll-synced (divider/copy/lista) */
+  --w-div: 0;
+  --w-title: 0;
+  --w-sub: 0;
+  --w-desc: 0;
+  --w-list: 0;
+  /* ============== KOLEJKA ZDJĘĆ / BADGE ============== */
+}
+.why-us.reveal-queue {
+  /* wyższa specyficzność niż bazowy layout — bez !important */
+}
+.why-us.reveal-queue .why-us__review-card,
+.why-us.reveal-queue .why-us__image-wrapper,
+.why-us.reveal-queue .why-us__projects {
+  opacity: 0;
+  transform: translateY(26px);
+}
+.why-us.reveal-queue .why-us__review-image,
+.why-us.reveal-queue .why-us__image {
+  transform: scale(1.04);
+}
+.why-us {
+  /* płynne przejścia */
+}
+.why-us .why-us__review-card,
+.why-us .why-us__image-wrapper,
+.why-us .why-us__projects {
+  transition: transform 520ms cubic-bezier(0.22, 0.61, 0.36, 1), opacity 520ms ease;
+  will-change: transform, opacity;
+}
+.why-us .why-us__review-image,
+.why-us .why-us__image {
+  transition: transform 700ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+}
+.why-us {
+  /* docelowy stan po dodaniu .is-in przez JS */
+}
+.why-us .why-us__review-card.is-in,
+.why-us .why-us__image-wrapper.is-in,
+.why-us .why-us__projects.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+.why-us .why-us__review-card.is-in .why-us__review-image,
+.why-us .why-us__image-wrapper.is-in .why-us__image {
+  transform: scale(1);
+}
+.why-us {
+  /* ============== DIVIDER + COPY (scroll-synced) ============== */
+}
+.why-us .why-us__divider {
+  transform-origin: left center;
+  transform: scaleX(var(--w-div));
+  opacity: calc(0.4 + 0.6 * var(--w-div));
+}
+.why-us .why-us__title {
+  opacity: var(--w-title);
+  transform: translateY(calc((1 - var(--w-title)) * 18px));
+  filter: blur(calc((1 - var(--w-title)) * 2px));
+}
+.why-us .why-us__description-title {
+  opacity: var(--w-sub);
+  transform: translateY(calc((1 - var(--w-sub)) * 16px));
+  filter: blur(calc((1 - var(--w-sub)) * 2px));
+}
+.why-us .why-us__description {
+  opacity: var(--w-desc);
+  transform: translateY(calc((1 - var(--w-desc)) * 14px));
+  filter: blur(calc((1 - var(--w-desc)) * 2px));
+}
+.why-us .why-us__item {
+  --p-li: 0;
+  opacity: var(--p-li);
+  transform: translateY(calc((1 - var(--p-li)) * 14px));
+  filter: blur(calc((1 - var(--p-li)) * 1.5px));
+}
+.why-us {
+  /* Accessibility */
+}
+@media (prefers-reduced-motion: reduce) {
+  .why-us .why-us__review-card,
+  .why-us .why-us__image-wrapper,
+  .why-us .why-us__projects,
+  .why-us .why-us__review-image,
+  .why-us .why-us__image,
+  .why-us .why-us__divider,
+  .why-us .why-us__title,
+  .why-us .why-us__description-title,
+  .why-us .why-us__description,
+  .why-us .why-us__item {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+}
+
 /* CTA konfiguratora (jeden plik - bez zadnych nakladek) */
 /* KONFIGURATOR (jeden agregat) */
 /* scss/konfigurator_header/index.scss */

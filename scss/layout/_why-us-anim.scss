@@ -1,0 +1,99 @@
+/* WHY-US — kolejka zdjęć + counter + scroll-synced copy
+   Startowy stan ukrycia obowiązuje TYLKO, gdy sekcja ma klasę .reveal-queue.
+   Dzięki temu nie ma „migania”, jeśli JS się nie załaduje. */
+
+.why-us {
+  /* zmienne dla części scroll-synced (divider/copy/lista) */
+  --w-div: 0;
+  --w-title: 0;
+  --w-sub: 0;
+  --w-desc: 0;
+  --w-list: 0;
+
+  /* ============== KOLEJKA ZDJĘĆ / BADGE ============== */
+  &.reveal-queue {
+    /* wyższa specyficzność niż bazowy layout — bez !important */
+    .why-us__review-card,
+    .why-us__image-wrapper,
+    .why-us__projects {
+      opacity: 0;
+      transform: translateY(26px);
+    }
+    .why-us__review-image,
+    .why-us__image {
+      transform: scale(1.04);
+    }
+  }
+
+  /* płynne przejścia */
+  .why-us__review-card,
+  .why-us__image-wrapper,
+  .why-us__projects {
+    transition: transform 520ms cubic-bezier(.22,.61,.36,1), opacity 520ms ease;
+    will-change: transform, opacity;
+  }
+  .why-us__review-image,
+  .why-us__image {
+    transition: transform 700ms cubic-bezier(.22,.61,.36,1);
+    will-change: transform;
+  }
+
+  /* docelowy stan po dodaniu .is-in przez JS */
+  .why-us__review-card.is-in,
+  .why-us__image-wrapper.is-in,
+  .why-us__projects.is-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .why-us__review-card.is-in .why-us__review-image,
+  .why-us__image-wrapper.is-in .why-us__image {
+    transform: scale(1);
+  }
+
+  /* ============== DIVIDER + COPY (scroll-synced) ============== */
+  .why-us__divider {
+    transform-origin: left center;
+    transform: scaleX(var(--w-div));
+    opacity: calc(.4 + .6 * var(--w-div));
+  }
+  .why-us__title {
+    opacity: var(--w-title);
+    transform: translateY(calc((1 - var(--w-title)) * 18px));
+    filter: blur(calc((1 - var(--w-title)) * 2px));
+  }
+  .why-us__description-title {
+    opacity: var(--w-sub);
+    transform: translateY(calc((1 - var(--w-sub)) * 16px));
+    filter: blur(calc((1 - var(--w-sub)) * 2px));
+  }
+  .why-us__description {
+    opacity: var(--w-desc);
+    transform: translateY(calc((1 - var(--w-desc)) * 14px));
+    filter: blur(calc((1 - var(--w-desc)) * 2px));
+  }
+  .why-us__item {
+    --p-li: 0;
+    opacity: var(--p-li);
+    transform: translateY(calc((1 - var(--p-li)) * 14px));
+    filter: blur(calc((1 - var(--p-li)) * 1.5px));
+  }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .why-us__review-card,
+    .why-us__image-wrapper,
+    .why-us__projects,
+    .why-us__review-image,
+    .why-us__image,
+    .why-us__divider,
+    .why-us__title,
+    .why-us__description-title,
+    .why-us__description,
+    .why-us__item {
+      transition: none !important;
+      transform: none !important;
+      opacity: 1 !important;
+      filter: none !important;
+    }
+  }
+}

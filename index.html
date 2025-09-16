@@ -18,6 +18,9 @@
 </head>
 
 <body>
+<!-- ===== HERO STEPS — wrapper wokół istniejącego headera (bez zmiany rozmiaru) ===== -->
+<section class="hero-steps" aria-label="Prezentacja otwierająca">
+  <!-- Twój oryginalny HEADER – bez zmian w środku -->
   <header class="header">
     <video class="header__video" autoplay muted loop playsinline>
       <source src="photos/header_video.mp4" type="video/mp4" />
@@ -30,8 +33,7 @@
           <img class="header__logo--img" src="photos/mobile_logo.png" alt="Scandura Homes" />
         </a>
 
-        <button class="header__burger" id="burger-toggle" type="button" aria-label="Otwórz menu" aria-expanded="false"
-          aria-controls="mobile-menu">
+        <button class="header__burger" id="burger-toggle" type="button" aria-label="Otwórz menu" aria-expanded="false" aria-controls="mobile-menu">
           <img class="header__burger-icon" src="photos/svg/burger.svg" width="20" height="14" alt="" />
         </button>
       </div>
@@ -39,15 +41,22 @@
 
     <div class="header__content">
       <h1 class="header__title">Zbuduj wymarzony drewniany dom w skandynawskim stylu</h1>
+
       <p class="header__description">
         15 lat doświadczenia w Norwegii, domy energooszczędne i przyjazne środowisku.
       </p>
-      <button class="button button--header" type="button">
+
+      <a class="button button--header" href="/contact.html">
         Umów bezpłatną wizytę
         <img src="photos/svg/keyboard-arrow-right.svg" alt="" />
-      </button>
+      </a>
     </div>
-   echo "<meta name=\"deploy-test\" content=\"$(date +%s)\">" >> index.html
+  </header>
+</section>
+<!-- ===== /HERO STEPS ===== -->
+
+
+
 
     <!-- NAV wewnątrz headera -->
     <nav class="header__nav" id="mobile-menu" aria-hidden="true">
@@ -911,6 +920,12 @@
   <script src="/js/testimonials-slider.js" defer></script>
   <!-- <script src="/js/mobile-menu.js" defer></script> -->
   <script src="/js/nav-autohide.js" defer></script>
+  <!-- <script src="js/hero-steps.js" defer></script> -->
+   <script type="module" src="/js/ai-box-enter.js"></script>
+   <script src="/js/mission-anim.js" defer></script>
+     <script src="/js/why-us-anim.js" defer></script>.
+
+
 
   <!-- <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -974,7 +989,62 @@
       }, { capture: true, passive: true });
     })();
   </script>
+<!--  -->
+<!-- //script sticky header//  -->
+<!-- js/hero-steps.js (jeśli jeszcze nie masz; dodaj na dole body z defer) -->
+<!-- Minimalny JS: przypisuje .hs-step-1/2/3 na .hero-steps w trakcie scrolla -->
+<script>
+(() => {
+  const section = document.querySelector('.hero-steps');
+  if (!section) return;
+  const header  = section.querySelector('.header');
+  if (!header) return;
 
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) {
+    section.classList.remove('hs-step-2','hs-step-3');
+    section.classList.add('hs-step-1');
+    return;
+  }
+
+  let last = 0;
+
+  // Progres 0..1 względem góry sekcji i wysokości headera
+  const progress = () => {
+    const start = section.offsetTop;
+    const h     = header.offsetHeight || 1;
+    const y     = (window.scrollY || window.pageYOffset) - start;
+    return Math.min(Math.max(y / h, 0), 1);
+  };
+
+  const stepFrom = (p) => (p < 0.33 ? 1 : p < 0.66 ? 2 : 3);
+
+  const apply = (step) => {
+    if (step === last) return;
+    section.classList.remove('hs-step-1','hs-step-2','hs-step-3');
+    section.classList.add(`hs-step-${step}`);
+    last = step;
+  };
+
+  let ticking = false;
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      apply(stepFrom(progress()));
+      ticking = false;
+    });
+  };
+
+  section.classList.add('hs-step-1');
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+
+
+<!-- //script sticky header//  -->
 
 </body>
 

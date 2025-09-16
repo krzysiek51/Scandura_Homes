@@ -1,9 +1,8 @@
 @use '../utils/variables' as *;
 @use 'sass:color';
-@use "sass:math";
+@use 'sass:math';
 
-
-/* ===== Fallbacki (gdyby brakowało w utils/variables) ===== */
+/* ===== Fallbacki ===== */
 $bp-tablet: 744px !default;
 $bp-laptop: 1440px !default;
 $bp-desktop: 1920px !default;
@@ -48,38 +47,44 @@ $footer-desk-icon: 48px !default;
 $footer-desk-social-gap: 16px !default;
 
 /* =========================================================
-   FOOTER — mobile-first; grid płynny (wypełnia 100% do paddingów)
+   FOOTER — mobile-first; płynny grid
    ========================================================= */
 .footer {
+  position: relative;
+  isolation: isolate;
   background-color: $color-black;
   color: $color-white;
   padding: $footer-m-pad-y 0 30px;
 
-  /* ——— CONTAINER (wspólne) ——— */
-  .container {
-    /* Zerujemy globalne ograniczenia kontenera wyżej w kaskadzie */
+  /* Korzeń nie przechwytuje klików — interakcje tylko w zawartości */
+  pointer-events: none;
+
+  /* ——— CONTAINER ——— */
+  > .container {
     max-width: none;
     width: 100%;
     box-sizing: border-box;
-    padding-inline: 20px;           /* mobile padding */
+    padding-inline: 20px; /* mobile padding */
     margin-inline: auto;
 
     display: grid;
-    /* PŁYNNY GRID: 4 kolumny które zawsze wypełniają szerokość do paddingów */
     grid-template-columns: repeat(4, minmax(0, 1fr));
     column-gap: 16px;
     row-gap: 16px;
 
-    /* ważne: nie centruj torów – pozwól im wypełnić szerokość */
     justify-content: normal;
     align-items: start;
     min-width: 0;
+
+    position: relative;
+    z-index: 1;
+    pointer-events: auto; /* zawartość klikalna */
   }
 
   /* BRAND */
-  &__top         { grid-column: 1 / -1; }
-  &__logo-link   { display: inline-block; line-height: 0; }
-  &__logo        { width: 130px; height: auto; margin-bottom: 20px; display: block; }
+  &__top       { grid-column: 1 / -1; }
+  &__logo-link { display: inline-block; line-height: 0; }
+  &__logo      { width: 130px; height: auto; margin-bottom: 20px; display: block; }
   &__description {
     font-family: 'DM Sans', sans-serif;
     font-size: 14px;
@@ -133,22 +138,21 @@ $footer-desk-social-gap: 16px !default;
   }
   &__copyright { font-size: 14px; color: rgba($color-white, .7); }
   &__main-content { display: contents; }
+  &__bottom-nav { display: none; }
 
   /* =================== TABLET (≥744) =================== */
   @media (min-width: $bp-tablet) {
     padding-top: $footer-tab-pad-y;
     padding-bottom: $footer-tab-pad-y;
 
-    & .container {
+    > .container {
       padding-inline: 42px;
-      /* 8 kolumn – płynne do paddingów */
       grid-template-columns: repeat(8, minmax(0, 1fr));
       column-gap: $footer-tab-col-gap;
       row-gap: $footer-tab-col-gap;
       justify-content: normal;
     }
 
-    /* mapa bloków */
     &__top     { grid-column: 1 / -1; grid-row: 1; }
     &__links   { grid-column: 1 / span 2; grid-row: 2; }
     &__contact { grid-column: 3 / span 3; grid-row: 2; }
@@ -164,29 +168,29 @@ $footer-desk-social-gap: 16px !default;
       grid-template-columns: repeat(8, minmax(0, 1fr));
       gap: 20px;
       text-align: left;
-
-      &::before { content: none; }
     }
-    &__copyright { grid-column: 1 / span 4; font-size: 12.5px; }
+
+    &__copyright  { grid-column: 1 / span 4; font-size: 12.5px; }
     &__bottom-nav { grid-column: 5 / span 4; justify-self: end; display: flex; gap: 16px; }
 
     /* typografia */
-    &__logo { width: $footer-tab-logo-w; margin-bottom: 16px; }
+    &__logo        { width: $footer-tab-logo-w; margin-bottom: 16px; }
     &__description { font-size: $footer-tab-body; line-height: $footer-tab-line; color: rgba($color-white, .85); }
-    &__heading { font-size: $footer-tab-head; line-height: 1.5; margin-bottom: 16px; }
-    &__list { gap: $footer-tab-list-gap; }
+    &__heading     { font-size: $footer-tab-head; line-height: 1.5; margin-bottom: 16px; }
+    &__list        { gap: $footer-tab-list-gap; }
     &__link, &__contact a, &__address { font-size: $footer-tab-body; line-height: $footer-tab-line; }
     &__social-icons { gap: $footer-tab-social-gap; }
-    &__social-link { width: $footer-tab-icon; height: $footer-tab-icon; img { width: 18px; height: 18px; } }
+    &__social-link  { width: $footer-tab-icon; height: $footer-tab-icon;
+      img { width: 18px; height: 18px; }
+    }
   }
 
- /* =================== LAPTOP (1440–1919) =================== */
-@media (min-width: $bp-laptop) and (max-width: #{($bp-desktop - 1px)}) {
-  .footer {
+  /* =================== LAPTOP (1440–1919) =================== */
+  @media (min-width: $bp-laptop) and (max-width: #{ $bp-desktop - 1px }) {
     padding-top: $footer-lap-pad-y;
-   padding-bottom: math.div($footer-lap-pad-y, 2);
+    padding-bottom: math.div($footer-lap-pad-y, 2);
 
-    .container {
+    > .container {
       max-width: 100%;
       padding-inline: 40px;
       grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -216,17 +220,15 @@ $footer-desk-social-gap: 16px !default;
     &__social-link  { width: $footer-lap-icon; height: $footer-lap-icon; }
     &__copyright    { font-size: 14px; }
   }
-}
 
   /* =================== DESKTOP (≥1920) =================== */
   @media (min-width: $bp-desktop) {
     padding-top: $footer-desk-pad-y;
-   padding-bottom: math.div($footer-lap-pad-y, 2);
+    padding-bottom: math.div($footer-lap-pad-y, 2);
 
-    & .container {
+    > .container {
       max-width: 100%;
       padding-inline: 300px;
-      /* 12 płynnych kolumn */
       grid-template-columns: repeat(12, minmax(0, 1fr));
       column-gap: $footer-desk-col-gap;
       row-gap:   $footer-desk-col-gap;
@@ -246,12 +248,14 @@ $footer-desk-social-gap: 16px !default;
       text-align: left;
     }
 
-    &__logo { width: $footer-desk-logo-w; }
-    &__description { font-size: $footer-desk-body; line-height: $footer-desk-line; color: rgba($color-white, .85); }
-    &__heading { font-size: $footer-desk-head; margin-bottom: 24px; }
-    &__list { gap: $footer-desk-list-gap; }
+    &__logo         { width: $footer-desk-logo-w; }
+    &__description  { font-size: $footer-desk-body; line-height: $footer-desk-line; color: rgba($color-white, .85); }
+    &__heading      { font-size: $footer-desk-head; margin-bottom: 24px; }
+    &__list         { gap: $footer-desk-list-gap; }
     &__link, &__contact a, &__address { font-size: $footer-desk-body; line-height: $footer-desk-line; }
     &__social-icons { gap: $footer-desk-social-gap; }
-    &__social-link  { width: $footer-desk-icon; height: $footer-desk-icon; img { width: 22px; height: 22px; } }
+    &__social-link  { width: $footer-desk-icon; height: $footer-desk-icon;
+      img { width: 22px; height: 22px; }
+    }
   }
 }

@@ -1,0 +1,104 @@
+/* =========================================================
+   Mission — scroll-synced wejścia (Apple vibe)
+   WYMAGA klas z Twojej sekcji .mission (już masz w HTML)
+   ========================================================= */
+
+/* Domyślne 0, JS nadpisze w trakcie scrolla */
+.mission {
+  --p: 0;
+  --p-img: 0;
+  --p-dots: 0;
+  --p-div: 0;
+  --p-title: 0;
+  --p-sub: 0;
+  --p-text: 0;
+  --p-btn: 0;
+
+  /* Lepsza wydajność dla mobilnych */
+  contain: layout paint style;
+  will-change: transform;
+
+  /* Parallax/odsłona obrazu */
+  &__image-wrapper {
+    transform: translateY(calc((1 - var(--p-img)) * 24px));
+    /* delikatne przyciemnienie, które znika */
+    &::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: rgba(0,0,0, calc(0.18 * (1 - var(--p-img))));
+      pointer-events: none;
+    }
+  }
+  &__image {
+    transform: scale(calc(1.06 - 0.06 * var(--p-img)));
+    transition: none;
+    will-change: transform;
+  }
+
+  /* Kropki wjeżdżają z prawej (w padding kontenera) i wyłaniają się */
+  &__dots {
+    transform: translateX(calc((1 - var(--p-dots)) * 24px));
+    opacity: var(--p-dots);
+    transition: none;
+    will-change: transform, opacity;
+  }
+
+  /* Divider „rośnie” od lewej */
+  &__divider {
+    transform-origin: left center;
+    transform: scaleX(var(--p-div));
+    opacity: calc(0.4 + 0.6 * var(--p-div));
+    will-change: transform, opacity;
+  }
+
+  /* Tytuł, podtytuł, tekst, przycisk — sekwencja */
+  &__title,
+  &__text-title,
+  &__text,
+  &__button {
+    transition: none;
+    will-change: transform, opacity, filter;
+  }
+
+  &__title {
+    opacity: var(--p-title);
+    transform: translateY(calc((1 - var(--p-title)) * 22px));
+    filter: blur(calc((1 - var(--p-title)) * 2px));
+  }
+
+  &__text-title {
+    opacity: var(--p-sub);
+    transform: translateY(calc((1 - var(--p-sub)) * 20px));
+    filter: blur(calc((1 - var(--p-sub)) * 2px));
+  }
+
+  &__text {
+    opacity: var(--p-text);
+    transform: translateY(calc((1 - var(--p-text)) * 18px));
+    filter: blur(calc((1 - var(--p-text)) * 2px));
+  }
+
+  &__button {
+    opacity: var(--p-btn);
+    transform: translateY(calc((1 - var(--p-btn)) * 16px));
+    /* subtelny „pop” w końcówce */
+    scale: calc(0.98 + 0.02 * var(--p-btn));
+  }
+
+  /* Bezpieczne zachowanie przy prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    &__image-wrapper,
+    &__image,
+    &__dots,
+    &__divider,
+    &__title,
+    &__text-title,
+    &__text,
+    &__button {
+      transform: none !important;
+      opacity: 1 !important;
+      filter: none !important;
+      transition: none !important;
+    }
+  }
+}
