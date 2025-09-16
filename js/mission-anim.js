@@ -1,5 +1,5 @@
 // mission-anim.js
-// Scroll-synced "Apple-like" wejście sekcji .mission (parallax, divider, copy, CTA).
+// Scroll-synced "Apple-like" wejście sekcji .mission (zoom-out obrazu → potem typografia).
 (() => {
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -18,7 +18,7 @@
     const section = document.querySelector('.mission');
     if (!section) return;
 
-    // Jeżeli użytkownik nie życzy sobie animacji – ustaw końcowe stany i wyjdź
+    // prefer-reduced-motion → ustaw stany końcowe
     if (prefersReduced) {
       section.style.setProperty('--p', '1');
       section.style.setProperty('--p-img', '1');
@@ -31,30 +31,16 @@
       return;
     }
 
-    const imageWrap = section.querySelector('.mission__image-wrapper');
-    const dots       = section.querySelector('.mission__dots');
-    const divider    = section.querySelector('.mission__divider');
-    const title      = section.querySelector('.mission__title');
-    const subtitle   = section.querySelector('.mission__text-title');
-    const text       = section.querySelector('.mission__text');
-    const button     = section.querySelector('.mission__button');
-
-    // Bezpieczniki — brak któregokolwiek nie wywraca całości
-    const el = {
-      section, imageWrap, dots, divider, title, subtitle, text, button
-    };
-
-    // Zakres aktywacji animacji względem viewportu
-    // start: gdy górna krawędź sekcji dojedzie do ~70% wysokości okna
-    // end:   gdy dolna krawędź sekcji minie ~30% wysokości okna
+    // Zakres aktywacji względem viewportu
+    // start: gdy górna krawędź sekcji dojedzie do ~72% wysokości okna
+    // end:   gdy dolna krawędź sekcji minie ~28% wysokości okna
     const computeProgress = () => {
       const r = section.getBoundingClientRect();
       const vh = window.innerHeight || document.documentElement.clientHeight;
 
-      const start = vh * 0.70;
-      const end   = vh * 0.30;
+      const start = vh * 0.72;
+      const end   = vh * 0.28;
 
-      // t rośnie od 0 do 1 w trakcie przejazdu sekcji przez „okno aktywacji”
       const total = (r.height + start - end);
       const passed = (start - r.top);
       const t = clamp01(passed / Math.max(1, total));
@@ -67,14 +53,16 @@
       const t = computeProgress();   // globalny progress 0..1
       section.style.setProperty('--p', t.toFixed(4));
 
-      // Harmonogram (sekwencja):  ──| img ─ dots ─ divider ─ title ─ subtitle ─ text ─ button |──
-      const pImg  = win(t, 0.00, 0.30);   // obraz/parallax
-      const pDots = win(t, 0.10, 0.40);
-      const pDiv  = win(t, 0.18, 0.48);
-      const pTit  = win(t, 0.28, 0.60);
-      const pSub  = win(t, 0.36, 0.70);
-      const pTxt  = win(t, 0.46, 0.86);
-      const pBtn  = win(t, 0.60, 1.00);
+      // SEKWENCJA:
+      // Obraz kończy się szybciej (0.00 → 0.22), zanim ruszą teksty.
+      // Potem: dots, divider, tytuł, podtytuł, tekst, CTA.
+      const pImg  = win(t, 0.00, 0.22);   // 🔥 ZDJĘCIE — zoom-out i lekki parallax
+      const pDots = win(t, 0.12, 0.36);
+      const pDiv  = win(t, 0.18, 0.44);
+      const pTit  = win(t, 0.30, 0.58);
+      const pSub  = win(t, 0.38, 0.68);
+      const pTxt  = win(t, 0.48, 0.86);
+      const pBtn  = win(t, 0.64, 1.00);
 
       section.style.setProperty('--p-img',  pImg.toFixed(4));
       section.style.setProperty('--p-dots', pDots.toFixed(4));
@@ -92,12 +80,12 @@
       }
     };
 
-    // IO tylko po to, by nie liczyć gdy sekcji nie ma w kadrze
+    // IO: liczymy tylko, kiedy sekcja jest w kadrze
     const io = new IntersectionObserver((entries) => {
       const e = entries[0];
       if (!e) return;
       if (e.isIntersecting) {
-        onScroll(); // natychmiastowa aktualizacja
+        onScroll(); // natychmiast
         window.addEventListener('scroll', onScroll, { passive: true });
         window.addEventListener('resize', onScroll);
       } else {
@@ -108,7 +96,7 @@
 
     io.observe(section);
 
-    // Na wypadek wejścia „w połowie” po odświeżeniu
+    // Wejście „w połowie” po odświeżeniu
     onScroll();
     setTimeout(onScroll, 50);
   };

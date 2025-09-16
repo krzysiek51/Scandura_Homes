@@ -1,10 +1,24 @@
 // ai-box-config.js
-// Regulacja opóźnień i odstępów dla animacji AI Box
+// Regulacja timingu i bramki scrolla dla AI Box
 
 export const AIBoxConfig = {
-  delayStart: 120,     // ile ms czekać zanim ruszy animacja w ogóle
-  delayHeadStep: 90,   // odstęp między badge (1) a tytułem (2)
-  delayGap: 220,       // przerwa między "head" (1+2) a resztą
-  delayBase: 240,      // opóźnienie bazowe dla pierwszego elementu ogona
-  delayStep: 190        // odstęp między elementami ogona
+  // Timingi (ms)
+  delayStart: 120,     // start: kiedy wchodzą 1) badge i 2) tytuł (+ ewentualnie sub na mobile)
+  delayHeadStep: 90,   // odstęp między 1 i 2 (oraz 2→sub na mobile)
+  delayGap: 120,       // (desktop/tablet) przerwa między "head" a ogonem
+  delayBase: 240,      // bazowy delay dla pierwszego elementu ogona
+  delayStep: 90,       // odstęp między elementami ogona
+
+  // Breakpoint mobile
+  breakpoints: {
+    mobileMax: 743,    // <= 743 px traktujemy jako mobile
+  },
+
+  // Bramka scrolla tylko na mobile
+  mobileScrollGate: {
+    enabled: true,     // włącz/wyłącz logikę bramki
+    offsetPx: 30,      // ile px AI box ma się odsłonić (od góry viewportu), by uznać „lekki scroll”
+    delayMs: 180,      // ⬅️ NOWOŚĆ: opóźnienie PO spełnieniu bramki, zanim pokażemy ogon
+    debounceMs: 50     // filtr przeciw drganiom zdarzeń scroll/touch/wheel
+  },
 };
