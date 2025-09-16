@@ -11,70 +11,74 @@
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
     rel="stylesheet" />
-    <link rel="icon" href="/photos/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/photos/favicon.svg" type="image/svg+xml">
 
 
   <title>Scandura Homes</title>
 </head>
 
 <body>
-<!-- ===== HERO STEPS — wrapper wokół istniejącego headera (bez zmiany rozmiaru) ===== -->
-<section class="hero-steps" aria-label="Prezentacja otwierająca">
-  <!-- Twój oryginalny HEADER – bez zmian w środku -->
-  <header class="header">
-    <video class="header__video" autoplay muted loop playsinline>
-      <source src="photos/header_video.mp4" type="video/mp4" />
-    </video>
-    <div class="header__overlay"></div>
+  <!-- ===== HERO STEPS — wrapper wokół istniejącego headera (bez zmiany rozmiaru) ===== -->
+  <section class="hero-steps" aria-label="Prezentacja otwierająca">
+    <!-- Twój oryginalny HEADER – bez zmian w środku -->
+    <header class="header">
+      <video class="header__video" autoplay muted loop playsinline>
+        <source src="photos/header_video.mp4" type="video/mp4" />
+      </video>
+      <div class="header__overlay"></div>
 
-    <div class="header__wrap">
-      <div class="container header__top">
-        <a href="/" class="header__logo">
-          <img class="header__logo--img" src="photos/mobile_logo.png" alt="Scandura Homes" />
-        </a>
+      <div class="header__wrap">
+        <div class="container header__top">
+          <a href="/" class="header__logo">
+  <span class="header__logo-bg">
+    <img class="header__logo--img" src="photos/logo.svg" alt="Scandura Homes" />
+  </span>
+</a>
 
-        <button class="header__burger" id="burger-toggle" type="button" aria-label="Otwórz menu" aria-expanded="false" aria-controls="mobile-menu">
-          <img class="header__burger-icon" src="photos/svg/burger.svg" width="20" height="14" alt="" />
-        </button>
+
+          <button class="header__burger" id="burger-toggle" type="button" aria-label="Otwórz menu" aria-expanded="false"
+            aria-controls="mobile-menu">
+            <img class="header__burger-icon" src="photos/svg/burger.svg" width="20" height="14" alt="" />
+          </button>
+        </div>
       </div>
-    </div>
 
-    <div class="header__content">
-      <h1 class="header__title">Zbuduj wymarzony drewniany dom w skandynawskim stylu</h1>
+      <div class="header__content">
+        <h1 class="header__title">Zbuduj wymarzony drewniany dom w skandynawskim stylu</h1>
 
-      <p class="header__description">
-        15 lat doświadczenia w Norwegii, domy energooszczędne i przyjazne środowisku.
-      </p>
+        <p class="header__description">
+          15 lat doświadczenia w Norwegii, domy energooszczędne i przyjazne środowisku.
+        </p>
 
-      <a class="button button--header" href="/contact.html">
-        Umów bezpłatną wizytę
-        <img src="photos/svg/keyboard-arrow-right.svg" alt="" />
-      </a>
-    </div>
-  </header>
-</section>
-<!-- ===== /HERO STEPS ===== -->
-
+        <a class="button button--header" href="/contact.html">
+          Umów bezpłatną wizytę
+          <img src="photos/svg/keyboard-arrow-right.svg" alt="" />
+        </a>
+      </div>
+    </header>
+  </section>
+  <!-- ===== /HERO STEPS ===== -->
 
 
 
-    <!-- NAV wewnątrz headera -->
-    <nav class="header__nav" id="mobile-menu" aria-hidden="true">
-      <button class="header__nav-close" aria-label="Zamknij menu">
-        <img src="/photos/svg/x.svg" alt="" />
-      </button>
+
+  <!-- NAV wewnątrz headera -->
+  <nav class="header__nav" id="mobile-menu" aria-hidden="true">
+    <button class="header__nav-close" aria-label="Zamknij menu">
+      <img src="/photos/svg/x.svg" alt="" />
+    </button>
 
 
-      <ul class="header__nav-list">
-        <li><a class="header__nav-link" href="#home">Home</a></li>
-        <li><a class="header__nav-link" href="pages/about.html">O nas</a></li>
-        <li><a class="header__nav-link" href="pages/services.html">Usługi</a></li>
-        <li><a class="header__nav-link" href="#projects">Projekty</a></li>
-        <li><a class="header__nav-link" href="pages/contact.html">Kontakt</a></li>
-      </ul>
+    <ul class="header__nav-list">
+      <li><a class="header__nav-link" href="#home">Home</a></li>
+      <li><a class="header__nav-link" href="pages/about.html">O nas</a></li>
+      <li><a class="header__nav-link" href="pages/services.html">Usługi</a></li>
+      <li><a class="header__nav-link" href="#projects">Projekty</a></li>
+      <li><a class="header__nav-link" href="pages/contact.html">Kontakt</a></li>
+    </ul>
 
-      <a href="pages/contact.html" class="button button--nav">Contact Us</a>
-    </nav>
+    <a href="pages/contact.html" class="button button--nav">Contact Us</a>
+  </nav>
   </header>
 
 
@@ -726,104 +730,99 @@
   </section>
 
 
-<!-- Sekcja: Kontakt -->
-<section class="contact">
-  <div class="container">
-    <div class="contact__main">
-      <div class="contact__intro">
-        <h2 class="contact__title">Rozpocznij swój projekt z nami</h2>
-        <p class="contact__description">
-          Masz pytania? Jesteśmy tutaj, aby pomóc! Dzięki ponad 15-letniemu doświadczeniu w budowie wysokiej jakości
-          domów drewnianych w Norwegii, a teraz także w Polsce, łączymy skandynawskie rzemiosło, zrównoważone
-          materiały i precyzyjne zarządzanie projektami.
-        </p>
-        <p class="contact__description">
-          Naszym celem jest tworzenie trwałych i energooszczędnych domów, które od pierwszego dnia będą dla Ciebie
-          prawdziwym domem.
-        </p>
-
-        <div class="contact__socials">
-          <a href="#" class="contact__social-link" aria-label="Facebook">
-            <img src="photos/svg/socials/fb.svg" alt="Facebook">
-          </a>
-          <a href="#" class="contact__social-link" aria-label="Instagram">
-            <img src="photos/svg/socials/insta.svg" alt="Instagram">
-          </a>
-          <a href="#" class="contact__social-link" aria-label="X (Twitter)">
-            <img src="photos/svg/socials/x.svg" alt="X">
-          </a>
-          <a href="#" class="contact__social-link" aria-label="LinkedIn">
-            <img src="photos/svg/socials/in.svg" alt="LinkedIn">
-          </a>
-        </div>
-      </div>
-
-      <div class="contact__form-wrapper">
-        <!-- Netlify Forms -->
-        <form
-          name="contact"
-          method="POST"
-          data-netlify="true"
-          netlify-honeypot="bot-field"
-          action="/thank-you.html"
-          class="contact__form"
-        >
-          <!-- wymagane przez Netlify -->
-          <input type="hidden" name="form-name" value="contact">
-          <p hidden aria-hidden="true">
-            <label>Nie wypełniaj: <input name="bot-field"></label>
+  <!-- Sekcja: Kontakt -->
+  <section class="contact">
+    <div class="container">
+      <div class="contact__main">
+        <div class="contact__intro">
+          <h2 class="contact__title">Rozpocznij swój projekt z nami</h2>
+          <p class="contact__description">
+            Masz pytania? Jesteśmy tutaj, aby pomóc! Dzięki ponad 15-letniemu doświadczeniu w budowie wysokiej jakości
+            domów drewnianych w Norwegii, a teraz także w Polsce, łączymy skandynawskie rzemiosło, zrównoważone
+            materiały i precyzyjne zarządzanie projektami.
+          </p>
+          <p class="contact__description">
+            Naszym celem jest tworzenie trwałych i energooszczędnych domów, które od pierwszego dnia będą dla Ciebie
+            prawdziwym domem.
           </p>
 
-          <header class="contact__form-header">
-            <p class="contact__form-supertitle">Wyślij wiadomość</p>
-            <h3 class="contact__form-title"><em>Poproś o telefon zwrotny</em></h3>
-          </header>
-
-          <div class="contact__form-group">
-            <label for="name" class="contact__label">Imię i Nazwisko</label>
-            <input class="contact__input" type="text" id="name" name="name" placeholder="Imię i Nazwisko" required>
+          <div class="contact__socials">
+            <a href="#" class="contact__social-link" aria-label="Facebook">
+              <img src="photos/svg/socials/fb.svg" alt="Facebook">
+            </a>
+            <a href="#" class="contact__social-link" aria-label="Instagram">
+              <img src="photos/svg/socials/insta.svg" alt="Instagram">
+            </a>
+            <a href="#" class="contact__social-link" aria-label="X (Twitter)">
+              <img src="photos/svg/socials/x.svg" alt="X">
+            </a>
+            <a href="#" class="contact__social-link" aria-label="LinkedIn">
+              <img src="photos/svg/socials/in.svg" alt="LinkedIn">
+            </a>
           </div>
+        </div>
 
-          <div class="contact__form-group">
-            <label for="email" class="contact__label">Email</label>
-            <input class="contact__input" type="email" id="email" name="email" placeholder="Adres e-mail" required>
-          </div>
+        <div class="contact__form-wrapper">
+          <!-- Netlify Forms -->
+          <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you.html"
+            class="contact__form">
+            <!-- wymagane przez Netlify -->
+            <input type="hidden" name="form-name" value="contact">
+            <p hidden aria-hidden="true">
+              <label>Nie wypełniaj: <input name="bot-field"></label>
+            </p>
 
-          <div class="contact__form-group">
-            <label for="phone" class="contact__label">Numer Telefonu</label>
-            <input class="contact__input" type="tel" id="phone" name="phone" placeholder="Numer telefonu" required>
-          </div>
+            <header class="contact__form-header">
+              <p class="contact__form-supertitle">Wyślij wiadomość</p>
+              <h3 class="contact__form-title"><em>Poproś o telefon zwrotny</em></h3>
+            </header>
 
-          <div class="contact__form-group">
-            <label for="message" class="contact__label">Wiadomość</label>
-            <textarea class="contact__textarea" id="message" name="message" placeholder="Wpisz swoją wiadomość..." rows="4"></textarea>
-          </div>
+            <div class="contact__form-group">
+              <label for="name" class="contact__label">Imię i Nazwisko</label>
+              <input class="contact__input" type="text" id="name" name="name" placeholder="Imię i Nazwisko" required>
+            </div>
 
-          <div class="contact__form-group--checkbox">
-            <input class="contact__checkbox-input" type="checkbox" id="terms" name="terms" value="accepted" required>
-            <label for="terms" class="contact__checkbox-label">Zgadzam się na warunki korzystania z usługi.</label>
-          </div>
+            <div class="contact__form-group">
+              <label for="email" class="contact__label">Email</label>
+              <input class="contact__input" type="email" id="email" name="email" placeholder="Adres e-mail" required>
+            </div>
 
-          <button type="submit" class="contact__submit-button">Wyślij</button>
-        </form>
+            <div class="contact__form-group">
+              <label for="phone" class="contact__label">Numer Telefonu</label>
+              <input class="contact__input" type="tel" id="phone" name="phone" placeholder="Numer telefonu" required>
+            </div>
+
+            <div class="contact__form-group">
+              <label for="message" class="contact__label">Wiadomość</label>
+              <textarea class="contact__textarea" id="message" name="message" placeholder="Wpisz swoją wiadomość..."
+                rows="4"></textarea>
+            </div>
+
+            <div class="contact__form-group--checkbox">
+              <input class="contact__checkbox-input" type="checkbox" id="terms" name="terms" value="accepted" required>
+              <label for="terms" class="contact__checkbox-label">Zgadzam się na warunki korzystania z usługi.</label>
+            </div>
+
+            <button type="submit" class="contact__submit-button">Wyślij</button>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Netlify fallback do detekcji formularza przy buildzie (ukryty). 
+  <!-- Netlify fallback do detekcji formularza przy buildzie (ukryty). 
      MUSI mieć te same name oraz pola, inaczej nie zadziała. -->
-<form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
-  <input type="hidden" name="form-name" value="contact">
-  <input type="text"   name="name">
-  <input type="email"  name="email">
-  <input type="tel"    name="phone">
-  <textarea name="message"></textarea>
-  <input type="checkbox" name="terms" value="accepted">
-</form>
+  <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input type="hidden" name="form-name" value="contact">
+    <input type="text" name="name">
+    <input type="email" name="email">
+    <input type="tel" name="phone">
+    <textarea name="message"></textarea>
+    <input type="checkbox" name="terms" value="accepted">
+  </form>
 
-  
-</section>
+
+  </section>
 
 
   <!-- Footer -->
@@ -921,10 +920,12 @@
   <!-- <script src="/js/mobile-menu.js" defer></script> -->
   <script src="/js/nav-autohide.js" defer></script>
   <!-- <script src="js/hero-steps.js" defer></script> -->
-   <script type="module" src="/js/ai-box-enter.js"></script>
-   <script src="/js/mission-anim.js" defer></script>
-     <script src="/js/why-us-anim.js" defer></script>
-      <script src="/js/services-cards-anim.js" defer></script>
+  <script type="module" src="/js/ai-box-enter.js"></script>
+  <script src="/js/mission-anim.js" defer></script>
+  <script src="/js/why-us-anim.js" defer></script>
+  <script src="/js/services-cards-anim.js" defer></script>
+  <script type="module" src="/js/header-anim.js"></script>
+
 
 
 
@@ -990,62 +991,62 @@
       }, { capture: true, passive: true });
     })();
   </script>
-<!--  -->
-<!-- //script sticky header//  -->
-<!-- js/hero-steps.js (jeśli jeszcze nie masz; dodaj na dole body z defer) -->
-<!-- Minimalny JS: przypisuje .hs-step-1/2/3 na .hero-steps w trakcie scrolla -->
-<script>
-(() => {
-  const section = document.querySelector('.hero-steps');
-  if (!section) return;
-  const header  = section.querySelector('.header');
-  if (!header) return;
+  <!--  -->
+  <!-- //script sticky header//  -->
+  <!-- js/hero-steps.js (jeśli jeszcze nie masz; dodaj na dole body z defer) -->
+  <!-- Minimalny JS: przypisuje .hs-step-1/2/3 na .hero-steps w trakcie scrolla -->
+  <script>
+    (() => {
+      const section = document.querySelector('.hero-steps');
+      if (!section) return;
+      const header = section.querySelector('.header');
+      if (!header) return;
 
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReduced) {
-    section.classList.remove('hs-step-2','hs-step-3');
-    section.classList.add('hs-step-1');
-    return;
-  }
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) {
+        section.classList.remove('hs-step-2', 'hs-step-3');
+        section.classList.add('hs-step-1');
+        return;
+      }
 
-  let last = 0;
+      let last = 0;
 
-  // Progres 0..1 względem góry sekcji i wysokości headera
-  const progress = () => {
-    const start = section.offsetTop;
-    const h     = header.offsetHeight || 1;
-    const y     = (window.scrollY || window.pageYOffset) - start;
-    return Math.min(Math.max(y / h, 0), 1);
-  };
+      // Progres 0..1 względem góry sekcji i wysokości headera
+      const progress = () => {
+        const start = section.offsetTop;
+        const h = header.offsetHeight || 1;
+        const y = (window.scrollY || window.pageYOffset) - start;
+        return Math.min(Math.max(y / h, 0), 1);
+      };
 
-  const stepFrom = (p) => (p < 0.33 ? 1 : p < 0.66 ? 2 : 3);
+      const stepFrom = (p) => (p < 0.33 ? 1 : p < 0.66 ? 2 : 3);
 
-  const apply = (step) => {
-    if (step === last) return;
-    section.classList.remove('hs-step-1','hs-step-2','hs-step-3');
-    section.classList.add(`hs-step-${step}`);
-    last = step;
-  };
+      const apply = (step) => {
+        if (step === last) return;
+        section.classList.remove('hs-step-1', 'hs-step-2', 'hs-step-3');
+        section.classList.add(`hs-step-${step}`);
+        last = step;
+      };
 
-  let ticking = false;
-  const onScroll = () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      apply(stepFrom(progress()));
-      ticking = false;
-    });
-  };
+      let ticking = false;
+      const onScroll = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          apply(stepFrom(progress()));
+          ticking = false;
+        });
+      };
 
-  section.classList.add('hs-step-1');
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll, { passive: true });
-  onScroll();
-})();
-</script>
+      section.classList.add('hs-step-1');
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
 
 
-<!-- //script sticky header//  -->
+  <!-- //script sticky header//  -->
 
 </body>
 

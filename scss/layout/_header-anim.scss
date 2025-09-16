@@ -1,0 +1,57 @@
+/* _header-anim.scss */
+/* Animacje wejścia dla headera: tylko opacity/translate; brak zmian layoutu */
+
+@media (prefers-reduced-motion: reduce) {
+  .header.hero-armed,
+  .header.hero-animate {
+    .header__title,
+    .header__description,
+    .button--header {
+      transition: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+}
+
+/* Stan uzbrojony — ukryj elementy zanim włączymy transition */
+.header.hero-armed {
+  .header__title,
+  .header__description,
+  .button--header {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* Po włączeniu — ustaw jednolite przejścia */
+.header.hero-animate {
+  .header__title,
+  .header__description,
+  .button--header {
+    transition:
+      opacity .55s cubic-bezier(.2,.6,.2,1),
+      transform .55s cubic-bezier(.2,.6,.2,1);
+    will-change: transform, opacity; /* tylko na animowanych */
+  }
+}
+
+/* Ujawnione */
+.header .hero-revealed {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Subtelny "pop" dla przycisku w momencie wejścia (bez layout shift) */
+.header .button--header.hero-pop {
+  transition:
+    opacity .55s cubic-bezier(.2,.6,.2,1),
+    transform .55s cubic-bezier(.2,.6,.2,1);
+}
+.header .button--header.hero-pop.hero-revealed {
+  /* lekki overshoot — wyłącznie transform (brak wpływu na layout) */
+  transform: translateY(0) scale(1.01);
+}
+.header .button--header.hero-pop:is(:hover, :focus-visible) {
+  transform: translateY(-1px) scale(1.01);
+}

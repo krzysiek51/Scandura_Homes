@@ -1,30 +1,59 @@
+// ai-box-enter.js
+import { AIBoxConfig } from './ai-box-config.js';
+
 (() => {
-  const box = document.querySelector('.configurator-prompt');
-  if (!box) return;
+  const onReady = (fn) =>
+    (document.readyState === 'loading')
+      ? document.addEventListener('DOMContentLoaded', fn, { once: true })
+      : fn();
 
-  // prefers-reduced-motion → pomijamy animacje
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduced) return;
+  onReady(() => {
+    const box = document.querySelector('.configurator-prompt');
+    if (!box) return;
 
-  const els = [
-    box.querySelector('.configurator-prompt__badge'),
-    box.querySelector('.configurator-prompt__title'),
-    box.querySelector('.configurator-prompt__sub'),
-    box.querySelector('.configurator-prompt__benefits'),
-    ...box.querySelectorAll('.configurator-prompt__benefits li'),
-    box.querySelector('.configurator-prompt__cta'),
-    box.querySelector('.configurator-prompt__button'),
-    box.querySelector('.configurator-prompt__link'),
-  ].filter(Boolean);
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  // Na start ukryj
-  box.classList.add('ai-armed');
+    const q = (sel, root = box) => root.querySelector(sel);
+    const qAll = (sel, root = box) => Array.from(root.querySelectorAll(sel));
 
-  // Gdy dokument gotowy → odpal animację
-  window.addEventListener('load', () => {
-    box.classList.add('ai-animate');
-    els.forEach((el, i) => {
-      setTimeout(() => el.classList.add('ai-revealed'), 120 + i * 90);
-    });
+    // ——— SEKWENCJA ———
+    const elBadge    = q('.configurator-prompt__badge');   // 1
+    const elTitle    = q('.configurator-prompt__title');   // 2
+    const elSub      = q('.configurator-prompt__sub');
+    const elBenefits = q('.configurator-prompt__benefits');
+    const liBenefits = qAll('.configurator-prompt__benefits li');
+    const elCtaWrap  = q('.configurator-prompt__cta');
+    const elBtn      = q('.configurator-prompt__button');
+    const elLink     = q('.configurator-prompt__link');
+
+    const headNow = [elBadge, elTitle].filter(Boolean);
+    const tailSeq = [
+      elSub,
+      elBenefits,
+      ...liBenefits,
+      elCtaWrap,
+      elBtn,
+      elLink,
+    ].filter(Boolean);
+
+    // ——— UZBROJENIE + WŁĄCZENIE TRANSITION ———
+    box.classList.add('ai-armed');
+    requestAnimationFrame(() => box.classList.add('ai-animate'));
+
+    const revealGroup = (list, baseDelay, stepDelay) => {
+      list.forEach((el, i) => {
+        el.style.transitionDelay = `${baseDelay + i * stepDelay}ms`;
+        el.classList.add('ai-revealed');
+      });
+    };
+
+    // ——— HARMONOGRAM ———
+    setTimeout(() => {
+      revealGroup(headNow, 0, AIBoxConfig.delayHeadStep);
+    }, AIBoxConfig.delayStart);
+
+    setTimeout(() => {
+      revealGroup(tailSeq, AIBoxConfig.delayBase, AIBoxConfig.delayStep);
+    }, AIBoxConfig.delayStart + AIBoxConfig.delayGap);
   });
 })();

@@ -97,6 +97,20 @@ body {
   overflow: hidden;
   isolation: auto;
 }
+.header .header__logo-bg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.85); /* 0.6 = 60% krycia (40% przezroczystości) */
+  border-radius: 0 6px 0 0; /* zaokrąglenie rogów (opcjonalne) */
+  padding: 4px 8px; /* odstęp między logo a ramką */
+  box-shadow: 0 4px 3.5px rgba(12, 12, 12, 0.35);
+}
+.header .header__logo--img {
+  display: block;
+  height: 40px; /* dostosuj do swojego */
+  width: auto;
+}
 .header__video {
   position: absolute;
   inset: 0;
@@ -5624,98 +5638,6 @@ nav#mobile-menu .button--nav {
     font-size: 18px;
   }
 }
-/* ==========================================================================
-   HERO STEPS — final working version
-   ========================================================================== */
-.hero-steps {
-  position: relative;
-  isolation: isolate;
-}
-
-/* Overlay fade */
-.hero-steps .header__overlay {
-  transition: background 300ms cubic-bezier(0.2, 0.7, 0.3, 1);
-}
-
-/* Tytuł + opis + CTA */
-.hero-steps .header__title,
-.hero-steps .header__description,
-.hero-steps .button--header {
-  transition: color 300ms cubic-bezier(0.2, 0.7, 0.3, 1), transform 300ms cubic-bezier(0.2, 0.7, 0.3, 1);
-  will-change: color, transform;
-}
-
-/* ===== KROK 1 ===== */
-.hero-steps.hs-step-1 .header__overlay {
-  background: rgba(0, 0, 0, 0.4);
-}
-
-.hero-steps.hs-step-1 .header__title {
-  color: rgb(255, 255, 255);
-  transform: translateY(0);
-}
-
-.hero-steps.hs-step-1 .header__description {
-  color: rgba(255, 255, 255, 0.95);
-  transform: translateY(0);
-}
-
-.hero-steps.hs-step-1 .button--header {
-  color: rgb(255, 255, 255);
-  transform: translateY(0);
-}
-
-/* ===== KROK 2 ===== */
-.hero-steps.hs-step-2 .header__overlay {
-  background: rgba(0, 0, 0, 0.55);
-}
-
-.hero-steps.hs-step-2 .header__title {
-  color: rgba(255, 255, 255, 0.85);
-  transform: translateY(-10px);
-}
-
-.hero-steps.hs-step-2 .header__description {
-  color: rgba(255, 255, 255, 0.75);
-  transform: translateY(-6px);
-}
-
-.hero-steps.hs-step-2 .button--header {
-  color: rgb(255, 255, 255);
-  transform: translateY(0);
-}
-
-/* ===== KROK 3 ===== */
-.hero-steps.hs-step-3 .header__overlay {
-  background: rgba(0, 0, 0, 0.7);
-}
-
-.hero-steps.hs-step-3 .header__title {
-  color: rgba(255, 255, 255, 0.7);
-  transform: translateY(-20px);
-}
-
-.hero-steps.hs-step-3 .header__description {
-  color: rgba(255, 255, 255, 0.6);
-  transform: translateY(-12px);
-}
-
-.hero-steps.hs-step-3 .button--header {
-  color: rgb(255, 255, 255);
-  transform: translateY(0);
-}
-
-/* ===== prefers-reduced-motion ===== */
-@media (prefers-reduced-motion: reduce) {
-  .hero-steps .header__overlay,
-  .hero-steps .header__title,
-  .hero-steps .header__description,
-  .hero-steps .button--header {
-    transition: none !important;
-    transform: none !important;
-    color: rgb(255, 255, 255) !important;
-  }
-}
 /* Start: ukryj wszystkie elementy (opacity 0 + translateY) */
 .configurator-prompt.ai-armed .configurator-prompt__badge,
 .configurator-prompt.ai-armed .configurator-prompt__title,
@@ -6069,6 +5991,56 @@ nav#mobile-menu .button--nav {
     filter: none !important;
   }
 }
+/* _header-anim.scss */
+/* Animacje wejścia dla headera: tylko opacity/translate; brak zmian layoutu */
+@media (prefers-reduced-motion: reduce) {
+  .header.hero-armed .header__title,
+  .header.hero-armed .header__description,
+  .header.hero-armed .button--header,
+  .header.hero-animate .header__title,
+  .header.hero-animate .header__description,
+  .header.hero-animate .button--header {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+/* Stan uzbrojony — ukryj elementy zanim włączymy transition */
+.header.hero-armed .header__title,
+.header.hero-armed .header__description,
+.header.hero-armed .button--header {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+/* Po włączeniu — ustaw jednolite przejścia */
+.header.hero-animate .header__title,
+.header.hero-animate .header__description,
+.header.hero-animate .button--header {
+  transition: opacity 0.55s cubic-bezier(0.2, 0.6, 0.2, 1), transform 0.55s cubic-bezier(0.2, 0.6, 0.2, 1);
+  will-change: transform, opacity; /* tylko na animowanych */
+}
+
+/* Ujawnione */
+.header .hero-revealed {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Subtelny "pop" dla przycisku w momencie wejścia (bez layout shift) */
+.header .button--header.hero-pop {
+  transition: opacity 0.55s cubic-bezier(0.2, 0.6, 0.2, 1), transform 0.55s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+
+.header .button--header.hero-pop.hero-revealed {
+  /* lekki overshoot — wyłącznie transform (brak wpływu na layout) */
+  transform: translateY(0) scale(1.01);
+}
+
+.header .button--header.hero-pop:is(:hover, :focus-visible) {
+  transform: translateY(-1px) scale(1.01);
+}
+
 /* CTA konfiguratora (jeden plik - bez zadnych nakladek) */
 /* KONFIGURATOR (jeden agregat) */
 /* scss/konfigurator_header/index.scss */
