@@ -97,3 +97,28 @@
     }
   }
 }
+/* AUTO-KOLEJKA TEKSTÓW: ukryj na start i pokaż po .is-in, bez scrolla */
+.why-us.texts-queue {
+  .why-us__title,
+  .why-us__description-title,
+  .why-us__description,
+  .why-us__item {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(2px);
+    transition: transform 420ms cubic-bezier(.22,.61,.36,1), opacity 420ms ease, filter 420ms ease;
+    will-change: transform, opacity, filter;
+  }
+  .why-us__item { transform: translateY(14px); filter: blur(1.5px); }
+
+  .why-us__title.is-in,
+  .why-us__description-title.is-in,
+  .why-us__description.is-in,
+  .why-us__item.is-in {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* Divider zostaje na zmiennej (scroll-synced) — bez zmian */

@@ -5716,64 +5716,6 @@ nav#mobile-menu .button--nav {
     color: rgb(255, 255, 255) !important;
   }
 }
-/* Start: ukryj wszystkie elementy (opacity 0 + translateY) */
-.configurator-prompt.ai-armed .configurator-prompt__badge,
-.configurator-prompt.ai-armed .configurator-prompt__title,
-.configurator-prompt.ai-armed .configurator-prompt__sub,
-.configurator-prompt.ai-armed .configurator-prompt__benefits,
-.configurator-prompt.ai-armed .configurator-prompt__benefits li,
-.configurator-prompt.ai-armed .configurator-prompt__cta,
-.configurator-prompt.ai-armed .configurator-prompt__button,
-.configurator-prompt.ai-armed .configurator-prompt__link {
-  opacity: 0;
-  transform: translateY(14px);
-}
-
-/* Po dodaniu .ai-animate — aktywuj transition */
-.configurator-prompt.ai-animate .configurator-prompt__badge,
-.configurator-prompt.ai-animate .configurator-prompt__title,
-.configurator-prompt.ai-animate .configurator-prompt__sub,
-.configurator-prompt.ai-animate .configurator-prompt__benefits,
-.configurator-prompt.ai-animate .configurator-prompt__benefits li,
-.configurator-prompt.ai-animate .configurator-prompt__cta,
-.configurator-prompt.ai-animate .configurator-prompt__button,
-.configurator-prompt.ai-animate .configurator-prompt__link {
-  transition: opacity 0.55s cubic-bezier(0.2, 0.6, 0.2, 1), transform 0.55s cubic-bezier(0.2, 0.6, 0.2, 1);
-  will-change: transform, opacity;
-}
-.configurator-prompt.ai-animate .configurator-prompt__button {
-  transition: opacity 0.55s cubic-bezier(0.2, 0.6, 0.2, 1), transform 0.55s cubic-bezier(0.2, 0.6, 0.2, 1);
-}
-
-/* Element z .ai-revealed staje się widoczny */
-.configurator-prompt .ai-revealed {
-  opacity: 1 !important;
-  transform: none !important;
-}
-
-/* A11y */
-@media (prefers-reduced-motion: reduce) {
-  .configurator-prompt.ai-armed .configurator-prompt__badge,
-  .configurator-prompt.ai-armed .configurator-prompt__title,
-  .configurator-prompt.ai-armed .configurator-prompt__sub,
-  .configurator-prompt.ai-armed .configurator-prompt__benefits,
-  .configurator-prompt.ai-armed .configurator-prompt__benefits li,
-  .configurator-prompt.ai-armed .configurator-prompt__cta,
-  .configurator-prompt.ai-armed .configurator-prompt__button,
-  .configurator-prompt.ai-armed .configurator-prompt__link,
-  .configurator-prompt.ai-animate .configurator-prompt__badge,
-  .configurator-prompt.ai-animate .configurator-prompt__title,
-  .configurator-prompt.ai-animate .configurator-prompt__sub,
-  .configurator-prompt.ai-animate .configurator-prompt__benefits,
-  .configurator-prompt.ai-animate .configurator-prompt__benefits li,
-  .configurator-prompt.ai-animate .configurator-prompt__cta,
-  .configurator-prompt.ai-animate .configurator-prompt__button,
-  .configurator-prompt.ai-animate .configurator-prompt__link {
-    transition: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-}
 /* =========================================================
    Mission — scroll-synced wejścia (Apple vibe)
    WYMAGA klas z Twojej sekcji .mission (już masz w HTML)
@@ -5969,6 +5911,106 @@ nav#mobile-menu .button--nav {
   }
 }
 
+/* AUTO-KOLEJKA TEKSTÓW: ukryj na start i pokaż po .is-in, bez scrolla */
+.why-us.texts-queue .why-us__title,
+.why-us.texts-queue .why-us__description-title,
+.why-us.texts-queue .why-us__description,
+.why-us.texts-queue .why-us__item {
+  opacity: 0;
+  transform: translateY(18px);
+  filter: blur(2px);
+  transition: transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1), opacity 420ms ease, filter 420ms ease;
+  will-change: transform, opacity, filter;
+}
+.why-us.texts-queue .why-us__item {
+  transform: translateY(14px);
+  filter: blur(1.5px);
+}
+.why-us.texts-queue .why-us__title.is-in,
+.why-us.texts-queue .why-us__description-title.is-in,
+.why-us.texts-queue .why-us__description.is-in,
+.why-us.texts-queue .why-us__item.is-in {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* Divider zostaje na zmiennej (scroll-synced) — bez zmian */
+/* Apple-style entry: tylko pierwsza widoczna karta */
+.services .services__card {
+  /* TRANSITIONS ZAWSZE WŁĄCZONE (nie tylko w stanie startowym) */
+}
+.services .services__card .services__image,
+.services .services__card .services__icon-wrapper,
+.services .services__card .services__card-title,
+.services .services__card .services__card-text,
+.services .services__card .services__button {
+  transition: opacity 600ms cubic-bezier(0.22, 0.61, 0.36, 1), transform 600ms cubic-bezier(0.22, 0.61, 0.36, 1), filter 600ms ease;
+  will-change: transform, opacity, filter;
+}
+.services .services__card {
+  /* START: tylko gdy JS doda will-animate */
+}
+.services .services__card.will-animate .services__image,
+.services .services__card.will-animate .services__icon-wrapper,
+.services .services__card.will-animate .services__card-title,
+.services .services__card.will-animate .services__card-text,
+.services .services__card.will-animate .services__button {
+  opacity: 0;
+  transform: translateY(20px);
+  filter: blur(3px);
+}
+.services .services__card.will-animate {
+  /* fix centrowania przycisku (X do layoutu, Y do animacji) */
+}
+.services .services__card.will-animate .services__button {
+  transform: translateX(-50%) translateY(20px);
+}
+.services .services__card {
+  /* KONIEC: gdy JS doda is-animated */
+}
+.services .services__card.is-animated .services__image,
+.services .services__card.is-animated .services__icon-wrapper,
+.services .services__card.is-animated .services__card-title,
+.services .services__card.is-animated .services__card-text,
+.services .services__card.is-animated .services__button {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+.services .services__card.is-animated {
+  /* Stagger – to tylko opóźnienia, NIE definiujemy tu transition! */
+}
+.services .services__card.is-animated .services__image {
+  transition-delay: 0ms;
+}
+.services .services__card.is-animated .services__icon-wrapper {
+  transition-delay: 120ms;
+}
+.services .services__card.is-animated .services__card-title {
+  transition-delay: 240ms;
+}
+.services .services__card.is-animated .services__card-text {
+  transition-delay: 360ms;
+}
+.services .services__card.is-animated .services__button {
+  transition-delay: 480ms;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* A11y */
+@media (prefers-reduced-motion: reduce) {
+  .services .services__card .services__image,
+  .services .services__card .services__icon-wrapper,
+  .services .services__card .services__card-title,
+  .services .services__card .services__card-text,
+  .services .services__card .services__button {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
 /* CTA konfiguratora (jeden plik - bez zadnych nakladek) */
 /* KONFIGURATOR (jeden agregat) */
 /* scss/konfigurator_header/index.scss */

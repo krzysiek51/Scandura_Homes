@@ -1,34 +1,54 @@
-// why-us-anim.js — kolejka zdjęć + counter 26+, divider/teksty scroll-synced
+// why-us-anim.js — pełna regulacja opóźnień (zdjęcia + badge + teksty + lista)
 (() => {
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const clamp01 = (v) => Math.max(0, Math.min(1, v));
-  const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
-  const win = (t, a, b) => {
-    const x = Math.max(0, Math.min(1, (t - a) / Math.max(1e-6, b - a)));
-    return easeOutCubic(x);
+  /* =======================
+     KONFIG: progi & opóźnienia
+     ======================= */
+  const THRESHOLDS = {
+    big:    0.06, // duże foto start
+    small:  0.26, // małe foto start
+    badge:  0.32, // badge start
+    title:  0.46, // start auto-kolejki tekstów
   };
 
-  const animateCounter = (el, to, { duration = 900, prefix = '', suffix = '' } = {}) => {
-    const from = 0;
-    const t0 = performance.now();
-    const tick = (now) => {
-      const p = clamp01((now - t0) / duration);
-      const v = Math.round(from + (to - from) * easeOutCubic(p));
-      el.textContent = `${prefix}${v}${suffix}`;
-      if (p < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
+  const DELAYS = {
+    // Zdjęcia
+    big:    80,   // opóźnienie pojawienia dużego zdjęcia (ms)
+    small:  380,  // małe zdjęcie
+    badge:  520,  // badge
+
+    // Counter
+    counterDuration: 900, // czas trwania animacji licznika (ms)
+
+    // Teksty
+    title:    100,     // tytuł (ms od startu kolejki)
+    subtitle: 320,   // podtytuł
+    desc:     750,   // opis
+    listStep: 510,   // odstęp pomiędzy punktami listy
   };
+
+  const clamp01 = (v) => Math.max(0, Math.min(1, v));
+  const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+  const mapWin = (t, a, b) => easeOutCubic(clamp01((t - a) / Math.max(1e-6, b - a)));
+
+  function animateCounter(el, to, { duration = 900, prefix = '', suffix = '+' } = {}) {
+    const from = 0, t0 = performance.now();
+    const step = (now) => {
+      const p = clamp01((now - t0) / duration);
+      el.textContent = `${prefix}${Math.round(from + (to - from) * easeOutCubic(p))}${suffix}`;
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
 
   function init() {
     const section = document.querySelector('.why-us');
     if (!section) return;
 
-    // 🔒 Dodaj klasę, która aktywuje "startowy stan ukrycia" w CSS.
-    // Dzięki temu nie zobaczysz elementów zanim JS odpali kolejkę.
     section.classList.add('reveal-queue');
 
+    // Hooks
     const bigCard   = section.querySelector('.why-us__review-card');
     const smallWrap = section.querySelector('.why-us__image-wrapper');
     const badge     = section.querySelector('.why-us__projects');
@@ -40,49 +60,21 @@
     const desc      = section.querySelector('.why-us__description');
     const listItems = Array.from(section.querySelectorAll('.why-us__list .why-us__item'));
 
-    // Reduced Motion -> pokaż wszystko od razu + ustaw licznik na docelową wartość
     if (prefersReduced) {
       [bigCard, smallWrap, badge].forEach(el => el && el.classList.add('is-in'));
-      section.classList.remove('reveal-queue');
+      [title, subtitle, desc].forEach(el => el && el.classList.add('is-in'));
+      listItems.forEach(li => li.classList.add('is-in'));
       if (badgeNum) {
         const m = (badgeNum.textContent || '26+').match(/(\D*)(\d+)(\D*)/);
         badgeNum.textContent = `${m?.[1] ?? ''}${m?.[2] ?? '26'}${m?.[3] ?? '+'}`;
       }
+      section.style.setProperty('--w-div', '1');
       return;
     }
 
-    // 1) KOLEJKA ZDJĘĆ + BADGE (jednorazowo po wejściu sekcji)
-    let queued = false;
-    const ioQueue = new IntersectionObserver((entries) => {
-      const e = entries[0];
-      if (!e || queued) return;
-      if (e.isIntersecting) {
-        queued = true;
+    let shownBig = false, shownSmall = false, shownBadge = false, counted = false;
+    let textsQueued = false;
 
-        // Stagger: duże → małe → badge (z licznikiem)
-        setTimeout(() => bigCard?.classList.add('is-in'),   80);
-        setTimeout(() => smallWrap?.classList.add('is-in'), 280);
-        setTimeout(() => {
-          badge?.classList.add('is-in');
-          if (badgeNum) {
-            const raw = badgeNum.textContent || '26+';
-            const m = raw.match(/(\D*)(\d+)(\D*)/);
-            animateCounter(
-              badgeNum,
-              m?.[2] ? parseInt(m[2], 10) : 26,
-              { duration: 900, prefix: m?.[1] ?? '', suffix: m?.[3] ?? '+' }
-            );
-          }
-        }, 520);
-
-        // Po odpaleniu kolejki nie potrzebujemy blokady startowej
-        // (zostawiamy klasę reveal-queue, bo nie przeszkadza)
-        ioQueue.disconnect();
-      }
-    }, { threshold: 0.35 });
-    ioQueue.observe(section);
-
-    // 2) SCROLL-SYNC dla divider + copy + lista (jak wcześniej)
     const computeT = () => {
       const r = section.getBoundingClientRect();
       const vh = window.innerHeight || document.documentElement.clientHeight;
@@ -91,23 +83,60 @@
       return clamp01((start - r.top) / Math.max(1, total));
     };
 
+    function playTextsQueue() {
+      if (textsQueued) return;
+      textsQueued = true;
+      section.classList.add('texts-queue');
+
+      setTimeout(() => title?.classList.add('is-in'),    DELAYS.title);
+      setTimeout(() => subtitle?.classList.add('is-in'), DELAYS.subtitle);
+      setTimeout(() => desc?.classList.add('is-in'),     DELAYS.desc);
+      setTimeout(() => {
+        listItems.forEach((li, i) => {
+          setTimeout(() => li.classList.add('is-in'), i * DELAYS.listStep);
+        });
+      }, DELAYS.desc + 120);
+    }
+
     const onScroll = () => {
       const t = computeT();
-      section.style.setProperty('--w-div',   win(t, 0.20, 0.45).toFixed(4));
-      section.style.setProperty('--w-title', win(t, 0.32, 0.58).toFixed(4));
-      section.style.setProperty('--w-sub',   win(t, 0.40, 0.66).toFixed(4));
-      section.style.setProperty('--w-desc',  win(t, 0.48, 0.82).toFixed(4));
-      section.style.setProperty('--w-list',  win(t, 0.58, 1.00).toFixed(4));
 
-      const base = 0.58, per = 0.07;
-      listItems.forEach((li, i) => {
-        const s = base + i * per;
-        const p = win(t, s, s + 0.22);
-        li.style.setProperty('--p-li', p.toFixed(4));
-      });
+      // Zdjęcia
+      if (!shownBig   && t >= THRESHOLDS.big) {
+        setTimeout(() => bigCard?.classList.add('is-in'), DELAYS.big);
+        shownBig = true;
+      }
+      if (!shownSmall && t >= THRESHOLDS.small) {
+        setTimeout(() => smallWrap?.classList.add('is-in'), DELAYS.small);
+        shownSmall = true;
+      }
+      if (!shownBadge && t >= THRESHOLDS.badge) {
+        setTimeout(() => {
+          badge?.classList.add('is-in');
+          if (!counted && badgeNum) {
+            const raw = badgeNum.textContent || '26+';
+            const m = raw.match(/(\D*)(\d+)(\D*)/);
+            animateCounter(
+              badgeNum,
+              m?.[2] ? parseInt(m[2], 10) : 26,
+              { duration: DELAYS.counterDuration, prefix: m?.[1] ?? '', suffix: m?.[3] ?? '+' }
+            );
+            counted = true;
+          }
+        }, DELAYS.badge);
+        shownBadge = true;
+      }
+
+      // Teksty — kolejka
+      if (!textsQueued && t >= THRESHOLDS.title) {
+        playTextsQueue();
+      }
+
+      // Divider scroll-synced
+      section.style.setProperty('--w-div', mapWin(t, 0.38, 0.56).toFixed(4));
     };
 
-    const ioScroll = new IntersectionObserver((entries) => {
+    const io = new IntersectionObserver((entries) => {
       const e = entries[0];
       if (!e) return;
       if (e.isIntersecting) {
@@ -118,10 +147,10 @@
         window.removeEventListener('scroll', onScroll);
         window.removeEventListener('resize', onScroll);
       }
-    }, { threshold: [0, 0.01, 0.5, 1] });
-    ioScroll.observe(section);
+    }, { threshold: [0, 0.01, 0.2, 0.4, 0.6, 1] });
 
-    // Start od razu (na wypadek wejścia „w połowie”)
+    io.observe(section);
+
     onScroll();
     setTimeout(onScroll, 50);
   }

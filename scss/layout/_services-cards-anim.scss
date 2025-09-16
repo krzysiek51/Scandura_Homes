@@ -1,0 +1,64 @@
+/* Apple-style entry: tylko pierwsza widoczna karta */
+.services {
+  .services__card {
+    /* TRANSITIONS ZAWSZE WŁĄCZONE (nie tylko w stanie startowym) */
+    .services__image,
+    .services__icon-wrapper,
+    .services__card-title,
+    .services__card-text,
+    .services__button {
+      transition: opacity 600ms cubic-bezier(.22,.61,.36,1),
+                  transform 600ms cubic-bezier(.22,.61,.36,1),
+                  filter 600ms ease;
+      will-change: transform, opacity, filter;
+    }
+
+    /* START: tylko gdy JS doda will-animate */
+    &.will-animate {
+      .services__image,
+      .services__icon-wrapper,
+      .services__card-title,
+      .services__card-text,
+      .services__button {
+        opacity: 0;
+        transform: translateY(20px);
+        filter: blur(3px);
+      }
+      /* fix centrowania przycisku (X do layoutu, Y do animacji) */
+      .services__button { transform: translateX(-50%) translateY(20px); }
+    }
+
+    /* KONIEC: gdy JS doda is-animated */
+    &.is-animated {
+      .services__image,
+      .services__icon-wrapper,
+      .services__card-title,
+      .services__card-text,
+      .services__button {
+        opacity: 1;
+        transform: none;
+        filter: none;
+      }
+      /* Stagger – to tylko opóźnienia, NIE definiujemy tu transition! */
+      .services__image        { transition-delay: 0ms;   }
+      .services__icon-wrapper { transition-delay: 120ms; }
+      .services__card-title   { transition-delay: 240ms; }
+      .services__card-text    { transition-delay: 360ms; }
+      .services__button       { transition-delay: 480ms; transform: translateX(-50%) translateY(0); }
+    }
+  }
+}
+
+/* A11y */
+@media (prefers-reduced-motion: reduce) {
+  .services .services__card .services__image,
+  .services .services__card .services__icon-wrapper,
+  .services .services__card .services__card-title,
+  .services .services__card .services__card-text,
+  .services .services__card .services__button {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
