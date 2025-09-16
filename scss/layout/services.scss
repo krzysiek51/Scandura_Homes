@@ -16,10 +16,42 @@ $gap-l: 24px;         // laptop/desktop gap
 
 /* ——— Baza sekcji (wspólne) ——— */
 .services {
+
+   img,
+  svg,
+  picture,
+  video,
+  canvas,
+  a,
+  button,
+  .services__slider,
+  .services__track,
+  .services__card,
+  .services__card * ,
+  .services__nav,
+  .services__arrow,
+  .services__button {
+    pointer-events: auto;
+  }
+
+  
   background: #fff;
   position: relative;
+  
   padding: 40px 0;
   box-sizing: border-box;
+
+  
+  /* WYŁĄCZ pseudo-elementy SEKCJI (to był parawan) */
+  &::before,
+  &::after {
+    content: none;
+     pointer-events: none;
+  }
+
+
+
+
 
   /* Tytuł */
   &__title {
@@ -38,6 +70,7 @@ $gap-l: 24px;         // laptop/desktop gap
       background: linear-gradient(90deg, $color-gradient-start 0%, $color-gradient-end 100%);
       border-radius: 2px;
       margin: 0 0 20px;
+      
     }
   }
 
@@ -64,7 +97,7 @@ $gap-l: 24px;         // laptop/desktop gap
       width: 100vw;
       height: 100%;
       background: #fff;
-      z-index: 2;
+      z-index: 0;
       pointer-events: none;
     }
     &::before { right: 100%; }
@@ -72,6 +105,12 @@ $gap-l: 24px;         // laptop/desktop gap
 
     /* Kadr mobilny */
     max-width: $vp-mobile; /* 375 */
+
+      /* Hierarchia warstw (czytelnie, bez hacków) */
+  &__track  { position: relative; z-index: 1; }
+  &__card   { position: relative; z-index: 1; }
+  &__button { position: absolute; z-index: 2; }
+  &__nav    { position: relative; z-index: 3; }
   }
 
   /* Tor slidera */
@@ -80,6 +119,8 @@ $gap-l: 24px;         // laptop/desktop gap
     gap: $gap-m; /* spójnie z siatką mobile */
     transition: transform 600ms cubic-bezier(.22,.61,.36,1);
     will-change: transform;
+     position: relative;
+    z-index: 1;
   }
 
   /* Karta */
@@ -96,6 +137,8 @@ $gap-l: 24px;         // laptop/desktop gap
     transition: transform 280ms cubic-bezier(.22,.61,.36,1), box-shadow 280ms ease;
 
     &.is-active { transform: none; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+     position: relative;
+    z-index: 1;
   }
 
   &__image {
@@ -145,6 +188,7 @@ $gap-l: 24px;         // laptop/desktop gap
     position: absolute; bottom: -28px; left: 50%;
     transform: translateX(-50%); z-index: 1;
     box-shadow: 0 4px 4px rgba(0,0,0,.25);
+      z-index: 2;
   }
 
   /* Nawigacja */
@@ -156,6 +200,8 @@ $gap-l: 24px;         // laptop/desktop gap
     padding: 0 16px;
     display: flex; align-items: center; justify-content: center; gap: 21px;
     position: relative;
+     position: relative;
+    z-index: 3;
   }
 
   &__arrow {
@@ -404,3 +450,9 @@ $gap-l: 24px;         // laptop/desktop gap
     }
   }
 }
+
+
+
+
+
+
