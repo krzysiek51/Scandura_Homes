@@ -3,16 +3,22 @@
   const section = document.querySelector('.services');
   if (!section) return;
 
-  const slider  = section.querySelector('.services__slider');   // viewport (375px na mobile)
+  const slider  = section.querySelector('.services__slider');   // viewport
   const prevBtn = section.querySelector('.services__arrow--prev');
   const nextBtn = section.querySelector('.services__arrow--next');
   if (!slider) return;
 
-  // Zbierz karty (mogły już istnieć jako dzieci slidera)
+  // Unikamy konfliktu JS vs. scroll-snap/natywny scroll
+  slider.style.scrollSnapType = 'none';
+  slider.style.overflowX = 'hidden';
+  slider.style.webkitOverflowScrolling = 'auto';
+  slider.style.touchAction = 'pan-y';
+
+  // Zbierz karty
   const initialCards = Array.from(slider.querySelectorAll('.services__card'));
   if (!initialCards.length) return;
 
-  // Utwórz tor i przenieś karty (tak jak w Twojej wersji)
+  // Tor
   let track = slider.querySelector('.services__track');
   if (!track) {
     track = document.createElement('div');
@@ -20,8 +26,12 @@
     initialCards.forEach(c => track.appendChild(c));
     slider.appendChild(track);
   }
+  track.style.touchAction = 'pan-y';
+
   const cards = Array.from(track.children).filter(el => el.classList.contains('services__card'));
   if (!cards.length) return;
+  // Gdyby w CSS było scroll-snap-align na kartach — wyłącz lokalnie
+  cards.forEach(c => { c.style.scrollSnapAlign = 'none'; });
 
   // ——— MQ / układ ———
   const MQ = {
@@ -31,9 +41,9 @@
     desktop: window.matchMedia('(min-width: 1920px)')
   };
   const getCardsPerView = () => {
-    if (MQ.tablet.matches) return 2;                  // tablet: 2 pełne karty
-    if (MQ.laptop.matches || MQ.desktop.matches) return 2; // prawa kolumna: 2 (łatwo zmienisz)
-    return 1;                                         // mobile: 1 karta w kadrze
+    if (MQ.tablet.matches) return 2;
+    if (MQ.laptop.matches || MQ.desktop.matches) return 2;
+    return 1; // mobile
   };
 
   // ——— Konfiguracja ———
@@ -44,20 +54,21 @@
     autoplay: true,
     autoplayMs: 4000,
     keyboard: true,
-    loop: true,                   // autoplay: przechodź w kółko
-    respectReducedMotion: true
+    loop: true,
+    respectReducedMotion: true,
+    offsetPx: 20 // przesunięcie w lewo o 20px względem domyślnego pozycjonowania
   };
 
   // ——— Stan ———
-  let centers = [];               // środki kart względem LEWEJ krawędzi TRACKA
-  let lefts = [];                 // lewe krawędzie kart względem LEWEJ krawędzi TRACKA
-  let widths = [];                // szerokości kart
+  let centers = [];   // środki kart względem LEWEJ krawędzi TRACKA
+  let lefts = [];     // lewe krawędzie kart względem LEWEJ krawędzi TRACKA
+  let widths = [];
   let viewportW = 0;
-  let index = 0;                  // indeks: na mobile = aktywna karta; na tablet+ = LEWA karta w kadrze
-  let currentX = 0;               // aktualny translateX (px)
+  let index = 0;      // mobile = aktywna karta; tablet+ = lewa karta w kadrze
+  let currentX = 0;   // aktualny translateX (px)
   let isDragging = false;
-  let dragStartX = 0;             // pozycja kursora/palca na start
-  let dragStartTranslate = 0;     // translateX na start przeciągania
+  let dragStartX = 0;
+  let dragStartTranslate = 0;
   let autoTimer = null;
 
   const prefersReduced = CONFIG.respectReducedMotion &&
@@ -70,9 +81,8 @@
       : 'none';
   };
 
-  // oblicz metryki kart względem LEWEJ krawędzi TRACKA
   const measure = () => {
-    const wasTransition = track.style.transition;
+    const was = track.style.transition;
     track.style.transition = 'none';
 
     const trackRect = track.getBoundingClientRect();
@@ -90,57 +100,46 @@
       centers.push(leftInTrack + r.width / 2);
     });
 
-    // przelicz aktualny X utrzymując bieżący indeks zgodnie z trybem (center vs. left-snap)
+    // zachowaj aktualny indeks
     goTo(index, false);
-
-    track.style.transition = wasTransition;
+    track.style.transition = was;
   };
 
-  // utnij index do zakresu dopuszczalnego (ostatni pełny kadr)
   const clampIndex = (i) => {
     const cpv = getCardsPerView();
     const maxIndex = Math.max(0, cards.length - cpv);
     return Math.max(0, Math.min(maxIndex, i));
   };
 
-  // znajdź najbliższy "snap" dla danego currentX
-  // mobile: do środka najbliższej karty
-  // tablet+ : do LEWEJ krawędzi najbliższej karty (lewa karta w kadrze)
+  // Znajdź najbliższy snap; kompensujemy offsetPx, bo goTo go odejmuje
   const nearestIndexAt = (xTranslate) => {
     const cpv = getCardsPerView();
+    const x = xTranslate + CONFIG.offsetPx; // kompensacja offsetu
 
     if (cpv === 1) {
       // center-based
-      let best = 0;
-      let bestDist = Infinity;
+      let best = 0, bestDist = Infinity;
       const target = viewportW / 2;
       for (let i = 0; i < centers.length; i++) {
-        const dist = Math.abs((centers[i] - xTranslate) - target);
+        const dist = Math.abs((centers[i] - x) - target);
         if (dist < bestDist) { bestDist = dist; best = i; }
       }
       return best;
     }
 
     // left-edge snap (tablet+)
-    let best = 0;
-    let bestDist = Infinity;
-    const targetLeft = 0; // lewa krawędź viewportu
+    let best = 0, bestDist = Infinity;
+    const targetLeft = 0;
     for (let i = 0; i < lefts.length; i++) {
-      const dist = Math.abs((lefts[i] - xTranslate) - targetLeft);
+      const dist = Math.abs((lefts[i] - x) - targetLeft);
       if (dist < bestDist) { bestDist = dist; best = i; }
     }
     return clampIndex(best);
   };
 
-  // zaktualizuj stany UI (aktywną kartę, przyciski)
   const updateUI = () => {
     const cpv = getCardsPerView();
-
-    // aktywna karta:
-    // - mobile: index
-    // - tablet+: środkowa z widocznych (albo pierwsza – wybieram pierwszą dla prostoty)
-    const active = cpv === 1 ? index : index; // możesz zmienić na index+1 przy 2 w kadrze
-    cards.forEach((c, i) => c.classList.toggle('is-active', i === active));
+    cards.forEach((c, i) => c.classList.toggle('is-active', i === index));
 
     if (prevBtn) prevBtn.disabled = !CONFIG.loop && clampIndex(index) === 0;
     if (nextBtn) {
@@ -149,9 +148,7 @@
     }
   };
 
-  // wykonaj przesunięcie do indeksu
-  // - mobile: karta i jest centrowana
-  // - tablet+: karta i jest LEWĄ kartą w kadrze (left-edge snap)
+  // Przejście do indeksu (z offsetem -20px)
   const goTo = (i, animate = true) => {
     if (!lefts.length) measure();
 
@@ -161,11 +158,11 @@
 
     let targetX;
     if (cpv === 1) {
-      // center-based
-      targetX = -(centers[index] - viewportW / 2) -22;
+      // centrowanie + offset w lewo
+      targetX = -(centers[index] - viewportW / 2) - CONFIG.offsetPx;
     } else {
-      // left-edge snap
-      targetX = -lefts[index];
+      // lewa krawędź + offset w lewo
+      targetX = -lefts[index] - CONFIG.offsetPx;
     }
 
     setTransition(animate);
@@ -224,14 +221,14 @@
     const dx = clientX - dragStartX;
     currentX = dragStartTranslate + dx;
 
-    // opcjonalnie: miękkie ograniczenia na krańcach przy loop=false
+    // miękkie ograniczenia przy loop=false (z offsetem)
     if (!CONFIG.loop && lefts.length) {
       const cpv = getCardsPerView();
       const maxIndex = Math.max(0, cards.length - cpv);
 
-      const lastLeftIndex = maxIndex; // lewa karta ostatniego pełnego kadru
-      const minX = -lefts[lastLeftIndex]; // najbardziej w lewo (ostatni pełny kadr)
-      const maxX = -lefts[0];            // najbardziej w prawo (pierwszy kadr)
+      const lastLeftIndex = maxIndex;
+      const minX = -lefts[lastLeftIndex] - CONFIG.offsetPx;
+      const maxX = -lefts[0] - CONFIG.offsetPx;
 
       const overflow =
         currentX > maxX ? currentX - maxX :
@@ -246,7 +243,7 @@
     if (!isDragging) return;
     isDragging = false;
 
-    // wybierz najbliższy snap (center lub left-edge zależnie od trybu)
+    // kompensujemy offset przy wyliczaniu najbliższego snapu
     const targetIndex = nearestIndexAt(currentX);
     goTo(targetIndex, true);
     resetAutoplay();
