@@ -292,3 +292,31 @@ $bp-desktop: 1920px;
   
   }
 }
+
+
+/* FIX: sekcja Booking — precyzyjne przywracanie interakcji */
+.booking {
+  pointer-events: none;   /* rodzic nie klikalny */
+  isolation: isolate;     /* własny stacking context */
+}
+
+/* dekoracyjne pseudo-elementy — zawsze off */
+.booking::before,
+.booking::after {
+  pointer-events: none;
+}
+
+/* przywracamy PE wyłącznie interaktywnym elementom */
+.booking :is(
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  [role="button"],
+  [tabindex],
+  .booking__button,
+  .booking__content
+) {
+  pointer-events: auto;
+}

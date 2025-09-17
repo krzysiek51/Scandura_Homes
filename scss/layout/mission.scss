@@ -20,6 +20,11 @@ $mission-button-fg: #ffffff;
 
 /* ——— Sekcja ——— */
 .mission {
+
+   position: relative;
+      /* wyżej niż zwykłe tła z poprzedniej sekcji */
+  isolation: isolate;/* nowy stacking context, kontrola blendów/filtrów */
+
   /* 🔼 podciągnięcie sekcji o 30px */
   --lift: -10px;
   /* steruje wejściem kropek w padding kontenera */
@@ -481,3 +486,37 @@ $mission-button-fg: #ffffff;
     }
   }
 }
+
+
+/* FIX: Mission — allow-all, deny dekoracje */
+.mission {
+  position: relative;
+  z-index: 0;
+  pointer-events: none;     /* rodzic nie łapie */
+  isolation: isolate;
+}
+
+/* otwieramy interakcje dla całego poddrzewa */
+.mission * {
+  pointer-events: auto;
+}
+
+/* ale dekoracje NIGDY nie łapią */
+.mission::before,
+.mission::after { pointer-events: none; }
+
+/* typowe warstwy dekoracyjne w Mission */
+.mission__dots,
+.mission__divider,
+.mission__veil,
+.mission__overlay,
+.mission__image-wrapper,
+.mission__image,
+[aria-hidden="true"],
+[data-decor],
+.is-decor {
+  pointer-events: none;
+}
+
+/* jeśli divider jest pseudo-elementem na copy, wyłącz też jego PE */
+.mission__copy::before { pointer-events: none; }

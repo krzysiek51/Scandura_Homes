@@ -457,3 +457,38 @@ $why-badge-bg: #fff3e2;
     .why_us__stats .why-us__projects      { grid-area: badge; }
   }
 }
+
+
+
+/* FIX: sekcja Why-us — allow-all, deny dekoracje */
+.why-us,
+.why_us {
+  position: relative;
+  z-index: 0;
+  pointer-events: none;   /* sekcja sama nie łapie */
+  isolation: isolate;     /* własny stacking context */
+}
+
+/* wszystko w środku przepuszcza kliknięcia */
+.why-us *, 
+.why_us * {
+  pointer-events: auto;
+}
+
+/* ALE — dekoracje nigdy nie łapią */
+.why-us::before,
+.why-us::after,
+.why_us::before,
+.why_us::after {
+  pointer-events: none;
+}
+
+.why-us__divider,
+.why-us__image-wrapper,
+.why-us__image,
+.why-us__projects::before,
+[aria-hidden="true"],
+[data-decor],
+.is-decor {
+  pointer-events: none;
+}

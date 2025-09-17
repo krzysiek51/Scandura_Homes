@@ -513,3 +513,28 @@
     }
   }
 }
+
+
+/* Rodzic przezroczysty dla eventów */
+.testimonials { pointer-events: none; isolation: isolate; }
+
+/* Przywracamy PE tym, co faktycznie klika/draguje w tej sekcji */
+.testimonials :is(
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  [role="button"],
+  [tabindex],
+  .testimonials__arrow,
+  .testimonials__nav,
+  .testimonials__slider,
+  .testimonials__track,
+  .testimonials__card,
+  .testimonials__image-wrapper
+) { pointer-events: auto; }
+
+/* dekoracje nigdy nie łapią */
+.testimonials::before,
+.testimonials::after { pointer-events: none; }
