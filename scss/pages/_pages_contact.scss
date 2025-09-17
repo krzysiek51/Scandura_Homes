@@ -19,8 +19,8 @@
     margin: 0 0 8px;
     font-family: $ff;
     font-weight: $h-title-weight;
-    font-size: $h-title-size;
-    line-height: $h-title-lh;
+    font-size: 24px;    // mobile
+    line-height: 1.25;
     letter-spacing: $h-title-ls;
     color: $color-dark-text;
   }
@@ -31,8 +31,8 @@
     max-width: 70ch;
     font-family: $ff;
     font-weight: $body-weight;
-    font-size: $body-size;
-    line-height: $body-lh;
+    font-size: 14px;    // mobile
+    line-height: 1.5;
     letter-spacing: $body-ls;
     color: $color-light-text;
   }
@@ -41,12 +41,20 @@
   .contact-form  { grid-column: 1 / -1; }
 
   @media (min-width: $bp-tablet) {
+    .contact-title { font-size: 28px; line-height: 1.3; }
+    .contact-lead  { font-size: 15px; }
     .contact-info { grid-column: 1 / span 4; }
     .contact-form { grid-column: 5 / span 4; }
   }
   @media (min-width: $bp-laptop) {
+    .contact-title { font-size: 32px; line-height: 1.35; }
+    .contact-lead  { font-size: 16px; }
     .contact-info { grid-column: 1 / span 4; }
     .contact-form { grid-column: 5 / span 8; }
+  }
+  @media (min-width: $bp-desktop) {
+    .contact-title { font-size: 40px; line-height: 1.4; }
+    .contact-lead  { font-size: 18px; }
   }
 }
 
@@ -120,11 +128,15 @@
 /* (opcjonalnie) gdyby stary globalny .contact miał tło – wyzeruj je na stronie kontaktu */
 body.contact-page .contact { background: none !important; }
 
-
+/* ===== Header na stronie kontaktu ===== */
 body.contact-page .header {
   background: url("../../photos/pages/contact/contact_picture_header.webp") center/cover no-repeat;
-  min-height: 760px; /* wysokość, dopasuj wg Figma */
+  min-height: 350px; /* mobile default */
   position: relative;
+
+  @media (min-width: $bp-tablet)  { min-height: 600px; }
+  @media (min-width: $bp-laptop)  { min-height: 560px; }
+  @media (min-width: $bp-desktop) { min-height: 560px; }
 }
 
 body.contact-page .header__wrap,

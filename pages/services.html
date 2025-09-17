@@ -626,7 +626,7 @@
 
 
   <!-- <script src="../js/services.js" type="module"></script> -->
-  <script type="module" src="../js/services-3d-pro.js"></script>
+  
   <script src="../js/pages_services-slider.js"></script>
   <script type="module" src="../js/services-process-timeline.js"></script>
   <script src="../js/service-modal.js" defer></script>
@@ -635,6 +635,109 @@
 
 
 
+<script>
+(() => {
+  const btn  = document.getElementById('burger-toggle');   // <button id="burger-toggle">
+  const menu = document.getElementById('mobile-menu');     // <nav id="mobile-menu">
+  if (!btn || !menu) return;
+
+  // zabezpieczenie przed wielokrotnym podpięciem
+  if (btn.dataset.bound === '1') return;
+  btn.dataset.bound = '1';
+
+  // ——— WYMUSZENIE OVERLAYA „OD GÓRY” (niezależnie od CSS) ———
+  const cs = getComputedStyle(menu);
+  // tylko jeśli ktoś nie ustawił już fixed — nie będziemy „walczyć” z istniejącym stylem
+  if (cs.position !== 'fixed') {
+    Object.assign(menu.style, {
+      position: 'fixed',
+      top: '0', left: '0', right: '0', bottom: '0', // pełny ekran
+      zIndex: '9999',
+      background: 'rgba(0,0,0,.86)',
+      backdropFilter: 'blur(2px)',
+      transform: 'translateY(-100%)',               // start ponad viewportem
+      transition: 'transform .35s ease',
+      paddingTop: 'calc(env(safe-area-inset-top, 0px) + 12px)',
+      paddingInline: '16px'
+    });
+  }
+
+  // a11y
+  btn.setAttribute('aria-expanded', 'false');
+  if (!menu.hasAttribute('aria-hidden')) menu.setAttribute('aria-hidden', 'true');
+
+  let lastFocus = null;
+
+  const firstFocusable = () =>
+    menu.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+
+  const open = () => {
+    lastFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    btn.setAttribute('aria-expanded', 'true');
+    menu.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('nav-open');
+
+    // animacja wejścia z góry
+    menu.style.transform = 'translateY(0)';
+
+    const ff = firstFocusable();
+    if (ff) ff.focus({ preventScroll: true });
+  };
+
+  const close = () => {
+    // zabierz fokus z menu zanim je ukryjesz (bez warningu aria-hidden)
+    if (menu.contains(document.activeElement)) {
+      btn.focus({ preventScroll: true });
+    }
+    btn.setAttribute('aria-expanded', 'false');
+    menu.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('nav-open');
+
+    // animacja schowania ponad górę
+    menu.style.transform = 'translateY(-100%)';
+
+    if (lastFocus && document.body.contains(lastFocus)) {
+      lastFocus.focus({ preventScroll: true });
+    }
+  };
+
+  const isOpen = () => menu.getAttribute('aria-hidden') === 'false';
+
+  // Ustaw rok w stopce – bezpiecznie
+  const y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
+
+  // LISTENERY (bez passive, używamy preventDefault/stopPropagation)
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    isOpen() ? close() : open();
+  });
+
+  // klik poza menu zamyka
+  document.addEventListener('click', (e) => {
+    if (!isOpen()) return;
+    if (menu.contains(e.target) || btn.contains(e.target)) return;
+    close();
+  }, { capture: true });
+
+  // ESC zamyka
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isOpen()) close();
+  });
+
+  // delegacja: X lub link w menu zamyka
+  document.addEventListener('click', (e) => {
+    if (!isOpen()) return;
+    if (e.target.closest('.header__nav-close')) {
+      e.preventDefault();
+      close();
+    } else if (menu.contains(e.target) && e.target.closest('a[href]')) {
+      close();
+    }
+  }, { capture: true });
+})();
+</script>
 
 
 

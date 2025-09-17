@@ -669,117 +669,7 @@
   </footer>
 
 
-  <!-- Burger: about-header -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const btn = document.querySelector('.about-header__burger');
-      const nav = document.querySelector('.about-header__nav');
-      if (!btn || !nav) return;
-
-      const toggle = () => {
-        const willShow = nav.hasAttribute('hidden');
-        nav.toggleAttribute('hidden', !willShow);
-        btn.setAttribute('aria-expanded', String(willShow));
-      };
-
-      btn.addEventListener('click', toggle);
-    });
-  </script>
-
-  <!-- Testimonials core (dokładny plik z /js) -->
-  <script src="../js/testimonials-slider.js" defer></script>
-
-  <!-- Inicjalizacja Testimonials: dokładnie raz dla instancji w About -->
-  <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      const roots = document.querySelectorAll('.about-testimonials .testimonials');
-      if (typeof window.initTestimonials !== 'function') return;
-
-      roots.forEach(root => {
-        // jeśli skrypt sam dodał klasę, nie inicjujemy drugi raz
-        if (root.classList.contains('is-slider-ready')) return;
-        window.initTestimonials({ root });
-      });
-    });
-  </script>
-  <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      const modal = document.getElementById('cfg-modal');
-      const openBtn = document.querySelector('[data-open-configurator]');
-      if (!modal || !openBtn) return;
-
-      const closers = modal.querySelectorAll('[data-close-configurator]');
-
-      function open() {
-        modal.classList.remove('is-hidden');
-        document.documentElement.classList.add('cfg-open');
-        document.body.classList.add('cfg-open');
-        modal.setAttribute('aria-hidden', 'false');
-      }
-      function close() {
-        modal.classList.add('is-hidden');
-        document.documentElement.classList.remove('cfg-open');
-        document.body.classList.remove('cfg-open');
-        modal.setAttribute('aria-hidden', 'true');
-      }
-
-      openBtn.addEventListener('click', open);
-      closers.forEach(btn => btn.addEventListener('click', close));
-      document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
-    });
-  </script>
-
-  <script>
-    (() => {
-      const btn = document.getElementById('burger-toggle');   // burger
-      const menu = document.getElementById('mobile-menu');      // kontener menu
-      if (!btn || !menu) return;
-
-      if (btn.dataset.bound === '1') return;
-      btn.dataset.bound = '1';
-
-      if (!menu.hasAttribute('aria-hidden')) menu.setAttribute('aria-hidden', 'true');
-
-      const open = () => menu.setAttribute('aria-hidden', 'false');
-      const close = () => menu.setAttribute('aria-hidden', 'true');
-      const isOpen = () => menu.getAttribute('aria-hidden') === 'false';
-
-      // toggle burger
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        isOpen() ? close() : open();
-      }, { passive: true });
-
-      // ✳️ 1) PRZYCISK CLOSE W MENU
-      const closeBtn = menu.querySelector('.header__nav-close, .header_nav-close, #nav-close');
-      if (closeBtn) {
-        closeBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          close();
-        }, { passive: true });
-      }
-
-      // ✳️ 2) KLIK W LINK W MENU = ZAMKNIJ
-      menu.querySelectorAll('a[href]').forEach(a => {
-        a.addEventListener('click', () => close(), { passive: true });
-      });
-
-      // ✳️ 3) KLIK POZA MENU = ZAMKNIJ
-      document.addEventListener('click', (e) => {
-        if (!isOpen()) return;
-        if (menu.contains(e.target) || btn.contains(e.target)) return;
-        close();
-      }, { capture: true, passive: true });
-
-      // ✳️ 4) ESC = ZAMKNIJ
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') close();
-      }, { passive: true });
-    })();
-  </script>
-
+  
   <script type="module" src="../js/configurator.js"></script>
   <script src="../js/patch-modal-ux.js"></script>
   <script type="module" src="../js/partners-marquee.js"></script>
@@ -788,6 +678,109 @@
   <script type="module" src="../js/projects-slider.js"></script>
   <script type="module" src="../js/about-stats.js"></script>
 
+<script>
+(() => {
+  const btn  = document.getElementById('burger-toggle');   // <button id="burger-toggle">
+  const menu = document.getElementById('mobile-menu');     // <nav id="mobile-menu">
+  if (!btn || !menu) return;
+
+  // zabezpieczenie przed wielokrotnym podpięciem
+  if (btn.dataset.bound === '1') return;
+  btn.dataset.bound = '1';
+
+  // ——— WYMUSZENIE OVERLAYA „OD GÓRY” (niezależnie od CSS) ———
+  const cs = getComputedStyle(menu);
+  // tylko jeśli ktoś nie ustawił już fixed — nie będziemy „walczyć” z istniejącym stylem
+  if (cs.position !== 'fixed') {
+    Object.assign(menu.style, {
+      position: 'fixed',
+      top: '0', left: '0', right: '0', bottom: '0', // pełny ekran
+      zIndex: '9999',
+      background: 'rgba(0,0,0,.86)',
+      backdropFilter: 'blur(2px)',
+      transform: 'translateY(-100%)',               // start ponad viewportem
+      transition: 'transform .35s ease',
+      paddingTop: 'calc(env(safe-area-inset-top, 0px) + 12px)',
+      paddingInline: '16px'
+    });
+  }
+
+  // a11y
+  btn.setAttribute('aria-expanded', 'false');
+  if (!menu.hasAttribute('aria-hidden')) menu.setAttribute('aria-hidden', 'true');
+
+  let lastFocus = null;
+
+  const firstFocusable = () =>
+    menu.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+
+  const open = () => {
+    lastFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    btn.setAttribute('aria-expanded', 'true');
+    menu.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('nav-open');
+
+    // animacja wejścia z góry
+    menu.style.transform = 'translateY(0)';
+
+    const ff = firstFocusable();
+    if (ff) ff.focus({ preventScroll: true });
+  };
+
+  const close = () => {
+    // zabierz fokus z menu zanim je ukryjesz (bez warningu aria-hidden)
+    if (menu.contains(document.activeElement)) {
+      btn.focus({ preventScroll: true });
+    }
+    btn.setAttribute('aria-expanded', 'false');
+    menu.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('nav-open');
+
+    // animacja schowania ponad górę
+    menu.style.transform = 'translateY(-100%)';
+
+    if (lastFocus && document.body.contains(lastFocus)) {
+      lastFocus.focus({ preventScroll: true });
+    }
+  };
+
+  const isOpen = () => menu.getAttribute('aria-hidden') === 'false';
+
+  // Ustaw rok w stopce – bezpiecznie
+  const y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
+
+  // LISTENERY (bez passive, używamy preventDefault/stopPropagation)
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    isOpen() ? close() : open();
+  });
+
+  // klik poza menu zamyka
+  document.addEventListener('click', (e) => {
+    if (!isOpen()) return;
+    if (menu.contains(e.target) || btn.contains(e.target)) return;
+    close();
+  }, { capture: true });
+
+  // ESC zamyka
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isOpen()) close();
+  });
+
+  // delegacja: X lub link w menu zamyka
+  document.addEventListener('click', (e) => {
+    if (!isOpen()) return;
+    if (e.target.closest('.header__nav-close')) {
+      e.preventDefault();
+      close();
+    } else if (menu.contains(e.target) && e.target.closest('a[href]')) {
+      close();
+    }
+  }, { capture: true });
+})();
+</script>
 
 </body>
 

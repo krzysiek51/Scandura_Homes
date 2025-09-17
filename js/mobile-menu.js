@@ -111,3 +111,16 @@
   btn.setAttribute('aria-expanded', 'false');
   nav.setAttribute('aria-hidden', 'true');
 })();
+// /js/header.js (fragment – bez frameworków)
+const burger = document.getElementById('burger-toggle');
+const nav    = document.getElementById('mobile-menu');
+
+if (burger && nav) {
+  const toggleMenu = () => {
+    const isOpen = burger.getAttribute('aria-expanded') === 'true';
+    burger.setAttribute('aria-expanded', String(!isOpen));
+    nav.setAttribute('aria-hidden', String(isOpen));
+    document.body.classList.toggle('nav-open', !isOpen);
+  };
+  burger.addEventListener('click', toggleMenu);
+}
