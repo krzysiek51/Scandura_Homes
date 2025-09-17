@@ -2880,6 +2880,35 @@ html.nav-open, body.nav-open {
 }
 
 /* =========================================================
+   FIX: sekcja Services — overlay nie przechwytuje eventów
+   ========================================================= */
+.services {
+  pointer-events: none; /* rodzic nie klikalny */
+  isolation: isolate; /* odcina stacking context */
+  position: relative;
+  z-index: 0;
+}
+.services::before, .services::after {
+  pointer-events: none; /* pseudo zawsze martwe */
+}
+
+/* Dzieciaki normalnie działają */
+.services * {
+  pointer-events: auto;
+}
+
+/* ALE dekoracje pozostają martwe */
+.services__image,
+.services__icon,
+.services__icon-wrapper,
+.services__track::before,
+.services__track::after,
+.services__slider::before,
+.services__slider::after {
+  pointer-events: none;
+}
+
+/* =========================================================
    PROJECTS — mobile-first: 1 karta w kadrze
    Współpraca z /js/projects-slider.js (tworzy .projects__track)
    Tor = GRID na .projects__track
@@ -5823,13 +5852,15 @@ nav#mobile-menu .button--nav {
     transform: none !important;
   }
 }
-/* =========================================================
-   Mission — scroll-synced wejścia (Apple vibe)
-   WYMAGA klas z Twojej sekcji .mission (już masz w HTML)
-   ========================================================= */
-/* Domyślne 0, JS nadpisze w trakcie scrolla */
+/* ==========================================================================
+   Mission — Apple-like scroll-synced wejście (zoom-out + parallax + sekwencja)
+   Wymaga: .mission, .mission__image-wrapper, .mission__image, .mission__dots,
+           .mission__divider, .mission__title, .mission__text-title, .mission__text, .mission__button
+   ========================================================================== */
 .mission {
+  /* Globalny progress (0..1) — sterowany z JS */
   --p: 0;
+  /* Sub-progresy elementów (0..1) — sterowane z JS */
   --p-img: 0;
   --p-dots: 0;
   --p-div: 0;
@@ -5837,31 +5868,45 @@ nav#mobile-menu .button--nav {
   --p-sub: 0;
   --p-text: 0;
   --p-btn: 0;
-  /* Lepsza wydajność dla mobilnych */
+  /* Tunowalne tokeny efektu */
+  --img-scale-start: 1.12; /* startowy zoom obrazu */
+  --img-parallax: 28px; /* pionowy parallax wrappera */
+  --img-lift: 40px; /* pionowe „wycofanie” samego obrazu */
+  --img-dim: 0.15; /* lekkie przyciemnienie na starcie (0..1) */
+  /* Performance */
   contain: layout paint style;
   will-change: transform;
-  /* Parallax/odsłona obrazu */
+  transform-style: preserve-3d;
+  /* === Obraz === */
 }
 .mission__image-wrapper {
-  transform: translateY(calc((1 - var(--p-img)) * 24px));
-  /* delikatne przyciemnienie, które znika */
+  position: relative;
+  overflow: clip;
+  backface-visibility: hidden;
+  transform: translateY(calc((1 - var(--p-img)) * var(--img-parallax)));
+  /* Delikatny dim, który znika wraz z postępem obrazu */
 }
 .mission__image-wrapper::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, calc(0.18 * (1 - var(--p-img))));
   pointer-events: none;
+  will-change: opacity;
 }
 .mission__image {
-  /* Start: 1.12  →  1.00 przy var(--p-img): 0 → 1 */
-  transform: scale(calc(1.12 - 0.12 * var(--p-img)));
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Start: 1.12 → 1.00 wraz ze wzrostem --p-img (0 → 1) + lekki lift */
+  transform: translateY(calc((1 - var(--p-img)) * var(--img-lift))) scale(calc(var(--img-scale-start) - (var(--img-scale-start) - 1) * var(--p-img)));
+  transform-origin: center center;
   transition: none;
   will-change: transform;
-  transform-origin: center center;
+  backface-visibility: hidden;
 }
 .mission {
-  /* Kropki wjeżdżają z prawej (w padding kontenera) i wyłaniają się */
+  /* === Dots (z paddingu prawej) === */
 }
 .mission__dots {
   transform: translateX(calc((1 - var(--p-dots)) * 24px));
@@ -5870,7 +5915,7 @@ nav#mobile-menu .button--nav {
   will-change: transform, opacity;
 }
 .mission {
-  /* Divider „rośnie” od lewej */
+  /* === Divider (rośnie od lewej) === */
 }
 .mission__divider {
   transform-origin: left center;
@@ -5879,7 +5924,7 @@ nav#mobile-menu .button--nav {
   will-change: transform, opacity;
 }
 .mission {
-  /* Tytuł, podtytuł, tekst, przycisk — sekwencja */
+  /* === Typografia — wejście kaskadowe === */
 }
 .mission__title, .mission__text-title, .mission__text, .mission__button {
   transition: none;
@@ -5903,11 +5948,11 @@ nav#mobile-menu .button--nav {
 .mission__button {
   opacity: var(--p-btn);
   transform: translateY(calc((1 - var(--p-btn)) * 16px));
-  /* subtelny „pop” w końcówce */
-  scale: calc(0.98 + 0.02 * var(--p-btn));
+  /* subtelny "pop" przy domknięciu */
+  scale: calc(0.985 + 0.015 * var(--p-btn));
 }
 .mission {
-  /* Bezpieczne zachowanie przy prefers-reduced-motion */
+  /* === Motion accessibility === */
 }
 @media (prefers-reduced-motion: reduce) {
   .mission__image-wrapper, .mission__image, .mission__dots, .mission__divider, .mission__title, .mission__text-title, .mission__text, .mission__button {
@@ -6045,79 +6090,72 @@ nav#mobile-menu .button--nav {
 }
 
 /* Divider zostaje na zmiennej (scroll-synced) — bez zmian */
-/* Apple-style entry: tylko pierwsza widoczna karta */
-.services .services__card {
-  /* TRANSITIONS ZAWSZE WŁĄCZONE (nie tylko w stanie startowym) */
-}
-.services .services__card .services__image,
-.services .services__card .services__icon-wrapper,
-.services .services__card .services__card-title,
-.services .services__card .services__card-text,
-.services .services__card .services__button {
-  transition: opacity 600ms cubic-bezier(0.22, 0.61, 0.36, 1), transform 600ms cubic-bezier(0.22, 0.61, 0.36, 1), filter 600ms ease;
-  will-change: transform, opacity, filter;
-}
-.services .services__card {
-  /* START: tylko gdy JS doda will-animate */
-}
-.services .services__card.will-animate .services__image,
-.services .services__card.will-animate .services__icon-wrapper,
-.services .services__card.will-animate .services__card-title,
-.services .services__card.will-animate .services__card-text,
-.services .services__card.will-animate .services__button {
+/* =======================
+   SERVICES – wejście sekcji
+   ======================= */
+/* Tytuł „wjeżdża” (opacity/slide) dopiero po uzbrojeniu */
+section.services.is-armed .services__title {
   opacity: 0;
-  transform: translateY(20px);
-  filter: blur(3px);
-}
-.services .services__card.will-animate {
-  /* fix centrowania przycisku (X do layoutu, Y do animacji) */
-}
-.services .services__card.will-animate .services__button {
-  transform: translateX(-50%) translateY(20px);
-}
-.services .services__card {
-  /* KONIEC: gdy JS doda is-animated */
-}
-.services .services__card.is-animated .services__image,
-.services .services__card.is-animated .services__icon-wrapper,
-.services .services__card.is-animated .services__card-title,
-.services .services__card.is-animated .services__card-text,
-.services .services__card.is-animated .services__button {
-  opacity: 1;
-  transform: none;
-  filter: none;
-}
-.services .services__card.is-animated {
-  /* Stagger – to tylko opóźnienia, NIE definiujemy tu transition! */
-}
-.services .services__card.is-animated .services__image {
-  transition-delay: 0ms;
-}
-.services .services__card.is-animated .services__icon-wrapper {
-  transition-delay: 120ms;
-}
-.services .services__card.is-animated .services__card-title {
-  transition-delay: 240ms;
-}
-.services .services__card.is-animated .services__card-text {
-  transition-delay: 360ms;
-}
-.services .services__card.is-animated .services__button {
-  transition-delay: 480ms;
-  transform: translateX(-50%) translateY(0);
+  transform: translateY(12px);
+  transition: opacity 700ms cubic-bezier(0.22, 0.61, 0.36, 1), transform 700ms cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-/* A11y */
+/* Divider: rysowanie od lewej */
+section.services.is-armed .services__title::before {
+  content: "";
+  display: block;
+  width: 229px;
+  height: 4px;
+  margin: 0 0 20px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #DC9B59 0%, #000000 100%);
+  transform-origin: left center;
+  transform: scaleX(0) !important;
+  transition: transform 800ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Stan końcowy po wejściu */
+section.services.is-armed.is-inview .services__title {
+  opacity: 1;
+  transform: none;
+}
+
+section.services.is-armed.is-inview .services__title::before {
+  transform: scaleX(1) !important;
+}
+
+/* ===== Litera-po-literze: kolor ===== */
+section.services .services__title em {
+  display: inline-block;
+  white-space: pre-wrap;
+}
+
+section.services .services__title .char {
+  display: inline-block;
+  color: #6B7280 !important; /* start jaśniejszy – przebija dziedziczenie */
+  will-change: color;
+}
+
+@keyframes svcCharColor {
+  to {
+    color: #1D1F2C;
+  }
+}
+section.services.is-armed.is-inview .services__title .char {
+  animation: svcCharColor 600ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  animation-delay: calc(var(--i) * 35ms); /* tempo liter */
+}
+
+/* Motion a11y */
 @media (prefers-reduced-motion: reduce) {
-  .services .services__card .services__image,
-  .services .services__card .services__icon-wrapper,
-  .services .services__card .services__card-title,
-  .services .services__card .services__card-text,
-  .services .services__card .services__button {
+  section.services.is-armed .services__title,
+  section.services.is-armed .services__title::before,
+  section.services.is-armed .services__title .char {
     transition: none !important;
+    animation: none !important;
     opacity: 1 !important;
     transform: none !important;
-    filter: none !important;
+    color: #1D1F2C !important;
   }
 }
 /* _header-anim.scss */

@@ -451,3 +451,35 @@ $gap-l: 24px;         // laptop/desktop gap
   }
 }
 
+/* =========================================================
+   FIX: sekcja Services — overlay nie przechwytuje eventów
+   ========================================================= */
+
+.services {
+  pointer-events: none;    /* rodzic nie klikalny */
+  isolation: isolate;      /* odcina stacking context */
+  position: relative;
+  z-index: 0;
+
+  &::before,
+  &::after {
+    pointer-events: none;  /* pseudo zawsze martwe */
+  }
+}
+
+/* Dzieciaki normalnie działają */
+.services * {
+  pointer-events: auto;
+}
+
+/* ALE dekoracje pozostają martwe */
+.services__image,
+.services__icon,
+.services__icon-wrapper,
+.services__track::before,
+.services__track::after,
+.services__slider::before,
+.services__slider::after {
+  pointer-events: none;
+}
+

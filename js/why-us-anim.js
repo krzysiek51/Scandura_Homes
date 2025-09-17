@@ -15,8 +15,8 @@
   const DELAYS = {
     // Zdjęcia
     big:    80,   // opóźnienie pojawienia dużego zdjęcia (ms)
-    small:  380,  // małe zdjęcie
-    badge:  520,  // badge
+    small: 20,  // małe zdjęcie
+    badge:  120,  // badge
 
     // Counter
     counterDuration: 900, // czas trwania animacji licznika (ms)

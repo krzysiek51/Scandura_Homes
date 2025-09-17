@@ -1,11 +1,14 @@
-/* =========================================================
-   Mission — scroll-synced wejścia (Apple vibe)
-   WYMAGA klas z Twojej sekcji .mission (już masz w HTML)
-   ========================================================= */
+/* ==========================================================================
+   Mission — Apple-like scroll-synced wejście (zoom-out + parallax + sekwencja)
+   Wymaga: .mission, .mission__image-wrapper, .mission__image, .mission__dots,
+           .mission__divider, .mission__title, .mission__text-title, .mission__text, .mission__button
+   ========================================================================== */
 
-/* Domyślne 0, JS nadpisze w trakcie scrolla */
 .mission {
+  /* Globalny progress (0..1) — sterowany z JS */
   --p: 0;
+
+  /* Sub-progresy elementów (0..1) — sterowane z JS */
   --p-img: 0;
   --p-dots: 0;
   --p-div: 0;
@@ -14,31 +17,52 @@
   --p-text: 0;
   --p-btn: 0;
 
-  /* Lepsza wydajność dla mobilnych */
+  /* Tunowalne tokeny efektu */
+  --img-scale-start: 1.12;      /* startowy zoom obrazu */
+  --img-parallax: 28px;         /* pionowy parallax wrappera */
+  --img-lift: 40px;             /* pionowe „wycofanie” samego obrazu */
+  --img-dim: 0.15;              /* lekkie przyciemnienie na starcie (0..1) */
+
+  /* Performance */
   contain: layout paint style;
   will-change: transform;
+  transform-style: preserve-3d;
 
-  /* Parallax/odsłona obrazu */
+  /* === Obraz === */
   &__image-wrapper {
-    transform: translateY(calc((1 - var(--p-img)) * 24px));
-    /* delikatne przyciemnienie, które znika */
+    position: relative;
+    overflow: clip;
+    backface-visibility: hidden;
+    transform: translateY(calc((1 - var(--p-img)) * var(--img-parallax)));
+
+    /* Delikatny dim, który znika wraz z postępem obrazu */
     &::after {
       content: "";
-      position: absolute; inset: 0;
-      background: rgba(0,0,0, calc(0.18 * (1 - var(--p-img))));
+      position: absolute;
+      inset: 0;
+      //background: rgba(0, 0, 0, calc(var(--img-dim) * (1 - var(--p-img))));
       pointer-events: none;
+      will-change: opacity;
     }
   }
-&__image {
-  /* Start: 1.12  →  1.00 przy var(--p-img): 0 → 1 */
-  transform: scale(calc(1.12 - 0.12 * var(--p-img)));
-  transition: none;
-  will-change: transform;
-  transform-origin: center center;
-}
 
+  &__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 
-  /* Kropki wjeżdżają z prawej (w padding kontenera) i wyłaniają się */
+    /* Start: 1.12 → 1.00 wraz ze wzrostem --p-img (0 → 1) + lekki lift */
+    transform:
+      translateY(calc((1 - var(--p-img)) * var(--img-lift)))
+      scale(calc(var(--img-scale-start) - (var(--img-scale-start) - 1) * var(--p-img)));
+    transform-origin: center center;
+    transition: none;
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  /* === Dots (z paddingu prawej) === */
   &__dots {
     transform: translateX(calc((1 - var(--p-dots)) * 24px));
     opacity: var(--p-dots);
@@ -46,7 +70,7 @@
     will-change: transform, opacity;
   }
 
-  /* Divider „rośnie” od lewej */
+  /* === Divider (rośnie od lewej) === */
   &__divider {
     transform-origin: left center;
     transform: scaleX(var(--p-div));
@@ -54,7 +78,7 @@
     will-change: transform, opacity;
   }
 
-  /* Tytuł, podtytuł, tekst, przycisk — sekwencja */
+  /* === Typografia — wejście kaskadowe === */
   &__title,
   &__text-title,
   &__text,
@@ -84,11 +108,11 @@
   &__button {
     opacity: var(--p-btn);
     transform: translateY(calc((1 - var(--p-btn)) * 16px));
-    /* subtelny „pop” w końcówce */
-    scale: calc(0.98 + 0.02 * var(--p-btn));
+    /* subtelny "pop" przy domknięciu */
+    scale: calc(0.985 + 0.015 * var(--p-btn));
   }
 
-  /* Bezpieczne zachowanie przy prefers-reduced-motion */
+  /* === Motion accessibility === */
   @media (prefers-reduced-motion: reduce) {
     &__image-wrapper,
     &__image,
@@ -105,5 +129,3 @@
     }
   }
 }
-
-
