@@ -1,7 +1,8 @@
 /* ==========================================================================
    Mission — Apple-like scroll-synced wejście (zoom-out + parallax + sekwencja)
-   Wymaga: .mission, .mission__image-wrapper, .mission__image, .mission__dots,
-           .mission__divider, .mission__title, .mission__text-title, .mission__text, .mission__button
+   ZMIANA: typografia wchodzi od 50% → 100% opacity + delikatny lift 5px
+   Obraz: BEZ zanikania — tylko zoom-out + parallax/shift (Apple vibe)
+   Regulacja: globalna i per-element przez custom properties
    ========================================================================== */
 
 .mission {
@@ -17,33 +18,53 @@
   --p-text: 0;
   --p-btn: 0;
 
-  /* Tunowalne tokeny efektu */
-  --img-scale-start: 1.12;      /* startowy zoom obrazu */
-  --img-parallax: 28px;         /* pionowy parallax wrappera */
-  --img-lift: 40px;             /* pionowe „wycofanie” samego obrazu */
-  --img-dim: 0.15;              /* lekkie przyciemnienie na starcie (0..1) */
+  /* Tunowalne tokeny efektu (obraz) */
+  --img-scale-start: 1.25;  /* startowy zoom obrazu */
+  --img-parallax: 58px;     /* pionowy parallax wrappera */
+  --img-lift: 40px;         /* pionowe „wycofanie” samego obrazu */
+  --img-dim: 0.0;           /* przyciemnienie wyłączone (0..1); zostaw 0 */
+
+  /* Tunowalne tokeny wejścia typografii */
+  --enter-lift: 5px;        /* globalny lift dla tekstów */
+  --opacity-start: .5;      /* globalny start opacity dla tekstów */
+
+  /* Per-element overrides (opcjonalne) */
+  --title-lift: var(--enter-lift);
+  --title-opacity-start: var(--opacity-start);
+
+  --sub-lift: var(--enter-lift);
+  --sub-opacity-start: var(--opacity-start);
+
+  --text-lift: var(--enter-lift);
+  --text-opacity-start: var(--opacity-start);
+
+  --btn-lift: var(--enter-lift);
+  --btn-opacity-start: var(--opacity-start);
 
   /* Performance */
   contain: layout paint style;
   will-change: transform;
   transform-style: preserve-3d;
 
-  /* === Obraz === */
+  /* === Obraz — TYLKO transform (zoom + parallax), bez opacity === */
   &__image-wrapper {
     position: relative;
     overflow: clip;
     backface-visibility: hidden;
     transform: translateY(calc((1 - var(--p-img)) * var(--img-parallax)));
+    transition: none;
+    will-change: transform;
 
-    /* Delikatny dim, który znika wraz z postępem obrazu */
+    /* Dim wyłączony; włącz jeśli kiedyś zechcesz:
     &::after {
       content: "";
       position: absolute;
       inset: 0;
-      //background: rgba(0, 0, 0, calc(var(--img-dim) * (1 - var(--p-img))));
+      background: rgba(0, 0, 0, calc(var(--img-dim) * (1 - var(--p-img))));
       pointer-events: none;
       will-change: opacity;
     }
+    */
   }
 
   &__image {
@@ -51,18 +72,16 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-
-    /* Start: 1.12 → 1.00 wraz ze wzrostem --p-img (0 → 1) + lekki lift */
+    backface-visibility: hidden;
+    will-change: transform;
     transform:
       translateY(calc((1 - var(--p-img)) * var(--img-lift)))
       scale(calc(var(--img-scale-start) - (var(--img-scale-start) - 1) * var(--p-img)));
     transform-origin: center center;
-    transition: none;
-    will-change: transform;
-    backface-visibility: hidden;
+    transition: none; /* płynność zapewnia easing w JS */
   }
 
-  /* === Dots (z paddingu prawej) === */
+  /* === Dots / Divider === */
   &__dots {
     transform: translateX(calc((1 - var(--p-dots)) * 24px));
     opacity: var(--p-dots);
@@ -70,7 +89,6 @@
     will-change: transform, opacity;
   }
 
-  /* === Divider (rośnie od lewej) === */
   &__divider {
     transform-origin: left center;
     transform: scaleX(var(--p-div));
@@ -78,38 +96,37 @@
     will-change: transform, opacity;
   }
 
-  /* === Typografia — wejście kaskadowe === */
+  /* === Typografia — 50% → 100% opacity + lift (regulowalne) === */
   &__title,
   &__text-title,
   &__text,
   &__button {
     transition: none;
-    will-change: transform, opacity, filter;
+    will-change: transform, opacity;
   }
 
+  /* title */
   &__title {
-    opacity: var(--p-title);
-    transform: translateY(calc((1 - var(--p-title)) * 22px));
-    filter: blur(calc((1 - var(--p-title)) * 2px));
+    opacity: calc(var(--title-opacity-start) + (1 - var(--title-opacity-start)) * var(--p-title));
+    transform: translateY(calc((1 - var(--p-title)) * var(--title-lift)));
   }
 
+  /* sub */
   &__text-title {
-    opacity: var(--p-sub);
-    transform: translateY(calc((1 - var(--p-sub)) * 20px));
-    filter: blur(calc((1 - var(--p-sub)) * 2px));
+    opacity: calc(var(--sub-opacity-start) + (1 - var(--sub-opacity-start)) * var(--p-sub));
+    transform: translateY(calc((1 - var(--p-sub)) * var(--sub-lift)));
   }
 
+  /* body */
   &__text {
-    opacity: var(--p-text);
-    transform: translateY(calc((1 - var(--p-text)) * 18px));
-    filter: blur(calc((1 - var(--p-text)) * 2px));
+    opacity: calc(var(--text-opacity-start) + (1 - var(--text-opacity-start)) * var(--p-text));
+    transform: translateY(calc((1 - var(--p-text)) * var(--text-lift)));
   }
 
+  /* CTA — delikatny „pop”; usuń scale(), jeśli chcesz 1:1 jak teksty */
   &__button {
-    opacity: var(--p-btn);
-    transform: translateY(calc((1 - var(--p-btn)) * 16px));
-    /* subtelny "pop" przy domknięciu */
-    scale: calc(0.985 + 0.015 * var(--p-btn));
+    opacity: calc(var(--btn-opacity-start) + (1 - var(--btn-opacity-start)) * var(--p-btn));
+    transform: translateY(calc((1 - var(--p-btn)) * var(--btn-lift))) scale(calc(0.985 + 0.015 * var(--p-btn)));
   }
 
   /* === Motion accessibility === */
@@ -124,7 +141,6 @@
     &__button {
       transform: none !important;
       opacity: 1 !important;
-      filter: none !important;
       transition: none !important;
     }
   }

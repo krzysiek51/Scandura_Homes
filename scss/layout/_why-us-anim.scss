@@ -1,124 +1,170 @@
-/* WHY-US — kolejka zdjęć + counter + scroll-synced copy
-   Startowy stan ukrycia obowiązuje TYLKO, gdy sekcja ma klasę .reveal-queue.
-   Dzięki temu nie ma „migania”, jeśli JS się nie załaduje. */
+/* ==========================================================================
+   _why-us-anim.scss — foto (zoom-out + parallax) + title lift
+   + divider (0→1) + Apple-reveal (lead/desc/list)
+   ========================================================================== */
 
 .why-us {
-  /* zmienne dla części scroll-synced (divider/copy/lista) */
-  --w-div: 0;
-  --w-title: 0;
-  --w-sub: 0;
-  --w-desc: 0;
-  --w-list: 0;
+  /* —— Gałki obrazu —— */
+  --img-scale-start: 5.80;
+  --img-parallax: 80px;
+  --img-lift: 28px;
 
-  /* ============== KOLEJKA ZDJĘĆ / BADGE ============== */
-  &.reveal-queue {
-    /* wyższa specyficzność niż bazowy layout — bez !important */
-    .why-us__review-card,
-    .why-us__image-wrapper,
-    .why-us__projects {
-      opacity: 0;
-      transform: translateY(26px);
-    }
-    .why-us__review-image,
-    .why-us__image {
-      transform: scale(1.04);
+  /* —— Gałki typografii —— */
+  --opacity-start: .5;
+  --title-lift: 20px;
+  --enter-lift: 5px; /* legacy: lead/desc/list */
+
+  /* —— Progresy (0..1). Domyślnie 1 (bez JS) —— */
+  --w-img:   1;
+  --w-div:   1;
+  --w-title: 1;
+  --w-title-move: 1;
+  --w-lead:  1;
+  --w-desc:  1;
+  --w-list:  1;
+
+  /* Uzbrojenie sekcji — NIE resetujemy --w-div */
+  &.armed {
+    --w-img:   0;
+    /* --w-div: 0; */
+    --w-title: 0;
+    --w-title-move: 0;
+    --w-lead:  0;
+    --w-desc:  0;
+    --w-list:  0;
+  }
+
+  /* ===== KARTA Z DUŻYM ZDJĘCIEM ===== */
+  .why-us__review-card { position: relative; overflow: hidden; }
+
+  /* ===== OBRAZ — fallback (bez JS) ===== */
+  .why-us__review-image {
+    display:block; width:100%; height:100%; object-fit:cover; backface-visibility:hidden;
+  }
+  .why-us:not(.js-drive) .why-us__review-image {
+    will-change: translate, scale;
+    transform:
+      translateY(calc((1 - var(--w-img)) * (var(--img-parallax) + var(--img-lift))))
+      scale(calc(var(--img-scale-start) - (var(--img-scale-start) - 1) * var(--w-img)));
+    transform-origin:center;
+
+    @supports (translate: 0) and (scale: 1) {
+      transform:none;
+      translate: 0 calc((1 - var(--w-img)) * (var(--img-parallax) + var(--img-lift)));
+      scale: calc(var(--img-scale-start) - (var(--img-scale-start) - 1) * var(--w-img));
     }
   }
 
-  /* płynne przejścia */
-  .why-us__review-card,
-  .why-us__image-wrapper,
-  .why-us__projects {
-    transition: transform 520ms cubic-bezier(.22,.61,.36,1), opacity 520ms ease;
-    will-change: transform, opacity;
+  /* ===== OBRAZ — z JS ===== */
+  .why-us.js-drive .why-us__review-image {
+    transform:none !important; translate:none !important; scale:1 !important; will-change:transform;
   }
-  .why-us__review-image,
+
+  /* mniejsze foto (opcjonalnie) */
+  .why-us__image-wrapper { overflow:hidden; }
   .why-us__image {
-    transition: transform 700ms cubic-bezier(.22,.61,.36,1);
-    will-change: transform;
+    display:block; width:100%; height:100%; object-fit:cover; backface-visibility:hidden; will-change:transform;
+    transform:
+      translateY(calc((1 - var(--w-img)) * (0.6 * (var(--img-parallax) + var(--img-lift)))))
+      scale(calc(1.08 - 0.08 * var(--w-img)));
+    transform-origin:center;
+    transition:none;
   }
 
-  /* docelowy stan po dodaniu .is-in przez JS */
-  .why-us__review-card.is-in,
-  .why-us__image-wrapper.is-in,
-  .why-us__projects.is-in {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .why-us__review-card.is-in .why-us__review-image,
-  .why-us__image-wrapper.is-in .why-us__image {
-    transform: scale(1);
-  }
-
-  /* ============== DIVIDER + COPY (scroll-synced) ============== */
+  /* ===== DIVIDER — sterowany --div-p (fallback: --w-div) ===== */
   .why-us__divider {
+    height: 4px;
     transform-origin: left center;
-    transform: scaleX(var(--w-div));
-    opacity: calc(.4 + .6 * var(--w-div));
+    transform: scaleX(var(--div-p, var(--w-div)));
+    opacity:  calc(.4 + .6 * var(--div-p, var(--w-div)));
+    will-change: transform, opacity;
+    transition: none;
   }
+
+  /* ===== TITLE (bez zmian) ===== */
   .why-us__title {
-    opacity: var(--w-title);
-    transform: translateY(calc((1 - var(--w-title)) * 18px));
-    filter: blur(calc((1 - var(--w-title)) * 2px));
+    display:inline-block;
+    opacity: calc(var(--opacity-start) + (1 - var(--opacity-start)) * var(--w-title));
+    translate: 0 calc((1 - var(--w-title-move)) * var(--title-lift));
+    will-change: translate, opacity;
+    transition:none;
   }
+
+  /* Legacy lead/desc/list — zostaną przykryte przez reveal */
+  .why-us__lead,
   .why-us__description-title {
-    opacity: var(--w-sub);
-    transform: translateY(calc((1 - var(--w-sub)) * 16px));
-    filter: blur(calc((1 - var(--w-sub)) * 2px));
+    opacity: calc(var(--opacity-start) + (1 - var(--opacity-start)) * var(--w-lead));
+    transform: translateY(calc((1 - var(--w-lead)) * var(--enter-lift)));
+    will-change: transform, opacity;
+    transition:none;
   }
   .why-us__description {
-    opacity: var(--w-desc);
-    transform: translateY(calc((1 - var(--w-desc)) * 14px));
-    filter: blur(calc((1 - var(--w-desc)) * 2px));
+    opacity: calc(var(--opacity-start) + (1 - var(--opacity-start)) * var(--w-desc));
+    transform: translateY(calc((1 - var(--w-desc)) * var(--enter-lift)));
+    will-change: transform, opacity;
+    transition:none;
   }
   .why-us__item {
-    --p-li: 0;
+    --p-li: 1;
     opacity: var(--p-li);
-    transform: translateY(calc((1 - var(--p-li)) * 14px));
-    filter: blur(calc((1 - var(--p-li)) * 1.5px));
+    transform: translateY(calc((1 - var(--p-li)) * var(--enter-lift)));
+    will-change: transform, opacity;
+    transition:none;
   }
 
-  /* Accessibility */
+  /* A11y globalnie */
   @media (prefers-reduced-motion: reduce) {
-    .why-us__review-card,
-    .why-us__image-wrapper,
-    .why-us__projects,
     .why-us__review-image,
     .why-us__image,
     .why-us__divider,
     .why-us__title,
-    .why-us__description-title,
+    .why-us__lead,
     .why-us__description,
     .why-us__item {
-      transition: none !important;
-      transform: none !important;
-      opacity: 1 !important;
-      filter: none !important;
+      transform:none !important;
+      translate:none !important;
+      scale:1 !important;
+      opacity:1 !important;
+      transition:none !important;
     }
   }
 }
-/* AUTO-KOLEJKA TEKSTÓW: ukryj na start i pokaż po .is-in, bez scrolla */
-.why-us.texts-queue {
-  .why-us__title,
-  .why-us__description-title,
-  .why-us__description,
-  .why-us__item {
-    opacity: 0;
-    transform: translateY(18px);
-    filter: blur(2px);
-    transition: transform 420ms cubic-bezier(.22,.61,.36,1), opacity 420ms ease, filter 420ms ease;
-    will-change: transform, opacity, filter;
-  }
-  .why-us__item { transform: translateY(14px); filter: blur(1.5px); }
 
-  .why-us__title.is-in,
-  .why-us__description-title.is-in,
-  .why-us__description.is-in,
-  .why-us__item.is-in {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
+/* ========================================================================== */
+/* Apple-like reveal (FADE-IN + LIFT) dla lead/desc/list — twarde nadpisanie   */
+/* ========================================================================== */
+
+.why-us .why-us__lead.reveal,
+.why-us .why-us__description-title.reveal,
+.why-us .why-us__description.reveal,
+.why-us .why-us__list .why-us__item.reveal {
+  opacity: 0 !important;
+  transform: translateY(20px) !important;
+  /* !important na KOŃCU deklaracji — poprawny zapis */
+  transition: transform .72s cubic-bezier(.22,1,.36,1), opacity .72s cubic-bezier(.22,1,.36,1) !important;
+  will-change: transform, opacity;
 }
 
-/* Divider zostaje na zmiennej (scroll-synced) — bez zmian */
+.why-us .why-us__lead.reveal.reveal--in,
+.why-us .why-us__description-title.reveal.reveal--in,
+.why-us .why-us__description.reveal.reveal--in,
+.why-us .why-us__list .why-us__item.reveal.reveal--in {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* A11y — reveal bez animacji */
+@media (prefers-reduced-motion: reduce) {
+  .why-us .why-us__lead.reveal,
+  .why-us .why-us__description-title.reveal,
+  .why-us .why-us__description.reveal,
+  .why-us .why-us__list .why-us__item.reveal,
+  .why-us .why-us__lead.reveal.reveal--in,
+  .why-us .why-us__description-title.reveal.reveal--in,
+  .why-us .why-us__description.reveal.reveal--in,
+  .why-us .why-us__list .why-us__item.reveal.reveal--in {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

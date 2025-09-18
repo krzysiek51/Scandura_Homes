@@ -1,63 +1,78 @@
-@use "../utils/variables" as v;
+// @use "../utils/variables" as v;
 
-/* Start: ukryj wszystkie elementy (opacity 0 + translateY) */
-.configurator-prompt.ai-armed {
-  .configurator-prompt__badge,
-  .configurator-prompt__title,
-  .configurator-prompt__sub,
-  .configurator-prompt__benefits,
-  .configurator-prompt__benefits li,
-  .configurator-prompt__cta,
-  .configurator-prompt__button,
-  .configurator-prompt__link {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-}
+// /* Pokrętła (łatwo pod ręką) */
+// .configurator-prompt {
+//   --ai-lift: 20px;                    /* ile obniżone na starcie */
+//   --ai-ease: cubic-bezier(.2,.6,.2,1);
+//   --ai-rise-duration: .55s;           /* czas podnoszenia */
+//   --ai-fill-duration: .65s;           /* czas „malowania” kolorem */
+// }
 
-/* Po dodaniu .ai-animate — aktywuj transition */
-.configurator-prompt.ai-animate {
-  .configurator-prompt__badge,
-  .configurator-prompt__title,
-  .configurator-prompt__sub,
-  .configurator-prompt__benefits,
-  .configurator-prompt__benefits li,
-  .configurator-prompt__cta,
-  .configurator-prompt__button,
-  .configurator-prompt__link {
-    transition:
-      opacity .55s cubic-bezier(.2,.6,.2,1),
-      transform .55s cubic-bezier(.2,.6,.2,1);
-    will-change: transform, opacity;
-  }
-  .configurator-prompt__button {
-    transition:
-      opacity .55s cubic-bezier(.2,.6,.2,1),
-      transform .55s cubic-bezier(.2,.6,.2,1);
-  }
-}
+// /* Start – obniżone i „puste” TYLKO title + sub */
+// .configurator-prompt.ai-armed {
+//   .configurator-prompt__title,
+//   .configurator-prompt__sub {
+//     opacity: 0;
+//     transform: translateY(var(--ai-lift));
 
-/* Element z .ai-revealed staje się widoczny */
-.configurator-prompt .ai-revealed {
-  opacity: 1 !important;
-  transform: none !important;
-}
+//     /* „fill” przez tło, tekst jest clipowany */
+//     color: currentColor;
+//     background-image: linear-gradient(currentColor, currentColor);
+//     background-repeat: no-repeat;
+//     background-position: left center;
+//     background-size: 0% 100%;
+//     -webkit-background-clip: text;
+//     background-clip: text;
+//     -webkit-text-fill-color: transparent;
+//   }
 
-/* A11y */
-@media (prefers-reduced-motion: reduce) {
-  .configurator-prompt.ai-armed,
-  .configurator-prompt.ai-animate {
-    .configurator-prompt__badge,
-    .configurator-prompt__title,
-    .configurator-prompt__sub,
-    .configurator-prompt__benefits,
-    .configurator-prompt__benefits li,
-    .configurator-prompt__cta,
-    .configurator-prompt__button,
-    .configurator-prompt__link {
-      transition: none !important;
-      opacity: 1 !important;
-      transform: none !important;
-    }
-  }
-}
+//   /* fallback gdy brak clip:text */
+//   @supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+//     .configurator-prompt__title,
+//     .configurator-prompt__sub {
+//       -webkit-text-fill-color: initial;
+//       background: none;
+//     }
+//   }
+// }
+
+// /* Kiedy wchodzimy w tryb animacji (po inicjalizacji JS) */
+// .configurator-prompt.ai-animate {
+//   .configurator-prompt__title,
+//   .configurator-prompt__sub {
+//     transition:
+//       transform var(--ai-rise-duration) var(--ai-ease),
+//       opacity   var(--ai-rise-duration) var(--ai-ease),
+//       background-size var(--ai-fill-duration) var(--ai-ease);
+//     will-change: transform, opacity, background-size;
+//   }
+// }
+
+// /* Final: „ujawnione” → podnieś i wypełnij kolorem */
+// .configurator-prompt .configurator-prompt__title.ai-revealed,
+// .configurator-prompt .configurator-prompt__sub.ai-revealed {
+//   opacity: 1 !important;
+//   transform: translateY(0) !important;
+//   background-size: 100% 100% !important;
+
+//   @supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+//     -webkit-text-fill-color: initial !important;
+//   }
+// }
+
+// /* Nie zmieniamy nic dla badge/benefits/cta/link — zostaw, jak jest */
+
+// /* A11y */
+// @media (prefers-reduced-motion: reduce) {
+//   .configurator-prompt.ai-armed,
+//   .configurator-prompt.ai-animate {
+//     .configurator-prompt__title,
+//     .configurator-prompt__sub {
+//       transition: none !important;
+//       opacity: 1 !important;
+//       transform: none !important;
+//       background-size: 100% 100% !important;
+//       -webkit-text-fill-color: initial !important;
+//     }
+//   }
+// }

@@ -69,6 +69,7 @@ $mission-button-fg: #ffffff;
     height: $mission-image-h;
     position: relative;
     overflow: visible; /* kropki mogą wychodzić */
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.15);
   
     margin-top: 40px;
   }
@@ -79,6 +80,7 @@ $mission-button-fg: #ffffff;
     object-fit: cover;
     display: block;
     border-radius: 98px 0 0 0;
+    
   }
 
   /* ===== KROPKI ===== */
@@ -435,6 +437,8 @@ $mission-button-fg: #ffffff;
       border-radius: 104px 0 0 0;
       position: relative;
       overflow: visible;
+      
+      
     }
     &__image { height: 100%; border-radius: inherit; display: block; }
 

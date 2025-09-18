@@ -1,9 +1,7 @@
 // ai-box-enter.js
-import { AIBoxConfig } from './ai-box-config.js';
-
 (() => {
   const onReady = (fn) =>
-    (document.readyState === 'loading')
+    document.readyState === 'loading'
       ? document.addEventListener('DOMContentLoaded', fn, { once: true })
       : fn();
 
@@ -11,121 +9,67 @@ import { AIBoxConfig } from './ai-box-config.js';
     const box = document.querySelector('.configurator-prompt');
     if (!box) return;
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    const q = (sel, root = box) => root.querySelector(sel);
-    const qAll = (sel, root = box) => Array.from(root.querySelectorAll(sel));
-    const isMobile = window.matchMedia(`(max-width:${AIBoxConfig.breakpoints.mobileMax}px)`).matches;
+    const title = box.querySelector('.configurator-prompt__title');
+    const sub   = box.querySelector('.configurator-prompt__sub');
+    if (!title || !sub) return;
 
-    // Elements
-    const elBadge    = q('.configurator-prompt__badge');
-    const elTitle    = q('.configurator-prompt__title');
-    const elSub      = q('.configurator-prompt__sub');
-    const elBenefits = q('.configurator-prompt__benefits');
-    const liBenefits = qAll('.configurator-prompt__benefits li');
-    const elCtaWrap  = q('.configurator-prompt__cta');
-    const elBtn      = q('.configurator-prompt__button');
-    const elLink     = q('.configurator-prompt__link');
+    [title, sub].forEach(el => el.setAttribute('data-text', el.textContent.trim()));
 
-    // HEAD (pojawia się od razu): badge + title + sub
-    const headNow = [elBadge, elTitle, elSub].filter(Boolean);
-
-    // TAIL (ma wejść po lekkim scrollu na mobile)
-    const tailSeq = [
-      elBenefits,
-      ...liBenefits,
-      elCtaWrap,
-      elBtn,
-      elLink,
-    ].filter(Boolean);
-
-    // Arm + transitions
     box.classList.add('ai-armed');
     requestAnimationFrame(() => box.classList.add('ai-animate'));
 
-    const revealGroup = (list, baseDelay, stepDelay) => {
-      list.forEach((el, i) => {
-        el.style.transitionDelay = `${baseDelay + i * stepDelay}ms`;
-        el.classList.add('ai-revealed');
-      });
-    };
+    const deltaPx  = Number(box.getAttribute('data-ai-delta')  || 24);
+    const offsetPx = Number(box.getAttribute('data-ai-offset') || 16);
+    const lagMs    = Number(box.getAttribute('data-ai-lag')    || 120);
+    const autoMs   = Number(box.getAttribute('data-ai-auto')   || 4000);
 
-    // HEAD — bez scrolla
-    setTimeout(() => {
-      revealGroup(headNow, 0, AIBoxConfig.delayHeadStep);
-    }, AIBoxConfig.delayStart);
+    let scrolled = 0, lastY = window.scrollY || 0, revealed = false;
 
-    // === TAIL ===
-    let cleanupGate = null;
-    let gateTimer = null;
-    const gateCfg = AIBoxConfig.mobileScrollGate;
-
-    const clearGateTimer = () => {
-      if (gateTimer) { clearTimeout(gateTimer); gateTimer = null; }
-    };
-
-    const revealTail = () => {
-      if (revealTail._done) return;
-      revealTail._done = true;
-      clearGateTimer();
-      revealGroup(tailSeq, AIBoxConfig.delayBase, AIBoxConfig.delayStep);
-      if (typeof cleanupGate === 'function') cleanupGate();
-    };
-
-    // Tablet/Desktop — stary tryb (po gapie)
-    if (!isMobile || !gateCfg.enabled) {
-      setTimeout(revealTail, AIBoxConfig.delayStart + AIBoxConfig.delayGap);
-      return;
+    function measure() {
+      const y = window.scrollY || 0;
+      scrolled += Math.abs(y - lastY);
+      lastY = y;
+    }
+    function inGate() {
+      const r = box.getBoundingClientRect();
+      return r.bottom > 0 && r.top < window.innerHeight &&
+             (window.innerHeight - r.top) >= offsetPx;
+    }
+    function reveal() {
+      if (revealed) return;
+      revealed = true;
+      title.classList.add('ai-revealed');
+      setTimeout(() => sub.classList.add('ai-revealed'), lagMs);
+      cleanup();
+    }
+    function tryReveal() {
+      if (!revealed && scrolled >= deltaPx && inGate()) reveal();
     }
 
-    // MOBILE — wymagamy prawdziwego scrolla + odsłonięcia min. offsetPx
-    const gatePx = Math.max(0, Number(gateCfg.offsetPx) || 0);
-    let scrolledOnce = false; // <-- KLUCZ: bez tego ogon nie wejdzie
-
-    const passedGate = () => {
-      const rect = box.getBoundingClientRect();
-      const coverageFromTop = window.innerHeight - rect.top; // ile px AI box wszedł do viewportu od góry
-      return rect.bottom > 0 && rect.top < window.innerHeight && coverageFromTop >= gatePx;
-    };
-
-    const armTailAfterGate = () => {
-      if (revealTail._done || gateTimer) return;
-      gateTimer = setTimeout(revealTail, Math.max(0, Number(gateCfg.delayMs) || 0));
-    };
-
-    const tryReveal = () => {
-      if (!scrolledOnce) return;        // wymagamy realnego scrolla użytkownika
-      if (passedGate()) armTailAfterGate();
-    };
-
     const opts = { passive: true };
-    const onScroll = () => { scrolledOnce = true; tryReveal(); };
-    const onTouchMove = () => { scrolledOnce = true; tryReveal(); };
-    const onWheel = () => { scrolledOnce = true; tryReveal(); };
-
+    function onScroll() { measure(); tryReveal(); }
     window.addEventListener('scroll', onScroll, opts);
-    window.addEventListener('touchmove', onTouchMove, opts);
-    window.addEventListener('wheel', onWheel, opts);
+    window.addEventListener('wheel', onScroll,  opts);
+    window.addEventListener('touchmove', onScroll, opts);
 
-    let io;
+    let io = null;
     if ('IntersectionObserver' in window) {
-      // IO tylko „budzi” sprawdzanie, ale i tak wymaga scrolledOnce
-      io = new IntersectionObserver(() => tryReveal(), {
-        root: null,
-        rootMargin: `0px 0px -${Math.max(0, 100 - gatePx)}%`,
-        threshold: [0, 0.01, 0.1],
+      io = new IntersectionObserver(tryReveal, {
+        root: null, rootMargin: '0px 0px -35% 0px', threshold: [0, .1, .3, .6, 1]
       });
       io.observe(box);
     }
 
-    cleanupGate = () => {
-      window.removeEventListener('scroll', onScroll, opts);
-      window.removeEventListener('touchmove', onTouchMove, opts);
-      window.removeEventListener('wheel', onWheel, opts);
-      if (io) io.disconnect();
-      clearGateTimer();
-    };
+    const autoTimer = setTimeout(reveal, autoMs);
 
-    // Uwaga: NIE wywołujemy tryReveal na starcie — wymagamy interakcji (scrolledOnce)
+    function cleanup() {
+      clearTimeout(autoTimer);
+      window.removeEventListener('scroll', onScroll, opts);
+      window.removeEventListener('wheel', onScroll,  opts);
+      window.removeEventListener('touchmove', onScroll, opts);
+      if (io) io.disconnect();
+    }
   });
 })();

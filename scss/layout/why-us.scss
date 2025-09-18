@@ -34,14 +34,21 @@ $why-badge-bg: #fff3e2;
 
   /* Divider */
   &__divider {
-    grid-column: 1 / -1;
-    width: $why-divider-w;
-    height: $why-divider-h;
-    background: $why-divider-gradient;
-    border-radius: 2px;
-    justify-self: start;
-    margin-top: 4px;
-  }
+  --div-p: 0; // start od zera, zanim JS zacznie ustawiać
+
+  grid-column: 1 / -1;
+  width: $why-divider-w;
+  height: $why-divider-h;
+  background: $why-divider-gradient;   // złoto → czerń (zostaje)
+  border-radius: 2px;
+  justify-self: start;
+  margin-top: 4px;
+
+  /* Figma: stroke + drop shadow */
+  box-shadow:
+    inset 0 0 0 1px #979797,        /* stroke "Center" */
+    0 2px 8px rgba(0,0,0,.25);      /* drop shadow */
+}
 
   /* GRID (mobile) — 4 kol., gap 16, content płynny */
   &__grid {
@@ -66,7 +73,7 @@ $why-badge-bg: #fff3e2;
 
     overflow: hidden;
     border-top-right-radius: 62px;
-    background: #e9eef2;
+    background:  #faf7f4;
   }
   &__review-image {
     width: 100%;

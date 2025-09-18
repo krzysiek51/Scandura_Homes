@@ -1,5 +1,7 @@
-// Services: animacja wejścia (tytuł + divider + kolor liter po literze)
-// Startuje DOPIERO po pierwszym scrollu i w zdefiniowanym oknie widoku.
+// ai-box-enter.js
+// - NIC nie ukrywa.
+// - Od razu uruchamia fill badge (bez delaya).
+// - Title/Sub podnoszą się i „malują” po lekkim scrollu lub auto po 4s.
 
 (() => {
   const onReady = (fn) =>
@@ -7,78 +9,76 @@
       ? document.addEventListener('DOMContentLoaded', fn, { once: true })
       : fn();
 
-  // Podziel <em> na <span.char style="--i:n">X</span>
-  function splitTitleLetters(em){
-    if (!em || em.dataset.splitted) return;
-    const frag = document.createDocumentFragment();
-    let i = 0;
-    for (const ch of em.textContent){
-      if (ch === ' ') { frag.appendChild(document.createTextNode(' ')); continue; }
-      const span = document.createElement('span');
-      span.className = 'char';
-      span.style.setProperty('--i', i++);
-      span.textContent = ch; // działa dla liter, cyfr i znaków PL
-      frag.appendChild(span);
-    }
-    em.textContent = '';
-    em.appendChild(frag);
-    em.dataset.splitted = '1';
-  }
-
   onReady(() => {
-    const sec = document.querySelector('section.services');
-    if (!sec) return;
+    const box = document.querySelector('.configurator-prompt');
+    if (!box) return;
 
-    // 1) Przygotuj litery
-    splitTitleLetters(sec.querySelector('h2.services__title em'));
+    // elementy
+    const title = box.querySelector('.configurator-prompt__title');
+    const sub   = box.querySelector('.configurator-prompt__sub');
+    const badge = box.querySelector('.configurator-prompt__badge');
+    if (!title || !sub) return;
 
-    // 2) Uzbrój – dopiero teraz CSS ustawia stany startowe
-    sec.classList.add('is-armed');
+    // 1) Włącz same transitions (nie wpływa na widoczność)
+    box.classList.add('ai-animate');
 
-    // 3) Reflow (zapamiętaj start, także ::before)
-    const title = sec.querySelector('h2.services__title');
-    void title?.offsetTop;
-    getComputedStyle(title, '::before').transform;
+    // 2) BADGE: startuj fill natychmiast (bez delaya)
+    if (badge) {
+      // jeśli style ładują się ciut po DOM, daj microtask, ale bez widocznego opóźnienia
+      Promise.resolve().then(() => badge.classList.add('ai-badge-animate'));
+    }
 
-    // 4) Czekaj na PIERWSZY scroll użytkownika, by nie odpalać „na loadzie”
-    let scrollingArmed = false;
-    const armOnFirstScroll = () => { scrollingArmed = true; window.removeEventListener('scroll', armOnFirstScroll); };
-    window.addEventListener('scroll', armOnFirstScroll, { once: true, passive: true });
+    // 3) Ustawienia triggera dla title/sub
+    const deltaPx  = Number(box.getAttribute('data-ai-delta')  || 24);   // min. realny scroll
+    const offsetPx = Number(box.getAttribute('data-ai-offset') || 16);   // ile px box ma wejść w viewport
+    const lagMs    = Number(box.getAttribute('data-ai-lag')    || 120);  // opóźnienie sub po title
+    const autoMs   = Number(box.getAttribute('data-ai-auto')   || 4000); // auto-reveal po czasie
 
-    // 5) IO – odpal gdy środek sekcji wejdzie w „okno” (nie od razu przy krawędzi)
-    const fire = () => {
-      // krótki odstęp + flush → gwarancja odpalenia transition
-      setTimeout(() => {
-        requestAnimationFrame(() => {
-          getComputedStyle(title, '::before').transform;
-          requestAnimationFrame(() => sec.classList.add('is-inview'));
-        });
-      }, 80);
-    };
+    let scrolled = 0, lastY = window.scrollY || 0, revealed = false;
 
-    let fired = false;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry) return;
-        // uruchamiaj dopiero po pierwszym realnym scrollu
-        if (!scrollingArmed) return;
-        if (!fired && entry.isIntersecting) {
-          fired = true;
-          fire();
-          io.disconnect();
-        }
-      },
-      {
-        // Wyzwalaj, gdy ~50% sekcji w kadrze, z lekkim opóźnieniem od dołu
-        threshold: 0.5,
-        rootMargin: '-15% 0px -40% 0px',
-      }
-    );
-    io.observe(sec);
+    function measure() {
+      const y = window.scrollY || 0;
+      scrolled += Math.abs(y - lastY);
+      lastY = y;
+    }
+    function inGate() {
+      const r = box.getBoundingClientRect();
+      return r.bottom > 0 && r.top < window.innerHeight &&
+             (window.innerHeight - r.top) >= offsetPx;
+    }
+    function reveal() {
+      if (revealed) return;
+      revealed = true;
+      title.classList.add('ai-revealed');
+      setTimeout(() => sub.classList.add('ai-revealed'), lagMs);
+      cleanup();
+    }
+    function tryReveal() {
+      if (!revealed && scrolled >= deltaPx && inGate()) reveal();
+    }
 
-    // 6) Awaryjnie: jeśli user nie scrolluje, a ma dotrzeć klawiaturą itp.
-    setTimeout(() => {
-      if (!fired && scrollingArmed && !sec.classList.contains('is-inview')) fire();
-    }, 3000);
+    const opts = { passive: true };
+    function onScroll() { measure(); tryReveal(); }
+    window.addEventListener('scroll', onScroll, opts);
+    window.addEventListener('wheel', onScroll,  opts);
+    window.addEventListener('touchmove', onScroll, opts);
+
+    let io = null;
+    if ('IntersectionObserver' in window) {
+      io = new IntersectionObserver(tryReveal, {
+        root: null, rootMargin: '0px 0px -35% 0px', threshold: [0, .1, .3, .6, 1]
+      });
+      io.observe(box);
+    }
+
+    const autoTimer = setTimeout(reveal, autoMs);
+
+    function cleanup() {
+      clearTimeout(autoTimer);
+      window.removeEventListener('scroll', onScroll, opts);
+      window.removeEventListener('wheel', onScroll,  opts);
+      window.removeEventListener('touchmove', onScroll, opts);
+      if (io) io.disconnect();
+    }
   });
 })();

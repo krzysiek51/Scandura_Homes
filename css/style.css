@@ -225,6 +225,7 @@ body {
   line-height: 1.4;
   font-weight: 600;
   letter-spacing: -0.43px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 /* ===== TABLET (≥744 <1440) — grid 660: 8×65 / gap 20 / padding 42 ===== */
@@ -671,6 +672,7 @@ html.nav-open, body.nav-open {
   height: 375px;
   position: relative;
   overflow: visible; /* kropki mogą wychodzić */
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.15);
   margin-top: 40px;
 }
 .mission__image {
@@ -1782,6 +1784,7 @@ html.nav-open, body.nav-open {
   /* Divider */
 }
 .why-us__divider {
+  --div-p: 0;
   grid-column: 1/-1;
   width: 229px;
   height: 4px;
@@ -1789,6 +1792,8 @@ html.nav-open, body.nav-open {
   border-radius: 2px;
   justify-self: start;
   margin-top: 4px;
+  /* Figma: stroke + drop shadow */
+  box-shadow: inset 0 0 0 1px #979797, 0 2px 8px rgba(0, 0, 0, 0.25); /* drop shadow */
 }
 .why-us {
   /* GRID (mobile) — 4 kol., gap 16, content płynny */
@@ -1815,7 +1820,7 @@ html.nav-open, body.nav-open {
   aspect-ratio: 1.2546816479;
   overflow: hidden;
   border-top-right-radius: 62px;
-  background: #e9eef2;
+  background: #faf7f4;
 }
 .why-us__review-image {
   width: 100%;
@@ -2477,6 +2482,7 @@ html.nav-open, body.nav-open {
   /* Karta */
 }
 .services__card {
+  isolation: isolate;
   position: relative;
   padding-bottom: 28px;
   overflow: visible;
@@ -2487,6 +2493,7 @@ html.nav-open, body.nav-open {
   scroll-snap-align: start;
   border-top-right-radius: 60px;
   transition: transform 280ms cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 280ms ease;
+  box-shadow: 0 4px 4px rgba(202, 200, 200, 0.25);
 }
 .services__card.is-active {
   transform: none;
@@ -2503,17 +2510,23 @@ html.nav-open, body.nav-open {
   border-top-left-radius: 0;
   border-top-right-radius: 40px;
   display: block;
+  position: relative;
+  z-index: 0;
 }
 .services__icon-wrapper {
-  width: 100px;
-  height: 100px;
+  width: 93px;
+  height: 93px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 auto;
-  transform: translateY(-50%);
-  z-index: 1;
+  position: absolute;
+  left: 50%;
+  top: 218px;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  background: #FAF7F4;
+  box-shadow: 0 4px 4px rgba(202, 200, 200, 0.25);
 }
 .services__icon {
   width: 93px;
@@ -2538,16 +2551,18 @@ html.nav-open, body.nav-open {
   width: 100%;
   margin: 0 auto;
   padding-bottom: 25px;
+  margin-top: 100px;
 }
 .services__card-text {
   font-family: "DM Sans", sans-serif;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 126%;
   letter-spacing: 0.07em;
   text-align: center;
   color: #000;
   margin-bottom: 36px;
+  margin-top: 30px;
 }
 .services__button {
   width: 174px;
@@ -5794,68 +5809,140 @@ nav#mobile-menu .button--nav {
     font-size: 18px;
   }
 }
-/* Start: ukryj wszystkie elementy (opacity 0 + translateY) */
-.configurator-prompt.ai-armed .configurator-prompt__badge,
-.configurator-prompt.ai-armed .configurator-prompt__title,
-.configurator-prompt.ai-armed .configurator-prompt__sub,
-.configurator-prompt.ai-armed .configurator-prompt__benefits,
-.configurator-prompt.ai-armed .configurator-prompt__benefits li,
-.configurator-prompt.ai-armed .configurator-prompt__cta,
-.configurator-prompt.ai-armed .configurator-prompt__button,
-.configurator-prompt.ai-armed .configurator-prompt__link {
+/* =========================================================
+   AI BOX — entrance:
+   - background: fade-in
+   - badge: fade-in
+   - title + sub (lead): fade-in + lift
+   - benefits: fade-in + stagger li
+   ========================================================= */
+.configurator-prompt {
+  --ai-bg: #ffffff;
+  --ai-enter-duration: .65s;
+  --ai-enter-delay: .12s;
+  --ai-ease: cubic-bezier(.2,.6,.2,1);
+  --ai-text-lift: 5px; /* tylko dla title/sub */
+  position: relative;
+}
+
+/* tło fade-in */
+.configurator-prompt::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--ai-bg);
   opacity: 0;
-  transform: translateY(14px);
+  transition: opacity var(--ai-enter-duration) var(--ai-ease);
+  transition-delay: var(--ai-enter-delay);
+  pointer-events: none;
+  z-index: 0;
 }
 
-/* Po dodaniu .ai-animate — aktywuj transition */
-.configurator-prompt.ai-animate .configurator-prompt__badge,
+/* treść nad tłem */
+.configurator-prompt > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* badge — fade */
+.configurator-prompt__badge {
+  opacity: 0;
+  transition: opacity var(--ai-enter-duration) var(--ai-ease);
+  transition-delay: var(--ai-enter-delay);
+}
+
+/* title + sub — fade + lift */
+.configurator-prompt__title,
+.configurator-prompt__sub {
+  opacity: 0;
+  transform: translateY(var(--ai-text-lift, 20px));
+  transition: opacity var(--ai-enter-duration) var(--ai-ease), transform var(--ai-enter-duration) var(--ai-ease);
+}
+
+.configurator-prompt__title {
+  transition-delay: calc(var(--ai-enter-delay) + 0.08s);
+}
+
+.configurator-prompt__sub {
+  transition-delay: calc(var(--ai-enter-delay) + 0.16s);
+}
+
+/* benefits — kontener fade-in */
+.configurator-prompt__benefits {
+  opacity: 0;
+  transition: opacity var(--ai-enter-duration) var(--ai-ease);
+  transition-delay: calc(var(--ai-enter-delay) + 0.28s); /* po sub */
+}
+
+/* benefits — każdy li z delikatnym staggerem */
+.configurator-prompt__benefits li {
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity var(--ai-enter-duration) var(--ai-ease), transform var(--ai-enter-duration) var(--ai-ease);
+}
+
+.configurator-prompt.ai-animate .configurator-prompt__benefits {
+  opacity: 1;
+}
+
+.configurator-prompt.ai-animate .configurator-prompt__benefits li {
+  opacity: 1;
+  transform: none;
+}
+
+/* Stagger per li */
+.configurator-prompt.ai-animate .configurator-prompt__benefits li:nth-child(1) {
+  transition-delay: calc(var(--ai-enter-delay) + 0.36s);
+}
+
+.configurator-prompt.ai-animate .configurator-prompt__benefits li:nth-child(2) {
+  transition-delay: calc(var(--ai-enter-delay) + 0.44s);
+}
+
+.configurator-prompt.ai-animate .configurator-prompt__benefits li:nth-child(3) {
+  transition-delay: calc(var(--ai-enter-delay) + 0.52s);
+}
+
+.configurator-prompt.ai-animate .configurator-prompt__benefits li:nth-child(4) {
+  transition-delay: calc(var(--ai-enter-delay) + 0.6s);
+}
+
+/* aktywacja */
+.configurator-prompt.ai-animate::before {
+  opacity: 1;
+}
+
+.configurator-prompt.ai-animate .configurator-prompt__badge {
+  opacity: 1;
+}
+
 .configurator-prompt.ai-animate .configurator-prompt__title,
-.configurator-prompt.ai-animate .configurator-prompt__sub,
-.configurator-prompt.ai-animate .configurator-prompt__benefits,
-.configurator-prompt.ai-animate .configurator-prompt__benefits li,
-.configurator-prompt.ai-animate .configurator-prompt__cta,
-.configurator-prompt.ai-animate .configurator-prompt__button,
-.configurator-prompt.ai-animate .configurator-prompt__link {
-  transition: opacity 0.55s cubic-bezier(0.2, 0.6, 0.2, 1), transform 0.55s cubic-bezier(0.2, 0.6, 0.2, 1);
-  will-change: transform, opacity;
-}
-.configurator-prompt.ai-animate .configurator-prompt__button {
-  transition: opacity 0.55s cubic-bezier(0.2, 0.6, 0.2, 1), transform 0.55s cubic-bezier(0.2, 0.6, 0.2, 1);
-}
-
-/* Element z .ai-revealed staje się widoczny */
-.configurator-prompt .ai-revealed {
-  opacity: 1 !important;
-  transform: none !important;
+.configurator-prompt.ai-animate .configurator-prompt__sub {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* A11y */
 @media (prefers-reduced-motion: reduce) {
-  .configurator-prompt.ai-armed .configurator-prompt__badge,
-  .configurator-prompt.ai-armed .configurator-prompt__title,
-  .configurator-prompt.ai-armed .configurator-prompt__sub,
-  .configurator-prompt.ai-armed .configurator-prompt__benefits,
-  .configurator-prompt.ai-armed .configurator-prompt__benefits li,
-  .configurator-prompt.ai-armed .configurator-prompt__cta,
-  .configurator-prompt.ai-armed .configurator-prompt__button,
-  .configurator-prompt.ai-armed .configurator-prompt__link,
-  .configurator-prompt.ai-animate .configurator-prompt__badge,
-  .configurator-prompt.ai-animate .configurator-prompt__title,
-  .configurator-prompt.ai-animate .configurator-prompt__sub,
-  .configurator-prompt.ai-animate .configurator-prompt__benefits,
-  .configurator-prompt.ai-animate .configurator-prompt__benefits li,
-  .configurator-prompt.ai-animate .configurator-prompt__cta,
-  .configurator-prompt.ai-animate .configurator-prompt__button,
-  .configurator-prompt.ai-animate .configurator-prompt__link {
-    transition: none !important;
-    opacity: 1 !important;
-    transform: none !important;
+  .configurator-prompt::before {
+    transition: none;
+    opacity: 1;
+  }
+  .configurator-prompt__badge,
+  .configurator-prompt__title,
+  .configurator-prompt__sub,
+  .configurator-prompt__benefits,
+  .configurator-prompt__benefits li {
+    transition: none;
+    opacity: 1;
+    transform: none;
   }
 }
 /* ==========================================================================
    Mission — Apple-like scroll-synced wejście (zoom-out + parallax + sekwencja)
-   Wymaga: .mission, .mission__image-wrapper, .mission__image, .mission__dots,
-           .mission__divider, .mission__title, .mission__text-title, .mission__text, .mission__button
+   ZMIANA: typografia wchodzi od 50% → 100% opacity + delikatny lift 5px
+   Obraz: BEZ zanikania — tylko zoom-out + parallax/shift (Apple vibe)
+   Regulacja: globalna i per-element przez custom properties
    ========================================================================== */
 .mission {
   /* Globalny progress (0..1) — sterowany z JS */
@@ -5868,54 +5955,66 @@ nav#mobile-menu .button--nav {
   --p-sub: 0;
   --p-text: 0;
   --p-btn: 0;
-  /* Tunowalne tokeny efektu */
-  --img-scale-start: 1.12; /* startowy zoom obrazu */
-  --img-parallax: 28px; /* pionowy parallax wrappera */
+  /* Tunowalne tokeny efektu (obraz) */
+  --img-scale-start: 1.25; /* startowy zoom obrazu */
+  --img-parallax: 58px; /* pionowy parallax wrappera */
   --img-lift: 40px; /* pionowe „wycofanie” samego obrazu */
-  --img-dim: 0.15; /* lekkie przyciemnienie na starcie (0..1) */
+  --img-dim: 0.0; /* przyciemnienie wyłączone (0..1); zostaw 0 */
+  /* Tunowalne tokeny wejścia typografii */
+  --enter-lift: 5px; /* globalny lift dla tekstów */
+  --opacity-start: .5; /* globalny start opacity dla tekstów */
+  /* Per-element overrides (opcjonalne) */
+  --title-lift: var(--enter-lift);
+  --title-opacity-start: var(--opacity-start);
+  --sub-lift: var(--enter-lift);
+  --sub-opacity-start: var(--opacity-start);
+  --text-lift: var(--enter-lift);
+  --text-opacity-start: var(--opacity-start);
+  --btn-lift: var(--enter-lift);
+  --btn-opacity-start: var(--opacity-start);
   /* Performance */
   contain: layout paint style;
   will-change: transform;
   transform-style: preserve-3d;
-  /* === Obraz === */
+  /* === Obraz — TYLKO transform (zoom + parallax), bez opacity === */
 }
 .mission__image-wrapper {
   position: relative;
   overflow: clip;
   backface-visibility: hidden;
   transform: translateY(calc((1 - var(--p-img)) * var(--img-parallax)));
-  /* Delikatny dim, który znika wraz z postępem obrazu */
-}
-.mission__image-wrapper::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  will-change: opacity;
+  transition: none;
+  will-change: transform;
+  /* Dim wyłączony; włącz jeśli kiedyś zechcesz:
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, calc(var(--img-dim) * (1 - var(--p-img))));
+    pointer-events: none;
+    will-change: opacity;
+  }
+  */
 }
 .mission__image {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Start: 1.12 → 1.00 wraz ze wzrostem --p-img (0 → 1) + lekki lift */
+  backface-visibility: hidden;
+  will-change: transform;
   transform: translateY(calc((1 - var(--p-img)) * var(--img-lift))) scale(calc(var(--img-scale-start) - (var(--img-scale-start) - 1) * var(--p-img)));
   transform-origin: center center;
-  transition: none;
-  will-change: transform;
-  backface-visibility: hidden;
+  transition: none; /* płynność zapewnia easing w JS */
 }
 .mission {
-  /* === Dots (z paddingu prawej) === */
+  /* === Dots / Divider === */
 }
 .mission__dots {
   transform: translateX(calc((1 - var(--p-dots)) * 24px));
   opacity: var(--p-dots);
   transition: none;
   will-change: transform, opacity;
-}
-.mission {
-  /* === Divider (rośnie od lewej) === */
 }
 .mission__divider {
   transform-origin: left center;
@@ -5924,32 +6023,39 @@ nav#mobile-menu .button--nav {
   will-change: transform, opacity;
 }
 .mission {
-  /* === Typografia — wejście kaskadowe === */
+  /* === Typografia — 50% → 100% opacity + lift (regulowalne) === */
 }
 .mission__title, .mission__text-title, .mission__text, .mission__button {
   transition: none;
-  will-change: transform, opacity, filter;
+  will-change: transform, opacity;
+}
+.mission {
+  /* title */
 }
 .mission__title {
-  opacity: var(--p-title);
-  transform: translateY(calc((1 - var(--p-title)) * 22px));
-  filter: blur(calc((1 - var(--p-title)) * 2px));
+  opacity: calc(var(--title-opacity-start) + (1 - var(--title-opacity-start)) * var(--p-title));
+  transform: translateY(calc((1 - var(--p-title)) * var(--title-lift)));
+}
+.mission {
+  /* sub */
 }
 .mission__text-title {
-  opacity: var(--p-sub);
-  transform: translateY(calc((1 - var(--p-sub)) * 20px));
-  filter: blur(calc((1 - var(--p-sub)) * 2px));
+  opacity: calc(var(--sub-opacity-start) + (1 - var(--sub-opacity-start)) * var(--p-sub));
+  transform: translateY(calc((1 - var(--p-sub)) * var(--sub-lift)));
+}
+.mission {
+  /* body */
 }
 .mission__text {
-  opacity: var(--p-text);
-  transform: translateY(calc((1 - var(--p-text)) * 18px));
-  filter: blur(calc((1 - var(--p-text)) * 2px));
+  opacity: calc(var(--text-opacity-start) + (1 - var(--text-opacity-start)) * var(--p-text));
+  transform: translateY(calc((1 - var(--p-text)) * var(--text-lift)));
+}
+.mission {
+  /* CTA — delikatny „pop”; usuń scale(), jeśli chcesz 1:1 jak teksty */
 }
 .mission__button {
-  opacity: var(--p-btn);
-  transform: translateY(calc((1 - var(--p-btn)) * 16px));
-  /* subtelny "pop" przy domknięciu */
-  scale: calc(0.985 + 0.015 * var(--p-btn));
+  opacity: calc(var(--btn-opacity-start) + (1 - var(--btn-opacity-start)) * var(--p-btn));
+  transform: translateY(calc((1 - var(--p-btn)) * var(--btn-lift))) scale(calc(0.985 + 0.015 * var(--p-btn)));
 }
 .mission {
   /* === Motion accessibility === */
@@ -5958,138 +6064,197 @@ nav#mobile-menu .button--nav {
   .mission__image-wrapper, .mission__image, .mission__dots, .mission__divider, .mission__title, .mission__text-title, .mission__text, .mission__button {
     transform: none !important;
     opacity: 1 !important;
-    filter: none !important;
     transition: none !important;
   }
 }
 
-/* WHY-US — kolejka zdjęć + counter + scroll-synced copy
-   Startowy stan ukrycia obowiązuje TYLKO, gdy sekcja ma klasę .reveal-queue.
-   Dzięki temu nie ma „migania”, jeśli JS się nie załaduje. */
+/* ==========================================================================
+   _why-us-anim.scss — foto (zoom-out + parallax) + title lift
+   + divider (0→1) + Apple-reveal (lead/desc/list)
+   ========================================================================== */
 .why-us {
-  /* zmienne dla części scroll-synced (divider/copy/lista) */
-  --w-div: 0;
+  /* —— Gałki obrazu —— */
+  --img-scale-start: 5.80;
+  --img-parallax: 80px;
+  --img-lift: 28px;
+  /* —— Gałki typografii —— */
+  --opacity-start: .5;
+  --title-lift: 20px;
+  --enter-lift: 5px; /* legacy: lead/desc/list */
+  /* —— Progresy (0..1). Domyślnie 1 (bez JS) —— */
+  --w-img: 1;
+  --w-div: 1;
+  --w-title: 1;
+  --w-title-move: 1;
+  --w-lead: 1;
+  --w-desc: 1;
+  --w-list: 1;
+  /* Uzbrojenie sekcji — NIE resetujemy --w-div */
+}
+.why-us.armed {
+  --w-img: 0;
+  /* --w-div: 0; */
   --w-title: 0;
-  --w-sub: 0;
+  --w-title-move: 0;
+  --w-lead: 0;
   --w-desc: 0;
   --w-list: 0;
-  /* ============== KOLEJKA ZDJĘĆ / BADGE ============== */
-}
-.why-us.reveal-queue {
-  /* wyższa specyficzność niż bazowy layout — bez !important */
-}
-.why-us.reveal-queue .why-us__review-card,
-.why-us.reveal-queue .why-us__image-wrapper,
-.why-us.reveal-queue .why-us__projects {
-  opacity: 0;
-  transform: translateY(26px);
-}
-.why-us.reveal-queue .why-us__review-image,
-.why-us.reveal-queue .why-us__image {
-  transform: scale(1.04);
 }
 .why-us {
-  /* płynne przejścia */
+  /* ===== KARTA Z DUŻYM ZDJĘCIEM ===== */
 }
-.why-us .why-us__review-card,
-.why-us .why-us__image-wrapper,
-.why-us .why-us__projects {
-  transition: transform 520ms cubic-bezier(0.22, 0.61, 0.36, 1), opacity 520ms ease;
-  will-change: transform, opacity;
+.why-us .why-us__review-card {
+  position: relative;
+  overflow: hidden;
 }
-.why-us .why-us__review-image,
-.why-us .why-us__image {
-  transition: transform 700ms cubic-bezier(0.22, 0.61, 0.36, 1);
+.why-us {
+  /* ===== OBRAZ — fallback (bez JS) ===== */
+}
+.why-us .why-us__review-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  backface-visibility: hidden;
+}
+.why-us .why-us:not(.js-drive) .why-us__review-image {
+  will-change: translate, scale;
+  transform: translateY(calc((1 - var(--w-img)) * (var(--img-parallax) + var(--img-lift)))) scale(calc(var(--img-scale-start) - (var(--img-scale-start) - 1) * var(--w-img)));
+  transform-origin: center;
+}
+@supports (translate: 0) and (scale: 1) {
+  .why-us .why-us:not(.js-drive) .why-us__review-image {
+    transform: none;
+    translate: 0 calc((1 - var(--w-img)) * (var(--img-parallax) + var(--img-lift)));
+    scale: calc(var(--img-scale-start) - (var(--img-scale-start) - 1) * var(--w-img));
+  }
+}
+.why-us {
+  /* ===== OBRAZ — z JS ===== */
+}
+.why-us .why-us.js-drive .why-us__review-image {
+  transform: none !important;
+  translate: none !important;
+  scale: 1 !important;
   will-change: transform;
 }
 .why-us {
-  /* docelowy stan po dodaniu .is-in przez JS */
+  /* mniejsze foto (opcjonalnie) */
 }
-.why-us .why-us__review-card.is-in,
-.why-us .why-us__image-wrapper.is-in,
-.why-us .why-us__projects.is-in {
-  opacity: 1;
-  transform: translateY(0);
+.why-us .why-us__image-wrapper {
+  overflow: hidden;
 }
-.why-us .why-us__review-card.is-in .why-us__review-image,
-.why-us .why-us__image-wrapper.is-in .why-us__image {
-  transform: scale(1);
+.why-us .why-us__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  backface-visibility: hidden;
+  will-change: transform;
+  transform: translateY(calc((1 - var(--w-img)) * 0.6 * (var(--img-parallax) + var(--img-lift)))) scale(calc(1.08 - 0.08 * var(--w-img)));
+  transform-origin: center;
+  transition: none;
 }
 .why-us {
-  /* ============== DIVIDER + COPY (scroll-synced) ============== */
+  /* ===== DIVIDER — sterowany --div-p (fallback: --w-div) ===== */
 }
 .why-us .why-us__divider {
+  height: 4px;
   transform-origin: left center;
-  transform: scaleX(var(--w-div));
-  opacity: calc(0.4 + 0.6 * var(--w-div));
-}
-.why-us .why-us__title {
-  opacity: var(--w-title);
-  transform: translateY(calc((1 - var(--w-title)) * 18px));
-  filter: blur(calc((1 - var(--w-title)) * 2px));
-}
-.why-us .why-us__description-title {
-  opacity: var(--w-sub);
-  transform: translateY(calc((1 - var(--w-sub)) * 16px));
-  filter: blur(calc((1 - var(--w-sub)) * 2px));
-}
-.why-us .why-us__description {
-  opacity: var(--w-desc);
-  transform: translateY(calc((1 - var(--w-desc)) * 14px));
-  filter: blur(calc((1 - var(--w-desc)) * 2px));
-}
-.why-us .why-us__item {
-  --p-li: 0;
-  opacity: var(--p-li);
-  transform: translateY(calc((1 - var(--p-li)) * 14px));
-  filter: blur(calc((1 - var(--p-li)) * 1.5px));
+  transform: scaleX(var(--div-p, var(--w-div)));
+  opacity: calc(0.4 + 0.6 * var(--div-p, var(--w-div)));
+  will-change: transform, opacity;
+  transition: none;
 }
 .why-us {
-  /* Accessibility */
+  /* ===== TITLE (bez zmian) ===== */
+}
+.why-us .why-us__title {
+  display: inline-block;
+  opacity: calc(var(--opacity-start) + (1 - var(--opacity-start)) * var(--w-title));
+  translate: 0 calc((1 - var(--w-title-move)) * var(--title-lift));
+  will-change: translate, opacity;
+  transition: none;
+}
+.why-us {
+  /* Legacy lead/desc/list — zostaną przykryte przez reveal */
+}
+.why-us .why-us__lead,
+.why-us .why-us__description-title {
+  opacity: calc(var(--opacity-start) + (1 - var(--opacity-start)) * var(--w-lead));
+  transform: translateY(calc((1 - var(--w-lead)) * var(--enter-lift)));
+  will-change: transform, opacity;
+  transition: none;
+}
+.why-us .why-us__description {
+  opacity: calc(var(--opacity-start) + (1 - var(--opacity-start)) * var(--w-desc));
+  transform: translateY(calc((1 - var(--w-desc)) * var(--enter-lift)));
+  will-change: transform, opacity;
+  transition: none;
+}
+.why-us .why-us__item {
+  --p-li: 1;
+  opacity: var(--p-li);
+  transform: translateY(calc((1 - var(--p-li)) * var(--enter-lift)));
+  will-change: transform, opacity;
+  transition: none;
+}
+.why-us {
+  /* A11y globalnie */
 }
 @media (prefers-reduced-motion: reduce) {
-  .why-us .why-us__review-card,
-  .why-us .why-us__image-wrapper,
-  .why-us .why-us__projects,
   .why-us .why-us__review-image,
   .why-us .why-us__image,
   .why-us .why-us__divider,
   .why-us .why-us__title,
-  .why-us .why-us__description-title,
+  .why-us .why-us__lead,
   .why-us .why-us__description,
   .why-us .why-us__item {
-    transition: none !important;
     transform: none !important;
+    translate: none !important;
+    scale: 1 !important;
     opacity: 1 !important;
-    filter: none !important;
+    transition: none !important;
   }
 }
 
-/* AUTO-KOLEJKA TEKSTÓW: ukryj na start i pokaż po .is-in, bez scrolla */
-.why-us.texts-queue .why-us__title,
-.why-us.texts-queue .why-us__description-title,
-.why-us.texts-queue .why-us__description,
-.why-us.texts-queue .why-us__item {
-  opacity: 0;
-  transform: translateY(18px);
-  filter: blur(2px);
-  transition: transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1), opacity 420ms ease, filter 420ms ease;
-  will-change: transform, opacity, filter;
-}
-.why-us.texts-queue .why-us__item {
-  transform: translateY(14px);
-  filter: blur(1.5px);
-}
-.why-us.texts-queue .why-us__title.is-in,
-.why-us.texts-queue .why-us__description-title.is-in,
-.why-us.texts-queue .why-us__description.is-in,
-.why-us.texts-queue .why-us__item.is-in {
-  opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
+/* ========================================================================== */
+/* Apple-like reveal (FADE-IN + LIFT) dla lead/desc/list — twarde nadpisanie   */
+/* ========================================================================== */
+.why-us .why-us__lead.reveal,
+.why-us .why-us__description-title.reveal,
+.why-us .why-us__description.reveal,
+.why-us .why-us__list .why-us__item.reveal {
+  opacity: 0 !important;
+  transform: translateY(20px) !important;
+  /* !important na KOŃCU deklaracji — poprawny zapis */
+  transition: transform 0.72s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  will-change: transform, opacity;
 }
 
-/* Divider zostaje na zmiennej (scroll-synced) — bez zmian */
+.why-us .why-us__lead.reveal.reveal--in,
+.why-us .why-us__description-title.reveal.reveal--in,
+.why-us .why-us__description.reveal.reveal--in,
+.why-us .why-us__list .why-us__item.reveal.reveal--in {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* A11y — reveal bez animacji */
+@media (prefers-reduced-motion: reduce) {
+  .why-us .why-us__lead.reveal,
+  .why-us .why-us__description-title.reveal,
+  .why-us .why-us__description.reveal,
+  .why-us .why-us__list .why-us__item.reveal,
+  .why-us .why-us__lead.reveal.reveal--in,
+  .why-us .why-us__description-title.reveal.reveal--in,
+  .why-us .why-us__description.reveal.reveal--in,
+  .why-us .why-us__list .why-us__item.reveal.reveal--in {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
 /* =======================
    SERVICES – wejście sekcji
    ======================= */
