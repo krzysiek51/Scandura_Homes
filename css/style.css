@@ -3112,17 +3112,22 @@ html.nav-open, body.nav-open {
   /* Obraz */
 }
 .project-card__image-wrapper {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 4/3;
+  position: relative; /* bez wpływu na układ CTA, ale przydatne pod overlay */
+  width: calc(100% - 40px); /* 20px z lewej + 20px z prawej */
+  max-width: 254px; /* jak w Figmie */
+  height: 211px; /* KLUCZ: stała wysokość */
+  margin: 0 auto;
   border-radius: 16px;
   border-top-right-radius: 32px;
   overflow: hidden;
+  aspect-ratio: auto; /* wyłącz wszelkie wcześniejsze 4/3 */
+  flex-shrink: 0;
 }
 .project-card__image {
   width: 100%;
-  height: 100%;
+  height: 100%; /* teraz 100% = 211px */
   object-fit: cover;
+  object-position: center;
   display: block;
 }
 .project-card {
@@ -3224,29 +3229,61 @@ html.nav-open, body.nav-open {
   /* CTA */
 }
 .project-card__cta, .project-card__button,
-.project-card .project-card__button {
+.project-card .project-card__button,
+.project-card a.project-card__button,
+.project-card a.project-card__button[data-open-configurator] {
   margin-top: 32px;
   display: block;
   width: 100%;
   height: 48px;
-  text-align: center;
   line-height: 48px;
-  font: 800 16px/48px "DM Sans", sans-serif;
-  border-radius: 0 12px 0 0;
+  text-align: center;
   text-decoration: none;
+  font-family: "DM Sans", sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  border-radius: 0 12px 0 0;
   background: #DC9B59;
   color: #FFFFFF;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .project-card__cta:hover, .project-card__button:hover,
-.project-card .project-card__button:hover {
+.project-card .project-card__button:hover,
+.project-card a.project-card__button:hover,
+.project-card a.project-card__button[data-open-configurator]:hover {
   transform: translateY(-1px);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 .project-card__cta:active, .project-card__button:active,
-.project-card .project-card__button:active {
+.project-card .project-card__button:active,
+.project-card a.project-card__button:active,
+.project-card a.project-card__button[data-open-configurator]:active {
   transform: translateY(0);
   box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+/* --- OCHRONA PRZED STARYMI REGUŁAMI --- */
+/* Jeśli gdzieś indziej w projekcie zostało aspect-ratio na wrapperze, nadpiszemy: */
+.project-card__image-wrapper {
+  aspect-ratio: auto !important;
+}
+
+/* Jeśli gdzieś resetuje linki z data-open-configurator, dobijamy specyficznością: */
+a.project-card__button[data-open-configurator] {
+  all: unset;
+} /* <- użyj tylko jeśli widzisz, że coś resetuje do zera */
+a.project-card__button[data-open-configurator] {
+  display: block;
+  width: 100%;
+  height: 48px;
+  line-height: 48px;
+  text-align: center;
+  text-decoration: none;
+  font: 800 16px/48px "DM Sans", sans-serif;
+  border-radius: 0 12px 0 0;
+  background: #DC9B59;
+  color: #fff;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 /* =========================================================
