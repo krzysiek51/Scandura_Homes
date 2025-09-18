@@ -81,12 +81,19 @@ $gap-l: 24px;         // laptop/desktop gap
     margin: 0 auto;
     padding-bottom: 36px;
     display: flex;
+    touch-action: pan-y;           // pion strony: dozwolony
+    overscroll-behavior: contain;  // bez łańcuchowego overscrolla
+     -webkit-user-select: none;
+    user-select: none;
 
     /* przewijanie ukryte – tor przesuwa JS */
     overflow-x: hidden;
     overflow-y: visible;
-    scroll-snap-type: x mandatory; /* mobile – w MQ wyżej wyłączamy */
-    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: none; 
+    -webkit-overflow-scrolling: auto;
+    
+    will-change: transform;
+    transform: translate3d(0,0,0); // GPU hint
 
     /* maski na brzegi (mobile) */
     &::before,
@@ -119,8 +126,9 @@ $gap-l: 24px;         // laptop/desktop gap
     gap: $gap-m; /* spójnie z siatką mobile */
     transition: transform 600ms cubic-bezier(.22,.61,.36,1);
     will-change: transform;
-     position: relative;
+    position: relative;
     z-index: 1;
+    transform: translate3d(0,0,0); // GPU hint, stabilniejsza animacja
   }
 
   /* Karta */
@@ -183,6 +191,7 @@ $gap-l: 24px;         // laptop/desktop gap
     letter-spacing: 0.07em; color: #000;
     text-align: center; width: 100%; margin: 0 auto; padding-bottom: 25px;
     margin-top: 100px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25); // cień na literach
   }
 
   &__card-text {
