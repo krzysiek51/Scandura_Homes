@@ -172,10 +172,11 @@
             <strong>Filary:</strong> Jakość na lata • Transparentna oferta • Skandynawska precyzja • Obsługa
             „end-to-end”
           </p>
-          <a href="/about.html" class="mission__button">
+          <a href="#callbackSection" class="mission__button js-callback-link">
             Wyślij prośbę o telefon
             <img src="photos/svg/Path.svg" alt="" class="mission__button-arrow" />
           </a>
+
         </div>
       </div>
     </div>
@@ -663,7 +664,7 @@
           <h3 class="project-card__title">Trondheim Villa</h3>
           <p class="project-card__description">
             Dwukondygnacyjny dom szkieletowy 175 m², zaprojektowany w nowoczesnym stylu skandynawskim. Ciemna elewacja
-            kontrastuje z naturalnym otoczeniem, a duże okna zapewniają jasne i przestronne wnętrza. 
+            kontrastuje z naturalnym otoczeniem, a duże okna zapewniają jasne i przestronne wnętrza.
           </p>
           <div class="project-card__meta">
             <div class="project-card__meta-item"><span class="project-card__meta-label">Lokalizacja</span><span
@@ -697,7 +698,8 @@
           </div>
           <h3 class="project-card__title">Solberg House</h3>
           <p class="project-card__description">
-            Nowoczesny dom szkieletowy 160 m² z dużymi przeszkleniami i tarasem. Realizacja objęła pełen zakres prac od fundamentów po stan pod
+            Nowoczesny dom szkieletowy 160 m² z dużymi przeszkleniami i tarasem. Realizacja objęła pełen zakres prac od
+            fundamentów po stan pod
             klucz, z użyciem certyfikowanego drewna C24 i zaawansowanej izolacji termicznej.
           <div class="project-card__meta">
             <div class="project-card__meta-item"><span class="project-card__meta-label">Lokalizacja</span><span
@@ -766,7 +768,8 @@
           </div>
           <h3 class="project-card__title">Granli Residence</h3>
           <p class="project-card__description">Nowoczesny dom szkieletowy 130 m² położony w otoczeniu gór i lasów.
-            Prosta bryła w ciemnej elewacji komponuje się z naturą,  Zastosowane drewno C24 i skuteczna izolacja termiczna gwarantują trwałość oraz komfort
+            Prosta bryła w ciemnej elewacji komponuje się z naturą, Zastosowane drewno C24 i skuteczna izolacja
+            termiczna gwarantują trwałość oraz komfort
             przez cały rok.</p>
           <div class="project-card__meta">
             <div class="project-card__meta-item"><span class="project-card__meta-label">Lkalizacja</span><span
@@ -1212,6 +1215,43 @@
     </div>
   </div>
 
+  <!-- ============================= -->
+  <!-- WIDGET: ODDZWOŃ DO MNIE       -->
+  <!-- ============================= -->
+  <section id="callbackSection" class="callback" aria-labelledby="callbackTitle">
+    <div class="callback__container">
+      <h3 id="callbackTitle" class="callback__title">Oddzwonimy do Ciebie</h3>
+      <p class="callback__lead">Zostaw numer telefonu – skontaktujemy się maksymalnie w 1 dniu roboczym.</p>
+
+      <form class="callback__form" id="callbackForm" novalidate>
+        <!-- honeypot (anty-spam) -->
+        <input type="text" name="company" tabindex="-1" autocomplete="off" class="callback__hp" aria-hidden="true">
+
+        <label class="callback__label" for="callbackPhone">Telefon</label>
+        <div class="callback__field">
+          <input id="callbackPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel"
+            placeholder="+48 600 000 000" class="callback__input" required aria-required="true" />
+          <button type="submit" class="callback__btn" id="callbackSubmit">Zadzwońcie do mnie</button>
+        </div>
+
+        <label class="callback__consent">
+          <input type="checkbox" id="callbackConsent" required>
+          <span>
+            Wyrażam zgodę na kontakt telefoniczny w celu przedstawienia oferty. Administratorem danych jest Scandura
+            Homes.
+            Zgodę mogę wycofać w dowolnym momencie.
+            <a href="/polityka-prywatnosci" target="_blank" rel="nofollow">Polityka prywatności</a>.
+          </span>
+        </label>
+
+        <p class="callback__hint">Obsługujemy numery PL (+48) i NO (+47). Podaj z prefiksem kraju.</p>
+
+        <div class="callback__status" id="callbackStatus" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+  </section>
+
+
   <script type="module" src="js/config.js"></script>
   <script type="module" src="js/configurator.js"></script>
   <script src="js/patch-modal-ux.js"></script>
@@ -1230,7 +1270,8 @@
   <script type="module" src="/js/services-enter.js"></script>
   <script defer src="/js/services-icons-draw.js"></script>
   <script src="js/services-icons-watch.js"></script>
-
+  <script src="js/callback.js"></script>
+  <script src="js/callback-modal.js" defer></script>
 
 
 

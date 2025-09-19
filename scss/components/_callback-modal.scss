@@ -1,0 +1,174 @@
+@use '../utils/variables' as *;
+
+/* blokada scrolla, gdy popup otwarty */
+.cb-lock {
+  overflow: hidden;
+}
+
+.callback-pop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+  display: block;
+
+  &.is-active { pointer-events: auto; }
+}
+
+/* overlay */
+.callback-pop__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.28);
+  opacity: 0;
+  transition: opacity .18s ease;
+  &.is-visible { opacity: 1; }
+}
+
+/* karta */
+.callback-pop__card {
+  position: absolute; /* pozycjonowana względem viewportu (fixed parent) */
+  max-width: min(92vw, 520px);
+  width: 520px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 24px 80px rgba(0,0,0,.18);
+  padding: 20px;
+  transform-origin: var(--cb-origin-x, 50%) var(--cb-origin-y, 0%);
+  transform: scale(.96);
+  opacity: 0;
+  transition: transform .18s cubic-bezier(.2,.6,.2,1), opacity .18s ease;
+  will-change: transform, opacity;
+
+  &.is-open {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* strzałka */
+.callback-pop__arrow {
+  position: absolute;
+  top: auto;
+  left: 50%;
+  width: 14px; height: 14px;
+  background: #fff;
+  transform: translateX(-50%) rotate(45deg);
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  /* pozycja wertykalna zależna od placementu */
+  .callback-pop__card[data-placement="top"] & {
+    bottom: -7px;
+  }
+  .callback-pop__card[data-placement="bottom"] & {
+    top: -7px;
+  }
+}
+
+/* UI wewnątrz */
+.callback-pop__close {
+  position: absolute;
+  top: 8px; right: 10px;
+  width: 32px; height: 32px;
+  border: 0; border-radius: 8px;
+  background: transparent;
+  font-size: 22px; line-height: 1;
+  cursor: pointer;
+  color: #333;
+  transition: background .15s ease, transform .06s ease;
+  &:hover { background: rgba(0,0,0,.05); }
+  &:active { transform: translateY(1px); }
+}
+
+.callback-pop__title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0b0b0c;
+  margin: 0 32px 6px 0; /* miejsce na X */
+}
+
+.callback-pop__lead {
+  font-size: 14px;
+  color: #555;
+  margin: 0 0 14px;
+}
+
+.callback-pop__form {
+  display: grid;
+  gap: 12px;
+}
+
+.callback-pop__label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.callback-pop__field {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.callback-pop__input {
+  height: 48px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 0 14px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease;
+  &:focus {
+    border-color: $color-gradient-start;
+    box-shadow: 0 0 0 4px rgba(220,155,89,.2);
+  }
+  &.is-invalid { border-color: #e25454; }
+}
+
+.callback-pop__btn {
+  height: 48px;
+  border: 0;
+  border-radius: 12px;
+  padding: 0 16px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  background: linear-gradient(135deg, $color-gradient-start 0%, $color-gradient-end 100%);
+  color: #fff;
+  transition: transform .06s ease, opacity .2s ease;
+  &:active { transform: translateY(1px); }
+  &:disabled { opacity: .6; cursor: not-allowed; }
+}
+
+.callback-pop__consent {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: 8px;
+  font-size: 13px;
+  color: #444;
+
+  a {
+    color: $color-gradient-start;
+    text-decoration: underline;
+    &:hover { text-decoration: none; }
+  }
+}
+
+.callback-pop__hint {
+  font-size: 12px;
+  color: #777;
+  margin: 0;
+}
+
+.callback-pop__status {
+  font-size: 14px;
+  min-height: 20px;
+}
+
+/* honeypot */
+.callback-pop__hp { display: none !important; }
+
+/* RWD */
+@media (min-width: 744px) {
+  .callback-pop__card { padding: 24px; }
+  .callback-pop__title { font-size: 22px; }
+  .callback-pop__lead { font-size: 15px; }
+}

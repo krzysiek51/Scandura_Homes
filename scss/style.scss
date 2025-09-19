@@ -68,6 +68,12 @@
 @use "pages/services-process";
 @use "pages/service-modal";
 
+
+
+@use "components/callback";
+@use 'components/callback-modal';
+
+
 /* "Pusta kartka": chowamy tylko elementy do rysowania */
 .services__icon [data-draw]{
   fill: none !important;
