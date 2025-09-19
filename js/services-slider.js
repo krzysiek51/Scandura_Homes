@@ -66,6 +66,38 @@
   let isNormalizing = false;
   let isAnimating = false;
 
+  // =======================
+  // HELPERY DO KART/IKON
+  // =======================
+  const getAllCards = () => Array.from(track.querySelectorAll('.services__card'));
+
+  // Rysuj ikony SVG w podanym elemencie karty.
+  function drawIconsIn(card) {
+    if (!card) return;
+    const svgs = card.querySelectorAll('svg.js-draw');
+    svgs.forEach(svg => {
+      if (svg.classList.contains('is-drawn')) return;
+      // jeśli masz globalny skrypt ServicesDraw – użyj go
+      if (window.ServicesDraw && typeof window.ServicesDraw.drawIn === 'function') {
+        window.ServicesDraw.drawIn(card);
+        return;
+      }
+      // fallback: double rAF, żeby najpierw był stan „pusta kartka”
+      requestAnimationFrame(() => {
+        document.body.offsetHeight; // force reflow
+        requestAnimationFrame(() => {
+          svg.classList.add('is-drawn');
+        });
+      });
+    });
+  }
+
+  function drawIconsInActive() {
+    const cards = getAllCards();
+    const active = cards[index];
+    if (active) drawIconsIn(active);
+  }
+
   // Klony (loop)
   const cloneCard = (orig) => {
     const n = orig.cloneNode(true);
@@ -90,7 +122,7 @@
   const measure = () => {
     const was = track.style.transition;
     track.style.transition = 'none';
-    const cards = Array.from(track.querySelectorAll('.services__card'));
+    const cards = getAllCards();
     const rectT = track.getBoundingClientRect();
     viewportW = slider.clientWidth;
 
@@ -131,7 +163,7 @@
 
   // UI
   const updateUI = () => {
-    const cards = Array.from(track.querySelectorAll('.services__card'));
+    const cards = getAllCards();
     cards.forEach((c, i) => c.classList.toggle('is-active', i === index));
     prevBtn && (prevBtn.disabled = false);
     nextBtn && (nextBtn.disabled = false);
@@ -144,6 +176,8 @@
     setTransition(animate);
     applyTransformForIndex(index);
     updateUI();
+    // >>> RYSUJ IKONY W NOWO AKTYWNEJ KARCIE
+    drawIconsInActive();
   };
 
   // Normalizacja po przejściu przez klony
@@ -165,6 +199,8 @@
           track.style.transition = was;
           isNormalizing = false;
           isAnimating = false;
+          // po teleportacji również dorysuj aktywną „prawdziwą” kartę
+          drawIconsInActive();
         });
       });
     } else {
@@ -240,8 +276,8 @@
     }
 
     if (dirLock === 'x') {
-      // pilnuj, by strona nie jechała — potrzebujemy passive:false
-      rawEvent?.preventDefault?.();
+      // >>> POPRAWKA: tylko jeśli event jest cancelable
+      if (rawEvent && rawEvent.cancelable) rawEvent.preventDefault();
       currentX = dragStartTranslate + dx;
       track.style.transform = `translate3d(${Math.round(currentX)}px,0,0)`;
       lastMoveT = performance.now();
@@ -260,7 +296,7 @@
       // snap do najbliższej karty (center dla 1 per view)
       const x = currentX + CONFIG.offsetPx;
       const cpvNow = getCardsPerView();
-      const cards = Array.from(track.querySelectorAll('.services__card'));
+      const cards = getAllCards();
       let best = index, bestDist = Infinity;
 
       if (cpvNow === 1) {
@@ -332,7 +368,7 @@
   rebuildClones();
   measure();
   setTransition(false);
-  goTo(baseOffset, false);
+  goTo(baseOffset, false);      // tu rysujemy ikony w pierwszej (aktywnej) karcie
   setTransition(true);
   startAutoplay();
 })();

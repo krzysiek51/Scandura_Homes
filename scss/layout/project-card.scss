@@ -5,8 +5,7 @@
    ========================================================= */
 .project-card {
   width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
+    box-sizing: border-box;
   background-color: #fff;
   border-radius: 20px;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.04);
@@ -14,13 +13,13 @@
   flex-direction: column;
   padding: 20px;
   overflow: hidden;
-  height: 677px;
+  min-height: 677px;
 
   /* Obraz */
   &__image-wrapper {
    position: relative;                 /* bez wpływu na układ CTA, ale przydatne pod overlay */
-    width: calc(100% - 40px);           /* 20px z lewej + 20px z prawej */
-    max-width: 254px;                   /* jak w Figmie */
+    width: 100%;           /* 20px z lewej + 20px z prawej */
+    max-width: 294px;                   /* jak w Figmie */
     height: 211px;                      /* KLUCZ: stała wysokość */
     margin: 0 auto;
     border-radius: 16px;

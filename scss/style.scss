@@ -68,3 +68,25 @@
 @use "pages/services-process";
 @use "pages/service-modal";
 
+/* "Pusta kartka": chowamy tylko elementy do rysowania */
+.services__icon [data-draw]{
+  fill: none !important;
+  stroke: transparent !important;
+  stroke-dasharray: 1 !important;
+  stroke-dashoffset: 1 !important;
+  transition: stroke-dashoffset 900ms cubic-bezier(.22,.61,.36,1);
+}
+/* Gdy karta jest aktywna → rysuj */
+.services__icon.is-drawn [data-draw]{
+  stroke: currentColor !important;
+  stroke-dashoffset: 0 !important;
+}
+
+/* kosmetyka (tak jak miałeś) */
+.services__icon-wrapper{
+  width: 93px; height: 93px; border-radius: 50%;
+  display:flex; align-items:center; justify-content:center;
+  position:absolute; left:50%; top:218px; transform:translate(-50%,-50%);
+  z-index:3; background:#FAF7F4; box-shadow:0 4px 4px rgba(202,200,200,.25);
+}
+.services__icon{ width:93px; height:93px; display:block; color:#0B0B0C; }

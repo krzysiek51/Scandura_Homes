@@ -162,22 +162,52 @@ $gap-l: 24px;         // laptop/desktop gap
     z-index: 0;   // <-- obraz zawsze najniżej w karcie
   }
 
+  .services {
   &__icon-wrapper {
-  width: 93px;
-   height: 93px;
-   border-radius: 50%;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   position: absolute;               // <-- klucz: absolutnie względem .services__card
-   left: 50%;
-   top: 218px;                       // <-- równo z dołem zdjęcia (wysokość obrazka)
-   transform: translate(-50%, -50%); // <-- połówka wysokości w górę (wystaje na zdjęcie)
-   z-index: 3;                       // <-- nad obrazem i treścią
-   background: #FAF7F4;                 // <-- żeby cień był widoczny
-   box-shadow: 0 4px 4px rgba(202, 200, 200, 0.25);
+    width: 93px;
+    height: 93px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 50%;
+    top: 218px;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    background: #FAF7F4;
+    box-shadow: 0 4px 4px rgba(202, 200, 200, 0.25);
+  }
+
+  &__icon {
+    color: #000;         /* kolor obrysu */
+    width: 93px;
+    height: 93px;
+    display: block;
+  }
+
+  /* -- Pusta kartka -- */
+  &__icon [data-draw]{
+     fill: none !important;
+  stroke: transparent !important;
+  stroke-dasharray: var(--drawLen, 1) !important;
+  stroke-dashoffset: var(--drawLen, 1) !important;
+  transition: stroke-dashoffset 900ms cubic-bezier(.22,.61,.36,1);
+  vector-effect: non-scaling-stroke;
+  }
+
+  /* -- Rysowanie -- */
+  &__icon.is-drawn [data-draw]{
+     stroke: currentColor;
+  stroke-dashoffset: 0 ;
+  }
+
+  /* (opcjonalnie) lekkie opóźnienie kolejnych elementów */
+ .services__icon.is-drawn [data-draw]:nth-of-type(2){ transition-delay:.08s }
+.services__icon.is-drawn [data-draw]:nth-of-type(3){ transition-delay:.16s }
+.services__icon.is-drawn [data-draw]:nth-of-type(4){ transition-delay:.24s }
+.services__icon.is-drawn [data-draw]:nth-of-type(5){ transition-delay:.32s }
 }
-  &__icon { width: 93px; height: 93px; }
 
   &__card-body {
     padding: 20px;
