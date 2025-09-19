@@ -1,8 +1,7 @@
 /* ==========================================================================
-   Mission — Apple-like scroll-synced wejście (zoom-out + parallax + sekwencja)
-   ZMIANA: typografia wchodzi od 50% → 100% opacity + delikatny lift 5px
-   Obraz: BEZ zanikania — tylko zoom-out + parallax/shift (Apple vibe)
-   Regulacja: globalna i per-element przez custom properties
+   Mission — Apple-like scroll-synced wejście
+   Obraz: zoom-out + parallax (BEZ opacity) — NIE RUSZAMY
+   Typografia: fade-in (0→1) + lift 20px→0 (CTA z subtelnym pop)
    ========================================================================== */
 
 .mission {
@@ -18,17 +17,15 @@
   --p-text: 0;
   --p-btn: 0;
 
-  /* Tunowalne tokeny efektu (obraz) */
-  /* Apple-like preset */
---img-scale-start: 1.85;            /* mocny zoom-in na starcie (1.7–1.95) */
---img-parallax: min(60vh, 600px);   /* responsywny parallax jak u Apple */
---img-lift: 28px;                   /* krótszy „opad” obrazka (smak) */
---img-parallax: min(65vh, 640px);
-  --img-dim: 0.0;           /* przyciemnienie wyłączone (0..1); zostaw 0 */
+  /* Tokeny obrazu (Apple-like preset) — NIE ZMIENIAMY LOGIKI OBRAZU */
+  --img-scale-start: 1.40;
+  --img-parallax: min(30vh, 600px);
+  --img-lift: 28px;
+  --img-dim: 0.0; /* przyciemnienie wyłączone (0..1) */
 
-  /* Tunowalne tokeny wejścia typografii */
-  --enter-lift: 5px;        /* globalny lift dla tekstów */
-  --opacity-start: .5;      /* globalny start opacity dla tekstów */
+  /* Tokeny wejścia typografii — zgodnie z ustaleniami */
+  --enter-lift: 20px;   /* było 5px */
+  --opacity-start: 0;   /* było .5 */
 
   /* Per-element overrides (opcjonalne) */
   --title-lift: var(--enter-lift);
@@ -48,7 +45,7 @@
   will-change: transform;
   transform-style: preserve-3d;
 
-  /* === Obraz — TYLKO transform (zoom + parallax), bez opacity === */
+  /* === Obraz — zoom-out + parallax (bez opacity) === */
   &__image-wrapper {
     position: relative;
     overflow: clip;
@@ -56,17 +53,6 @@
     transform: translateY(calc((1 - var(--p-img)) * var(--img-parallax)));
     transition: none;
     will-change: transform;
-
-    /* Dim wyłączony; włącz jeśli kiedyś zechcesz:
-    &::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, calc(var(--img-dim) * (1 - var(--p-img))));
-      pointer-events: none;
-      will-change: opacity;
-    }
-    */
   }
 
   &__image {
@@ -80,7 +66,7 @@
       translateY(calc((1 - var(--p-img)) * var(--img-lift)))
       scale(calc(var(--img-scale-start) - (var(--img-scale-start) - 1) * var(--p-img)));
     transform-origin: center center;
-    transition: none; /* płynność zapewnia easing w JS */
+    transition: none;
   }
 
   /* === Dots / Divider === */
@@ -98,37 +84,41 @@
     will-change: transform, opacity;
   }
 
-  /* === Typografia — 50% → 100% opacity + lift (regulowalne) === */
+  /* === Typografia — fade-up (0→1, 20px→0) === */
   &__title,
   &__text-title,
   &__text,
   &__button {
-    transition: none;
+    /* wyłączamy stare animacje/przejścia na tekstach */
+    animation: none !important;
+    transition: none !important;
     will-change: transform, opacity;
   }
 
-  /* title */
+  /* Title */
   &__title {
     opacity: calc(var(--title-opacity-start) + (1 - var(--title-opacity-start)) * var(--p-title));
     transform: translateY(calc((1 - var(--p-title)) * var(--title-lift)));
   }
 
-  /* sub */
+  /* Sub / lead */
   &__text-title {
     opacity: calc(var(--sub-opacity-start) + (1 - var(--sub-opacity-start)) * var(--p-sub));
     transform: translateY(calc((1 - var(--p-sub)) * var(--sub-lift)));
   }
 
-  /* body */
+  /* Body copy — jeden blok */
   &__text {
     opacity: calc(var(--text-opacity-start) + (1 - var(--text-opacity-start)) * var(--p-text));
     transform: translateY(calc((1 - var(--p-text)) * var(--text-lift)));
   }
 
-  /* CTA — delikatny „pop”; usuń scale(), jeśli chcesz 1:1 jak teksty */
+  /* CTA — fade-up + subtelny pop (scale 0.985→1) */
   &__button {
     opacity: calc(var(--btn-opacity-start) + (1 - var(--btn-opacity-start)) * var(--p-btn));
-    transform: translateY(calc((1 - var(--p-btn)) * var(--btn-lift))) scale(calc(0.985 + 0.015 * var(--p-btn)));
+    transform:
+      translateY(calc((1 - var(--p-btn)) * var(--btn-lift)))
+      scale(calc(0.985 + 0.015 * var(--p-btn)));
   }
 
   /* === Motion accessibility === */
@@ -144,6 +134,7 @@
       transform: none !important;
       opacity: 1 !important;
       transition: none !important;
+      animation: none !important;
     }
   }
 }

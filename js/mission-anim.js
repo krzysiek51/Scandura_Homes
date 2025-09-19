@@ -1,19 +1,16 @@
 // mission-anim.js — Apple-like scroll-synced wejście .mission
-// Zoom-out + parallax obrazu -> dekor -> typografia (kaskadowo)
+// Zoom-out + parallax obrazu -> dekor -> typografia (kaskadowo, once dla tekstów)
 
 (() => {
   const prefersReduced =
     window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /** === DEBUG ===
-   *  Włącz w konsoli:  window.__missionDebug = true
-   *  Log co ~10 klatek, żeby nie zalać konsoli.
-   */
+  /** DEBUG **/
   let _dbgTick = 0;
   const debugLog = (section, t, pImg) => {
     if (!window.__missionDebug) return;
-    if ((_dbgTick++ % 10) !== 0) return; // co ~10-te wywołanie
+    if ((_dbgTick++ % 10) !== 0) return;
     const cs = getComputedStyle(section);
     console.log('[mission]', {
       t: +t.toFixed(3),
@@ -24,7 +21,7 @@
     });
   };
 
-  /** EASING **/
+  /** EASING (decelerate) **/
   const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
   const clamp01 = (v) => Math.max(0, Math.min(1, v));
 
@@ -67,14 +64,21 @@
 
   /** Aktualizacja zmiennych CSS dla danej sekcji */
   const updateVars = (section, t) => {
-    // Sekwencja (ta sama co wcześniej)
-    const pImg  = win(t, 0.00, 0.28); // obraz: zoom + lift + parallax
+    // Obraz/dots/divider — scroll-synced jak dotąd
+    const pImg  = win(t, 0.00, 0.28);
     const pDots = win(t, 0.12, 0.38);
     const pDiv  = win(t, 0.18, 0.44);
-    const pTit  = win(t, 0.30, 0.58);
-    const pSub  = win(t, 0.40, 0.68);
-    const pTxt  = win(t, 0.50, 0.86);
-    const pBtn  = win(t, 0.66, 1.00);
+
+    // Teksty — nowy timing z delikatnym staggerem + "once" (latch)
+    // okna pod ~0.72s feeling i decelerate:
+    const tl = section.__textLatch ?? 0;
+    const tLatched = Math.max(tl, t);       // nie cofamy tekstów po wejściu
+    section.__textLatch = tLatched;
+
+    const pTit = win(tLatched, 0.34, 0.52);
+    const pSub = win(tLatched, 0.37, 0.57);
+    const pTxt = win(tLatched, 0.41, 0.63);
+    const pBtn = win(tLatched, 0.46, 0.70);
 
     section.style.setProperty('--p',       t.toFixed(4));
     section.style.setProperty('--p-img',   pImg.toFixed(4));
@@ -85,7 +89,6 @@
     section.style.setProperty('--p-text',  pTxt.toFixed(4));
     section.style.setProperty('--p-btn',   pBtn.toFixed(4));
 
-    // DEBUG: bezpieczne, we właściwym zasięgu:
     debugLog(section, t, pImg);
   };
 
@@ -111,13 +114,13 @@
       }
     };
 
-    // Aktywuj słuchaczy tylko, gdy sekcja jest w kadrze
+    // IntersectionObserver: trigger wg wytycznych (threshold ~0.18, rootMargin -10%)
     const io = new IntersectionObserver(
       (entries) => {
         const e = entries[0];
         if (!e) return;
         if (e.isIntersecting) {
-          section.classList.add('is-armed'); // pomoc przy pierwszym renderze
+          section.classList.add('is-armed');
           onScroll(); // natychmiast
           window.addEventListener('scroll', onScroll, { passive: true });
           window.addEventListener('resize', onScroll);
@@ -126,7 +129,7 @@
           window.removeEventListener('resize', onScroll);
         }
       },
-      { root: null, threshold: [0, 0.01, 0.1, 0.5, 0.9, 1] }
+      { root: null, threshold: 0.18, rootMargin: '0px 0px -10% 0px' }
     );
 
     io.observe(section);
@@ -136,7 +139,7 @@
     setTimeout(onScroll, 50);
     setTimeout(onScroll, 200);
 
-    // Cleanup (jeśli kiedyś unmountujesz sekcję)
+    // Cleanup
     return () => {
       io.disconnect();
       window.removeEventListener('scroll', onScroll);

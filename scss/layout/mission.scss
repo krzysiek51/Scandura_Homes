@@ -18,9 +18,12 @@ $mission-divider-gradient: linear-gradient(90deg, #b86b31 0%, #0b0b0c 100%);
 $mission-button-bg: #0b0b0c;
 $mission-button-fg: #ffffff;
 
+
+
 /* ——— Sekcja ——— */
 .mission {
 
+  
    position: relative;
       /* wyżej niż zwykłe tła z poprzedniej sekcji */
   isolation: isolate;/* nowy stacking context, kontrola blendów/filtrów */
@@ -29,6 +32,12 @@ $mission-button-fg: #ffffff;
   --lift: -10px;
   /* steruje wejściem kropek w padding kontenera */
   --pad-x: 20px; /* mobile */
+
+  /* promienie rogów obrazu */
+  --img-r-tl: 60px;
+  --img-r-tr: 0px;
+  --img-r-br: 0px;
+  --img-r-bl: 0px;
 
   transform: translateY(calc(-1 * var(--lift)));
   margin-bottom: calc(-1 * var(--lift));
@@ -63,25 +72,54 @@ $mission-button-fg: #ffffff;
   }
 
   /* ===== OBRAZ (mobile) 335×375 ===== */
-  &__image-wrapper {
-    grid-column: 1 / -1;
-    width: $mission-image-w;
-    height: $mission-image-h;
-    position: relative;
-    overflow: visible; /* kropki mogą wychodzić */
-    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.15);
-  
-    margin-top: 40px;
-  }
+&__image-wrapper {
+  grid-column: 1 / -1;
+  width: $mission-image-w;
+  height: $mission-image-h;
+  position: relative;
+  overflow: visible; /* kropki mogą wychodzić */
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.15);
+  margin-top: 40px;
 
-  &__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    border-radius: 98px 0 0 0;
-    
-  }
+  /* parallax PRZENIESIONY na IMG — jak w why-us */
+  transform: none;
+  will-change: auto;
+}
+
+
+ &__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  backface-visibility: hidden;
+  will-change: transform;
+
+  /* 🔒 TWARDY KLIP NA OBRAZIE (działa mimo overflow: visible na wrapperze) */
+  border-top-left-radius:     var(--img-r-tl);
+  border-top-right-radius:    var(--img-r-tr);
+  border-bottom-right-radius: var(--img-r-br);
+  border-bottom-left-radius:  var(--img-r-bl);
+
+  /* clip-path zapewnia, że róg nie „pęka” przy dużym scale() */
+  clip-path: inset(
+    0 round
+    var(--img-r-tl) /* TL  */
+    var(--img-r-tr) /* TR  */
+    var(--img-r-br) /* BR  */
+    var(--img-r-bl) /* BL  */
+  );
+
+  /* mały trick kompozycyjny przeciw artefaktom na krawędzi */
+  outline: 1px solid transparent;
+
+  /* Apple-like: parallax + lift zsumowane NA OBRAZIE + zoom-out */
+  transform:
+    translateY(calc((1 - var(--p-img)) * (var(--img-parallax) + var(--img-lift))))
+    scale(calc(var(--img-scale-start) - (var(--img-scale-start) - 1) * var(--p-img)));
+  transform-origin: center;
+  transition: none;
+}
 
   /* ===== KROPKI ===== */
   &__dots {

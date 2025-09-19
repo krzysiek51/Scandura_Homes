@@ -635,6 +635,11 @@ html.nav-open, body.nav-open {
   --lift: -10px;
   /* steruje wejściem kropek w padding kontenera */
   --pad-x: 20px; /* mobile */
+  /* promienie rogów obrazu */
+  --img-r-tl: 60px;
+  --img-r-tr: 0px;
+  --img-r-br: 0px;
+  --img-r-bl: 0px;
   transform: translateY(calc(-1 * var(--lift)));
   margin-bottom: calc(-1 * var(--lift));
   /* MOBILE: padding boczny 20 + dół 40 */
@@ -674,13 +679,30 @@ html.nav-open, body.nav-open {
   overflow: visible; /* kropki mogą wychodzić */
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.15);
   margin-top: 40px;
+  /* parallax PRZENIESIONY na IMG — jak w why-us */
+  transform: none;
+  will-change: auto;
 }
 .mission__image {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
-  border-radius: 98px 0 0 0;
+  backface-visibility: hidden;
+  will-change: transform;
+  /* 🔒 TWARDY KLIP NA OBRAZIE (działa mimo overflow: visible na wrapperze) */
+  border-top-left-radius: var(--img-r-tl);
+  border-top-right-radius: var(--img-r-tr);
+  border-bottom-right-radius: var(--img-r-br);
+  border-bottom-left-radius: var(--img-r-bl);
+  /* clip-path zapewnia, że róg nie „pęka” przy dużym scale() */
+  clip-path: inset(0 round var(--img-r-tl) var(--img-r-tr) var(--img-r-br) var(--img-r-bl));
+  /* mały trick kompozycyjny przeciw artefaktom na krawędzi */
+  outline: 1px solid transparent;
+  /* Apple-like: parallax + lift zsumowane NA OBRAZIE + zoom-out */
+  transform: translateY(calc((1 - var(--p-img)) * (var(--img-parallax) + var(--img-lift)))) scale(calc(var(--img-scale-start) - (var(--img-scale-start) - 1) * var(--p-img)));
+  transform-origin: center;
+  transition: none;
 }
 .mission {
   /* ===== KROPKI ===== */
@@ -5988,10 +6010,9 @@ nav#mobile-menu .button--nav {
   }
 }
 /* ==========================================================================
-   Mission — Apple-like scroll-synced wejście (zoom-out + parallax + sekwencja)
-   ZMIANA: typografia wchodzi od 50% → 100% opacity + delikatny lift 5px
-   Obraz: BEZ zanikania — tylko zoom-out + parallax/shift (Apple vibe)
-   Regulacja: globalna i per-element przez custom properties
+   Mission — Apple-like scroll-synced wejście
+   Obraz: zoom-out + parallax (BEZ opacity) — NIE RUSZAMY
+   Typografia: fade-in (0→1) + lift 20px→0 (CTA z subtelnym pop)
    ========================================================================== */
 .mission {
   /* Globalny progress (0..1) — sterowany z JS */
@@ -6004,16 +6025,14 @@ nav#mobile-menu .button--nav {
   --p-sub: 0;
   --p-text: 0;
   --p-btn: 0;
-  /* Tunowalne tokeny efektu (obraz) */
-  /* Apple-like preset */
-  --img-scale-start: 1.85; /* mocny zoom-in na starcie (1.7–1.95) */
-  --img-parallax: min(60vh, 600px); /* responsywny parallax jak u Apple */
-  --img-lift: 28px; /* krótszy „opad” obrazka (smak) */
-  --img-parallax: min(65vh, 640px);
-  --img-dim: 0.0; /* przyciemnienie wyłączone (0..1); zostaw 0 */
-  /* Tunowalne tokeny wejścia typografii */
-  --enter-lift: 5px; /* globalny lift dla tekstów */
-  --opacity-start: .5; /* globalny start opacity dla tekstów */
+  /* Tokeny obrazu (Apple-like preset) — NIE ZMIENIAMY LOGIKI OBRAZU */
+  --img-scale-start: 1.40;
+  --img-parallax: min(30vh, 600px);
+  --img-lift: 28px;
+  --img-dim: 0.0; /* przyciemnienie wyłączone (0..1) */
+  /* Tokeny wejścia typografii — zgodnie z ustaleniami */
+  --enter-lift: 20px; /* było 5px */
+  --opacity-start: 0; /* było .5 */
   /* Per-element overrides (opcjonalne) */
   --title-lift: var(--enter-lift);
   --title-opacity-start: var(--opacity-start);
@@ -6027,7 +6046,7 @@ nav#mobile-menu .button--nav {
   contain: layout paint style;
   will-change: transform;
   transform-style: preserve-3d;
-  /* === Obraz — TYLKO transform (zoom + parallax), bez opacity === */
+  /* === Obraz — zoom-out + parallax (bez opacity) === */
 }
 .mission__image-wrapper {
   position: relative;
@@ -6036,16 +6055,6 @@ nav#mobile-menu .button--nav {
   transform: translateY(calc((1 - var(--p-img)) * var(--img-parallax)));
   transition: none;
   will-change: transform;
-  /* Dim wyłączony; włącz jeśli kiedyś zechcesz:
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, calc(var(--img-dim) * (1 - var(--p-img))));
-    pointer-events: none;
-    will-change: opacity;
-  }
-  */
 }
 .mission__image {
   display: block;
@@ -6056,7 +6065,7 @@ nav#mobile-menu .button--nav {
   will-change: transform;
   transform: translateY(calc((1 - var(--p-img)) * var(--img-lift))) scale(calc(var(--img-scale-start) - (var(--img-scale-start) - 1) * var(--p-img)));
   transform-origin: center center;
-  transition: none; /* płynność zapewnia easing w JS */
+  transition: none;
 }
 .mission {
   /* === Dots / Divider === */
@@ -6074,35 +6083,37 @@ nav#mobile-menu .button--nav {
   will-change: transform, opacity;
 }
 .mission {
-  /* === Typografia — 50% → 100% opacity + lift (regulowalne) === */
+  /* === Typografia — fade-up (0→1, 20px→0) === */
 }
 .mission__title, .mission__text-title, .mission__text, .mission__button {
-  transition: none;
+  /* wyłączamy stare animacje/przejścia na tekstach */
+  animation: none !important;
+  transition: none !important;
   will-change: transform, opacity;
 }
 .mission {
-  /* title */
+  /* Title */
 }
 .mission__title {
   opacity: calc(var(--title-opacity-start) + (1 - var(--title-opacity-start)) * var(--p-title));
   transform: translateY(calc((1 - var(--p-title)) * var(--title-lift)));
 }
 .mission {
-  /* sub */
+  /* Sub / lead */
 }
 .mission__text-title {
   opacity: calc(var(--sub-opacity-start) + (1 - var(--sub-opacity-start)) * var(--p-sub));
   transform: translateY(calc((1 - var(--p-sub)) * var(--sub-lift)));
 }
 .mission {
-  /* body */
+  /* Body copy — jeden blok */
 }
 .mission__text {
   opacity: calc(var(--text-opacity-start) + (1 - var(--text-opacity-start)) * var(--p-text));
   transform: translateY(calc((1 - var(--p-text)) * var(--text-lift)));
 }
 .mission {
-  /* CTA — delikatny „pop”; usuń scale(), jeśli chcesz 1:1 jak teksty */
+  /* CTA — fade-up + subtelny pop (scale 0.985→1) */
 }
 .mission__button {
   opacity: calc(var(--btn-opacity-start) + (1 - var(--btn-opacity-start)) * var(--p-btn));
@@ -6116,6 +6127,7 @@ nav#mobile-menu .button--nav {
     transform: none !important;
     opacity: 1 !important;
     transition: none !important;
+    animation: none !important;
   }
 }
 
