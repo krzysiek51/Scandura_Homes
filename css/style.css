@@ -1823,10 +1823,14 @@ html.nav-open, body.nav-open {
   background: #faf7f4;
 }
 .why-us__review-image {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+  backface-visibility: hidden;
+  will-change: transform;
+  /* efekt sterowany wyłącznie var(--w-img) */
+  transform: translate3d(0, calc((1 - var(--w-img)) * (var(--img-parallax) + var(--img-lift))), 0) scale(calc(var(--img-scale-start) - (var(--img-scale-start) - 1) * var(--w-img)));
 }
 .why-us {
   /* Kafle: badge + mini-foto (mobile — obok siebie) */
@@ -6119,8 +6123,9 @@ nav#mobile-menu .button--nav {
    ========================================================================== */
 .why-us {
   /* —— Gałki obrazu —— */
-  --img-scale-start: 5.80;
-  --img-parallax: 80px;
+  /* Apple-like preset */
+  --img-scale-start: 1.85; /* mocny zoom-in na starcie (1.7–1.95) */
+  --img-parallax: min(60vh, 600px); /* parallax skalujący się z viewportem */
   --img-lift: 28px;
   /* —— Gałki typografii —— */
   --opacity-start: .5;
@@ -6162,27 +6167,6 @@ nav#mobile-menu .button--nav {
   object-fit: cover;
   backface-visibility: hidden;
 }
-.why-us .why-us:not(.js-drive) .why-us__review-image {
-  will-change: translate, scale;
-  transform: translateY(calc((1 - var(--w-img)) * (var(--img-parallax) + var(--img-lift)))) scale(calc(var(--img-scale-start) - (var(--img-scale-start) - 1) * var(--w-img)));
-  transform-origin: center;
-}
-@supports (translate: 0) and (scale: 1) {
-  .why-us .why-us:not(.js-drive) .why-us__review-image {
-    transform: none;
-    translate: 0 calc((1 - var(--w-img)) * (var(--img-parallax) + var(--img-lift)));
-    scale: calc(var(--img-scale-start) - (var(--img-scale-start) - 1) * var(--w-img));
-  }
-}
-.why-us {
-  /* ===== OBRAZ — z JS ===== */
-}
-.why-us .why-us.js-drive .why-us__review-image {
-  transform: none !important;
-  translate: none !important;
-  scale: 1 !important;
-  will-change: transform;
-}
 .why-us {
   /* mniejsze foto (opcjonalnie) */
 }
@@ -6196,7 +6180,8 @@ nav#mobile-menu .button--nav {
   object-fit: cover;
   backface-visibility: hidden;
   will-change: transform;
-  transform: translateY(calc((1 - var(--w-img)) * 0.6 * (var(--img-parallax) + var(--img-lift)))) scale(calc(1.08 - 0.08 * var(--w-img)));
+  /* Apple-like: pełny parallax + skala od --img-scale-start do 1.00 */
+  transform: translateY(calc((1 - var(--w-img)) * (var(--img-parallax) + var(--img-lift)))) scale(calc(var(--img-scale-start) - (var(--img-scale-start) - 1) * var(--w-img)));
   transform-origin: center;
   transition: none;
 }

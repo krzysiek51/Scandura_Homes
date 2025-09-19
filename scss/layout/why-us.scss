@@ -76,10 +76,16 @@ $why-badge-bg: #fff3e2;
     background:  #faf7f4;
   }
   &__review-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  backface-visibility: hidden;
+  will-change: transform;
+  /* efekt sterowany wyłącznie var(--w-img) */
+  transform:
+    translate3d(0, calc((1 - var(--w-img)) * (var(--img-parallax) + var(--img-lift))), 0)
+    scale(calc(var(--img-scale-start) - (var(--img-scale-start) - 1) * var(--w-img)));
   }
 
   /* Kafle: badge + mini-foto (mobile — obok siebie) */
