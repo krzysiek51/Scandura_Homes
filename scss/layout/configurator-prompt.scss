@@ -1,4 +1,6 @@
-/* ===== AI BOX — mobile-first ===== */
+@use '../layout/grid' as *;
+@use '../utils/variables' as *;/* ===== AI BOX — mobile-first ===== */
+
 .configurator-prompt {
   /* === Wymiary ramki — ŚCIŚLE (MOBILE) === */
   grid-column: 1 / span 3;
@@ -60,6 +62,8 @@
     line-height: 1.25;
     font-weight: 800;
     margin: 0 0 6px 0;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25); // cień na literach
+    
   }
 
   /* --- subhead --- */
@@ -93,34 +97,70 @@
     color: #8e8e8e;
     margin: 0 0 10px 0;
   }
+/* === CTA: konfigurator AI === */
+.configurator-prompt__button {
+  width: 100%;
+  padding: 14px 20px;  // lepszy hit-area niż height:38px
+  font-size: $btn-size;
+  font-weight: $btn-weight;
+  line-height: $btn-lh;
+  letter-spacing: $btn-ls;
+  border: none;
+  border-radius: 12px;
+  color: $color-white;
+  background: linear-gradient(135deg, $color-gradient-start, $color-black);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s ease;
 
-  /* --- CTA --- */
-  .configurator-prompt__button {
-    width: 100%;
-    height: 38px;
-    font-size: 13.5px;
-    font-weight: 700;
-    border: none;
-    border-radius: 0 8px 0 0;
-    color: #fff;
-    background: var(--brand-600, #c88b42);
-    cursor: pointer;
-    margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; // odstęp między ikoną a tekstem
 
-    &:hover { background: var(--brand-700, #a9732f); }
+  /* pulsująca poświata */
+  box-shadow: 0 0 0 0 rgba(220, 155, 89, 0.6);
+  animation: pulseGlow 2.5s infinite;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, lighten($color-gradient-start, 5%), lighten($color-black, 5%));
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
   }
 
-  /* --- link secondary --- */
-  .configurator-prompt__link {
-    font-size: 12px;
-    font-weight: 600;
-    text-decoration: underline;
-    color: var(--brand-600, #c88b42);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    margin-bottom: 6px;
+  &:active {
+    transform: scale(0.98);
   }
+}
+
+/* animacja pulsującego glow */
+@keyframes pulseGlow {
+  0%   { box-shadow: 0 0 0 0 rgba(220, 155, 89, 0.6); }
+  70%  { box-shadow: 0 0 0 12px rgba(220, 155, 89, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(220, 155, 89, 0); }
+}
+
+.configurator-prompt__link {
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: underline;
+  color: var(--brand-600, #c88b42);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 6px;
+  margin-top: 20px;
+
+  display: block;       /* link zajmie całą szerokość */
+  text-align: center;   /* i wyśrodkuje tekst */
+}
+.configurator-prompt__link {
+  display: block;
+  width: 100%;          /* zajmuje pełną szerokość kolumny */
+  text-align: center;   /* tekst w środku */
+  //margin: 12px 20 6px;
+}
 
   /* --- nota prawna --- */
   .configurator-prompt__legal {

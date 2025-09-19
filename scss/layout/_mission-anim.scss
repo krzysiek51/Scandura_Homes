@@ -19,9 +19,11 @@
   --p-btn: 0;
 
   /* Tunowalne tokeny efektu (obraz) */
-  --img-scale-start: 1.25;  /* startowy zoom obrazu */
-  --img-parallax: 58px;     /* pionowy parallax wrappera */
-  --img-lift: 40px;         /* pionowe „wycofanie” samego obrazu */
+  /* Apple-like preset */
+--img-scale-start: 1.85;            /* mocny zoom-in na starcie (1.7–1.95) */
+--img-parallax: min(60vh, 600px);   /* responsywny parallax jak u Apple */
+--img-lift: 28px;                   /* krótszy „opad” obrazka (smak) */
+--img-parallax: min(65vh, 640px);
   --img-dim: 0.0;           /* przyciemnienie wyłączone (0..1); zostaw 0 */
 
   /* Tunowalne tokeny wejścia typografii */
