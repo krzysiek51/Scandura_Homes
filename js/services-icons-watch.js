@@ -1,5 +1,6 @@
-/* File: js/services-icons-watch.js (fix loop + autoplay) */
+/* File: js/services-icons-watch.js  — click-spam safe, stable signature, no redraw loops */
 (() => {
+  // --- Konfiguracja ---------------------------------------------------------
   const ACTIVE_FLAGS = [
     'is-active',
     'splide__slide--active',
@@ -8,8 +9,19 @@
     'glide__slide--active',
     'tns-slide-active'
   ];
+  const SIG_ATTRS = [
+    'data-uid',
+    'data-slide-id',
+    'data-swiper-slide-index',
+    'data-splide-index',
+    'data-glide-index',
+    'data-index'
+  ];
+  const COOLDOWN_MS = 1200; // ile minimum czasu musi minąć, aby ten sam slajd można było znów narysować
 
-  const getCards = () => Array.from(document.querySelectorAll('.services__card'));
+  // --- Helpers --------------------------------------------------------------
+  const qsa = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const getCards = () => qsa('.services__card');
   const getIcon  = (card) => card && card.querySelector('.services__icon');
 
   const isCardActive = (card) => {
@@ -18,34 +30,69 @@
     return ACTIVE_FLAGS.some(f => cl.contains(f)) || cl.contains('is-active');
   };
 
-  // --- RESET / DRAW ---------------------------------------------------------
-  const hardResetIcon = (svg) => {
-    if (!svg) return;
-    svg.classList.remove('is-drawn');
-
-    const lines = svg.querySelectorAll(
-      '[data-draw], .st1, path[stroke], polyline[stroke], polygon[stroke], line[stroke], rect[stroke], circle[stroke]'
-    );
-
-    lines.forEach(el => { el.style.transition = 'none'; });
-    // wymuszenie reflow
-    svg.getBoundingClientRect();
-    lines.forEach(el => { el.style.transition = ''; });
-  };
-
-  const drawIcon = (svg) => {
-    if (!svg) return;
-    hardResetIcon(svg);
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        svg.classList.add('is-drawn');
-      });
+  const ensureStableUids = () => {
+    // Podpisz pierwotne karty stabilnym data-uid (klony sliderów skopiują atrybut)
+    getCards().forEach((card, i) => {
+      if (!card.dataset.uid) card.dataset.uid = String(i);
     });
   };
 
-  // --- MAIN STATE -----------------------------------------------------------
-  let lastActiveCard = null;
+  const cardSignature = (card) => {
+    if (!card) return 'none';
+    for (const a of SIG_ATTRS) {
+      const v = card.getAttribute(a);
+      if (v != null) return `${a}:${v}`;
+    }
+    // fallback: po treści
+    const img = card.querySelector('.services__image');
+    const title = card.querySelector('.services__card-title');
+    return `f:${img?.getAttribute('src') || ''}|${(title?.textContent || '').trim()}`;
+  };
+
+  const lineSelector = '[data-draw], .st1, path[stroke], polyline[stroke], polygon[stroke], line[stroke], rect[stroke], circle[stroke]';
+
+  const hardResetIcon = (svg) => {
+    if (!svg) return;
+    svg.classList.remove('is-drawn');
+    const lines = svg.querySelectorAll(lineSelector);
+    lines.forEach(el => { el.style.transition = 'none'; });
+    svg.getBoundingClientRect(); // reflow
+    lines.forEach(el => { el.style.transition = ''; });
+  };
+
+  // --- Stan globalny --------------------------------------------------------
+  let lastActiveSig = null;
   let scheduled = false;
+  const animating = new WeakSet();        // ikonka w trakcie rysowania
+  const cooldownUntil = new Map();        // sig -> timestamp do kiedy blokujemy ponowne rysowanie
+
+  const drawIcon = (svg, sig) => {
+    if (!svg) return;
+
+    // Lock per ikona
+    if (animating.has(svg)) return;
+
+    const now = performance.now();
+    if (sig && (cooldownUntil.get(sig) || 0) > now) return;
+
+    animating.add(svg);
+    if (sig) cooldownUntil.set(sig, now + COOLDOWN_MS);
+
+    hardResetIcon(svg);
+
+    // Opóźnij do kolejnej klatki, żeby CSS "pusta kartka" na pewno się przyjął
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        svg.classList.add('is-drawn');
+
+        // Prostą drogą: po maksymalnym czasie animacji zdejmij lock
+        // (900ms transition + ewentualne drobne opóźnienia/stagger)
+        setTimeout(() => {
+          animating.delete(svg);
+        }, 1500);
+      });
+    });
+  };
 
   const handleActiveChange = () => {
     if (scheduled) return;
@@ -56,28 +103,30 @@
       const cards = getCards();
       if (!cards.length) return;
 
-      const active = cards.find(isCardActive) || cards[0];
-      if (active === lastActiveCard) return; // nic się nie zmieniło — brak migania
+      const activeCard = cards.find(isCardActive) || cards[0];
+      const sig = cardSignature(activeCard);
 
-      // reset nieaktywnych (zostają „puste”)
-      cards.forEach(card => {
-        if (card === active) return;
+      if (sig === lastActiveSig) return; // ta sama karta — nic nie robimy
+
+      // Wyzeruj nieaktywne (zostają puste)
+      for (const card of cards) {
+        if (card === activeCard) continue;
         const icon = getIcon(card);
         if (icon) icon.classList.remove('is-drawn');
-      });
+      }
 
-      // narysuj nową aktywną
-      drawIcon(getIcon(active));
-
-      lastActiveCard = active;
+      // Dorysuj aktywną
+      drawIcon(getIcon(activeCard), sig);
+      lastActiveSig = sig;
     });
   };
 
   const prepareAll = () => {
+    // Ustaw „pustą kartkę” dla wszystkich ikon na start / po resize
     getCards().forEach(card => hardResetIcon(getIcon(card)));
   };
 
-  // --- OBSERVERS ------------------------------------------------------------
+  // --- Observers & fallback -------------------------------------------------
   const isSlideLike = (el) => {
     if (!(el instanceof Element)) return false;
     const cl = el.className || '';
@@ -98,13 +147,12 @@
       for (const m of muts) {
         if (m.type !== 'attributes' || m.attributeName !== 'class') continue;
 
-        const target = /** @type {Element} */(m.target);
+        const target = /** @type {Element} */ (m.target);
 
-        // >>> WAŻNE: ignoruj zmiany wewnątrz ikon (np. dodanie .is-drawn na SVG),
-        // aby nie wywoływać własnej pętli.
+        // ignoruj zmiany wewnątrz SVG, żeby nie wywoływać samych siebie
         if (target.closest('.services__icon')) continue;
 
-        // Reaguj tylko na karty/slajdy
+        // reaguj tylko na karty/slajdy
         if (!isSlideLike(target)) continue;
 
         handleActiveChange();
@@ -116,14 +164,13 @@
     return mo;
   };
 
-  // Fallback, jeśli slider nie zmienia klas (same translacje)
   const startActivePoller = () => {
     let lastSig = null;
     return setInterval(() => {
       const cards = getCards();
       if (!cards.length) return;
       const active = cards.find(isCardActive) || cards[0];
-      const sig = active ? (active.dataset.slideIndex || cards.indexOf(active)) : 'none';
+      const sig = cardSignature(active);
       if (sig !== lastSig) {
         lastSig = sig;
         handleActiveChange();
@@ -131,37 +178,36 @@
     }, 400);
   };
 
-  // --- LIFECYCLE ------------------------------------------------------------
+  // --- Inicjalizacja --------------------------------------------------------
   const onVisibility = () => {
     if (document.visibilityState === 'visible') handleActiveChange();
   };
 
   const init = () => {
-    // 1) pusta kartka wszędzie (również dla autoplay bez dotyku)
-    prepareAll();
+    ensureStableUids();   // stabilne podpisy przed tym, jak slider sklonuje slajdy
+    prepareAll();         // pusta kartka od razu (również dla autoplay)
+    handleActiveChange(); // narysuj pierwszą aktywną
 
-    // 2) narysuj aktualnie aktywną (pierwszy widok)
-    handleActiveChange();
-
-    // 3) obserwuj zmiany klas kart/slajdów (z pominięciem .services__icon)
     observeActiveClassMutations();
-
-    // 4) fallback-poller
     startActivePoller();
 
-    // 5) visibility + debounced resize
     document.addEventListener('visibilitychange', onVisibility);
 
+    // Debounce resize → reset + dorysowanie aktywnej
     let rto = null;
     window.addEventListener('resize', () => {
       clearTimeout(rto);
       rto = setTimeout(() => {
         prepareAll();
-        // wyczyść „ostatnią aktywną”, żeby wymusić dorysowanie po dużym przeliczeniu layoutu
-        lastActiveCard = null;
+        lastActiveSig = null;  // wymuś dorysowanie po przeliczeniu layoutu
         handleActiveChange();
       }, 150);
     }, { passive: true });
+
+    // (opcjonalnie) nic nie klikamy wewnątrz SVG — mniej niepotrzebnych mutacji/focusów
+    qsa('.services__icon').forEach(svg => {
+      svg.style.pointerEvents = 'none';
+    });
   };
 
   if (document.readyState === 'loading') {
@@ -170,3 +216,4 @@
     init();
   }
 })();
+
