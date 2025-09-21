@@ -6062,7 +6062,7 @@ nav#mobile-menu .button--nav {
   --p-btn: 0;
   /* Tokeny obrazu (Apple-like preset) — NIE ZMIENIAMY LOGIKI OBRAZU */
   --img-scale-start: 1.40;
-  --img-parallax: min(30vh, 600px);
+  --img-parallax: min(20vh, 80px);
   --img-lift: 28px;
   --img-dim: 0.0; /* przyciemnienie wyłączone (0..1) */
   /* Tokeny wejścia typografii — zgodnie z ustaleniami */
@@ -11367,24 +11367,15 @@ main.pages__container > .container {
   flex-direction: column;
   gap: 16px;
 }
-.callback {
-  /* label */
-}
 .callback__label {
   font-weight: 600;
   font-size: 14px;
-}
-.callback {
-  /* pole + button w jednej linii */
 }
 .callback__field {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 12px;
   align-items: center;
-}
-.callback {
-  /* input */
 }
 .callback__input {
   height: 48px;
@@ -11403,12 +11394,9 @@ main.pages__container > .container {
 .callback__input.is-invalid {
   border-color: #e25454;
 }
-.callback {
-  /* button */
-}
 .callback__btn {
   height: 48px;
-  border: none;
+  border: 0;
   border-radius: 12px;
   padding: 0 20px;
   font-size: 15px;
@@ -11418,8 +11406,8 @@ main.pages__container > .container {
   color: #fff;
   white-space: nowrap;
   transition: transform 0.08s ease, opacity 0.2s ease;
-  width: max-content;
   justify-self: end;
+  width: max-content;
 }
 .callback__btn:active {
   transform: translateY(1px);
@@ -11427,9 +11415,6 @@ main.pages__container > .container {
 .callback__btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
-}
-.callback {
-  /* checkbox + tekst */
 }
 .callback__consent {
   display: flex;
@@ -11458,14 +11443,11 @@ main.pages__container > .container {
   font-size: 14px;
   min-height: 20px;
 }
-.callback {
-  /* ukryty honeypot */
-}
 .callback__hp {
   display: none !important;
 }
 
-/* ============ RWD ============ */
+/* RWD */
 @media (min-width: 744px) {
   .callback {
     padding: 32px 40px;
@@ -11478,11 +11460,10 @@ main.pages__container > .container {
   }
 }
 /* =========================================================
-   CALLBACK POPUP — modal
+   CALLBACK POPUP — modal (centrowany flexem)
    ========================================================= */
-/* blokada scrolla, gdy popup otwarty (bez skoku układu) */
-html.cb-lock,
-body.cb-lock {
+/* blokada scrolla bez skoku układu */
+html.cb-lock, body.cb-lock {
   overflow: hidden;
   padding-right: var(--sbw, 0px);
 }
@@ -11494,7 +11475,7 @@ body.cb-lock {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* zapas od krawędzi / notcha */
+  /* oddech od krawędzi/wycięć */
   padding: max(16px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
   pointer-events: none;
 }
@@ -11514,7 +11495,7 @@ body.cb-lock {
   opacity: 1;
 }
 
-/* karta */
+/* karta – BEZ top/left/translate, centrowanie robi kontener */
 .callback-pop__card {
   position: relative;
   width: 100%;
@@ -11535,12 +11516,12 @@ body.cb-lock {
   opacity: 1;
 }
 
-/* strzałka — przy centrowaniu chowamy */
+/* strzałkę chowamy przy centrowanym modalu */
 .callback-pop__arrow {
   display: none;
 }
 
-/* UI wewnątrz */
+/* UI */
 .callback-pop__close {
   position: absolute;
   top: 8px;
@@ -11567,7 +11548,7 @@ body.cb-lock {
   font-size: 20px;
   font-weight: 700;
   color: #0b0b0c;
-  margin: 0 32px 6px 0; /* miejsce na X */
+  margin: 0 32px 6px 0;
 }
 
 .callback-pop__lead {
@@ -11598,9 +11579,9 @@ body.cb-lock {
   border-radius: 12px;
   padding: 0 14px;
   font-size: 16px;
+  min-width: 0;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  min-width: 0;
 }
 .callback-pop__input:focus {
   border-color: #DC9B59;
@@ -11656,7 +11637,6 @@ body.cb-lock {
   min-height: 20px;
 }
 
-/* honeypot */
 .callback-pop__hp {
   display: none !important;
 }

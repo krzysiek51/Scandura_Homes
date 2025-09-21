@@ -1,221 +1,89 @@
 @use '../utils/variables' as *;
 
 /* =========================================================
-   CALLBACK POPUP — modal
+   CALLBACK POPUP — modal (centrowany flexem)
    ========================================================= */
 
-/* blokada scrolla, gdy popup otwarty (bez skoku układu) */
-html.cb-lock,
-body.cb-lock {
-  overflow: hidden;
-  padding-right: var(--sbw, 0px); // kompensacja szerokości scrollbara
-}
+/* blokada scrolla bez skoku układu */
+html.cb-lock, body.cb-lock { overflow: hidden; padding-right: var(--sbw, 0px); }
 
 .callback-pop {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  /* zapas od krawędzi / notcha */
+  position: fixed; inset: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  /* oddech od krawędzi/wycięć */
   padding:
     max(16px, env(safe-area-inset-top))
     max(24px, env(safe-area-inset-right))
     max(16px, env(safe-area-inset-bottom))
     max(24px, env(safe-area-inset-left));
-
   pointer-events: none;
-  &.is-active {
-    pointer-events: auto;
-  }
+  &.is-active { pointer-events: auto; }
 }
 
 /* overlay */
 .callback-pop__overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.28);
-  opacity: 0;
-  transition: opacity 0.18s ease;
-
-  &.is-visible {
-    opacity: 1;
-  }
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.28);
+  opacity: 0; transition: opacity .18s ease;
+  &.is-visible { opacity: 1; }
 }
 
-/* karta */
+/* karta – BEZ top/left/translate, centrowanie robi kontener */
 .callback-pop__card {
   position: relative;
-  width: 100%;
-  max-width: 520px;
-  max-height: calc(100dvh - 32px);
+  width: 100%; max-width: 520px; max-height: calc(100dvh - 32px);
   overflow: auto;
-
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.18);
+  background: #fff; border-radius: 16px; box-shadow: 0 24px 80px rgba(0,0,0,.18);
   padding: 20px;
 
-  transform: scale(0.96);
-  transform-origin: 50% 50%;
+  transform: scale(.96); transform-origin: 50% 50%;
   opacity: 0;
-  transition: transform 0.18s cubic-bezier(0.2, 0.6, 0.2, 1),
-    opacity 0.18s ease;
+  transition: transform .18s cubic-bezier(.2,.6,.2,1), opacity .18s ease;
 
-  &.is-open {
-    transform: scale(1);
-    opacity: 1;
-  }
+  &.is-open { transform: scale(1); opacity: 1; }
 }
 
-/* strzałka — przy centrowaniu chowamy */
-.callback-pop__arrow {
-  display: none;
-}
+/* strzałkę chowamy przy centrowanym modalu */
+.callback-pop__arrow { display: none; }
 
-/* UI wewnątrz */
+/* UI */
 .callback-pop__close {
-  position: absolute;
-  top: 8px;
-  right: 10px;
-  width: 32px;
-  height: 32px;
-  border: 0;
-  border-radius: 8px;
-  background: transparent;
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
-  color: #333;
-  transition: background 0.15s ease, transform 0.06s ease;
-
-  &:hover {
-    background: rgba(0, 0, 0, 0.05);
-  }
-  &:active {
-    transform: translateY(1px);
-  }
+  position: absolute; top: 8px; right: 10px;
+  width: 32px; height: 32px; border: 0; border-radius: 8px;
+  background: transparent; font-size: 22px; line-height: 1; cursor: pointer; color: #333;
+  transition: background .15s ease, transform .06s ease;
+  &:hover { background: rgba(0,0,0,.05); }
+  &:active { transform: translateY(1px); }
 }
 
-.callback-pop__title {
-  font-size: 20px;
-  font-weight: 700;
-  color: #0b0b0c;
-  margin: 0 32px 6px 0; /* miejsce na X */
-}
-
-.callback-pop__lead {
-  font-size: 14px;
-  color: #555;
-  margin: 0 0 14px;
-}
-
-.callback-pop__form {
-  display: grid;
-  gap: 12px;
-}
-
-.callback-pop__label {
-  font-weight: 600;
-  font-size: 14px;
-}
-
-.callback-pop__field {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 8px;
-}
-
+.callback-pop__title { font-size: 20px; font-weight: 700; color:#0b0b0c; margin: 0 32px 6px 0; }
+.callback-pop__lead  { font-size: 14px; color:#555; margin: 0 0 14px; }
+.callback-pop__form  { display: grid; gap: 12px; }
+.callback-pop__label { font-weight: 600; font-size: 14px; }
+.callback-pop__field { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
 .callback-pop__input {
-  height: 48px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 0 14px;
-  font-size: 16px;
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  min-width: 0;
-
-  &:focus {
-    border-color: $color-gradient-start;
-    box-shadow: 0 0 0 4px rgba(220, 155, 89, 0.2);
-  }
-
-  &.is-invalid {
-    border-color: #e25454;
-  }
+  height: 48px; border: 1px solid #ddd; border-radius: 12px; padding: 0 14px; font-size: 16px; min-width: 0;
+  outline: none; transition: border-color .2s ease, box-shadow .2s ease;
+  &:focus { border-color: $color-gradient-start; box-shadow: 0 0 0 4px rgba(220,155,89,.2); }
+  &.is-invalid { border-color: #e25454; }
 }
-
 .callback-pop__btn {
-  height: 48px;
-  border: 0;
-  border-radius: 12px;
-  padding: 0 16px;
-  font-weight: 600;
-  white-space: nowrap;
-  cursor: pointer;
-  background: linear-gradient(
-    135deg,
-    $color-gradient-start 0%,
-    $color-gradient-end 100%
-  );
-  color: #fff;
-  transition: transform 0.06s ease, opacity 0.2s ease;
-
-  &:active {
-    transform: translateY(1px);
-  }
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
+  height: 48px; border: 0; border-radius: 12px; padding: 0 16px; font-weight: 600; white-space: nowrap; cursor: pointer;
+  background: linear-gradient(135deg, $color-gradient-start 0%, $color-gradient-end 100%); color: #fff;
+  transition: transform .06s ease, opacity .2s ease;
+  &:active { transform: translateY(1px); }
+  &:disabled { opacity: .6; cursor: not-allowed; }
 }
-
-.callback-pop__consent {
-  display: grid;
-  grid-template-columns: 18px 1fr;
-  gap: 8px;
-  font-size: 13px;
-  color: #444;
-
-  a {
-    color: $color-gradient-start;
-    text-decoration: underline;
-
-    &:hover {
-      text-decoration: none;
-    }
-  }
+.callback-pop__consent { display: grid; grid-template-columns: 18px 1fr; gap: 8px; font-size: 13px; color:#444;
+  a { color: $color-gradient-start; text-decoration: underline; &:hover { text-decoration: none; } }
 }
-
-.callback-pop__hint {
-  font-size: 12px;
-  color: #777;
-  margin: 0;
-}
-
-.callback-pop__status {
-  font-size: 14px;
-  min-height: 20px;
-}
-
-/* honeypot */
-.callback-pop__hp {
-  display: none !important;
-}
+.callback-pop__hint { font-size: 12px; color:#777; margin: 0; }
+.callback-pop__status { font-size: 14px; min-height: 20px; }
+.callback-pop__hp { display: none !important; }
 
 /* RWD */
 @media (min-width: 744px) {
-  .callback-pop__card {
-    padding: 24px;
-  }
-  .callback-pop__title {
-    font-size: 22px;
-  }
-  .callback-pop__lead {
-    font-size: 15px;
-  }
+  .callback-pop__card { padding: 24px; }
+  .callback-pop__title { font-size: 22px; }
+  .callback-pop__lead  { font-size: 15px; }
 }
