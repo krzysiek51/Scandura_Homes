@@ -1,5 +1,8 @@
 // js/callback-modal.js
 (() => {
+  'use strict';
+
+  /* ---------- Szablon popupu tworzony dynamicznie ---------- */
   const TEMPLATE = `
   <div class="callback-pop__overlay" data-cb="overlay"></div>
   <div class="callback-pop__card" role="dialog" aria-modal="true" aria-labelledby="cbTitle" data-cb="card">
@@ -8,7 +11,7 @@
     <p class="callback-pop__lead">Zostaw numer telefonu – skontaktujemy się maksymalnie w 1 dniu roboczym.</p>
 
     <form class="callback-pop__form" novalidate data-cb="form">
-      <!-- honeypot -->
+      <!-- honeypot (anty-spam) -->
       <input type="text" name="company" autocomplete="off" class="callback-pop__hp" tabindex="-1" aria-hidden="true">
 
       <label class="callback-pop__label" for="cbPhone">Telefon</label>
@@ -21,7 +24,7 @@
       <label class="callback-pop__consent">
         <input type="checkbox" id="cbConsent" required>
         <span>
-          Wyrażam zgody na kontakt telefoniczny w celu przedstawienia oferty. Administratorem danych jest Scandura Homes.
+          Wyrażam zgodę na kontakt telefoniczny w celu przedstawienia oferty. Administratorem danych jest Scandura Homes.
           <a href="/polityka-prywatnosci" target="_blank" rel="nofollow">Polityka prywatności</a>.
         </span>
       </label>
@@ -32,17 +35,14 @@
     <div class="callback-pop__arrow" data-cb="arrow" aria-hidden="true"></div>
   </div>`;
 
-  const state = {
-    root: null,
-    lastFocused: null,
-  };
+  /* ---------- Ustawienia ---------- */
+  const FORMSPREE_URL = 'https://formspree.io/f/myzdrpob';
 
-  const phoneOk = (v) => {
-    // pozwól na +48 / +47, spacje, myślniki
-    const s = (v || '').trim();
-    return /^\+(48|47)\s?\d(?:[\s-]?\d){7,}$/.test(s);
-  };
+  const state = { root: null, lastFocused: null };
 
+  const phoneOk = (v) => /^\+(48|47)\s?\d(?:[\s-]?\d){7,}$/.test((v || '').trim());
+
+  /* ---------- Inicjacja DOM popupu ---------- */
   function createRoot() {
     const root = document.createElement('div');
     root.className = 'callback-pop';
@@ -52,10 +52,12 @@
     return root;
   }
 
+  /* ---------- Lock scroll ---------- */
   function lockScroll(lock) {
     document.documentElement.classList.toggle('cb-lock', lock);
   }
 
+  /* ---------- Trap focus w modalu ---------- */
   function trapFocus(e) {
     if (e.key !== 'Tab') return;
     const card = state.root.querySelector('[data-cb="card"]');
@@ -64,17 +66,12 @@
     );
     if (!focusables.length) return;
     const first = focusables[0];
-    const last = focusables[focusables.length - 1];
-
-    if (e.shiftKey && document.activeElement === first) {
-      last.focus();
-      e.preventDefault();
-    } else if (!e.shiftKey && document.activeElement === last) {
-      first.focus();
-      e.preventDefault();
-    }
+    const last  = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+    else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
   }
 
+  /* ---------- Pozycjonowanie przy przycisku ---------- */
   function positionNearTrigger(trigger) {
     const card = state.root.querySelector('[data-cb="card"]');
     const arrow = state.root.querySelector('[data-cb="arrow"]');
@@ -83,48 +80,38 @@
     overlay.classList.add('is-visible');
 
     const tRect = trigger.getBoundingClientRect();
-    const cRect = card.getBoundingClientRect(); // before visible it's 0, force position after measuring
-    // pokaż kartę niewidzialnie by poznać jej wymiary
+
+    // pokaż kartę niewidzialnie, by poznać wymiary
     card.style.visibility = 'hidden';
     card.style.display = 'block';
     const cw = card.offsetWidth;
     const ch = card.offsetHeight;
 
-    // preferuj nad przyciskiem, inaczej pod; wycentruj horyzontalnie względem triggera
     const margin = 12;
     const vw = window.innerWidth;
-    const vh = window.innerHeight;
 
     let top = tRect.top - ch - margin;
     let placeAbove = true;
-    if (top < 16) {
-      top = tRect.bottom + margin;
-      placeAbove = false;
-    }
+    if (top < 16) { top = tRect.bottom + margin; placeAbove = false; }
+
     let left = tRect.left + (tRect.width / 2) - (cw / 2);
     left = Math.max(16, Math.min(left, vw - cw - 16));
 
-    card.style.top = `${Math.round(top)}px`;
+    card.style.top  = `${Math.round(top)}px`;
     card.style.left = `${Math.round(left)}px`;
     card.dataset.placement = placeAbove ? 'top' : 'bottom';
 
-    // strzałka – ustaw środek na środek przycisku (z ograniczeniami)
     const arrowCenter = Math.max(20, Math.min((tRect.left + tRect.width / 2) - left, cw - 20));
     arrow.style.left = `${Math.round(arrowCenter)}px`;
 
-    // animacja z punktu kliknięcia (transform-origin)
-    const originX = `${Math.round(arrowCenter)}px`;
-    const originY = placeAbove ? '100%' : '0%';
-    card.style.setProperty('--cb-origin-x', originX);
-    card.style.setProperty('--cb-origin-y', originY);
+    card.style.setProperty('--cb-origin-x', `${Math.round(arrowCenter)}px`);
+    card.style.setProperty('--cb-origin-y', placeAbove ? '100%' : '0%');
 
-    // pokaż kartę z animacją
     card.style.visibility = '';
-    requestAnimationFrame(() => {
-      card.classList.add('is-open');
-    });
+    requestAnimationFrame(() => { card.classList.add('is-open'); });
   }
 
+  /* ---------- Otwórz/Zamknij ---------- */
   function open(trigger) {
     if (!state.root) state.root = createRoot();
     state.lastFocused = document.activeElement;
@@ -133,21 +120,18 @@
     state.root.classList.add('is-active');
     positionNearTrigger(trigger);
 
-    // Focus
     const input = state.root.querySelector('#cbPhone');
     setTimeout(() => input && input.focus(), 60);
 
-    // Listeners
     document.addEventListener('keydown', onKeydown);
     document.addEventListener('keydown', trapFocus, true);
 
-    // overlay / close
     state.root.querySelector('[data-cb="overlay"]').addEventListener('click', close, { once: true });
     state.root.querySelector('[data-cb="close"]').addEventListener('click', close, { once: true });
 
-    // submit
     const form = state.root.querySelector('[data-cb="form"]');
-    form.addEventListener('submit', onSubmit);
+    // aby nie dublować handlerów przy kolejnych otwarciach – once: true
+    form.addEventListener('submit', onSubmit, { once: true });
   }
 
   function close() {
@@ -162,31 +146,23 @@
       lockScroll(false);
       document.removeEventListener('keydown', onKeydown);
       document.removeEventListener('keydown', trapFocus, true);
-      // zwrot focusu
-      if (state.lastFocused && typeof state.lastFocused.focus === 'function') {
-        state.lastFocused.focus();
-      }
+      if (state.lastFocused && typeof state.lastFocused.focus === 'function') state.lastFocused.focus();
     }, 180);
   }
 
-  function onKeydown(e) {
-    if (e.key === 'Escape') {
-      e.preventDefault();
-      close();
-    }
-  }
+  function onKeydown(e) { if (e.key === 'Escape') { e.preventDefault(); close(); } }
 
+  /* ---------- Submit → Formspree ---------- */
   async function onSubmit(e) {
     e.preventDefault();
-    const root = state.root;
+    const root    = state.root;
     const phoneEl = root.querySelector('#cbPhone');
-    const consentEl = root.querySelector('#cbConsent');
-    const hp = root.querySelector('.callback-pop__hp');
-    const status = root.querySelector('[data-cb="status"]');
-    const btn = root.querySelector('[data-cb="submit"]');
+    const consent = root.querySelector('#cbConsent');
+    const hp      = root.querySelector('.callback-pop__hp');
+    const status  = root.querySelector('[data-cb="status"]');
+    const btn     = root.querySelector('[data-cb="submit"]');
 
-    // anty-spam
-    if (hp && hp.value) return;
+    if (hp && hp.value) return; // honeypot
 
     // walidacja
     let ok = true;
@@ -198,30 +174,52 @@
       phoneEl.classList.add('is-invalid');
       status.textContent = 'Podaj poprawny numer z prefiksem +48 lub +47.';
     }
-    if (!consentEl.checked) {
+    if (!consent.checked) {
       ok = false;
       status.textContent = 'Zaznacz zgodę na kontakt.';
     }
     if (!ok) return;
 
-    // wysyłka — PODMIEŃ na swój endpoint (Formspree/Webhook/Apps Script)
-    // Poniżej: symulacja powodzenia po 700 ms.
+    // wysyłka URLENCODED (czytelna dla Formspree) + temat z numerem
+    const body = new URLSearchParams({
+      phone:   phoneEl.value.trim(),
+      consent: 'yes',
+      source:  location.href,
+      ts:      new Date().toISOString(),
+      ua:      navigator.userAgent,
+      _subject: 'Scandura Callback: ' + phoneEl.value.trim()
+    }).toString();
+
     btn.disabled = true;
     status.textContent = 'Wysyłanie…';
+
     try {
-      await new Promise(r => setTimeout(r, 700));
-      // TODO: fetch('TWÓJ_ENDPOINT', { method: 'POST', body: new FormData(e.target) })
+      const res = await fetch(FORMSPREE_URL, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        body
+      });
+
+      const respText = await res.text();       // debug dla DevTools → Network/Console
+      console.log('[Formspree]', res.status, respText);
+
+      if (!res.ok) throw new Error(respText || ('HTTP ' + res.status));
+
       status.textContent = 'Dziękujemy! Oddzwonimy wkrótce.';
-      btn.disabled = false;
       e.target.reset();
-      setTimeout(close, 800);
+      setTimeout(close, 900);
     } catch (err) {
+      console.error(err);
       status.textContent = 'Coś poszło nie tak. Spróbuj ponownie.';
+    } finally {
       btn.disabled = false;
     }
   }
 
-  // podpinamy wszystkie przyciski
+  /* ---------- Podpięcie do wszystkich CTA ---------- */
   document.addEventListener('click', (e) => {
     const trigger = e.target.closest('.js-callback-link');
     if (!trigger) return;

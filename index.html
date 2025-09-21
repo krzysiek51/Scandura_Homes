@@ -16,26 +16,7 @@
 
   <title>Scandura Homes</title>
 
-  <!-- <style id="services-draw-guard">
-    .services__icon path,
-    .services__icon polyline,
-    .services__icon polygon,
-    .services__icon line {
-      fill: none !important;
-      stroke: transparent !important;
-      stroke-dasharray: 1 !important;
-      stroke-dashoffset: 1 !important;
-      transition: stroke-dashoffset 900ms cubic-bezier(.22, .61, .36, 1);
-    }
-
-    .services__icon.is-drawn path,
-    .services__icon.is-drawn polyline,
-    .services__icon.is-drawn polygon,
-    .services__icon.is-drawn line {
-      stroke: currentColor !important;
-      stroke-dashoffset: 0 !important;
-    }
-  </style> -->
+  
 </head>
 
 <body>
@@ -150,7 +131,7 @@
 
 
   <!-- Sekcja: Misja -->
-  <section class="mission">
+  <section class="mission" data-text-lead="0.22" data-move-delay="0.12">
     <div class="container">
       <div class="mission__content">
 
@@ -1215,41 +1196,45 @@
     </div>
   </div>
 
-  <!-- ============================= -->
-  <!-- WIDGET: ODDZWOŃ DO MNIE       -->
-  <!-- ============================= -->
-  <section id="callbackSection" class="callback" aria-labelledby="callbackTitle">
-    <div class="callback__container">
-      <h3 id="callbackTitle" class="callback__title">Oddzwonimy do Ciebie</h3>
-      <p class="callback__lead">Zostaw numer telefonu – skontaktujemy się maksymalnie w 1 dniu roboczym.</p>
+<!-- ============================= -->
+<!-- WIDGET: ODDZWOŃ DO MNIE (TEMPLATE – HIDDEN) -->
+<!-- ============================= -->
+<section id="callbackSection"
+         class="callback"
+         aria-labelledby="callbackTitle"
+         hidden
+         inert
+         aria-hidden="true"
+         data-template="callback">
+  <div class="callback__container">
+    <h3 id="callbackTitle" class="callback__title">Oddzwonimy do Ciebie</h3>
+    <p class="callback__lead">Zostaw numer telefonu – skontaktujemy się maksymalnie w 1 dniu roboczym.</p>
 
-      <form class="callback__form" id="callbackForm" novalidate>
-        <!-- honeypot (anty-spam) -->
-        <input type="text" name="company" tabindex="-1" autocomplete="off" class="callback__hp" aria-hidden="true">
+    <form class="callback__form" id="callbackForm" novalidate>
+      <!-- honeypot (anty-spam) -->
+      <input type="text" name="company" tabindex="-1" autocomplete="off" class="callback__hp" aria-hidden="true">
 
-        <label class="callback__label" for="callbackPhone">Telefon</label>
-        <div class="callback__field">
-          <input id="callbackPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel"
-            placeholder="+48 600 000 000" class="callback__input" required aria-required="true" />
-          <button type="submit" class="callback__btn" id="callbackSubmit">Zadzwońcie do mnie</button>
-        </div>
+      <label class="callback__label" for="callbackPhone">Telefon</label>
+      <div class="callback__field">
+        <input id="callbackPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel"
+               placeholder="+48 600 000 000" class="callback__input" required aria-required="true" />
+        <button type="submit" class="callback__btn" id="callbackSubmit">Zadzwońcie do mnie</button>
+      </div>
 
-        <label class="callback__consent">
-          <input type="checkbox" id="callbackConsent" required>
-          <span>
-            Wyrażam zgodę na kontakt telefoniczny w celu przedstawienia oferty. Administratorem danych jest Scandura
-            Homes.
-            Zgodę mogę wycofać w dowolnym momencie.
-            <a href="/polityka-prywatnosci" target="_blank" rel="nofollow">Polityka prywatności</a>.
-          </span>
-        </label>
+      <label class="callback__consent">
+        <input type="checkbox" id="callbackConsent" required>
+        <span>
+          Wyrażam zgodę na kontakt telefoniczny w celu przedstawienia oferty. Administratorem danych jest Scandura Homes.
+          Zgodę mogę wycofać w dowolnym momencie.
+          <a href="/polityka-prywatnosci" target="_blank" rel="nofollow">Polityka prywatności</a>.
+        </span>
+      </label>
 
-        <p class="callback__hint">Obsługujemy numery PL (+48) i NO (+47). Podaj z prefiksem kraju.</p>
-
-        <div class="callback__status" id="callbackStatus" role="status" aria-live="polite"></div>
-      </form>
-    </div>
-  </section>
+      <p class="callback__hint">Obsługujemy numery PL (+48) i NO (+47). Podaj z prefiksem kraju.</p>
+      <div class="callback__status" id="callbackStatus" role="status" aria-live="polite"></div>
+    </form>
+  </div>
+</section>
 
 
   <script type="module" src="js/config.js"></script>

@@ -5,10 +5,10 @@
    ========================================================= */
 
 .callback {
+  padding: 20px;
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.05);
-  padding: 20px;
   margin: 40px auto;
   max-width: 720px;
   box-sizing: border-box;
@@ -50,6 +50,7 @@
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 12px;
+    align-items: center;
   }
 
   /* input */
@@ -61,6 +62,7 @@
     font-size: 16px;
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    min-width: 0; // kluczowe w gridzie, żeby 1fr mógł się skurczyć
 
     &:focus {
       border-color: $color-gradient-start;
@@ -81,10 +83,16 @@
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    background: linear-gradient(135deg, $color-gradient-start 0%, $color-gradient-end 100%);
+    background: linear-gradient(
+      135deg,
+      $color-gradient-start 0%,
+      $color-gradient-end 100%
+    );
     color: #fff;
     white-space: nowrap;
     transition: transform 0.08s ease, opacity 0.2s ease;
+    width: max-content;
+    justify-self: end;
 
     &:active {
       transform: translateY(1px);
@@ -105,13 +113,14 @@
     line-height: 1.4;
     color: #444;
 
-    input[type="checkbox"] {
+    input[type='checkbox'] {
       margin-top: 2px;
     }
 
     a {
       color: $color-gradient-start;
       text-decoration: underline;
+
       &:hover {
         text-decoration: none;
       }
@@ -143,6 +152,7 @@
     &__title {
       font-size: 28px;
     }
+
     &__lead {
       font-size: 16px;
     }

@@ -40,6 +40,13 @@
   --btn-lift: var(--enter-lift);
   --btn-opacity-start: var(--opacity-start);
 
+    /* Sub-progresy RUCHU (0..1) — niezależne od opacity; fallback = dotychczasowe */
+  --p-title-move: var(--p-title);
+  --p-sub-move:   var(--p-sub);
+  --p-text-move:  var(--p-text);
+  --p-btn-move:   var(--p-btn);
+
+
   /* Performance */
   contain: layout paint style;
   will-change: transform;
@@ -55,19 +62,23 @@
     will-change: transform;
   }
 
-  &__image {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    backface-visibility: hidden;
-    will-change: transform;
-    transform:
-      translateY(calc((1 - var(--p-img)) * var(--img-lift)))
-      scale(calc(var(--img-scale-start) - (var(--img-scale-start) - 1) * var(--p-img)));
-    transform-origin: center center;
-    transition: none;
-  }
+.mission__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  backface-visibility: hidden;
+  will-change: transform;
+  transform:
+    translateY(calc((1 - var(--p-img, 0)) * var(--img-lift, 20vh)))
+    scale(calc(
+      var(--img-scale-start, 1.2) -
+      (var(--img-scale-start, 1.2) - var(--img-scale-end, 1.0)) * var(--p-img, 0)
+    ));
+  transform-origin: center center;
+  transition: none;
+}
+
 
   /* === Dots / Divider === */
   &__dots {
@@ -83,43 +94,48 @@
     opacity: calc(0.4 + 0.6 * var(--p-div));
     will-change: transform, opacity;
   }
-
-  /* === Typografia — fade-up (0→1, 20px→0) === */
+/* === Typografia — fade-up (0→1, 20px→0) === */ 
+/* === Typografia — fade-up (0→1, 20px→0) === */ 
   &__title,
   &__text-title,
   &__text,
   &__button {
-    /* wyłączamy stare animacje/przejścia na tekstach */
     animation: none !important;
     transition: none !important;
     will-change: transform, opacity;
+    opacity: 0;
+    transform: translateY(20px);
   }
 
-  /* Title */
-  &__title {
-    opacity: calc(var(--title-opacity-start) + (1 - var(--title-opacity-start)) * var(--p-title));
-    transform: translateY(calc((1 - var(--p-title)) * var(--title-lift)));
+  &__title.reveal--in {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    transition: transform 0.72s cubic-bezier(.22,1,.36,1),
+                opacity 0.72s cubic-bezier(.22,1,.36,1);
   }
 
-  /* Sub / lead */
-  &__text-title {
-    opacity: calc(var(--sub-opacity-start) + (1 - var(--sub-opacity-start)) * var(--p-sub));
-    transform: translateY(calc((1 - var(--p-sub)) * var(--sub-lift)));
+  &__text-title.reveal--in {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    transition: transform 0.72s cubic-bezier(.22,1,.36,1) 90ms,
+                opacity 0.72s cubic-bezier(.22,1,.36,1) 90ms;
   }
 
-  /* Body copy — jeden blok */
-  &__text {
-    opacity: calc(var(--text-opacity-start) + (1 - var(--text-opacity-start)) * var(--p-text));
-    transform: translateY(calc((1 - var(--p-text)) * var(--text-lift)));
+  &__text.reveal--in {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    transition: transform 0.72s cubic-bezier(.22,1,.36,1) 180ms,
+                opacity 0.72s cubic-bezier(.22,1,.36,1) 180ms;
   }
 
-  /* CTA — fade-up + subtelny pop (scale 0.985→1) */
-  &__button {
-    opacity: calc(var(--btn-opacity-start) + (1 - var(--btn-opacity-start)) * var(--p-btn));
-    transform:
-      translateY(calc((1 - var(--p-btn)) * var(--btn-lift)))
-      scale(calc(0.985 + 0.015 * var(--p-btn)));
+  &__button.reveal--in {
+    opacity: 1 !important;
+    transform: translateY(0) scale(1) !important;
+    transition: transform 0.72s cubic-bezier(.22,1,.36,1) 270ms,
+                opacity 0.72s cubic-bezier(.22,1,.36,1) 270ms;
   }
+
+
 
   /* === Motion accessibility === */
   @media (prefers-reduced-motion: reduce) {
@@ -138,3 +154,40 @@
     }
   }
 }
+/* Mission – teksty: stan startowy + wejście po .reveal--in */
+
+.mission {
+  /* start: ukryte + lekkie opuszczenie */
+  &__title,
+  &__text-title,
+  &__text,
+  &__button {
+    opacity: 0;
+    transform: translateY(20px);
+    will-change: transform, opacity;
+    transition: none !important; /* animuje JS przez klasę */
+  }
+
+  /* wejście: fade-in + lift (0.72s, decelerate) */
+  &__title.reveal--in,
+  &__text-title.reveal--in,
+  &__text.reveal--in,
+  &__button.reveal--in {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      transform 0.72s cubic-bezier(.22,1,.36,1),
+      opacity  0.72s cubic-bezier(.22,1,.36,1);
+  }
+}
+
+.mission {
+  &__title.reveal--in,
+  &__text-title.reveal--in,
+  &__text.reveal--in,
+  &__button.reveal--in {
+    transition: transform 0.72s cubic-bezier(.22,1,.36,1), opacity 0.72s cubic-bezier(.22,1,.36,1) !important;
+
+  }
+}
+

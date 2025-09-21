@@ -6077,6 +6077,11 @@ nav#mobile-menu .button--nav {
   --text-opacity-start: var(--opacity-start);
   --btn-lift: var(--enter-lift);
   --btn-opacity-start: var(--opacity-start);
+  /* Sub-progresy RUCHU (0..1) — niezależne od opacity; fallback = dotychczasowe */
+  --p-title-move: var(--p-title);
+  --p-sub-move: var(--p-sub);
+  --p-text-move: var(--p-text);
+  --p-btn-move: var(--p-btn);
   /* Performance */
   contain: layout paint style;
   will-change: transform;
@@ -6091,14 +6096,14 @@ nav#mobile-menu .button--nav {
   transition: none;
   will-change: transform;
 }
-.mission__image {
+.mission .mission__image {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
   backface-visibility: hidden;
   will-change: transform;
-  transform: translateY(calc((1 - var(--p-img)) * var(--img-lift))) scale(calc(var(--img-scale-start) - (var(--img-scale-start) - 1) * var(--p-img)));
+  transform: translateY(calc((1 - var(--p-img, 0)) * var(--img-lift, 20vh))) scale(calc(var(--img-scale-start, 1.2) - (var(--img-scale-start, 1.2) - var(--img-scale-end, 1)) * var(--p-img, 0)));
   transform-origin: center center;
   transition: none;
 }
@@ -6119,40 +6124,34 @@ nav#mobile-menu .button--nav {
 }
 .mission {
   /* === Typografia — fade-up (0→1, 20px→0) === */
+  /* === Typografia — fade-up (0→1, 20px→0) === */
 }
 .mission__title, .mission__text-title, .mission__text, .mission__button {
-  /* wyłączamy stare animacje/przejścia na tekstach */
   animation: none !important;
   transition: none !important;
   will-change: transform, opacity;
+  opacity: 0;
+  transform: translateY(20px);
 }
-.mission {
-  /* Title */
+.mission__title.reveal--in {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  transition: transform 0.72s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.mission__title {
-  opacity: calc(var(--title-opacity-start) + (1 - var(--title-opacity-start)) * var(--p-title));
-  transform: translateY(calc((1 - var(--p-title)) * var(--title-lift)));
+.mission__text-title.reveal--in {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  transition: transform 0.72s cubic-bezier(0.22, 1, 0.36, 1) 90ms, opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1) 90ms;
 }
-.mission {
-  /* Sub / lead */
+.mission__text.reveal--in {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  transition: transform 0.72s cubic-bezier(0.22, 1, 0.36, 1) 180ms, opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1) 180ms;
 }
-.mission__text-title {
-  opacity: calc(var(--sub-opacity-start) + (1 - var(--sub-opacity-start)) * var(--p-sub));
-  transform: translateY(calc((1 - var(--p-sub)) * var(--sub-lift)));
-}
-.mission {
-  /* Body copy — jeden blok */
-}
-.mission__text {
-  opacity: calc(var(--text-opacity-start) + (1 - var(--text-opacity-start)) * var(--p-text));
-  transform: translateY(calc((1 - var(--p-text)) * var(--text-lift)));
-}
-.mission {
-  /* CTA — fade-up + subtelny pop (scale 0.985→1) */
-}
-.mission__button {
-  opacity: calc(var(--btn-opacity-start) + (1 - var(--btn-opacity-start)) * var(--p-btn));
-  transform: translateY(calc((1 - var(--p-btn)) * var(--btn-lift))) scale(calc(0.985 + 0.015 * var(--p-btn)));
+.mission__button.reveal--in {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
+  transition: transform 0.72s cubic-bezier(0.22, 1, 0.36, 1) 270ms, opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1) 270ms;
 }
 .mission {
   /* === Motion accessibility === */
@@ -6164,6 +6163,29 @@ nav#mobile-menu .button--nav {
     transition: none !important;
     animation: none !important;
   }
+}
+
+/* Mission – teksty: stan startowy + wejście po .reveal--in */
+.mission {
+  /* start: ukryte + lekkie opuszczenie */
+}
+.mission__title, .mission__text-title, .mission__text, .mission__button {
+  opacity: 0;
+  transform: translateY(20px);
+  will-change: transform, opacity;
+  transition: none !important; /* animuje JS przez klasę */
+}
+.mission {
+  /* wejście: fade-in + lift (0.72s, decelerate) */
+}
+.mission__title.reveal--in, .mission__text-title.reveal--in, .mission__text.reveal--in, .mission__button.reveal--in {
+  opacity: 1;
+  transform: translateY(0);
+  transition: transform 0.72s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.mission__title.reveal--in, .mission__text-title.reveal--in, .mission__text.reveal--in, .mission__button.reveal--in {
+  transition: transform 0.72s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }
 
 /* ==========================================================================
@@ -11315,10 +11337,10 @@ main.pages__container > .container {
    CALLBACK WIDGET — Oddzwonimy do Ciebie
    ========================================================= */
 .callback {
+  padding: 20px;
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.05);
-  padding: 20px;
   margin: 40px auto;
   max-width: 720px;
   box-sizing: border-box;
@@ -11359,6 +11381,7 @@ main.pages__container > .container {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 12px;
+  align-items: center;
 }
 .callback {
   /* input */
@@ -11371,6 +11394,7 @@ main.pages__container > .container {
   font-size: 16px;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  min-width: 0;
 }
 .callback__input:focus {
   border-color: #DC9B59;
@@ -11394,6 +11418,8 @@ main.pages__container > .container {
   color: #fff;
   white-space: nowrap;
   transition: transform 0.08s ease, opacity 0.2s ease;
+  width: max-content;
+  justify-self: end;
 }
 .callback__btn:active {
   transform: translateY(1px);
@@ -11451,17 +11477,26 @@ main.pages__container > .container {
     font-size: 16px;
   }
 }
-/* blokada scrolla, gdy popup otwarty */
-.cb-lock {
+/* =========================================================
+   CALLBACK POPUP — modal
+   ========================================================= */
+/* blokada scrolla, gdy popup otwarty (bez skoku układu) */
+html.cb-lock,
+body.cb-lock {
   overflow: hidden;
+  padding-right: var(--sbw, 0px);
 }
 
 .callback-pop {
   position: fixed;
   inset: 0;
   z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* zapas od krawędzi / notcha */
+  padding: max(16px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
   pointer-events: none;
-  display: block;
 }
 .callback-pop.is-active {
   pointer-events: auto;
@@ -11481,41 +11516,28 @@ main.pages__container > .container {
 
 /* karta */
 .callback-pop__card {
-  position: absolute; /* pozycjonowana względem viewportu (fixed parent) */
-  max-width: min(92vw, 520px);
-  width: 520px;
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.18);
   padding: 20px;
-  transform-origin: var(--cb-origin-x, 50%) var(--cb-origin-y, 0%);
   transform: scale(0.96);
+  transform-origin: 50% 50%;
   opacity: 0;
   transition: transform 0.18s cubic-bezier(0.2, 0.6, 0.2, 1), opacity 0.18s ease;
-  will-change: transform, opacity;
 }
 .callback-pop__card.is-open {
   transform: scale(1);
   opacity: 1;
 }
 
-/* strzałka */
+/* strzałka — przy centrowaniu chowamy */
 .callback-pop__arrow {
-  position: absolute;
-  top: auto;
-  left: 50%;
-  width: 14px;
-  height: 14px;
-  background: #fff;
-  transform: translateX(-50%) rotate(45deg);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  /* pozycja wertykalna zależna od placementu */
-}
-.callback-pop__card[data-placement=top] .callback-pop__arrow {
-  bottom: -7px;
-}
-.callback-pop__card[data-placement=bottom] .callback-pop__arrow {
-  top: -7px;
+  display: none;
 }
 
 /* UI wewnątrz */
@@ -11578,6 +11600,7 @@ main.pages__container > .container {
   font-size: 16px;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  min-width: 0;
 }
 .callback-pop__input:focus {
   border-color: #DC9B59;
