@@ -4178,10 +4178,11 @@ textarea,
 .testimonials__image-wrapper {
   width: 100%;
   max-width: 335px;
+  height: 266px;
   border-radius: 12px;
   overflow: hidden;
   flex-shrink: 0;
-  min-width: 0;
+  margin-bottom: 50px;
 }
 .testimonials__image {
   width: 100%;
@@ -4202,7 +4203,7 @@ textarea,
   margin-top: -40px; /* overlap na mobile */
   position: relative;
   z-index: 2;
-  min-width: 0;
+  height: 300px;
 }
 .testimonials {
   /* Typografia — mobile bazowa */
@@ -5173,6 +5174,21 @@ nav#mobile-menu .button--nav {
   /* nie chowamy, gdy overlay menu jest otwarty */
   nav#mobile-menu.header__nav.is-hidden:not(.is-open) {
     transform: translateY(-100%);
+  }
+}
+/* === CTA w overlayu (0–1439) — ukryj całkowicie === */
+.header__nav .button--nav {
+  display: none !important;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+/* === Laptop/desktop (≥1440) — pokaż na belce === */
+@media (min-width: 1440px) {
+  nav#mobile-menu.header__nav .button--nav {
+    display: inline-flex !important;
+    pointer-events: auto;
+    visibility: visible;
   }
 }
 .m-0 {

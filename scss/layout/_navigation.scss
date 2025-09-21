@@ -258,3 +258,18 @@ nav#mobile-menu .button--nav { margin-right: 0; }
 }
 
 
+/* === CTA w overlayu (0–1439) — ukryj całkowicie === */
+.header__nav .button--nav {
+  display: none !important;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+/* === Laptop/desktop (≥1440) — pokaż na belce === */
+@media (min-width: 1440px) {
+  nav#mobile-menu.header__nav .button--nav {
+    display: inline-flex !important;
+    pointer-events: auto;
+    visibility: visible;
+  }
+}

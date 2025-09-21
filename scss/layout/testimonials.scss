@@ -24,6 +24,7 @@
     width: 100%;
     margin-inline: auto;
     min-width: 0;
+    
   }
 
   /* Tytuł */
@@ -67,10 +68,11 @@
   &__image-wrapper {
     width: 100%;
     max-width: 335px;
+    height: 266px;
     border-radius: 12px;
     overflow: hidden;
     flex-shrink: 0;
-    min-width: 0;
+    margin-bottom: 50px;
   }
   &__image {
     width: 100%;
@@ -91,7 +93,8 @@
     margin-top: -40px; /* overlap na mobile */
     position: relative;
     z-index: 2;
-    min-width: 0;
+    height: 300px;
+    
   }
 
   /* Typografia — mobile bazowa */
