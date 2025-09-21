@@ -11460,14 +11460,20 @@ main.pages__container > .container {
   }
 }
 /* =========================================================
-   CALLBACK POPUP — modal (centrowany flexem)
+   CALLBACK POPUP — modal (flex-centered, bez poziomego „wycieku”)
    ========================================================= */
-/* blokada scrolla bez skoku układu */
-html.cb-lock, body.cb-lock {
-  overflow: hidden;
-  padding-right: var(--sbw, 0px);
+/* Lock scroll: overflow na html, kompensacja paska tylko na body */
+html.cb-lock {
+  overflow-y: hidden;
 }
 
+body.cb-lock {
+  overflow: hidden;
+  padding-right: var(--sbw, 0px);
+  width: 100%;
+}
+
+/* Root popupa */
 .callback-pop {
   position: fixed;
   inset: 0;
@@ -11475,15 +11481,16 @@ html.cb-lock, body.cb-lock {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* oddech od krawędzi/wycięć */
+  /* oddech + notche */
   padding: max(16px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
-  pointer-events: none;
+  pointer-events: none; /* blokuj klik, gdy zamknięty */
+  overflow-x: hidden;
 }
 .callback-pop.is-active {
   pointer-events: auto;
 }
 
-/* overlay */
+/* Overlay */
 .callback-pop__overlay {
   position: absolute;
   inset: 0;
@@ -11495,11 +11502,13 @@ html.cb-lock, body.cb-lock {
   opacity: 1;
 }
 
-/* karta – BEZ top/left/translate, centrowanie robi kontener */
+/* Karta (centruje się przez kontener flex) */
 .callback-pop__card {
   position: relative;
+  box-sizing: border-box;
   width: 100%;
-  max-width: 520px;
+  /* nigdy nie wyjdzie poza ekran – odejmujemy padding kontenera (24+24) */
+  max-width: min(520px, 100dvw - 48px);
   max-height: calc(100dvh - 32px);
   overflow: auto;
   background: #fff;
@@ -11516,7 +11525,7 @@ html.cb-lock, body.cb-lock {
   opacity: 1;
 }
 
-/* strzałkę chowamy przy centrowanym modalu */
+/* Strzałka niepotrzebna przy centrowaniu */
 .callback-pop__arrow {
   display: none;
 }
@@ -11567,12 +11576,42 @@ html.cb-lock, body.cb-lock {
   font-size: 14px;
 }
 
+/* Telefon + button w jednej linii */
 .callback-pop__field {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 8px;
+  align-items: center;
+  min-width: 0; /* bez rozpychania */
 }
 
+/* Imię + nazwisko (2 kolumny / 1 kolumna na bardzo wąskich) */
+.callback-pop__row {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.callback-pop__row--2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.callback-pop__cell {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.callback-pop__row--2 .callback-pop__input {
+  min-width: 0;
+}
+
+@media (max-width: 420px) {
+  .callback-pop__row--2 {
+    grid-template-columns: 1fr;
+  }
+}
+/* Input */
 .callback-pop__input {
   height: 48px;
   border: 1px solid #ddd;
@@ -11591,6 +11630,7 @@ html.cb-lock, body.cb-lock {
   border-color: #e25454;
 }
 
+/* Button */
 .callback-pop__btn {
   height: 48px;
   border: 0;
@@ -11611,6 +11651,7 @@ html.cb-lock, body.cb-lock {
   cursor: not-allowed;
 }
 
+/* Checkbox + tekst */
 .callback-pop__consent {
   display: grid;
   grid-template-columns: 18px 1fr;
@@ -11637,7 +11678,23 @@ html.cb-lock, body.cb-lock {
   min-height: 20px;
 }
 
+/* Honeypot */
 .callback-pop__hp {
+  display: none !important;
+}
+
+/* Widok sukcesu */
+.callback-pop__success {
+  display: grid;
+  gap: 12px;
+}
+
+.callback-pop__success .callback-pop__btn {
+  width: 100%;
+}
+
+/* hidden MUSI ukrywać (gdy reset CSS go psuje) */
+.callback-pop [hidden] {
   display: none !important;
 }
 
@@ -11653,32 +11710,62 @@ html.cb-lock, body.cb-lock {
     font-size: 15px;
   }
 }
-/* imię + nazwisko w 2 kolumnach */
+/* --- ANTY-OVERFLOW dla grida wewnątrz karty --- */
+.callback-pop__card, .callback-pop__card * {
+  box-sizing: border-box;
+}
+
+/* Telefon + przycisk */
+.callback-pop__field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto; /* 1 kolumna elastyczna, nie wypycha */
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+}
+
+/* Imię + Nazwisko */
 .callback-pop__row {
   display: grid;
   gap: 8px;
+  min-width: 0;
 }
 
 .callback-pop__row--2 {
-  grid-template-columns: 1fr 1fr;
-}
-
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+} /* kluczowe */
 .callback-pop__cell {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  min-width: 0;
 }
 
 .callback-pop__row--2 .callback-pop__input {
   min-width: 0;
+  width: 100%;
 }
 
-/* widok sukcesu */
-.callback-pop__success {
-  display: grid;
-  gap: 12px;
+/* Inputy nigdy nie rozpychają kontenera */
+.callback-pop__input {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
+/* Przycisk nie wymusza poszerzenia kolumny */
+.callback-pop__btn {
+  max-width: 100%;
+  min-width: 0;
+  justify-self: end; /* trzyma się prawej w swojej kolumnie */
+  overflow: hidden; /* gdyby tekst był mega długi */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Na bardzo wąskich ekranach imię/nazwisko pod sobą */
+@media (max-width: 480px) {
+  .callback-pop__row--2 {
+    grid-template-columns: 1fr;
+  }
+}
 /* "Pusta kartka": chowamy tylko elementy do rysowania */
 .services__icon [data-draw] {
   fill: none !important;
