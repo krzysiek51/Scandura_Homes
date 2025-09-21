@@ -87,3 +87,11 @@ html.cb-lock, body.cb-lock { overflow: hidden; padding-right: var(--sbw, 0px); }
   .callback-pop__title { font-size: 22px; }
   .callback-pop__lead  { font-size: 15px; }
 }
+/* imię + nazwisko w 2 kolumnach */
+.callback-pop__row { display: grid; gap: 8px; }
+.callback-pop__row--2 { grid-template-columns: 1fr 1fr; }
+.callback-pop__cell { display: flex; flex-direction: column; gap: 6px; }
+.callback-pop__row--2 .callback-pop__input { min-width: 0; }
+
+/* widok sukcesu */
+.callback-pop__success { display: grid; gap: 12px; }
