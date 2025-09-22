@@ -1,0 +1,86 @@
+<!doctype html><html lang="pl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Przełóż termin — Scandura</title>
+<style>
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;margin:24px}
+  .day{margin:18px 0}
+  .day h3{margin:0 0 8px;font-size:16px;color:#1D1F2C}
+  .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-width:760px}
+  button.slot{padding:12px;border:1px solid #ddd;border-radius:12px;background:#fff;cursor:pointer}
+  button.slot.is-active{outline:2px solid #DC9B59}
+  .actions{margin-top:18px;display:flex;gap:12px}
+  .btn{padding:12px 16px;border-radius:10px;border:0;cursor:pointer}
+  .btn--primary{background:#000;color:#fff}
+  .btn--muted{background:#f3f3f3}
+  .status{margin-top:14px}
+</style></head><body>
+<h1>Przełóż termin</h1>
+<p>Wybierz nową godzinę i potwierdź zmianę.</p>
+<p id="lead" hidden></p>
+<div id="days"></div>
+<div class="actions">
+  <button class="btn btn--muted" onclick="history.back()">Wstecz</button>
+  <button id="confirmBtn" class="btn btn--primary" disabled>Potwierdź</button>
+</div>
+<div id="status" class="status" role="status" aria-live="polite"></div>
+<script>
+const API = location.origin;
+const qs = new URLSearchParams(location.search);
+const token = qs.get('token'); if(!token){document.getElementById('status').textContent='Brak tokenu.'}
+const daysWrap = document.getElementById('days'); const statusEl = document.getElementById('status');
+let chosen = null, bookingType = 'IN_PERSON';
+
+function keyDay(d){return new Date(d).toISOString().slice(0,10)}
+function prettyLabel(d){
+  const x = new Date(d); const opts = {weekday:'short',day:'2-digit',month:'short',timeZone:'Europe/Warsaw'};
+  const today = new Date(); const tomorrow = new Date(); tomorrow.setDate(today.getDate()+1);
+  const k = keyDay(d), kt=keyDay(today), ktm=keyDay(tomorrow);
+  if(k===kt) return 'Dziś'; if(k===ktm) return 'Jutro'; return x.toLocaleDateString('pl-PL',opts);
+}
+function fmtTime(iso){ return new Date(iso).toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Warsaw'}) }
+
+async function loadMeta(){
+  const r = await fetch(`${API}/api/reschedule-meta?token=${encodeURIComponent(token)}`);
+  const j = await r.json(); if(!j.ok){statusEl.textContent=j.error||'Błąd tokenu.'; return;}
+  bookingType = j.booking.type;
+  document.getElementById('lead').hidden=false;
+  document.getElementById('lead').textContent = `Aktualny: ${new Date(j.booking.startAt).toLocaleString('pl-PL',{timeZone:'Europe/Warsaw'})}`;
+}
+
+async function loadSlots(){
+  const r = await fetch(`${API}/api/slots?type=${encodeURIComponent(bookingType)}`);
+  const j = await r.json(); const slots = j.slots||[];
+  const map = new Map();
+  slots.forEach(s=>{ const k=keyDay(s.startAt); if(!map.has(k)) map.set(k,[]); map.get(k).push(s); });
+  daysWrap.innerHTML='';
+  Array.from(map.entries()).slice(0,7).forEach(([k,items])=>{
+    const day = document.createElement('div'); day.className='day';
+    day.innerHTML = `<h3>${prettyLabel(items[0].startAt)} — ${k}</h3><div class="grid"></div>`;
+    const grid = day.querySelector('.grid');
+    items.forEach(s=>{
+      const b = document.createElement('button');
+      b.className='slot'; b.type='button';
+      b.textContent = `${fmtTime(s.startAt)}–${fmtTime(s.endAt)}`;
+      b.onclick = ()=>{ document.querySelectorAll('button.slot.is-active').forEach(x=>x.classList.remove('is-active'));
+        b.classList.add('is-active'); chosen = s; document.getElementById('confirmBtn').disabled=false; };
+      grid.appendChild(b);
+    });
+    daysWrap.appendChild(day);
+  });
+}
+
+document.getElementById('confirmBtn').onclick = async ()=>{
+  if(!chosen) return;
+  statusEl.textContent = 'Wysyłam…';
+  const r = await fetch(`${API}/api/booking/reschedule`,{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ token, startAt: chosen.startAt, endAt: chosen.endAt })
+  });
+  if(r.status===409){ statusEl.textContent='Ten slot już zajęty. Odśwież listę i wybierz inny.'; return;}
+  const j = await r.json(); if(!r.ok){ statusEl.textContent=j.error||'Błąd'; return; }
+  statusEl.textContent='✅ Termin przełożony. Sprawdź e-mail.';
+};
+
+(async()=>{ await loadMeta(); await loadSlots(); })();
+</script>
+</body></html>

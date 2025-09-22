@@ -32,11 +32,17 @@ model Booking {
   address String? // dla spotkań na żywo
   notes   String?
 
+  // Google Calendar
+  googleEventId String? // <-- DODANE POLE
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // Relacja w drugą stronę (jedna rezerwacja może mieć kilka tokenów)
   rescheduleTokens RescheduleToken[]
+
+  @@index([startAt])
+  @@index([status])
 }
 
 model RescheduleToken {

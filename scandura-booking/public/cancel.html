@@ -1,0 +1,31 @@
+<!doctype html><html lang="pl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Odwołaj termin — Scandura</title>
+<style>
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;margin:24px}
+  .box{max-width:560px;padding:20px;border:1px solid #eee;border-radius:12px}
+  .btn{padding:12px 16px;border-radius:10px;border:0;cursor:pointer}
+  .btn--danger{background:#000;color:#fff}
+</style></head><body>
+<h1>Odwołaj spotkanie</h1>
+<div class="box">
+  <p>Czy na pewno chcesz odwołać to spotkanie? To działanie jest nieodwracalne.</p>
+  <button id="cancelBtn" class="btn btn--danger">Odwołaj</button>
+  <p id="status" role="status" aria-live="polite"></p>
+</div>
+<script>
+const API = location.origin;
+const qs = new URLSearchParams(location.search);
+const token = qs.get('token'); const statusEl = document.getElementById('status');
+document.getElementById('cancelBtn').onclick = async ()=>{
+  statusEl.textContent='Wysyłam…';
+  const r = await fetch(`${API}/api/booking/cancel`,{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ token })
+  });
+  const j = await r.json().catch(()=>({}));
+  if(!r.ok){ statusEl.textContent = j.error||'Błąd odwołania.'; return; }
+  statusEl.textContent='✅ Spotkanie odwołane. Wysłaliśmy potwierdzenie e-mailem.';
+};
+</script>
+</body></html>
