@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="pl">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -63,7 +62,10 @@
 
         <!-- BOX: formularz -->
         <section class="contact-form" aria-label="Formularz kontaktowy">
-          <form id="contactForm" action="https://formspree.io/f/myzdrpob" method="POST" novalidate>
+          <form id="contactForm"
+                action="https://formspree.io/f/myzdrpob"
+                method="POST"
+                novalidate>
 
             <!-- temat w mailu -->
             <input type="hidden" name="_subject" value="Nowa wiadomość z formularza kontaktowego — Scandura Homes" />
@@ -85,7 +87,7 @@
               <label class="field">
                 <span>E-mail</span>
                 <input type="email" name="email" placeholder="jan@domena.pl" required
-                  oninput="this.form._replyto.value=this.value" />
+                       oninput="this.form._replyto.value=this.value" />
               </label>
 
               <label class="field span-2">
@@ -232,15 +234,27 @@
         const btn = form.querySelector('button[type="submit"]');
         btn.disabled = true; btn.textContent = 'Wysyłanie…';
         try {
-          const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } });
-          if (res.ok) { form.reset(); window.location.href = '/thanks.html'; }
-          else { alert('Nie udało się wysłać wiadomości. Spróbuj ponownie.'); }
-        } catch (err) { alert('Błąd połączenia. Spróbuj ponownie.'); }
-        finally { btn.disabled = false; btn.textContent = 'Wyślij wiadomość'; }
+          const res = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json' }
+          });
+          if (res.ok) {
+            form.reset();
+            // jeśli thanks.html jest w /pages/
+            window.location.href = '/pages/thanks.html';
+            // jeśli przeniesiesz do root, zmień na: window.location.href = '/thanks.html';
+          } else {
+            alert('Nie udało się wysłać wiadomości. Spróbuj ponownie.');
+          }
+        } catch (err) {
+          alert('Błąd połączenia. Spróbuj ponownie.');
+        } finally {
+          btn.disabled = false; btn.textContent = 'Wyślij wiadomość';
+        }
       });
     })();
   </script>
 
 </body>
-
 </html>
