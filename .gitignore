@@ -47,3 +47,7 @@ css/style(*).css
 css/style(*).map
 css/*.map
 .sass-cache/
+
+git rm --cached scandura-booking/google-token.json
+echo scandura-booking/google-token.json>> .gitignore
+git add .gitignore

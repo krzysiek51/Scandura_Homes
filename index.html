@@ -1360,7 +1360,17 @@
       window.addEventListener('resize', onScroll, { passive: true });
       onScroll();
     })();
+
+
+
+
+    
   </script>
+  <script>
+    window.BOOKING_API_BASE = 'http://localhost:3001';
+  </script>
+  <script src="/js/booking-modal.js" defer></script>
+
 
 
   <!-- //script sticky header//  -->
@@ -1398,23 +1408,23 @@
       </section>
 
       <!-- KROK 2: slot -->
-<section class="booking-modal__section" data-step="slot" hidden>
-  <h4 class="booking-modal__subtitle">Wybierz termin</h4>
+      <section class="booking-modal__section" data-step="slot" hidden>
+        <h4 class="booking-modal__subtitle">Wybierz termin</h4>
 
-  <div class="bm-slots" id="bmSlots" aria-live="polite"></div>
-  <div class="bm-empty" id="bmEmpty" hidden>Brak wolnych terminów w najbliższym czasie.</div>
-  <p id="bmChosen" class="bm-chosen" hidden></p>
+        <div class="bm-slots" id="bmSlots" aria-live="polite"></div>
+        <div class="bm-empty" id="bmEmpty" hidden>Brak wolnych terminów w najbliższym czasie.</div>
+        <p id="bmChosen" class="bm-chosen" hidden></p>
 
-  <!-- (opcjonalnie) przycisk doładowania kolejnych dni -->
-  <div class="bm-more" id="bmMoreWrap" hidden>
-    <button class="bm-btn" id="bmMoreBtn" type="button">Pokaż więcej terminów</button>
-  </div>
+        <!-- (opcjonalnie) przycisk doładowania kolejnych dni -->
+        <div class="bm-more" id="bmMoreWrap" hidden>
+          <button class="bm-btn" id="bmMoreBtn" type="button">Pokaż więcej terminów</button>
+        </div>
 
-  <div class="bm-actions">
-    <button class="bm-btn" data-bm="back-to-type">Wstecz</button>
-    <button class="bm-btn bm-btn--primary" data-bm="next-slot" disabled>Dalej</button>
-  </div>
-</section>
+        <div class="bm-actions">
+          <button class="bm-btn" data-bm="back-to-type">Wstecz</button>
+          <button class="bm-btn bm-btn--primary" data-bm="next-slot" disabled>Dalej</button>
+        </div>
+      </section>
 
 
 
