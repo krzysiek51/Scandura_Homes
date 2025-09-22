@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dziękujemy — Scandura Homes</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body class="thanks-page">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header__wrap">
+      <div class="container header__top">
+        <a href="/" class="header__logo">
+          <img class="header__logo--img" src="../photos/mobile_logo.png" alt="Scandura Homes" />
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main id="main" class="thanks">
+    <div class="container">
+      <h1 class="thanks__title">Dziękujemy za wiadomość!</h1>
+      <p class="thanks__text">
+        Twoja wiadomość została wysłana pomyślnie.<br />
+        Odpowiemy tak szybko, jak to możliwe.
+      </p>
+      <a href="/" class="btn">Wróć na stronę główną</a>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom">
+        <p class="footer__copyright">© <span id="year"></span> – Scandura Homes. Wszelkie prawa zastrzeżone.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const y = document.getElementById('year');
+    if (y) y.textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
