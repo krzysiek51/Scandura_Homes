@@ -857,13 +857,16 @@
   <section class="booking">
     <div class="container">
       <div class="booking__content">
-        <h2 class="booking__title">Rozpocznij projekt swojego domu z nami</h2>
-        <p class="booking__text">Masz pytania? Chcesz porozmawiać o możliwościach? Jesteśmy tu, aby pomóc Ci spełnić
-          marzenie o idealnym domu.</p>
-        <a href="/contact.html" class="booking__button">Umów bezpłatną konsultację</a>
+        <h2 class="booking__title">Indywidualne spotkanie – tak, jak Tobie pasuje</h2>
+        <p class="booking__text">
+          Na żywo najłatwiej zrozumieć potrzeby. Dlatego spotykamy się tam, gdzie Ci wygodnie –
+          a w razie potrzeby razem obejrzymy działkę, żeby doprecyzować szczegóły.
+        </p>
+        <button class="booking__button js-booking-trigger">Umów spotkanie na żywo</button>
       </div>
     </div>
   </section>
+
 
   <!-- Sekcja: Opinie -->
   <section class="testimonials">
@@ -1232,11 +1235,20 @@
   <script type="module" src="js/config.js"></script>
   <script type="module" src="js/configurator.js"></script>
   <script type="module" src="js/smartbar.js"></script>
-    <script type="module" src="js/confiugurator-prompt-count.js"></script>
+  <script type="module" src="js/confiugurator-prompt-count.js"></script>
 
 
 
-
+  <script>
+    window.BOOKING_API_BASE = 'http://localhost:3001';
+  </script>
+  <script src="/js/booking-modal.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.querySelector('.js-booking-trigger');
+      if (btn) btn.addEventListener('click', () => openBookingModal({ preferredType: 'IN_PERSON' }));
+    });
+  </script>
 
 
 
@@ -1352,6 +1364,114 @@
 
 
   <!-- //script sticky header//  -->
+  <!-- BOOKING MODAL -->
+  <div class="booking-modal" id="bookingModal" hidden aria-hidden="true" role="dialog" aria-modal="true"
+    aria-labelledby="bookingTitle">
+    <div class="booking-modal__backdrop" data-bm="backdrop"></div>
+
+    <div class="booking-modal__card" data-bm="card">
+      <button class="booking-modal__close" aria-label="Zamknij" data-bm="close">&times;</button>
+
+      <h3 id="bookingTitle" class="booking-modal__title">Umów spotkanie</h3>
+      <p class="booking-modal__lead">Wybierz preferowaną formę, termin i podaj dane kontaktowe.</p>
+
+      <!-- KROK 1: typ -->
+      <section class="booking-modal__section" data-step="type">
+        <div class="bm-type">
+          <label class="bm-type__opt">
+            <input type="radio" name="bm_type" value="IN_PERSON" checked>
+            <span>Na żywo (preferowane)</span>
+          </label>
+          <label class="bm-type__opt">
+            <input type="radio" name="bm_type" value="ONLINE">
+            <span>Online (Google Meet)</span>
+          </label>
+          <label class="bm-type__opt">
+            <input type="radio" name="bm_type" value="PHONE">
+            <span>Telefon</span>
+          </label>
+        </div>
+        <div class="bm-meta" id="bmLeadTime" hidden></div>
+        <div class="bm-actions">
+          <button class="bm-btn bm-btn--primary" data-bm="next-type">Dalej</button>
+        </div>
+      </section>
+
+      <!-- KROK 2: slot -->
+<section class="booking-modal__section" data-step="slot" hidden>
+  <h4 class="booking-modal__subtitle">Wybierz termin</h4>
+
+  <div class="bm-slots" id="bmSlots" aria-live="polite"></div>
+  <div class="bm-empty" id="bmEmpty" hidden>Brak wolnych terminów w najbliższym czasie.</div>
+  <p id="bmChosen" class="bm-chosen" hidden></p>
+
+  <!-- (opcjonalnie) przycisk doładowania kolejnych dni -->
+  <div class="bm-more" id="bmMoreWrap" hidden>
+    <button class="bm-btn" id="bmMoreBtn" type="button">Pokaż więcej terminów</button>
+  </div>
+
+  <div class="bm-actions">
+    <button class="bm-btn" data-bm="back-to-type">Wstecz</button>
+    <button class="bm-btn bm-btn--primary" data-bm="next-slot" disabled>Dalej</button>
+  </div>
+</section>
+
+
+
+      <!-- KROK 3: dane -->
+      <section class="booking-modal__section" data-step="details" hidden>
+        <h4 class="booking-modal__subtitle">Dane kontaktowe</h4>
+
+        <form id="bmForm" novalidate>
+          <div class="bm-field">
+            <label>Imię i nazwisko</label>
+            <input type="text" name="client_name" autocomplete="name" required>
+            <div class="bm-error" data-err="client_name"></div>
+          </div>
+
+          <div class="bm-field">
+            <label>E-mail</label>
+            <input type="email" name="client_email" autocomplete="email" inputmode="email" required>
+            <div class="bm-error" data-err="client_email"></div>
+          </div>
+
+          <div class="bm-field">
+            <label>Telefon</label>
+            <input type="tel" name="client_phone" autocomplete="tel" inputmode="tel">
+            <div class="bm-error" data-err="client_phone"></div>
+          </div>
+
+          <div class="bm-field" data-if="IN_PERSON" id="bmAddressWrap">
+            <label>Adres spotkania (wymagane dla spotkania na żywo)</label>
+            <input type="text" name="address">
+            <div class="bm-error" data-err="address"></div>
+          </div>
+
+          <div class="bm-field">
+            <label>Uwagi (opcjonalnie)</label>
+            <textarea name="notes" rows="3"></textarea>
+            <div class="bm-error" data-err="notes"></div>
+          </div>
+
+          <div class="bm-consent">
+            <label class="bm-check">
+              <input type="checkbox" name="consent" required>
+              <span>Wyrażam zgodę na kontakt w sprawie umówienia spotkania i akceptuję politykę prywatności.</span>
+            </label>
+            <div class="bm-error" data-err="consent"></div>
+          </div>
+
+          <div class="bm-actions">
+            <button class="bm-btn" data-bm="back-to-slot" type="button">Wstecz</button>
+            <button class="bm-btn bm-btn--primary" type="submit" data-bm="submit">Zarezerwuj termin</button>
+          </div>
+        </form>
+      </section>
+
+      <div class="bm-toast" id="bmToast" role="status" aria-live="polite"></div>
+    </div>
+  </div>
+  <!-- /BOOKING MODAL -->
 
 </body>
 
