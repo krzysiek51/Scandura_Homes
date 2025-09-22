@@ -287,7 +287,7 @@ app.post('/api/booking', async (req, res) => {
 
       await transport.sendMail({
         from: process.env.MAIL_FROM,
-        to:   `${customer.email}, sales@scandura.pl`,
+        to:   `${customer.email}, scanduranorge@gmail.com`,
         subject: 'Potwierdzenie rezerwacji — Scandura Homes',
         text:    `Twoja rezerwacja została potwierdzona (${type}), ${fmtISO(start)} – ${fmtISO(end)}.`,
         icalEvent: { method: 'REQUEST', content: ics }
@@ -352,7 +352,7 @@ app.post('/api/booking/:id/reschedule-link', async (req, res) => {
         </div>`;
       await transport.sendMail({
         from: process.env.MAIL_FROM,
-        to:   `${booking.customer.email}, sales@scandura.pl`,
+        to:   `${booking.customer.email}, scanduranorge@gmail.com`,
         subject: 'Scandura — linki do przełożenia / odwołania terminu',
         html
       });
@@ -460,7 +460,7 @@ app.post('/api/booking/reschedule', async (req, res) => {
         </div>`;
       await transport.sendMail({
         from: process.env.MAIL_FROM,
-        to:   `${booking.customer.email}, sales@scandura.pl`,
+        to:   `${booking.customer.email}, scanduranorge@gmail.com`,
         subject: 'Scandura — potwierdzenie przełożenia',
         html
       });
@@ -502,7 +502,7 @@ app.post('/api/booking/cancel', async (req, res) => {
         </div>`;
       await transport.sendMail({
         from: process.env.MAIL_FROM,
-        to:   `${booking.customer.email}, sales@scandura.pl`,
+        to:   `${booking.customer.email}, scanduranorge@gmail.com`,
         subject: 'Scandura — potwierdzenie odwołania',
         html
       });
