@@ -126,6 +126,16 @@ const bookingBodySchema = z.object({
   return true;
 }, { message: 'Address is required for IN_PERSON', path: ['address'] });
 
+// === Root (ping) ===
+app.get('/', (_req, res) => {
+  res.json({
+    ok: true,
+    name: 'Scandura API',
+    env: process.env.NODE_ENV || 'dev',
+    time: fmtISO(nowZ())
+  });
+});
+
 // === Healthcheck ===
 app.get('/health', (_req, res) => {
   res.json({ ok: true, time: fmtISO(nowZ()) });
@@ -377,7 +387,7 @@ async function getValidTokenRow(token) {
   return row;
 }
 
-// (b) Meta do frontu reschedule (widok może pokazać adres, typ, aktualny czas)
+// (b) Meta do frontu reschedule
 app.get('/api/reschedule-meta', async (req, res) => {
   try {
     const token = req.query.token?.toString() || '';
