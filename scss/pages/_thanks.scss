@@ -1,8 +1,5 @@
-@use '../utils/variables' as *; // jeśli masz taki plik z tokenami/breakpointami
-
-// Fallback, gdyby tokeny nie były dostępne:
-$bp-tablet: $bp-tablet or 744px;
-$bp-laptop: $bp-laptop or 1440px;
+// scss/pages/thanks.scss
+@use '../utils/variables' as *;
 
 .thanks-page {
   background: $color-beige-light-bg or #FAF7F4;
@@ -13,12 +10,9 @@ $bp-laptop: $bp-laptop or 1440px;
 }
 
 .thanks {
-  // centralny układ
   display: grid;
   place-items: center;
   text-align: center;
-
-  // „hero” wysokościowo – odklejone od headera/footera
   padding: 64px 20px;
   min-height: clamp(60dvh, 72dvh, 78dvh);
 
@@ -48,18 +42,15 @@ $bp-laptop: $bp-laptop or 1440px;
     align-items: center;
     justify-content: center;
     gap: 8px;
-
     min-height: 48px;
     padding: 0 20px;
     border-radius: 999px;
-
     background: $color-cta-bg or #000;
     color: #fff;
     font-weight: 600;
     font-size: 16px;
     line-height: 1;
     text-decoration: none;
-
     transition: transform .15s ease, opacity .15s ease, box-shadow .15s ease;
 
     &:hover { transform: translateY(-1px); }
@@ -67,21 +58,13 @@ $bp-laptop: $bp-laptop or 1440px;
   }
 }
 
-/* prosty fade-in, żeby strona „oddychała” */
 @keyframes thanks-fade {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.thanks__title, .thanks__text, .thanks .btn {
-  animation: thanks-fade .36s ease both;
-}
+.thanks__title, .thanks__text, .thanks .btn { animation: thanks-fade .36s ease both; }
 .thanks__text { animation-delay: .06s; }
 .thanks .btn  { animation-delay: .12s; }
 
-/* tablet+ – troszkę większe oddechy */
-@media (min-width: $bp-tablet) {
-  .thanks { padding: 96px 24px; }
-}
-@media (min-width: $bp-laptop) {
-  .thanks { padding: 120px 24px; }
-}
+@media (min-width: 744px) { .thanks { padding: 96px 24px; } }
+@media (min-width: 1440px) { .thanks { padding: 120px 24px; } }
