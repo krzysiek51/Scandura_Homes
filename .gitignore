@@ -51,3 +51,4 @@ css/*.map
 git rm --cached scandura-booking/google-token.json
 echo scandura-booking/google-token.json>> .gitignore
 git add .gitignore
+scandura-booking/google-token.json
