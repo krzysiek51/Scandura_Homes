@@ -621,6 +621,92 @@ html.nav-open, body.nav-open {
     pointer-events: auto;
   }
 }
+/* ===== PHONE w belce top — FINAL ===== */
+/* Baza (wspólne) */
+.header__call {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  z-index: 32;
+  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+}
+.header__call img {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+/* numer domyślnie ukryty */
+.header__call-text {
+  display: none;
+}
+
+/* === MOBILE (0–743px) — ikona tuż przy burgerze, bez numeru === */
+@media (max-width: 743px) {
+  .container.header__top {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  /* ustaw między logo a burgerem, dociśnij w prawo */
+  .header__call {
+    position: static; /* NIE centrować absolutnie */
+    margin-left: auto; /* wypchnij do prawej strony belki */
+    margin-right: 12px; /* odstęp od burgera */
+    padding: 10px; /* kompakt – tylko ikona */
+    border-radius: 8px;
+  }
+  .header__call-text {
+    display: none !important;
+  } /* tylko ikona */
+  /* gdy overlay menu otwarte – nie dubluj */
+  html.nav-open .header__call {
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+/* === TABLET (744–1439px) — pigułka na środku z numerem === */
+@media (min-width: 744px) and (max-width: 1439px) {
+  .container.header__top {
+    position: relative;
+  }
+  .header__call {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 14px;
+    gap: 10px;
+  }
+  .header__call-text {
+    display: inline;
+    opacity: 0.95;
+    font-size: 15px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  html.nav-open .header__call {
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+/* === DESKTOP (≥1440px) — ukryj, bo kontakt jest w nav-belce === */
+@media (min-width: 1440px) {
+  .header__call {
+    display: none;
+  }
+}
 /* =========================================================
    Sekcja: MISJA (mobile first)
    ========================================================= */
@@ -5191,6 +5277,36 @@ nav#mobile-menu .button--nav {
     visibility: visible;
   }
 }
+/* ===== Kontakty w overlay menu (mobile/tablet) ===== */
+.header__nav-contacts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 20px;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+}
+
+.header__nav-phone {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.header__nav-hours {
+  margin: 0;
+  opacity: 0.8;
+  font-size: 14px;
+}
+
+/* Na desktopowej belce nie pokazujemy tego bloku */
+@media (min-width: 1440px) {
+  .header__nav-contacts {
+    display: none;
+  }
+}
 .m-0 {
   margin-top: 0rem !important;
   margin-right: 0rem !important;
@@ -6958,6 +7074,79 @@ section.services.is-armed.is-inview .services__title .char {
     margin-top: 12px;
   }
 }
+/* =========================================
+   SMARTBAR — mobilny pasek akcji
+   ========================================= */
+.smartbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  padding: 10px 16px 12px;
+  background: rgba(17, 17, 17, 0.75);
+  backdrop-filter: blur(6px);
+  z-index: 2147483645;
+  transition: transform 220ms cubic-bezier(0.2, 0.7, 0.3, 1), opacity 220ms;
+}
+.smartbar.is-hidden {
+  transform: translateY(100%);
+  opacity: 0;
+}
+.smartbar[hidden] {
+  display: none !important;
+}
+
+.smartbar__btn {
+  flex: 1 1 0;
+  max-width: 420px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 48px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.2;
+  color: #111;
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  transition: transform 0.18s ease, background 0.18s ease;
+}
+.smartbar__btn img {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+.smartbar__btn:active {
+  transform: translateY(1px);
+}
+
+.smartbar__btn--call {
+  background: #fff;
+  color: #111;
+}
+
+.smartbar__btn--ai {
+  background: #DC9B59;
+  color: #111;
+}
+
+/* tylko mobile (0–743px) */
+@media (min-width: 744px) {
+  .smartbar {
+    display: none;
+  }
+}
+/* gdy overlay menu otwarte — schowaj */
+html.nav-open .smartbar {
+  display: none !important;
+}
+
 /* CTA konfiguratora (jeden plik - bez zadnych nakladek) */
 /* KONFIGURATOR (jeden agregat) */
 /* scss/konfigurator_header/index.scss */

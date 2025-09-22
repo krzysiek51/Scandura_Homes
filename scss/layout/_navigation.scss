@@ -273,3 +273,25 @@ nav#mobile-menu .button--nav { margin-right: 0; }
     visibility: visible;
   }
 }
+/* ===== Kontakty w overlay menu (mobile/tablet) ===== */
+.header__nav-contacts{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  margin-top:20px;
+  color:rgba(255,255,255,.8);
+  text-align:center;
+}
+.header__nav-phone{
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  letter-spacing:.2px;
+}
+.header__nav-hours{ margin:0; opacity:.8; font-size:14px; }
+
+/* Na desktopowej belce nie pokazujemy tego bloku */
+@media (min-width:1440px){
+  .header__nav-contacts{ display:none; }
+}
