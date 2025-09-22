@@ -24,7 +24,7 @@
 
 .header__logo--img {
   display: block;
-  height: 40px;          /* dostosuj do swojego */
+  height: 32px;          /* dostosuj do swojego */
   width: auto;
 }
 
@@ -484,56 +484,58 @@ html.nav-open, body.nav-open { overflow: hidden; }
 }
 
 
-/* ===== PHONE w belce top — FINAL ===== */
+/* === PHONE CALL LINK === */
+.header__call {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 64px; /* 🔑 regulujesz odstęp między burgerem a pigułką */
+  z-index: 35; 
+  pointer-events: auto;
 
-/* Baza (wspólne) */
-.header__call{
-  display:inline-flex; align-items:center; gap:8px;
-  min-height:44px; padding:10px 12px;
-  border-radius:999px;
-  background:rgba(255,255,255,.12);
-  border:1px solid rgba(255,255,255,.28);
-  backdrop-filter:blur(6px);
-  color:#fff; text-decoration:none; font-weight:700; letter-spacing:.2px;
-  box-shadow:0 6px 16px rgba(0,0,0,.20);
-  z-index:32;
-  transition:transform .18s ease, background .18s ease, border-color .18s ease;
-  img{display:block; width:20px; height:20px;}
-}
-/* numer domyślnie ukryty */
-.header__call-text{ display:none; }
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 
-/* === MOBILE (0–743px) — ikona tuż przy burgerze, bez numeru === */
-@media (max-width:743px){
-  .container.header__top{ position:relative; display:flex; align-items:center; }
-  /* ustaw między logo a burgerem, dociśnij w prawo */
-  .header__call{
-    position: static;               /* NIE centrować absolutnie */
-    margin-left:auto;               /* wypchnij do prawej strony belki */
-    margin-right:12px;              /* odstęp od burgera */
-    padding:10px;                   /* kompakt – tylko ikona */
-    border-radius:8px;
-  }
-  .header__call-text{ display:none !important; }  /* tylko ikona */
-  /* gdy overlay menu otwarte – nie dubluj */
-  html.nav-open .header__call{ visibility:hidden; pointer-events:none; }
+  min-height: 40px;
+  padding: 9px 12px;
+  border-radius: 1px;
+
+  background: rgba(255, 255, 255, .12);
+  border: 1px solid rgba(255, 255, 255, .28);
+  backdrop-filter: blur(6px);
+
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: .2px;
+  box-shadow: 0 6px 16px rgba(0,0,0,.20);
+  transition: transform .18s ease, background .18s ease, border-color .18s ease;
+
+  img { display: block; width: 20px; height: 20px; pointer-events: none; }
 }
 
-/* === TABLET (744–1439px) — pigułka na środku z numerem === */
-@media (min-width:744px) and (max-width:1439px){
-  .container.header__top{ position:relative; }
-  .header__call{
-    position:absolute; left:50%; top:50%;
-    transform:translate(-50%,-50%);
-    padding:10px 14px; gap:10px;
+/* mobile = tylko ikona */
+.header__call-text { display: none; pointer-events: none; }
+
+/* === TABLET (≥744px <1440px) — pokaż numer, ale też przy burgerze === */
+@media (min-width: 744px) and (max-width: 1439px) {
+  .header__call {
+    right: 94px;   /* 🔑 ten sam mechanizm odstępu co na mobile */
+    padding: 10px 14px;
+    gap: 10px;
   }
-  .header__call-text{
-    display:inline; opacity:.95; font-size:15px; line-height:1; white-space:nowrap;
+  .header__call-text {
+    display: inline;
+    opacity: .95;
+    font-size: 15px;
+    line-height: 1;
+    white-space: nowrap;
+    pointer-events: none;
   }
-  html.nav-open .header__call{ visibility:hidden; pointer-events:none; }
 }
 
-/* === DESKTOP (≥1440px) — ukryj, bo kontakt jest w nav-belce === */
-@media (min-width:1440px){
-  .header__call{ display:none; }
+/* === LAPTOP & DESKTOP (≥1440px) — ukryj === */
+@media (min-width: 1440px) {
+  .header__call { display: none; }
 }
