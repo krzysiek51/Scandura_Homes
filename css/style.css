@@ -11476,9 +11476,10 @@ main.pages__container > .container {
   }
 }
 /* =========================================================
-   CALLBACK POPUP — modal (flex-centered, bez poziomego „wycieku”)
+   CALLBACK POPUP — czysty, responsywny, bez wycieków
    ========================================================= */
-/* Lock scroll: overflow na html, kompensacja paska tylko na body */
+/* --- Breakpointy (zgodnie z Twoimi progami) --- */
+/* --- Scroll lock — kompensacja paska tylko na body --- */
 html.cb-lock {
   overflow-y: hidden;
 }
@@ -11489,7 +11490,7 @@ body.cb-lock {
   width: 100%;
 }
 
-/* Root popupa */
+/* --- Root popupa (port) --- */
 .callback-pop {
   position: fixed;
   inset: 0;
@@ -11499,14 +11500,14 @@ body.cb-lock {
   justify-content: center;
   /* oddech + notche */
   padding: max(16px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
-  pointer-events: none; /* blokuj klik, gdy zamknięty */
-  overflow-x: hidden;
+  pointer-events: none; /* zamknięty nie łapie klików */
+  overflow-x: hidden; /* anty poziomy scroll */
 }
 .callback-pop.is-active {
   pointer-events: auto;
 }
 
-/* Overlay */
+/* --- Overlay --- */
 .callback-pop__overlay {
   position: absolute;
   inset: 0;
@@ -11514,16 +11515,21 @@ body.cb-lock {
   opacity: 0;
   transition: opacity 0.18s ease;
 }
-.callback-pop__overlay.is-visible {
+.callback-pop.is-active .callback-pop__overlay {
   opacity: 1;
 }
+@media (prefers-reduced-motion: reduce) {
+  .callback-pop__overlay {
+    transition: none;
+  }
+}
 
-/* Karta (centruje się przez kontener flex) */
+/* --- Karta (content) --- */
 .callback-pop__card {
   position: relative;
   box-sizing: border-box;
   width: 100%;
-  /* nigdy nie wyjdzie poza ekran – odejmujemy padding kontenera (24+24) */
+  /* nie wyjdzie poza ekran – uwzględnia padding kontenera (24+24) */
   max-width: min(520px, 100dvw - 48px);
   max-height: calc(100dvh - 32px);
   overflow: auto;
@@ -11536,17 +11542,24 @@ body.cb-lock {
   opacity: 0;
   transition: transform 0.18s cubic-bezier(0.2, 0.6, 0.2, 1), opacity 0.18s ease;
 }
-.callback-pop__card.is-open {
+.callback-pop.is-active .callback-pop__card {
   transform: scale(1);
   opacity: 1;
 }
-
-/* Strzałka niepotrzebna przy centrowaniu */
-.callback-pop__arrow {
-  display: none;
+@media (min-width: 744px) {
+  .callback-pop__card {
+    padding: 24px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .callback-pop__card {
+    transition: none;
+    transform: none;
+    opacity: 1;
+  }
 }
 
-/* UI */
+/* --- Zamknij --- */
 .callback-pop__close {
   position: absolute;
   top: 8px;
@@ -11568,40 +11581,43 @@ body.cb-lock {
 .callback-pop__close:active {
   transform: translateY(1px);
 }
+@media (prefers-reduced-motion: reduce) {
+  .callback-pop__close {
+    transition: none;
+  }
+}
 
+/* --- Head --- */
 .callback-pop__title {
+  margin: 0 36px 6px 0; /* miejsce dla X */
   font-size: 20px;
   font-weight: 700;
   color: #0b0b0c;
-  margin: 0 32px 6px 0;
+}
+@media (min-width: 744px) {
+  .callback-pop__title {
+    font-size: 22px;
+  }
 }
 
 .callback-pop__lead {
+  margin: 0 0 14px;
   font-size: 14px;
   color: #555;
-  margin: 0 0 14px;
+}
+@media (min-width: 744px) {
+  .callback-pop__lead {
+    font-size: 15px;
+  }
 }
 
+/* --- Forma --- */
 .callback-pop__form {
   display: grid;
   gap: 12px;
 }
 
-.callback-pop__label {
-  font-weight: 600;
-  font-size: 14px;
-}
-
-/* Telefon + button w jednej linii */
-.callback-pop__field {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 8px;
-  align-items: center;
-  min-width: 0; /* bez rozpychania */
-}
-
-/* Imię + nazwisko (2 kolumny / 1 kolumna na bardzo wąskich) */
+/* Imię + Nazwisko (2 kolumny, na wąskich jedna) */
 .callback-pop__row {
   display: grid;
   gap: 8px;
@@ -11609,34 +11625,53 @@ body.cb-lock {
 }
 
 .callback-pop__row--2 {
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+@media (max-width: 480px) {
+  .callback-pop__row--2 {
+    grid-template-columns: 1fr;
+  }
 }
 
 .callback-pop__cell {
   display: flex;
   flex-direction: column;
   gap: 6px;
-}
-
-.callback-pop__row--2 .callback-pop__input {
   min-width: 0;
 }
 
-@media (max-width: 420px) {
-  .callback-pop__row--2 {
-    grid-template-columns: 1fr;
-  }
+.callback-pop__label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #222;
 }
-/* Input */
+
+/* Telefon + przycisk — PRZYCISK POD INPUTEM (pełna szerokość) */
+.callback-pop__field {
+  display: grid;
+  grid-template-columns: 1fr; /* 1 kolumna: input pełny, pod nim button */
+  gap: 8px;
+  align-items: stretch;
+  min-width: 0;
+}
+
+/* Inputy */
 .callback-pop__input {
   height: 48px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   border: 1px solid #ddd;
   border-radius: 12px;
   padding: 0 14px;
   font-size: 16px;
-  min-width: 0;
+  color: #111;
+  background: #fff;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.callback-pop__input::placeholder {
+  color: #bbb;
 }
 .callback-pop__input:focus {
   border-color: #DC9B59;
@@ -11644,11 +11679,20 @@ body.cb-lock {
 }
 .callback-pop__input.is-invalid {
   border-color: #e25454;
+  box-shadow: 0 0 0 4px rgba(226, 84, 84, 0.16);
+}
+@media (prefers-reduced-motion: reduce) {
+  .callback-pop__input {
+    transition: none;
+  }
 }
 
-/* Button */
+/* Button (100% szerokości pod telefonem) */
 .callback-pop__btn {
   height: 48px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   border: 0;
   border-radius: 12px;
   padding: 0 16px;
@@ -11666,8 +11710,13 @@ body.cb-lock {
   opacity: 0.6;
   cursor: not-allowed;
 }
+@media (prefers-reduced-motion: reduce) {
+  .callback-pop__btn {
+    transition: none;
+  }
+}
 
-/* Checkbox + tekst */
+/* Checkbox + opis */
 .callback-pop__consent {
   display: grid;
   grid-template-columns: 18px 1fr;
@@ -11682,7 +11731,13 @@ body.cb-lock {
 .callback-pop__consent a:hover {
   text-decoration: none;
 }
+.callback-pop__consent input[type=checkbox] {
+  inline-size: 18px;
+  block-size: 18px;
+  accent-color: #DC9B59; /* nowoczesny UA */
+}
 
+/* Hint i status */
 .callback-pop__hint {
   font-size: 12px;
   color: #777;
@@ -11692,6 +11747,7 @@ body.cb-lock {
 .callback-pop__status {
   font-size: 14px;
   min-height: 20px;
+  color: #2b2b2b;
 }
 
 /* Honeypot */
@@ -11704,82 +11760,47 @@ body.cb-lock {
   display: grid;
   gap: 12px;
 }
-
 .callback-pop__success .callback-pop__btn {
   width: 100%;
 }
 
-/* hidden MUSI ukrywać (gdy reset CSS go psuje) */
+/* Hard hide gdy globalny reset psuje [hidden] */
 .callback-pop [hidden] {
   display: none !important;
 }
 
-/* RWD */
-@media (min-width: 744px) {
-  .callback-pop__card {
-    padding: 24px;
-  }
-  .callback-pop__title {
-    font-size: 22px;
-  }
-  .callback-pop__lead {
-    font-size: 15px;
-  }
-}
-/* --- ANTY-OVERFLOW dla grida wewnątrz karty --- */
-.callback-pop__card, .callback-pop__card * {
+/* --- Micro-fixy anty-overflow (wszystko w box-sizing: border-box) --- */
+.callback-pop__card,
+.callback-pop__card * {
   box-sizing: border-box;
-}
-
-/* Telefon + przycisk */
-.callback-pop__field {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto; /* 1 kolumna elastyczna, nie wypycha */
-  gap: 8px;
-  align-items: center;
   min-width: 0;
 }
 
-/* Imię + Nazwisko */
-.callback-pop__row {
-  display: grid;
-  gap: 8px;
-  min-width: 0;
+/* --- Dodatkowe dopasowanie do szerokości viewportu na dużych ekranach --- */
+@media (min-width: 1440px) {
+  .callback-pop__card {
+    max-width: 560px;
+  }
 }
-
-.callback-pop__row--2 {
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-} /* kluczowe */
-.callback-pop__cell {
-  min-width: 0;
+@media (min-width: 1920px) {
+  .callback-pop__card {
+    max-width: 600px;
+  }
 }
-
-.callback-pop__row--2 .callback-pop__input {
-  min-width: 0;
-  width: 100%;
-}
-
-/* Inputy nigdy nie rozpychają kontenera */
-.callback-pop__input {
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
-}
-
-/* Przycisk nie wymusza poszerzenia kolumny */
-.callback-pop__btn {
-  max-width: 100%;
-  min-width: 0;
-  justify-self: end; /* trzyma się prawej w swojej kolumnie */
-  overflow: hidden; /* gdyby tekst był mega długi */
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* Na bardzo wąskich ekranach imię/nazwisko pod sobą */
-@media (max-width: 480px) {
-  .callback-pop__row--2 {
-    grid-template-columns: 1fr;
+/* =========================================================
+   Opcjonalny układ INLINE na szerokich (gdybyś chciał kiedyś
+   mieć telefon + button w 1 rzędzie na >= laptop)
+   — Wystarczy dodać modyfikator na kontener: .callback-pop__field--inline
+   ========================================================= */
+@media (min-width: 1440px) {
+  .callback-pop__field--inline {
+    grid-template-columns: minmax(0, 1fr) auto; /* input + wąski button */
+    align-items: center;
+  }
+  .callback-pop__field--inline .callback-pop__btn {
+    width: auto; /* przycisk dopasowany do treści */
+    justify-self: end;
+    white-space: nowrap;
   }
 }
 /* "Pusta kartka": chowamy tylko elementy do rysowania */
