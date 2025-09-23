@@ -8150,19 +8150,22 @@ body.cfg-open {
   overflow: hidden;
 }
 
-/* === BOOKING MODAL — Scandura colors (Dart Sass 3-ready) === */
+/* scss/components/_booking-modal.scss */
+/* === BOOKING MODAL — kompletny, Dart Sass 3-ready === */
 .booking-modal {
-  /* domyślnie ukryty */
+  /* domyślnie ukryty (zgodne ze starą logiką JS) */
   display: none;
   position: fixed;
   inset: 0;
-  z-index: 2147483647;
+  z-index: 2147483647; /* ponad burger overlay */
   align-items: center;
   justify-content: center;
+  /* safe-arey iOS + oddechy */
   padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
   background: rgba(0, 0, 0, 0.55);
   font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color: #1D1F2C;
+  /* Pokaż, gdy stara logika doda klasę/atrybut */
 }
 .booking-modal.is-open, .booking-modal.is-active, .booking-modal[data-open=true], .booking-modal[open], .booking-modal[aria-hidden=false] {
   display: flex;
@@ -8170,8 +8173,12 @@ body.cfg-open {
 .booking-modal[hidden] {
   display: none !important;
 }
+.booking-modal {
+  /* === KARTA === */
+}
 .booking-modal .booking-modal__card {
   width: min(520px, 100% - 32px);
+  /* iOS: dvh/svh + limit, przewijanie w środku karty */
   max-height: min(88dvh, 88svh, 720px);
   overflow: auto;
   -webkit-overflow-scrolling: touch;
@@ -8208,6 +8215,9 @@ body.cfg-open {
   font-size: 15px;
   font-weight: 700;
   margin: 8px 0;
+}
+.booking-modal {
+  /* === STICKY akcje na dole (zawsze widoczne przyciski) === */
 }
 .booking-modal .bm-actions {
   display: flex;
@@ -8249,6 +8259,54 @@ body.cfg-open {
 .booking-modal .bm-btn--primary:hover {
   filter: brightness(1.06);
 }
+.booking-modal {
+  /* === STEP 1 — TYPE === */
+}
+.booking-modal [data-step=type] .bm-type {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin: 10px 0 14px;
+}
+.booking-modal [data-step=type] .bm-type__opt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid rgba(151, 151, 151, 0.35);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.booking-modal [data-step=type] .bm-type__opt:hover {
+  background: rgb(253.1875, 252.1, 251.0125);
+  border-color: rgba(151, 151, 151, 0.55);
+}
+.booking-modal [data-step=type] .bm-type__opt input {
+  width: 18px;
+  height: 18px;
+  accent-color: #DC9B59;
+}
+.booking-modal [data-step=type] .bm-type__opt span {
+  font-size: 15px;
+  font-weight: 500;
+}
+.booking-modal #bmLeadTime {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #6B7280;
+}
+.booking-modal [data-step=type] .bm-actions {
+  margin-top: 18px;
+}
+.booking-modal [data-step=type] .bm-actions .bm-btn--primary {
+  width: 100%;
+  border-radius: 14px;
+}
+.booking-modal {
+  /* === STEP 2 — SLOTS === */
+}
 .booking-modal .bm-slots {
   flex: 1 1 auto;
   min-height: 0;
@@ -8286,6 +8344,11 @@ body.cfg-open {
   gap: 8px;
   padding: 10px 0 6px;
 }
+.booking-modal .bm-chosen {
+  font-size: 13px;
+  color: #6B7280;
+  margin: 6px 0 0;
+}
 .booking-modal .bm-slot {
   display: inline-flex;
   align-items: center;
@@ -8322,6 +8385,11 @@ body.cfg-open {
   outline: 2px solid #DC9B59;
   outline-offset: 2px;
 }
+.booking-modal .bm-more {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0 2px;
+}
 .booking-modal #bmMoreBtn {
   width: 100%;
   padding: 10px 12px;
@@ -8334,6 +8402,9 @@ body.cfg-open {
 }
 .booking-modal #bmMoreBtn:hover {
   background: #EAEAEA;
+}
+.booking-modal {
+  /* === STEP 3 — FORM === */
 }
 .booking-modal .bm-field {
   display: flex;
@@ -8369,6 +8440,9 @@ body.cfg-open {
   color: #B00020;
   font-size: 12px;
 }
+.booking-modal {
+  /* === RESPONSYWNOŚĆ siatki slotów === */
+}
 @media (min-width: 460px) {
   .booking-modal .bm-day__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -8378,6 +8452,9 @@ body.cfg-open {
   .booking-modal .bm-day__grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
+}
+.booking-modal {
+  /* === DARK MODE === */
 }
 @media (prefers-color-scheme: dark) {
   .booking-modal .booking-modal__card {
@@ -8428,12 +8505,9 @@ body.cfg-open {
   .booking-modal #bmLeadTime {
     color: #9AA0A6;
   }
-  .booking-modal .bm-toast {
-    background: #ffffff;
-    color: #000000;
-  }
 }
 
+/* blokada scrolla tła gdy modal otwarty */
 html.cb-lock, body.cb-lock {
   overflow: hidden;
   padding-right: var(--sbw, 0px);

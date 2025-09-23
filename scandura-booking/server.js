@@ -14,13 +14,30 @@ import {
   gcUpdateEvent, gcDeleteEvent
 } from './google-calendar.js';
 
-// === Konfiguracja ===
+/// === Konfiguracja ===
+import 'dotenv/config';
 const app = express();
 
-// CORS z ENV (lista po przecinku) + dev fallback
-const origins = (process.env.CORS_ORIGINS || 'http://127.0.0.1:5500,http://localhost:5500')
+// WHITELIST z .env (prod + lokal)
+const ALLOWED = (process.env.CORS_ORIGINS
+  || 'https://scandura.com.pl,https://www.scandura.com.pl,http://127.0.0.1:5501,http://localhost:5501')
   .split(',').map(s => s.trim()).filter(Boolean);
-app.use(cors({ origin: origins }));
+
+console.log('[CORS] allowed origins:', ALLOWED);
+
+// TWARDY middleware – ustawia nagłówki na KAŻDEJ odpowiedzi
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && ALLOWED.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  }
+  if (req.method === 'OPTIONS') return res.status(204).end();
+  next();
+});
 
 app.use(express.json());
 
