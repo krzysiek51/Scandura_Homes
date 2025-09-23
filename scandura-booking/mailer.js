@@ -3,14 +3,18 @@ import { createEvent } from 'ics';
 
 export function makeTransport() {
   return nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
+    host: process.env.SMTP_HOST || 'smtp.gmail.com',
     port: Number(process.env.SMTP_PORT || 587),
-    secure: false,
-    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+    secure: false,        // na 587 zawsze false
+    requireTLS: true,     // wymusza STARTTLS
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
   });
 }
 
-export function buildICS({ title, description, location, startISO, endISO /*, tz */ }) {
+export function buildICS({ title, description, location, startISO, endISO }) {
   const s = new Date(startISO);
   const e = new Date(endISO);
 
@@ -22,8 +26,7 @@ export function buildICS({ title, description, location, startISO, endISO /*, tz
     location,
     calName: 'Scandura Homes',
     status: 'CONFIRMED',
-    productId: 'scandura-homes/booking'
-    // UWAGA: bez `timezone` – ics tego klucza nie obsługuje
+    productId: 'scandura-homes/booking',
   };
 
   return new Promise((resolve, reject) =>
