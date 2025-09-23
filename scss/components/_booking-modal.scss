@@ -1,135 +1,181 @@
 @use '../utils/variables' as *;
+@use "sass:color";
 
-/* === BOOKING MODAL — Scandura colors === */
+/* === BOOKING MODAL — Scandura colors (Dart Sass 3-ready) === */
 
-.booking-modal{
-  position: fixed; inset: 0; z-index: 1000;
-  display:flex; align-items:center; justify-content:center;
-  padding:16px; background: rgba($color-black,.55);
+.booking-modal {
+  /* domyślnie ukryty */
+  display: none;
+  position: fixed; inset: 0;
+  z-index: 2147483647;
+  align-items: center; justify-content: center;
+
+  padding:
+    max(16px, env(safe-area-inset-top))
+    max(16px, env(safe-area-inset-right))
+    max(16px, env(safe-area-inset-bottom))
+    max(16px, env(safe-area-inset-left));
+
+  background: color.change($color-black, $alpha: 0.55);
   font-family: $ff; color: $color-dark-text;
-  &[hidden]{ display:none; }
 
-  .booking-modal__card{
-    width:min(520px,100%); max-height:90vh;
-    background:$color-white; color:$color-dark-text;
-    border-radius:16px; box-shadow:0 10px 30px rgba($color-black,.18);
-    padding:20px; display:flex; flex-direction:column;
+  &.is-open,
+  &.is-active,
+  &[data-open="true"],
+  &[open],
+  &[aria-hidden="false"] {
+    display: flex;
   }
 
-  .booking-modal__close{ position:absolute; top:10px; right:12px; border:0; background:transparent; color:$color-dark-text; font-size:22px; cursor:pointer; }
+  &[hidden] { display: none !important; }
 
-  .booking-modal__title{ font-weight:700; font-size:20px; letter-spacing:$h-title-ls; margin:0 0 6px; }
-  .booking-modal__lead{ font-size:$body-size; color:$color-light-text; margin:0 0 14px; }
-  .booking-modal__subtitle{ font-size:15px; font-weight:700; margin:8px 0; }
+  .booking-modal__card {
+    width: min(520px, 100% - 32px);
+    max-height: min(88dvh, 88svh, 720px);
+    overflow: auto; -webkit-overflow-scrolling: touch;
 
-  .bm-actions{ display:flex; gap:10px; margin-top:12px; }
-  .bm-btn{
-    flex:1; font-weight:$btn-weight; font-size:$btn-size; line-height:$btn-lh;
-    border-radius:12px; padding:12px 14px; cursor:pointer;
-    border:1px solid rgba($color-stroke-grey,.35);
-    background:$color-white; color:$color-dark-text;
-    transition:background .15s, border-color .15s, opacity .15s;
-    &:hover{ background: $color-beige-light-bg; border-color: rgba($color-stroke-grey,.55); }
-    &[disabled]{ opacity:.55; cursor:not-allowed; }
-    &--primary{ background:$color-cta-bg; color:$color-white; border-color:$color-cta-bg;
-      &:hover{ filter:brightness(1.06); }
+    display: flex; flex-direction: column;
+
+    background: $color-white; color: $color-dark-text;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px color.change($color-black, $alpha: 0.18);
+    padding: 20px;
+  }
+
+  .booking-modal__close {
+    position: absolute; top: 10px; right: 12px;
+    border: 0; background: transparent; color: $color-dark-text;
+    font-size: 22px; cursor: pointer;
+  }
+
+  .booking-modal__title { font-weight: 700; font-size: 20px; letter-spacing: $h-title-ls; margin: 0 0 6px; }
+  .booking-modal__lead { font-size: $body-size; color: $color-light-text; margin: 0 0 14px; }
+  .booking-modal__subtitle { font-size: 15px; font-weight: 700; margin: 8px 0; }
+
+  .bm-actions {
+    display: flex; gap: 10px; margin-top: 12px;
+    position: sticky; bottom: 0; z-index: 1;
+    background: linear-gradient(to bottom,
+      color.change($color-white, $alpha: 0) 0%,
+      color.change($color-white, $alpha: 1) 30%);
+    padding-top: 10px;
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+  }
+
+  .bm-btn {
+    flex: 1; font-weight: $btn-weight; font-size: $btn-size; line-height: $btn-lh;
+    border-radius: 12px; padding: 12px 14px; cursor: pointer;
+    border: 1px solid color.change($color-stroke-grey, $alpha: 0.35);
+    background: $color-white; color: $color-dark-text;
+    transition: background .15s, border-color .15s, opacity .15s;
+
+    &:hover {
+      background: $color-beige-light-bg;
+      border-color: color.change($color-stroke-grey, $alpha: 0.55);
+    }
+
+    &[disabled] { opacity: .55; cursor: not-allowed; }
+
+    &--primary {
+      background: $color-cta-bg; color: $color-white; border-color: $color-cta-bg;
+      &:hover { filter: brightness(1.06); }
     }
   }
 
-  .bm-toast{
-    position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
-    display:none; background:$color-cta-bg; color:$color-white;
-    padding:8px 12px; border-radius:8px; font-size:13px; z-index:1001;
+  .bm-slots {
+    flex: 1 1 auto; min-height: 0;
+    overflow: auto; -webkit-overflow-scrolling: touch;
+    padding-right: 6px; margin-bottom: 10px;
   }
 
-  /* STEP 1 – TYPE */
-  [data-step="type"] .bm-type{ display:grid; grid-template-columns:1fr; gap:10px; }
-  [data-step="type"] .bm-type__opt{
-    display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:12px;
-    background:$color-white; border:1px solid rgba($color-stroke-grey,.35); cursor:pointer;
-    transition:background .15s, border-color .15s;
-    &:hover{ background:$color-beige-light-bg; border-color:rgba($color-stroke-grey,.55); }
-    input{ width:18px; height:18px; accent-color:$color-accent; }
-    span{ font-size:15px; }
-  }
-  #bmLeadTime{ margin-top:8px; font-size:13px; color:$color-light-text; }
-  [data-step="type"] .bm-actions .bm-btn--primary{ width:100%; border-radius:14px; }
+  .bm-empty { font-size: 13px; color: $color-light-text; margin: 12px 0; }
 
-  /* STEP 2 – SLOTS */
-  .bm-slots{ max-height:520px; overflow-y:auto; padding-right:6px; margin-bottom:10px; }
-  .bm-empty{ font-size:13px; color:$color-light-text; margin:12px 0; }
+  .bm-day { margin-top: 10px; &:first-child { margin-top: 0; } }
 
-  .bm-day{ margin-top:10px; &:first-child{ margin-top:0; } }
-  .bm-day__header{
-    position:sticky; top:0; z-index:1;
-    background:$color-white; color:$color-dark-text;
-    padding:8px 2px 6px; border-bottom:1px solid rgba($color-stroke-grey,.2);
-    font-size:13px; font-weight:700; letter-spacing:.02em;
+  .bm-day__header {
+    position: sticky; top: 0; z-index: 2;
+    background: $color-white; color: $color-dark-text;
+    padding: 8px 2px 6px;
+    border-bottom: 1px solid color.change($color-stroke-grey, $alpha: 0.2);
+    font-size: 13px; font-weight: 700; letter-spacing: .02em;
   }
 
-  .bm-day__grid{
-    display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:8px; padding:10px 0 6px;
+  .bm-day__grid {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px; padding: 10px 0 6px;
   }
 
-  .booking-modal .bm-chosen { font-size: 13px; color: #6B7280; margin: 6px 0 0; }
+  .bm-slot {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 44px; padding: 10px 12px; white-space: nowrap;
+    border-radius: 14px; font-weight: 600; font-size: 13px; line-height: 1;
+    background: $color-beige-light-bg; color: $color-dark-text;
+    border: 1px solid color.change($color-stroke-grey, $alpha: 0.35);
+    transition: background .12s, border-color .12s, color .12s, box-shadow .12s, transform .06s;
 
+    strong { display: none; }
 
-  .bm-slot{
-    /* chip – spójny wymiar i brand */
-    display:inline-flex; align-items:center; justify-content:center;
-    min-height:44px; padding:10px 12px; white-space:nowrap;
-    border-radius:14px; font-weight:600; font-size:13px; line-height:1;
-    background:$color-beige-light-bg; color:$color-dark-text;
-    border:1px solid rgba($color-stroke-grey,.35);
-    transition:background .12s, border-color .12s, color .12s, box-shadow .12s, transform .06s;
-    strong{ display:none; } /* data jest w nagłówku dnia */
-    &:hover{ background: lighten($color-beige-light-bg, 2%); border-color: rgba($color-stroke-grey,.55); }
-    &:active{ transform: translateY(1px); }
-    &.is-active{
-      background:$color-accent; border-color:$color-accent; color:$color-white;
-      box-shadow:0 0 0 3px rgba($color-accent,.25);
+    &:hover {
+      background: color.adjust($color-beige-light-bg, $lightness: 2%);
+      border-color: color.change($color-stroke-grey, $alpha: 0.55);
     }
-    &:focus-visible{ outline:2px solid $color-accent; outline-offset:2px; }
-  }
 
-  .bm-more{ display:flex; justify-content:center; margin:8px 0 2px; }
-  #bmMoreBtn{
-    width:100%; padding:10px 12px; font-size:13px; font-weight:600;
-    border-radius:10px; border:1px solid rgba($color-stroke-grey,.35);
-    background:#F0F0F0; color:$color-dark-text;
-    &:hover{ background:#EAEAEA; }
-  }
+    &:active { transform: translateY(1px); }
 
-  /* STEP 3 – FORM */
-  .bm-field{ display:flex; flex-direction:column; gap:6px; margin:10px 0; }
-  .bm-field label{ font-size:13px; font-weight:700; }
-  .bm-field input, .bm-field textarea{
-    width:100%; font:inherit; color:inherit; background:$color-white;
-    border:1px solid rgba($color-stroke-grey,.35); border-radius:10px; padding:10px;
-  }
-  .bm-check{ display:flex; align-items:flex-start; gap:10px; font-size:14px; }
-  .bm-check input{ margin-top:2px; accent-color:$color-cta-bg; }
-  .bm-error{ min-height:16px; color:#B00020; font-size:12px; }
-
-  /* Dark mode – delikatnie, dalej w brandzie */
-  @media (prefers-color-scheme: dark){
-    .booking-modal__card{ background:#1A1A1A; color:#EAEAEA; }
-    .booking-modal__close{ color:#EAEAEA; }
-    .bm-day__header{ background:#1A1A1A; color:#EAEAEA; border-bottom-color:#333; }
-    .bm-slot{
-      background:#242424; border-color:#2E2E2E; color:#DDD;
-      &:hover{ background:#282828; border-color:#3A3A3A; }
-      &.is-active{ background:$color-accent; border-color:$color-accent; color:$color-white; box-shadow:0 0 0 3px rgba($color-accent,.25); }
+    &.is-active {
+      background: $color-accent; border-color: $color-accent; color: $color-white;
+      box-shadow: 0 0 0 3px color.change($color-accent, $alpha: 0.25);
     }
-    #bmMoreBtn{ background:#2A2A2A; color:#EEE; border-color:#3A3A3A; &:hover{ background:#323232; } }
-    .bm-btn{ background:#222; border-color:#333; color:#EAEAEA; }
-    .bm-btn--primary{ background:$color-white; color:$color-black; border-color:$color-white; }
-    #bmLeadTime{ color:#9AA0A6; }
-    .bm-toast{ background:$color-white; color:$color-black; }
+
+    &:focus-visible { outline: 2px solid $color-accent; outline-offset: 2px; }
   }
 
-  /* Kolumny slotów (równo) */
-  @media (min-width: 460px){ .bm-day__grid{ grid-template-columns:repeat(3,minmax(0,1fr)); } }
-  @media (min-width: 720px){ .bm-day__grid{ grid-template-columns:repeat(4,minmax(0,1fr)); } }
+  #bmMoreBtn {
+    width: 100%; padding: 10px 12px; font-size: 13px; font-weight: 600;
+    border-radius: 10px; border: 1px solid color.change($color-stroke-grey, $alpha: 0.35);
+    background: #F0F0F0; color: $color-dark-text;
+    &:hover { background: #EAEAEA; }
+  }
+
+  .bm-field { display: flex; flex-direction: column; gap: 6px; margin: 10px 0; }
+  .bm-field label { font-size: 13px; font-weight: 700; }
+  .bm-field input, .bm-field textarea {
+    width: 100%; font: inherit; color: inherit; background: $color-white;
+    border: 1px solid color.change($color-stroke-grey, $alpha: 0.35);
+    border-radius: 10px; padding: 10px;
+  }
+
+  .bm-check { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; }
+  .bm-check input { margin-top: 2px; accent-color: $color-cta-bg; }
+  .bm-error { min-height: 16px; color: #B00020; font-size: 12px; }
+
+  @media (min-width: 460px) { .bm-day__grid { grid-template-columns: repeat(3, minmax(0,1fr)); } }
+  @media (min-width: 720px) { .bm-day__grid { grid-template-columns: repeat(4, minmax(0,1fr)); } }
+
+  @media (prefers-color-scheme: dark) {
+    .booking-modal__card { background: #1A1A1A; color: #EAEAEA; }
+    .booking-modal__close { color: #EAEAEA; }
+    .bm-day__header { background: #1A1A1A; color: #EAEAEA; border-bottom-color: #333; }
+
+    .bm-slot {
+      background: #242424; border-color: #2E2E2E; color: #DDD;
+      &:hover { background: #282828; border-color: #3A3A3A; }
+      &.is-active {
+        background: $color-accent; border-color: $color-accent; color: $color-white;
+        box-shadow: 0 0 0 3px color.change($color-accent, $alpha: 0.25);
+      }
+    }
+
+    #bmMoreBtn { background: #2A2A2A; color: #EEE; border-color: #3A3A3A; &:hover { background: #323232; } }
+    .bm-btn { background: #222; border-color: #333; color: #EAEAEA; }
+    .bm-btn--primary { background: $color-white; color: $color-black; border-color: $color-white; }
+    #bmLeadTime { color: #9AA0A6; }
+    .bm-toast { background: $color-white; color: $color-black; }
+  }
+}
+
+html.cb-lock, body.cb-lock {
+  overflow: hidden;
+  padding-right: var(--sbw, 0px);
+  touch-action: none;
 }

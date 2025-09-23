@@ -8150,32 +8150,38 @@ body.cfg-open {
   overflow: hidden;
 }
 
-/* === BOOKING MODAL — Scandura colors === */
+/* === BOOKING MODAL — Scandura colors (Dart Sass 3-ready) === */
 .booking-modal {
+  /* domyślnie ukryty */
+  display: none;
   position: fixed;
   inset: 0;
-  z-index: 1000;
-  display: flex;
+  z-index: 2147483647;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
   background: rgba(0, 0, 0, 0.55);
   font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color: #1D1F2C;
 }
+.booking-modal.is-open, .booking-modal.is-active, .booking-modal[data-open=true], .booking-modal[open], .booking-modal[aria-hidden=false] {
+  display: flex;
+}
 .booking-modal[hidden] {
-  display: none;
+  display: none !important;
 }
 .booking-modal .booking-modal__card {
-  width: min(520px, 100%);
-  max-height: 90vh;
+  width: min(520px, 100% - 32px);
+  max-height: min(88dvh, 88svh, 720px);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
   background: #ffffff;
   color: #1D1F2C;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
   padding: 20px;
-  display: flex;
-  flex-direction: column;
 }
 .booking-modal .booking-modal__close {
   position: absolute;
@@ -8207,6 +8213,12 @@ body.cfg-open {
   display: flex;
   gap: 10px;
   margin-top: 12px;
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, white 30%);
+  padding-top: 10px;
+  padding-bottom: max(0px, env(safe-area-inset-bottom));
 }
 .booking-modal .bm-btn {
   flex: 1;
@@ -8237,65 +8249,11 @@ body.cfg-open {
 .booking-modal .bm-btn--primary:hover {
   filter: brightness(1.06);
 }
-.booking-modal .bm-toast {
-  position: fixed;
-  left: 50%;
-  bottom: 18px;
-  transform: translateX(-50%);
-  display: none;
-  background: #000000;
-  color: #ffffff;
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 13px;
-  z-index: 1001;
-}
-.booking-modal {
-  /* STEP 1 – TYPE */
-}
-.booking-modal [data-step=type] .bm-type {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-}
-.booking-modal [data-step=type] .bm-type__opt {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  border-radius: 12px;
-  background: #ffffff;
-  border: 1px solid rgba(151, 151, 151, 0.35);
-  cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
-}
-.booking-modal [data-step=type] .bm-type__opt:hover {
-  background: #FAF7F4;
-  border-color: rgba(151, 151, 151, 0.55);
-}
-.booking-modal [data-step=type] .bm-type__opt input {
-  width: 18px;
-  height: 18px;
-  accent-color: #DC9B59;
-}
-.booking-modal [data-step=type] .bm-type__opt span {
-  font-size: 15px;
-}
-.booking-modal #bmLeadTime {
-  margin-top: 8px;
-  font-size: 13px;
-  color: #6B7280;
-}
-.booking-modal [data-step=type] .bm-actions .bm-btn--primary {
-  width: 100%;
-  border-radius: 14px;
-}
-.booking-modal {
-  /* STEP 2 – SLOTS */
-}
 .booking-modal .bm-slots {
-  max-height: 520px;
-  overflow-y: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
   padding-right: 6px;
   margin-bottom: 10px;
 }
@@ -8313,7 +8271,7 @@ body.cfg-open {
 .booking-modal .bm-day__header {
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 2;
   background: #ffffff;
   color: #1D1F2C;
   padding: 8px 2px 6px;
@@ -8328,13 +8286,7 @@ body.cfg-open {
   gap: 8px;
   padding: 10px 0 6px;
 }
-.booking-modal .booking-modal .bm-chosen {
-  font-size: 13px;
-  color: #6B7280;
-  margin: 6px 0 0;
-}
 .booking-modal .bm-slot {
-  /* chip – spójny wymiar i brand */
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -8353,7 +8305,6 @@ body.cfg-open {
 .booking-modal .bm-slot strong {
   display: none;
 }
-.booking-modal .bm-slot { /* data jest w nagłówku dnia */ }
 .booking-modal .bm-slot:hover {
   background: rgb(253.1875, 252.1, 251.0125);
   border-color: rgba(151, 151, 151, 0.55);
@@ -8371,11 +8322,6 @@ body.cfg-open {
   outline: 2px solid #DC9B59;
   outline-offset: 2px;
 }
-.booking-modal .bm-more {
-  display: flex;
-  justify-content: center;
-  margin: 8px 0 2px;
-}
 .booking-modal #bmMoreBtn {
   width: 100%;
   padding: 10px 12px;
@@ -8388,9 +8334,6 @@ body.cfg-open {
 }
 .booking-modal #bmMoreBtn:hover {
   background: #EAEAEA;
-}
-.booking-modal {
-  /* STEP 3 – FORM */
 }
 .booking-modal .bm-field {
   display: flex;
@@ -8426,8 +8369,15 @@ body.cfg-open {
   color: #B00020;
   font-size: 12px;
 }
-.booking-modal {
-  /* Dark mode – delikatnie, dalej w brandzie */
+@media (min-width: 460px) {
+  .booking-modal .bm-day__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (min-width: 720px) {
+  .booking-modal .bm-day__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 @media (prefers-color-scheme: dark) {
   .booking-modal .booking-modal__card {
@@ -8483,18 +8433,11 @@ body.cfg-open {
     color: #000000;
   }
 }
-.booking-modal {
-  /* Kolumny slotów (równo) */
-}
-@media (min-width: 460px) {
-  .booking-modal .bm-day__grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-@media (min-width: 720px) {
-  .booking-modal .bm-day__grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
+
+html.cb-lock, body.cb-lock {
+  overflow: hidden;
+  padding-right: var(--sbw, 0px);
+  touch-action: none;
 }
 
 /* ABOUT */
@@ -11856,6 +11799,104 @@ main.pages__container > .container {
   .service-modal__backdrop,
   .service-modal__panel {
     transition: none;
+  }
+}
+/* =========================================================
+   THANKS PAGE — scoped, bez „or”, czysty Sass
+   ========================================================= */
+.thanks-page {
+  /* tło + domyślny kolor tekstu */
+  background: #FAF7F4;
+  color: #1D1F2C;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  /* (opcjonalnie) font z variables */
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif, sans-serif;
+}
+
+/* --- GŁÓWNA SEKCJA --- */
+.thanks {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 64px 20px;
+  min-height: 72dvh;
+}
+.thanks .container {
+  width: 100%;
+  max-width: 720px;
+  margin-inline: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.thanks__title {
+  font-weight: 700;
+  font-size: clamp(28px, 4.5vw, 40px);
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  margin: 0 0 16px;
+  color: #1D1F2C;
+  animation: thanks-fade 0.36s ease both;
+}
+.thanks__text {
+  font-size: clamp(15px, 2.8vw, 18px);
+  line-height: 1.6;
+  color: #6B7280;
+  margin: 0 0 28px;
+  animation: thanks-fade 0.36s ease both 0.06s;
+}
+.thanks {
+  /* --- PRZYCISK --- */
+}
+.thanks .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 999px;
+  background: #000000;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1;
+  letter-spacing: 0;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease;
+  animation: thanks-fade 0.36s ease both 0.12s;
+}
+.thanks .btn:hover {
+  transform: translateY(-1px);
+}
+.thanks .btn:active {
+  transform: translateY(0);
+  opacity: 0.9;
+}
+
+/* --- ANIMACJA --- */
+@keyframes thanks-fade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* --- BREAKPOINTY --- */
+@media (min-width: 744px) {
+  .thanks {
+    padding: 96px 24px;
+  }
+}
+@media (min-width: 1440px) {
+  .thanks {
+    padding: 120px 24px;
   }
 }
 /* =========================================================

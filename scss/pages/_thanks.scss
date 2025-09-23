@@ -1,14 +1,24 @@
 // scss/pages/thanks.scss
 @use '../utils/variables' as *;
 
+/* =========================================================
+   THANKS PAGE — scoped, bez „or”, czysty Sass
+   ========================================================= */
+
 .thanks-page {
-  background: $color-beige-light-bg or #FAF7F4;
-  color: $color-dark-text or #1D1F2C;
+  /* tło + domyślny kolor tekstu */
+  background: $color-beige-light-bg;
+  color: $color-dark-text;
+
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
+
+  /* (opcjonalnie) font z variables */
+  font-family: $ff, sans-serif;
 }
 
+/* --- GŁÓWNA SEKCJA --- */
 .thanks {
   display: grid;
   place-items: center;
@@ -20,6 +30,8 @@
     width: 100%;
     max-width: 720px;
     margin-inline: auto;
+    padding-left: $container-padding-left;
+    padding-right: $container-padding-right;
   }
 
   &__title {
@@ -28,43 +40,59 @@
     line-height: 1.15;
     letter-spacing: 0.01em;
     margin: 0 0 16px;
+    color: $color-dark-text;
+    animation: thanks-fade .36s ease both;
   }
 
   &__text {
     font-size: clamp(15px, 2.8vw, 18px);
     line-height: 1.6;
-    color: $color-light-text or #6B7280;
+    color: $color-light-text;
     margin: 0 0 28px;
+    animation: thanks-fade .36s ease both .06s;
   }
 
+  /* --- PRZYCISK --- */
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
+
     min-height: 48px;
     padding: 0 20px;
+
+    border: 0;
     border-radius: 999px;
-    background: $color-cta-bg or #000;
-    color: #fff;
+
+    background: $color-cta-bg;
+    color: $color-white;
+
     font-weight: 600;
-    font-size: 16px;
-    line-height: 1;
+    font-size: $btn-size;
+    line-height: $btn-lh;
+    letter-spacing: $btn-ls;
     text-decoration: none;
+    cursor: pointer;
+
     transition: transform .15s ease, opacity .15s ease, box-shadow .15s ease;
+    animation: thanks-fade .36s ease both .12s;
 
     &:hover { transform: translateY(-1px); }
     &:active { transform: translateY(0); opacity: .9; }
   }
 }
 
+/* --- ANIMACJA --- */
 @keyframes thanks-fade {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.thanks__title, .thanks__text, .thanks .btn { animation: thanks-fade .36s ease both; }
-.thanks__text { animation-delay: .06s; }
-.thanks .btn  { animation-delay: .12s; }
 
-@media (min-width: 744px) { .thanks { padding: 96px 24px; } }
-@media (min-width: 1440px) { .thanks { padding: 120px 24px; } }
+/* --- BREAKPOINTY --- */
+@media (min-width: $bp-tablet) {
+  .thanks { padding: 96px 24px; }
+}
+@media (min-width: $bp-laptop) {
+  .thanks { padding: 120px 24px; }
+}
