@@ -251,7 +251,7 @@ app.get('/api/slots/meta', (req, res) => {
 app.get('/api/slots', async (req, res) => {
   try {
     const qType = (req.query.type || 'IN_PERSON').toString();
-    const parseType = z.enum(['IN_PERSON', 'ONLINE', 'PHONE']).safeParse(qType);
+    const parseType = typeSchema.safeParse(qType);
     if (!parseType.success) return res.status(400).json({ error: 'Invalid type' });
     const type = parseType.data;
 
@@ -264,7 +264,12 @@ app.get('/api/slots', async (req, res) => {
     let cursor = roundUpToSlot(now.plus({ hours: lead }));
     const endRange = now.plus({ days });
 
-    const existing = await getExistingBookings(cursor, endRange);
+    // uwzględnij bufor przy pobieraniu istniejących rezerwacji
+    const PAD_MIN = IN_PERSON_BUFFER_MIN; // 45 min
+    const existing = await getExistingBookings(
+      cursor.minus({ minutes: PAD_MIN }),
+      endRange.plus({ minutes: PAD_MIN })
+    );
 
     const slots = [];
     while (cursor < endRange) {
@@ -272,6 +277,7 @@ app.get('/api/slots', async (req, res) => {
         cursor = cursor.plus({ minutes: SLOT_MINUTES });
         continue;
       }
+
       const start = cursor;
       const end   = cursor.plus({ minutes: SLOT_MINUTES });
 
@@ -281,12 +287,13 @@ app.get('/api/slots', async (req, res) => {
       cursor = cursor.plus({ minutes: SLOT_MINUTES });
     }
 
-    res.json({ type, tz: TZ, slotMinutes: SLOT_MINUTES, slots });
+    return res.json({ type, tz: TZ, slotMinutes: SLOT_MINUTES, slots });
   } catch (e) {
     console.error('GET /api/slots error:', e?.message, e?.stack || e);
     return res.status(500).json({ error: 'Internal error' });
   }
 });
+
 
 // === POST /api/booking ===
 app.post('/api/booking', async (req, res) => {
