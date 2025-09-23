@@ -145,58 +145,6 @@ const bookingBodySchema = z.object({
 }, { message: 'Address is required for IN_PERSON', path: ['address'] });
 
 
-// === Helper do ładnego maila z logo ===
-const TYPE_LABELS_PL = {
-  IN_PERSON: 'Spotkanie osobiste',
-  ONLINE: 'Spotkanie online',
-  PHONE: 'Rozmowa telefoniczna',
-};
-
-function fmtRangePretty(startISO, endISO) {
-  const s = toZdt(startISO).setLocale('pl');
-  const e = toZdt(endISO).setLocale('pl');
-  const left  = s.toFormat("ccc, d LLLL yyyy, HH:mm");
-  const right = e.toFormat("HH:mm");
-  return `${left} – ${right}`;
-}
-
-function buildConfirmationEmail({ name, type, startISO, endISO, address }) {
-  const typeLabel = TYPE_LABELS_PL[type] || type;
-  const dateLine  = fmtRangePretty(startISO, endISO);
-
-  return `
-  <div style="font-family:Arial,Helvetica,sans-serif;background:#f6f7f9;padding:24px;color:#0f172a">
-    <div style="max-width:640px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden">
-      <div style="padding:20px 24px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;gap:12px">
-        <img src="cid:scandura-logo" alt="Scandura Homes" style="height:28px;display:block" />
-        <span style="color:#64748b;font-size:14px">Potwierdzenie rezerwacji</span>
-      </div>
-
-      <div style="padding:24px">
-        <p style="margin:0 0 12px 0;color:#64748b;font-size:14px">Twoja rezerwacja została przyjęta</p>
-        <h1 style="margin:0 0 20px 0;font-size:22px;line-height:1.35;color:#0f172a">
-          Dziękujemy — potwierdzamy termin spotkania
-        </h1>
-
-        <div style="margin:18px 0">
-          <div style="margin:6px 0"><strong>Rodzaj:</strong> ${typeLabel}</div>
-          <div style="margin:6px 0"><strong>Data:</strong> ${dateLine}</div>
-          ${type === 'IN_PERSON' && address ? `<div style="margin:6px 0"><strong>Adres:</strong> ${address}</div>` : ''}
-        </div>
-
-        <div style="margin:22px 0;padding:14px 16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;color:#334155;font-size:14px">
-          Załączamy plik ICS — dodasz termin do kalendarza jednym kliknięciem.
-        </div>
-
-        <p style="margin-top:26px;color:#94a3b8;font-size:12px">
-          Ta wiadomość została wysłana automatycznie. Nie odpowiadaj na nią.
-        </p>
-      </div>
-    </div>
-  </div>`;
-}
-
-
 // === Root (ping) ===
 app.get('/', (_req, res) => {
   res.json({
@@ -378,7 +326,48 @@ app.post('/api/booking', async (req, res) => {
       }
     });
 
-   // Mail + ICS
+    // Mail + ICS
+    try {
+      const ics = await buildICS({
+        title: `Scandura booking (${type})`,
+        description: notes || '',
+        location: address || '',
+        startISO: start.toISO(),
+        endISO: end.toISO(),
+        tz: TZ
+      });
+
+      await transport.sendMail({
+        from: process.env.MAIL_FROM,
+        to: `${customer.email}, scanduranorge@gmail.com`,
+        subject: '✅ Potwierdzenie rezerwacji — Scandura Homes',
+        html: `
+      <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;padding:20px;border-radius:8px;border:1px solid #eee;background:#fafafa;color:#111;line-height:1.5">
+        <h2 style="color:#0057b7;margin-top:0">Potwierdzenie rezerwacji</h2>
+        <p>Dziękujemy, <strong>${customer.name}</strong>!</p>
+        <p>Twoja rezerwacja została potwierdzona:</p>
+        <table style="border-collapse:collapse;margin:16px 0">
+          <tr>
+            <td style="padding:6px 12px;font-weight:bold">Rodzaj:</td>
+            <td style="padding:6px 12px">${type === 'IN_PERSON' ? 'Spotkanie na żywo' : type}</td>
+          </tr>
+          <tr>
+            <td style="padding:6px 12px;font-weight:bold">Data i godzina:</td>
+            <td style="padding:6px 12px">${fmtISO(start)} – ${fmtISO(end)}</td>
+          </tr>
+          ${address ? `
+          <tr>
+            <td style="padding:6px 12px;font-weight:bold">Adres:</td>
+            <td style="padding:6px 12px">${address}</td>
+          </tr>` : ''}
+        </table>
+        <p>W załączniku znajdziesz plik kalendarza (.ics), który możesz dodać do swojego Google/Outlook/Apple Calendar.</p>
+        <p style="margin-top:20px">Do zobaczenia!<br><strong>Zespół Scandura Homes</strong></p>
+      </div>
+    `,
+        icalEvent: { method: 'REQUEST', content: ics }
+      });
+    } catch (err) { console.error('MAIL SEND ERROR:', err.message); }
 
     // Google Calendar — utwórz event i zapisz ID
     try {
