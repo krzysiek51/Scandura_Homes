@@ -55,6 +55,28 @@ const LEAD_HOURS = { IN_PERSON: 24, ONLINE: 2, PHONE: 2 };
 const MAX_RANGE_DAYS = 60;
 const PUBLIC_BASE = process.env.PUBLIC_BASE || 'http://localhost:3001';
 
+
+// === Schematy (globalne) ===
+const typeSchema = z.enum(['IN_PERSON', 'ONLINE', 'PHONE']);
+
+const bookingBodySchema = z.object({
+  customer: z.object({
+    name:  z.string().min(2),
+    email: z.string().email(),
+    phone: z.string().min(5)
+  }),
+  type: typeSchema,
+  startAt: z.string().refine((s) => !!DateTime.fromISO(s, { zone: TZ }).isValid, 'Invalid ISO date'),
+  endAt:   z.string().refine((s) => !!DateTime.fromISO(s, { zone: TZ }).isValid, 'Invalid ISO date'),
+  address: z.string().optional(),
+  notes:   z.string().optional()
+}).refine((data) => {
+  if (data.type === 'IN_PERSON') return !!data.address && data.address.trim().length > 3;
+  return true;
+}, { message: 'Address is required for IN_PERSON', path: ['address'] });
+
+
+
 // === Helpers czasu ===
 const nowZ  = () => DateTime.now().setZone(TZ);
 const toZdt = (iso) => DateTime.fromISO(iso, { zone: TZ });
@@ -298,23 +320,7 @@ app.get('/api/slots', async (req, res) => {
 // === POST /api/booking ===
 app.post('/api/booking', async (req, res) => {
   try {
-    const typeSchema = z.enum(['IN_PERSON', 'ONLINE', 'PHONE']);
-    const bookingBodySchema = z.object({
-      customer: z.object({
-        name:  z.string().min(2),
-        email: z.string().email(),
-        phone: z.string().min(5)
-      }),
-      type: typeSchema,
-      startAt: z.string().refine((s) => !!DateTime.fromISO(s, { zone: TZ }).isValid, 'Invalid ISO date'),
-      endAt:   z.string().refine((s) => !!DateTime.fromISO(s, { zone: TZ }).isValid, 'Invalid ISO date'),
-      address: z.string().optional(),
-      notes:   z.string().optional()
-    }).refine((data) => {
-      if (data.type === 'IN_PERSON') return !!data.address && data.address.trim().length > 3;
-      return true;
-    }, { message: 'Address is required for IN_PERSON', path: ['address'] });
-
+    // używamy globalnego bookingBodySchema (zdefiniowanego wyżej)
     const parsed = bookingBodySchema.safeParse(req.body);
     if (!parsed.success) {
       return res.status(400).json({ error: 'Validation error', details: parsed.error.flatten() });
@@ -336,6 +342,7 @@ app.post('/api/booking', async (req, res) => {
       });
     }
 
+    // pobieramy szeroki zakres istniejących rezerwacji; konflikt uwzględni bufor
     const existing = await getExistingBookings(start.minus({ days: 1 }), end.plus({ days: 1 }));
     const conflict = hasConflictWithBuffer(existing, start, end, type);
     if (conflict) return res.status(409).json({ error: 'Slot not available' });
@@ -393,7 +400,9 @@ app.post('/api/booking', async (req, res) => {
           },
         ],
       });
-    } catch (err) { console.error('MAIL SEND ERROR:', err.message); }
+    } catch (err) {
+      console.error('MAIL SEND ERROR:', err.message);
+    }
 
     // Google Calendar — utwórz event i zapisz ID
     try {
@@ -410,7 +419,9 @@ app.post('/api/booking', async (req, res) => {
       } else {
         console.warn('Google Calendar niepodłączony — otwórz /auth/google');
       }
-    } catch (err) { console.error('Google Calendar create error:', err?.message || err); }
+    } catch (err) {
+      console.error('Google Calendar create error:', err?.message || err);
+    }
 
     res.status(201).json({ ok: true, booking });
   } catch (e) {
@@ -418,6 +429,7 @@ app.post('/api/booking', async (req, res) => {
     res.status(500).json({ error: 'Internal error' });
   }
 });
+
 
 // ======== RESCHEDULE / CANCEL – HELPERS & ENDPOINTS ========
 
