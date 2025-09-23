@@ -206,6 +206,12 @@ app.get('/api/slots/meta', (req, res) => {
   const type = parseType.success ? parseType.data : 'IN_PERSON';
 
   const minStart = roundUpToSlot(nowZ().plus({ hours: LEAD_HOURS[type] }));
+
+  // no-cache dla meta też nie zaszkodzi
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+
   return res.json({
     nextAvailableAt: fmtISO(minStart),
     type,
@@ -214,7 +220,7 @@ app.get('/api/slots/meta', (req, res) => {
   });
 });
 
-// === GET /api/slots ===  (z „padem” pod bufor)
+// === GET /api/slots ===  (z „padem” pod bufor + no-cache)
 app.get('/api/slots', async (req, res) => {
   try {
     const qType = (req.query.type || 'IN_PERSON').toString();
@@ -231,9 +237,8 @@ app.get('/api/slots', async (req, res) => {
     let cursor = roundUpToSlot(now.plus({ hours: lead }));
     const endRange = now.plus({ days });
 
-    // KLUCZOWA ZMIANA: pobierz istniejące rezerwacje z zapasem (pad),
-    // by sloty „podcięte” buforem nie zostały uznane za wolne.
-    const PAD_MIN = type === 'IN_PERSON' ? IN_PERSON_BUFFER_MIN : 0;
+    // POBIERZ ISTNIEJĄCE Z ZAPASEM (pad), żeby nie pokazywać "brzegów" obciętych buforem
+    const PAD_MIN = IN_PERSON_BUFFER_MIN; // 45 min – wystarczy dla wszystkich typów
     const existing = await getExistingBookings(
       cursor.minus({ minutes: PAD_MIN }),
       endRange.plus({ minutes: PAD_MIN })
@@ -245,21 +250,30 @@ app.get('/api/slots', async (req, res) => {
         cursor = cursor.plus({ minutes: SLOT_MINUTES });
         continue;
       }
+
       const start = cursor;
       const end   = cursor.plus({ minutes: SLOT_MINUTES });
 
       const conflict = hasConflictWithBuffer(existing, start, end, type);
-      if (!conflict) slots.push({ startAt: fmtISO(start), endAt: fmtISO(end) });
+      if (!conflict) {
+        slots.push({ startAt: fmtISO(start), endAt: fmtISO(end) });
+      }
 
       cursor = cursor.plus({ minutes: SLOT_MINUTES });
     }
 
-    res.json({ type, tz: TZ, slotMinutes: SLOT_MINUTES, slots });
+    // WYŁĄCZ CACHE po stronie przeglądarki/CDN
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+
+    return res.json({ type, tz: TZ, slotMinutes: SLOT_MINUTES, slots });
   } catch (e) {
     console.error('GET /api/slots error:', e?.message, e?.stack || e);
     return res.status(500).json({ error: 'Internal error' });
   }
 });
+
 
 // === POST /api/booking ===
 app.post('/api/booking', async (req, res) => {
