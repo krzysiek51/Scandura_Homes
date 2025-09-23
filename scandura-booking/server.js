@@ -89,8 +89,8 @@ async function getExistingBookings(rangeStart, rangeEnd) {
     return await prisma.booking.findMany({
       where: {
         startAt: { lt: rangeEnd.toJSDate() },
-        endAt:   { gt: rangeStart.toJSDate() },
-        status:  { in: ['PENDING', 'CONFIRMED', 'RESCHEDULED'] }
+        endAt: { gt: rangeStart.toJSDate() },
+        status: { in: ['PENDING', 'CONFIRMED', 'RESCHEDULED'] }
       },
       select: { startAt: true, endAt: true, type: true }
     });
@@ -103,21 +103,21 @@ async function getExistingBookings(rangeStart, rangeEnd) {
 function hasConflictWithBuffer(existing, newStart, newEnd, newType) {
   for (const b of existing) {
     const eStart = DateTime.fromJSDate(b.startAt).setZone(TZ);
-    const eEnd   = DateTime.fromJSDate(b.endAt).setZone(TZ);
+    const eEnd = DateTime.fromJSDate(b.endAt).setZone(TZ);
 
     let aS = newStart, aE = newEnd;
-    let bS = eStart,   bE = eEnd;
+    let bS = eStart, bE = eEnd;
 
-    const newIsInPerson      = newType === 'IN_PERSON';
-    const existingIsInPerson = b.type  === 'IN_PERSON';
+    const newIsInPerson = newType === 'IN_PERSON';
+    const existingIsInPerson = b.type === 'IN_PERSON';
 
     if (newIsInPerson) {
       aS = aS.minus({ minutes: IN_PERSON_BUFFER_MIN });
-      aE = aE.plus ({ minutes: IN_PERSON_BUFFER_MIN });
+      aE = aE.plus({ minutes: IN_PERSON_BUFFER_MIN });
     }
     if (existingIsInPerson) {
       bS = bS.minus({ minutes: IN_PERSON_BUFFER_MIN });
-      bE = bE.plus ({ minutes: IN_PERSON_BUFFER_MIN });
+      bE = bE.plus({ minutes: IN_PERSON_BUFFER_MIN });
     }
 
     if (overlaps(aS, aE, bS, bE)) return true;
@@ -130,15 +130,15 @@ const typeSchema = z.enum(['IN_PERSON', 'ONLINE', 'PHONE']);
 
 const bookingBodySchema = z.object({
   customer: z.object({
-    name:  z.string().min(2),
+    name: z.string().min(2),
     email: z.string().email(),
     phone: z.string().min(5)
   }),
   type: typeSchema,
   startAt: z.string().refine((s) => !!DateTime.fromISO(s, { zone: TZ }).isValid, 'Invalid ISO date'),
-  endAt:   z.string().refine((s) => !!DateTime.fromISO(s, { zone: TZ }).isValid, 'Invalid ISO date'),
+  endAt: z.string().refine((s) => !!DateTime.fromISO(s, { zone: TZ }).isValid, 'Invalid ISO date'),
   address: z.string().optional(),
-  notes:   z.string().optional()
+  notes: z.string().optional()
 }).refine((data) => {
   if (data.type === 'IN_PERSON') return !!data.address && data.address.trim().length > 3;
   return true;
@@ -173,7 +173,7 @@ app.get('/debug/smtp', async (_req, res) => {
 const TOKEN_FILE = path.resolve('./google-token.json');
 initGoogleOAuth();
 if (fs.existsSync(TOKEN_FILE)) {
-  try { setStoredTokens(JSON.parse(fs.readFileSync(TOKEN_FILE, 'utf8'))); } catch {}
+  try { setStoredTokens(JSON.parse(fs.readFileSync(TOKEN_FILE, 'utf8'))); } catch { }
 }
 
 // Start OAuth – przekierowanie do Google
@@ -207,7 +207,7 @@ app.get('/api/slots/meta', (req, res) => {
 
   const minStart = roundUpToSlot(nowZ().plus({ hours: LEAD_HOURS[type] }));
 
-  // no-cache dla meta też nie zaszkodzi
+  // wyłącz cache
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
   res.set('Pragma', 'no-cache');
   res.set('Expires', '0');
@@ -216,11 +216,11 @@ app.get('/api/slots/meta', (req, res) => {
     nextAvailableAt: fmtISO(minStart),
     type,
     tz: TZ,
-    slotMinutes: SLOT_MINUTES
+    slotMinutes: SLOT_MINUTES,
   });
 });
 
-// === GET /api/slots ===  (z „padem” pod bufor + no-cache)
+// === GET /api/slots ===  (pobieranie z "padem" + no-cache)
 app.get('/api/slots', async (req, res) => {
   try {
     const qType = (req.query.type || 'IN_PERSON').toString();
@@ -237,8 +237,8 @@ app.get('/api/slots', async (req, res) => {
     let cursor = roundUpToSlot(now.plus({ hours: lead }));
     const endRange = now.plus({ days });
 
-    // POBIERZ ISTNIEJĄCE Z ZAPASEM (pad), żeby nie pokazywać "brzegów" obciętych buforem
-    const PAD_MIN = IN_PERSON_BUFFER_MIN; // 45 min – wystarczy dla wszystkich typów
+    // Klucz: pobierz istniejące z zapasem PAD_MIN (45m)
+    const PAD_MIN = IN_PERSON_BUFFER_MIN;
     const existing = await getExistingBookings(
       cursor.minus({ minutes: PAD_MIN }),
       endRange.plus({ minutes: PAD_MIN })
@@ -252,17 +252,15 @@ app.get('/api/slots', async (req, res) => {
       }
 
       const start = cursor;
-      const end   = cursor.plus({ minutes: SLOT_MINUTES });
+      const end = cursor.plus({ minutes: SLOT_MINUTES });
 
       const conflict = hasConflictWithBuffer(existing, start, end, type);
-      if (!conflict) {
-        slots.push({ startAt: fmtISO(start), endAt: fmtISO(end) });
-      }
+      if (!conflict) slots.push({ startAt: fmtISO(start), endAt: fmtISO(end) });
 
       cursor = cursor.plus({ minutes: SLOT_MINUTES });
     }
 
-    // WYŁĄCZ CACHE po stronie przeglądarki/CDN
+    // wyłącz cache
     res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
     res.set('Pragma', 'no-cache');
     res.set('Expires', '0');
@@ -273,6 +271,7 @@ app.get('/api/slots', async (req, res) => {
     return res.status(500).json({ error: 'Internal error' });
   }
 });
+
 
 
 // === POST /api/booking ===
@@ -286,7 +285,7 @@ app.post('/api/booking', async (req, res) => {
     const { customer, type, startAt, endAt, address, notes } = parsed.data;
 
     const start = toZdt(startAt);
-    const end   = toZdt(endAt);
+    const end = toZdt(endAt);
     if (!start.isValid || !end.isValid || end <= start) {
       return res.status(400).json({ error: 'Invalid time range' });
     }
@@ -299,12 +298,16 @@ app.post('/api/booking', async (req, res) => {
       });
     }
 
-    const existing = await getExistingBookings(start.minus({ days: 1 }), end.plus({ days: 1 }));
+    const PAD_MIN = IN_PERSON_BUFFER_MIN;
+    const existing = await getExistingBookings(
+      start.minus({ minutes: PAD_MIN }),
+      end.plus({ minutes: PAD_MIN })
+    );
     const conflict = hasConflictWithBuffer(existing, start, end, type);
     if (conflict) return res.status(409).json({ error: 'Slot not available' });
 
     const upsertedCustomer = await prisma.customer.upsert({
-      where:  { email: customer.email },
+      where: { email: customer.email },
       update: { name: customer.name, phone: customer.phone },
       create: { name: customer.name, email: customer.email, phone: customer.phone }
     });
@@ -315,10 +318,10 @@ app.post('/api/booking', async (req, res) => {
         type,
         status: 'CONFIRMED',
         startAt: start.toJSDate(),
-        endAt:   end.toJSDate(),
+        endAt: end.toJSDate(),
         tz: TZ,
         address: type === 'IN_PERSON' ? (address || null) : null,
-        notes:   notes || null
+        notes: notes || null
       }
     });
 
@@ -329,13 +332,13 @@ app.post('/api/booking', async (req, res) => {
         description: notes || '',
         location: address || '',
         startISO: start.toISO(),
-        endISO:   end.toISO(),
+        endISO: end.toISO(),
         tz: TZ
       });
 
       await transport.sendMail({
         from: process.env.MAIL_FROM,
-        to:   `${customer.email}, scanduranorge@gmail.com`,
+        to: `${customer.email}, scanduranorge@gmail.com`,
         subject: '✅ Potwierdzenie rezerwacji — Scandura Homes',
         html: `
       <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;padding:20px;border-radius:8px;border:1px solid #eee;background:#fafafa;color:#111;line-height:1.5">
@@ -373,7 +376,7 @@ app.post('/api/booking', async (req, res) => {
           description: notes || '',
           location: address || '',
           startISO: start.toISO(),
-          endISO:   end.toISO(),
+          endISO: end.toISO(),
           calendarId: process.env.GOOGLE_CALENDAR_ID || 'primary'
         });
         await prisma.booking.update({ where: { id: booking.id }, data: { googleEventId: eventId } });
@@ -410,7 +413,7 @@ app.post('/api/booking/:id/reschedule-link', async (req, res) => {
     });
 
     const rescheduleUrl = `${PUBLIC_BASE}/reschedule.html?token=${encodeURIComponent(token)}`;
-    const cancelUrl     = `${PUBLIC_BASE}/cancel.html?token=${encodeURIComponent(token)}`;
+    const cancelUrl = `${PUBLIC_BASE}/cancel.html?token=${encodeURIComponent(token)}`;
 
     try {
       const html = `
@@ -423,7 +426,7 @@ app.post('/api/booking/:id/reschedule-link', async (req, res) => {
         </div>`;
       await transport.sendMail({
         from: process.env.MAIL_FROM,
-        to:   `${booking.customer.email}, scanduranorge@gmail.com`,
+        to: `${booking.customer.email}, scanduranorge@gmail.com`,
         subject: 'Scandura — linki do przełożenia / odwołania terminu',
         html
       });
@@ -483,7 +486,7 @@ app.post('/api/booking/reschedule', async (req, res) => {
     const type = booking.type;
 
     const start = toZdt(startAt);
-    const end   = toZdt(endAt);
+    const end = toZdt(endAt);
     if (!start.isValid || !end.isValid || end <= start) {
       return res.status(400).json({ error: 'Invalid time range' });
     }
@@ -500,7 +503,7 @@ app.post('/api/booking/reschedule', async (req, res) => {
       where: { id: booking.id },
       data: {
         startAt: start.toJSDate(),
-        endAt:   end.toJSDate(),
+        endAt: end.toJSDate(),
         status: 'RESCHEDULED'
       }
     });
@@ -511,12 +514,12 @@ app.post('/api/booking/reschedule', async (req, res) => {
     try {
       if (hasValidAuth() && updated.googleEventId) {
         await gcUpdateEvent(updated.googleEventId, {
-          summary:     `Scandura booking (${type})`,
+          summary: `Scandura booking (${type})`,
           description: updated.notes || '',
-          location:    updated.address || '',
-          startISO:    DateTime.fromJSDate(updated.startAt).toISO(),
-          endISO:      DateTime.fromJSDate(updated.endAt).toISO(),
-          calendarId:  process.env.GOOGLE_CALENDAR_ID || 'primary'
+          location: updated.address || '',
+          startISO: DateTime.fromJSDate(updated.startAt).toISO(),
+          endISO: DateTime.fromJSDate(updated.endAt).toISO(),
+          calendarId: process.env.GOOGLE_CALENDAR_ID || 'primary'
         });
       }
     } catch (err) { console.error('Google Calendar update:', err.message); }
@@ -531,7 +534,7 @@ app.post('/api/booking/reschedule', async (req, res) => {
         </div>`;
       await transport.sendMail({
         from: process.env.MAIL_FROM,
-        to:   `${booking.customer.email}, scanduranorge@gmail.com`,
+        to: `${booking.customer.email}, scanduranorge@gmail.com`,
         subject: 'Scandura — potwierdzenie przełożenia',
         html
       });
@@ -573,7 +576,7 @@ app.post('/api/booking/cancel', async (req, res) => {
         </div>`;
       await transport.sendMail({
         from: process.env.MAIL_FROM,
-        to:   `${booking.customer.email}, scanduranorge@gmail.com`,
+        to: `${booking.customer.email}, scanduranorge@gmail.com`,
         subject: 'Scandura — potwierdzenie odwołania',
         html
       });
