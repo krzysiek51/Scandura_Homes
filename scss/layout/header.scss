@@ -417,6 +417,22 @@
   visibility: hidden !important;
 }
 
+/* Nav całkiem nieklikalne i niewidoczne gdy aria-hidden="true" */
+.header__nav[aria-hidden="true"] {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-100%);
+}
+
+/* Gdy otwarte (aria-hidden="false") — normalnie overlay */
+.header__nav[aria-hidden="false"] {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
 /* MOBILE+TABLET: menu zamknięte nie zasłania headera */
 @media (max-width: 1439px) {
   #mobile-menu[aria-hidden="true"] {
