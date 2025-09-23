@@ -345,26 +345,37 @@ app.post('/api/booking', async (req, res) => {
         tz: TZ
       });
 
-     await transport.sendMail({
-  from: process.env.MAIL_FROM,
-  to:   `${booking.customer.email}, scanduranorge@gmail.com`,
-  subject: '🔗 Scandura — linki do przełożenia / odwołania terminu',
-  html: emailTemplate({
-    title: 'Linki do zarządzania terminem',
-    intro: `Witaj <strong>${booking.customer.name}</strong>! Poniższe linki są ważne przez 72 godziny.`,
-    rows: [
-      ['Aktualny termin', `${fmtISO(DateTime.fromJSDate(booking.startAt))} – ${fmtISO(DateTime.fromJSDate(booking.endAt))}`],
-      ['Rodzaj', booking.type === 'IN_PERSON' ? 'Spotkanie na żywo' : booking.type],
-      ['Adres', booking.address || '—'],
-    ],
-    buttons: [
-      { href: rescheduleUrl, label: 'Przełóż termin' },
-      { href: cancelUrl,     label: 'Odwołaj termin' },
-    ],
-    note: 'Jeśli przyciski nie działają, skopiuj linki z paska adresu po wejściu w przycisk.'
-  })
-});
-
+      await transport.sendMail({
+        from: process.env.MAIL_FROM,
+        to: `${customer.email}, scanduranorge@gmail.com`,
+        subject: '✅ Potwierdzenie rezerwacji — Scandura Homes',
+        html: `
+      <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;padding:20px;border-radius:8px;border:1px solid #eee;background:#fafafa;color:#111;line-height:1.5">
+        <h2 style="color:#0057b7;margin-top:0">Potwierdzenie rezerwacji</h2>
+        <p>Dziękujemy, <strong>${customer.name}</strong>!</p>
+        <p>Twoja rezerwacja została potwierdzona:</p>
+        <table style="border-collapse:collapse;margin:16px 0">
+          <tr>
+            <td style="padding:6px 12px;font-weight:bold">Rodzaj:</td>
+            <td style="padding:6px 12px">${type === 'IN_PERSON' ? 'Spotkanie na żywo' : type}</td>
+          </tr>
+          <tr>
+            <td style="padding:6px 12px;font-weight:bold">Data i godzina:</td>
+            <td style="padding:6px 12px">${fmtISO(start)} – ${fmtISO(end)}</td>
+          </tr>
+          ${address ? `
+          <tr>
+            <td style="padding:6px 12px;font-weight:bold">Adres:</td>
+            <td style="padding:6px 12px">${address}</td>
+          </tr>` : ''}
+        </table>
+        <p>W załączniku znajdziesz plik kalendarza (.ics), który możesz dodać do swojego Google/Outlook/Apple Calendar.</p>
+        <p style="margin-top:20px">Do zobaczenia!<br><strong>Zespół Scandura Homes</strong></p>
+      </div>
+    `,
+        icalEvent: { method: 'REQUEST', content: ics }
+      });
+    } catch (err) { console.error('MAIL SEND ERROR:', err.message); }
 
     // Google Calendar — utwórz event i zapisz ID
     try {
