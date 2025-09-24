@@ -740,3 +740,81 @@ body.services-page .header_logo-bg {
     pointer-events: auto !important;
   }
 }
+
+
+/* === /services — NAV & MENU FIX (mobile + tablet) === */
+@media (max-width: ($bp-laptop - 1)) {
+  /* 0) nic w headerze nie tworzy „pułapki” dla fixed */
+  .services-page .header,
+  .services-page .header__wrap {
+    transform: none !important;
+    filter: none !important;
+    will-change: auto !important;
+    z-index: auto !important;
+  }
+
+  /* 1) BELKA: fixed na topie, ponad contentem, klikalne dzieci */
+  .services-page .header .container.header__top {
+    position: fixed !important;
+    top: 0; left: 0; right: 0;
+    height: var(--nav-h);
+    padding-inline: var(--content-x);
+    display: flex; align-items: center; justify-content: space-between;
+
+    z-index: 10000 !important;         /* nad sekcjami */
+    background: rgba(17,17,17,.72);     /* jak na mobile/tablet */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(0,0,0,.18);
+    box-shadow: 0 4px 6px rgba(0,0,0,.12);
+
+    pointer-events: none !important;    /* kontener nie blokuje klików */
+    transition: transform .22s cubic-bezier(.2,.7,.3,1), background .18s ease;
+  }
+  .services-page .header .container.header__top > * {
+    pointer-events: auto !important;    /* ale logo/burger/telefon klikają się */
+  }
+
+  /* 2) AUTOHIDE – jak na index (body dostaje .nav-hidden) */
+  .services-page.nav-hidden .header .container.header__top {
+    transform: translateY(-100%);
+  }
+
+  /* 3) MENU MOBILNE: pełny ekran i NA WIERZCHU nad belką */
+  .services-page .header__nav {
+    position: fixed !important;
+    inset: 0 !important;
+    padding-top: calc(env(safe-area-inset-top, 0px) + var(--nav-h));
+    //background: rgba(0,0,0,.86);
+   // backdrop-filter: blur(2px);
+    z-index: 10001 !important;          /* > z-index belki */
+  }
+  #mobile-menu[aria-hidden="true"]  { display: none !important; }
+  #mobile-menu[aria-hidden="false"] { display: block !important; }
+
+  /* 4) Treść strony odsunięta pod belkę */
+  .services-page main { padding-top: var(--nav-h) !important; }
+
+  /* 5) Sekcje nie wchodzą ponad belkę (zero „pięter”) */
+  .services-page .services-hero,
+  .services-page .services-list,
+  .services-page .services-faq,
+  .services-page .process-steps,
+  .services-page .timeline,
+  .services-page .process-card {
+    position: relative !important;
+    z-index: 0 !important;
+    transform: none !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+  }
+
+  /* 6) Overlaye w headerze nie łapią klików */
+  .services-page .header::before,
+  .services-page .header::after,
+  .services-page .header__overlay,
+  .services-page .header__video {
+    pointer-events: none !important;
+    z-index: 0 !important;
+  }
+}

@@ -1,82 +1,118 @@
-// (() => {
-//   const MQ_MAX = '(max-width: 1439px)'; // tylko mobile+tablet
-//   const mq = window.matchMedia(MQ_MAX);
+// /js/autohide-nav.js — bulletproof: hit-test bar + logo, no nav-hidden
+(() => {
+  'use strict';
 
-//   const bar     = document.querySelector('.header__top');
-//   const spacer  = document.querySelector('.header__spacer');
-//   const nav     = document.querySelector('nav#mobile-menu.header__nav');
-//   const burger  = document.getElementById('burger-toggle');
-//   const btnClose= nav?.querySelector('.header__nav-close');
+  /** pick the real TOP BAR by hit-testing the top edge and climbing to a sane-height ancestor */
+  const climbToBar = (el) => {
+    while (el && el !== document.body && el !== document.documentElement) {
+      const r = el.getBoundingClientRect();
+      // Pasek ma zwykle 40–160 px i pełną szerokość (nie wymagamy fixed: czasem fixed ma rodzic)
+      if (r.height >= 40 && r.height <= 160 && r.top > -4 && r.top < 40 && r.width >= window.innerWidth * 0.5) {
+        return el;
+      }
+      el = el.parentElement;
+    }
+    return null;
+  };
 
-//   if (!bar || !spacer || !nav) return;
+  const pickBar = () => {
+    const pts = [12, 20, 28]; // różne wysokości nad krawędzią
+    const xs  = [8, Math.floor(window.innerWidth/2), Math.max(8, window.innerWidth - 8)];
+    for (const y of pts) {
+      for (const x of xs) {
+        const hit = document.elementFromPoint(x, y);
+        const bar = climbToBar(hit);
+        if (bar) return bar;
+      }
+    }
+    // awaryjnie spróbuj klasycznych selektorów
+    return (
+      document.querySelector('.header .container.header__top') ||
+      document.querySelector('.container.header__top') ||
+      document.querySelector('.header .header__top') ||
+      document.querySelector('.header__top')
+    );
+  };
 
-//   const setHeaderHeight = () => {
-//     if (!mq.matches) {               // na ≥1440 spacer niepotrzebny
-//       document.documentElement.style.setProperty('--header-h', '0px');
-//       return;
-//     }
-//     const h = bar.offsetHeight || 56;
-//     document.documentElement.style.setProperty('--header-h', `${h}px`);
-//   };
+  let BAR  = pickBar();
+  const LOGO =
+    document.querySelector('.header .header__logo') ||
+    document.querySelector('.header__logo');
 
-//   const onScroll = () => {
-//     if (!mq.matches) return;
-//     const y = window.scrollY || window.pageYOffset;
-//     if (y > 2) bar.classList.add('is-scrolled');
-//     else bar.classList.remove('is-scrolled');
-//   };
+  if (!BAR) {
+    console.warn('[autohide] BAR not found. Check structure.');
+    return;
+  }
 
-//   const openNav = () => {
-//     if (!mq.matches) return;                // overlay tylko <1440
-//     nav.classList.add('is-open');
-//     document.documentElement.classList.add('nav-lock');
-//     document.body.classList.add('nav-lock');
-//     nav.setAttribute('aria-hidden', 'false');
-//     (nav.querySelector('.header__nav-link, .button--nav, .header__nav-close'))?.focus?.();
-//   };
+  // prepare identical transition (no desync)
+  const prep = (el) => {
+    if (!el) return;
+    el.style.willChange = 'transform';
+    el.style.backfaceVisibility = 'hidden';
+    el.style.transition = 'transform 0.22s cubic-bezier(.2,.7,.3,1)';
+    el.style.transform  = 'translate3d(0,0,0)';
+  };
+  const prepAll = () => { prep(BAR); prep(LOGO); };
 
-//   const closeNav = () => {
-//     nav.classList.remove('is-open');
-//     document.documentElement.classList.remove('nav-lock');
-//     document.body.classList.remove('nav-lock');
-//     nav.setAttribute('aria-hidden', 'true');
-//     burger?.focus?.();
-//   };
+  const show = () => {
+    BAR.style.transform = 'translate3d(0,0,0)';
+    if (LOGO) LOGO.style.transform = 'translate3d(0,0,0)';
+  };
+  const hide = () => {
+    BAR.style.transform = 'translate3d(0,-100%,0)';
+    if (LOGO) LOGO.style.transform = 'translate3d(0,-100%,0)';
+  };
 
-//   // Init + listeners (aktywne tylko, gdy mq.matches)
-//   const enable = () => {
-//     setHeaderHeight(); onScroll();
-//     window.addEventListener('scroll', onScroll, { passive: true });
-//     window.addEventListener('resize', setHeaderHeight, { passive: true });
-//     window.addEventListener('orientationchange', setHeaderHeight, { passive: true });
-//     burger?.addEventListener('click', onBurger);
-//     btnClose?.addEventListener('click', onClose);
-//     document.addEventListener('keydown', onEsc);
-//     if (document.fonts?.ready) document.fonts.ready.then(setHeaderHeight).catch(()=>{});
-//   };
-//   const disable = () => {
-//     document.documentElement.style.setProperty('--header-h', '0px');
-//     bar.classList.remove('is-scrolled');
-//     closeNav();
-//     window.removeEventListener('scroll', onScroll);
-//     window.removeEventListener('resize', setHeaderHeight);
-//     window.removeEventListener('orientationchange', setHeaderHeight);
-//     burger?.removeEventListener('click', onBurger);
-//     btnClose?.removeEventListener('click', onClose);
-//     document.removeEventListener('keydown', onEsc);
-//   };
+  // Apple-like thresholds
+  const HIDE_TH = 24, SHOW_TH = 12, MIN_D = 1;
+  let lastY = window.scrollY || 0, acc = 0, ticking = false;
 
-//   const onBurger = (e) => { e.preventDefault(); nav.classList.contains('is-open') ? closeNav() : openNav(); };
-//   const onClose  = (e) => { e.preventDefault(); closeNav(); };
-//   const onEsc    = (e) => { if (e.key === 'Escape' && nav.classList.contains('is-open')) closeNav(); };
+  // If mobile menu is open → keep bar visible
+  const MENU = document.getElementById('mobile-menu');
+  const isMenuOpen = () => MENU && MENU.getAttribute('aria-hidden') === 'false';
 
-//   const sync = () => { mq.matches ? enable() : disable(); };
-//   mq.addEventListener?.('change', sync);
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y  = window.scrollY || 0;
+      const dy = y - lastY;
+      lastY = y;
 
-//   // start
-//   if (document.readyState === 'loading') {
-//     document.addEventListener('DOMContentLoaded', () => requestAnimationFrame(sync));
-//   } else {
-//     requestAnimationFrame(sync);
-//   }
-// })();
+      if (isMenuOpen() || y <= 0) { show(); acc = 0; ticking = false; return; }
+      if (Math.abs(dy) < MIN_D)   { ticking = false; return; }
+
+      if (dy > 0) { // down
+        acc = acc >= 0 ? acc + dy : dy;
+        if (acc > HIDE_TH) { hide(); acc = 0; }
+      } else {       // up
+        const up = -dy;
+        acc = acc <= 0 ? acc - up : -up;
+        if (-acc > SHOW_TH) { show(); acc = 0; }
+      }
+      ticking = false;
+    });
+  };
+
+  const onResize = () => {
+    // re-detect the bar if layout changed
+    const prev = BAR;
+    BAR = pickBar() || prev;
+    prepAll();
+    show();
+    acc = 0; lastY = window.scrollY || 0;
+  };
+
+  // keep visible while menu open
+  if (MENU) {
+    new MutationObserver(() => { if (isMenuOpen()) show(); })
+      .observe(MENU, { attributes: true, attributeFilter: ['aria-hidden'] });
+  }
+
+  // init
+  prepAll();
+  show();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onResize, { passive: true });
+  window.addEventListener('orientationchange', onResize);
+})();

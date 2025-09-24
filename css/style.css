@@ -530,7 +530,7 @@ body {
 /* Ukryte menu i overlay NIE mogą łapać klików */
 .nav-overlay.is-hidden,
 .mobile-menu.is-hidden {
-  display: none !important;
+  display: none;
   pointer-events: none !important;
   visibility: hidden !important;
 }
@@ -728,6 +728,192 @@ body.about main {
   padding-top: var(--nav-h);
 }
 
+/* === INDEX — NAV + MENU FIX (mobile & tablet) === */
+@media (max-width: 1439px) {
+  /* 0) bez pułapek dla fixed */
+  .header,
+  .header__wrap {
+    transform: none !important;
+    filter: none !important;
+    will-change: auto !important;
+    z-index: auto !important;
+  }
+  /* 1) belka: fixed, nad treścią, dzieci klikalne */
+  .header .container.header__top {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--nav-h);
+    padding-inline: var(--content-x);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10000 !important;
+    /* brak blur i brak przyciemniania (utrzymujemy Twój wygląd) */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.18);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.12);
+    pointer-events: none !important;
+    transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.3, 1), background 0.18s ease;
+  }
+  .header .container.header__top > * {
+    pointer-events: auto !important;
+  }
+  /* 2) autohide */
+  .nav-hidden .header .container.header__top {
+    transform: translateY(-100%);
+  }
+  /* 3) overlay menu */
+  #mobile-menu {
+    position: fixed !important;
+    inset: 0 !important;
+    padding-top: calc(env(safe-area-inset-top, 0px) + var(--nav-h));
+    z-index: 10001 !important;
+  }
+  #mobile-menu[aria-hidden=true] {
+    display: none !important;
+    pointer-events: none !important;
+  }
+  #mobile-menu[aria-hidden=false] {
+    display: block !important;
+    pointer-events: auto !important;
+  }
+  /* 4) odsunięcie treści */
+  body.home main,
+  body.index main,
+  .header + main {
+    padding-top: var(--nav-h) !important;
+  }
+  /* 5) dekoracje nie łapią klików */
+  .header::before, .header::after, .header__overlay, .header__video {
+    pointer-events: none !important;
+    z-index: 0 !important;
+  }
+  /* 6) (opcjonalny) reset pozycji w mob/tablet, żeby nie zbić desktop fixed */
+  .header .container.header__top {
+    position: fixed !important;
+  } /* już mamy fixed w tym bloku */
+}
+/* Belka tła — DOTYCZY TYLKO ≤1439px (drugi, dublujący blok usuń) */
+/* === DESKTOP (≥1440) — belka fixed + autohide (logo już masz fixed) === */
+@media (min-width: 1440px) {
+  .header, .header__wrap {
+    transform: none !important;
+    filter: none !important;
+    will-change: auto !important;
+  }
+  .header .container.header__top {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--nav-h);
+    z-index: 10000;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 0;
+    box-shadow: none;
+    pointer-events: none;
+    transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+  .header .container.header__top > * {
+    pointer-events: auto;
+  }
+  .header__logo {
+    position: fixed !important;
+    top: 0;
+    left: var(--content-x);
+    height: var(--nav-h);
+    z-index: 10001;
+    transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+  /* autohide: chowamy belkę i logo */
+  .nav-hidden .header .container.header__top {
+    transform: translateY(-100%) !important;
+  }
+  .nav-hidden .header__logo {
+    transform: translateY(-100%) !important;
+  }
+}
+/* === GLOBAL: brak blur wszędzie (uciszenie lintera, zero zmiany wyglądu) === */
+.header .container.header__top {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* odsunięcie treści (fallback) */
+.header + main, body.home main, body.index main {
+  padding-top: var(--nav-h);
+}
+
+/* === AUTOHIDE: LAPTOP+DESKTOP — przesuń WSZYSTKIE możliwe „belki” === */
+@media (min-width: 1440px) {
+  /* przygotuj elementy do animacji */
+  .header .container.header__top,
+  .header .header__top,
+  .header__wrap {
+    will-change: transform;
+    transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.3, 1);
+    transform: translateZ(0); /* Safari/GPU nudge */
+  }
+  /* chowaj pasek przy .nav-hidden – obejmij każdy wariant */
+  html.nav-hidden .header .container.header__top,
+  html.nav-hidden .header .header__top,
+  html.nav-hidden .header__wrap {
+    transform: translate3d(0, -100%, 0) !important;
+  }
+  /* logo już masz – dorzucam 3D dla spójności */
+  html.nav-hidden .header__logo {
+    transform: translate3d(0, -100%, 0) !important;
+  }
+}
+@media (min-width: 1440px) {
+  /* belka — zostaje jak jest */
+  .header .container.header__top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--nav-h);
+    z-index: 10000; /* pasek poniżej logo */
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    will-change: transform;
+    transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+  /* LOGO — ten selektor jest bardziej specyficzny niż .header__logo */
+  .header .header__logo {
+    position: fixed !important;
+    top: 0;
+    left: var(--content-x);
+    height: var(--nav-h);
+    display: flex;
+    align-items: center;
+    z-index: 11000 !important; /* ↑ nad belką */
+    pointer-events: auto;
+    will-change: transform;
+    transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.3, 1);
+    transform: translateZ(0);
+  }
+  .header__logo img {
+    display: block;
+    height: 60px;
+    width: auto;
+  }
+  /* autohide: chowaj obie warstwy */
+  html.nav-hidden .header .container.header__top {
+    transform: translate3d(0, -100%, 0) !important;
+  }
+  html.nav-hidden .header .header__logo {
+    transform: translate3d(0, -100%, 0) !important;
+  }
+}
 /* =========================================================
    Sekcja: MISJA (mobile first)
    ========================================================= */
@@ -11821,6 +12007,82 @@ body.services-page .header_logo-bg {
   /* ale jego dzieci normalnie klikalne */
   .services-page .header .container.header__top > * {
     pointer-events: auto !important;
+  }
+}
+/* === /services — NAV & MENU FIX (mobile + tablet) === */
+@media (max-width: 1439px) {
+  /* 0) nic w headerze nie tworzy „pułapki” dla fixed */
+  .services-page .header,
+  .services-page .header__wrap {
+    transform: none !important;
+    filter: none !important;
+    will-change: auto !important;
+    z-index: auto !important;
+  }
+  /* 1) BELKA: fixed na topie, ponad contentem, klikalne dzieci */
+  .services-page .header .container.header__top {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--nav-h);
+    padding-inline: var(--content-x);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10000 !important; /* nad sekcjami */
+    background: rgba(17, 17, 17, 0.72); /* jak na mobile/tablet */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.18);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.12);
+    pointer-events: none !important; /* kontener nie blokuje klików */
+    transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.3, 1), background 0.18s ease;
+  }
+  .services-page .header .container.header__top > * {
+    pointer-events: auto !important; /* ale logo/burger/telefon klikają się */
+  }
+  /* 2) AUTOHIDE – jak na index (body dostaje .nav-hidden) */
+  .services-page.nav-hidden .header .container.header__top {
+    transform: translateY(-100%);
+  }
+  /* 3) MENU MOBILNE: pełny ekran i NA WIERZCHU nad belką */
+  .services-page .header__nav {
+    position: fixed !important;
+    inset: 0 !important;
+    padding-top: calc(env(safe-area-inset-top, 0px) + var(--nav-h));
+    z-index: 10001 !important; /* > z-index belki */
+  }
+  #mobile-menu[aria-hidden=true] {
+    display: none !important;
+  }
+  #mobile-menu[aria-hidden=false] {
+    display: block !important;
+  }
+  /* 4) Treść strony odsunięta pod belkę */
+  .services-page main {
+    padding-top: var(--nav-h) !important;
+  }
+  /* 5) Sekcje nie wchodzą ponad belkę (zero „pięter”) */
+  .services-page .services-hero,
+  .services-page .services-list,
+  .services-page .services-faq,
+  .services-page .process-steps,
+  .services-page .timeline,
+  .services-page .process-card {
+    position: relative !important;
+    z-index: 0 !important;
+    transform: none !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+  }
+  /* 6) Overlaye w headerze nie łapią klików */
+  .services-page .header::before,
+  .services-page .header::after,
+  .services-page .header__overlay,
+  .services-page .header__video {
+    pointer-events: none !important;
+    z-index: 0 !important;
   }
 }
 /* ===========================
