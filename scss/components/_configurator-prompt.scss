@@ -1,5 +1,6 @@
 /* ===== AI BOX — mobile-first ===== */
-.configurator-prompt {
+body.home .configurator-prompt,
+body.about .configurator-prompt{
   /* === Wymiary ramki — ŚCIŚLE (MOBILE) === */
   grid-column: 1 / span 3;
   justify-self: start;        
