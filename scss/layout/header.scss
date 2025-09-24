@@ -555,3 +555,35 @@ html.nav-open, body.nav-open { overflow: hidden; }
 @media (min-width: 1440px) {
   .header__call { display: none; }
 }
+
+
+/* ABOUT: podwieszona belka, używa tego samego autohide JS co index */
+body.about .header .container.header__top {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  padding-inline: var(--content-x);
+  display: flex; align-items: center; justify-content: space-between;
+
+  z-index: 31;
+  background: rgba(23,23,23,.4); /* mobile/tablet */
+  backdrop-filter: blur(1px);
+  border-bottom: 1px solid rgba(0,0,0,1);
+  box-shadow: 0 4px 4px rgba(0,0,0,.35);
+  transition: transform .22s cubic-bezier(.2,.7,.3,1), background .18s ease;
+}
+
+/* Laptop+: transparentne tło (jak na index) */
+@media (min-width: 1440px) {
+  body.about .header .container.header__top {
+    background: transparent;
+    backdrop-filter: none;
+    border: 0;
+    box-shadow: none;
+  }
+}
+
+/* Przesunięcie treści pod fixed belkę */
+body.about main {
+  padding-top: var(--nav-h);
+}

@@ -9,41 +9,50 @@
 </head>
 
 <body class="about">
+<!-- HEADER LITE: tylko belka nawigacyjna -->
+<header class="header">
+  <div class="header__wrap">
+    <div class="container header__top">
+      <!-- Logo (jak na index: kapsułka .header__logo-bg) -->
+      <a href="../index.html" class="header__logo">
+        <span class="header__logo-bg">
+          <img class="header__logo--img" src="../photos/logo.svg" alt="Scandura Homes" />
+        </span>
+      </a>
 
-  <!-- HEADER LITE: tylko belka nawigacyjna -->
-  <header class="header">
-    <div class="header__wrap">
-      <div class="container header__top">
-        <!-- Logo -->
-        <a href="../index.html" class="header__logo">
-          <img class="header__logo--img" src="../photos/mobile_logo.png" alt="Scandura Homes" />
-        </a>
+ <!-- Telefon w belce -->
+          <a class="header__call" href="tel:+48796122598" aria-label="Zadzwoń do Scandura Homes">
+            <img src="../photos/svg/phone.svg" alt="" width="20" height="20" />
+            <span class="header__call-text">+48 796 122 598</span>
+          </a>
 
-        <!-- Burger (mobile/tablet) -->
-        <button class="header__burger" id="burger-toggle" type="button" aria-label="Otwórz menu" aria-expanded="false"
-          aria-controls="mobile-menu">
-          <img class="header__burger-icon" src="../photos/svg/burger.svg" width="20" height="14" alt="" />
-        </button>
-      </div>
-    </div>
 
-    <!-- NAV (ten sam, co na index) -->
-    <nav class="header__nav" id="mobile-menu" aria-hidden="true">
-      <button class="header__nav-close" aria-label="Zamknij menu">
-        <img src="../photos/svg/x.svg" alt="" />
+      <!-- Burger (mobile/tablet) -->
+      <button class="header__burger" id="burger-toggle" type="button"
+              aria-label="Otwórz menu" aria-expanded="false" aria-controls="mobile-menu">
+        <img class="header__burger-icon" src="../photos/svg/burger.svg" width="20" height="14" alt="" />
       </button>
+    </div>
+  </div>
 
-      <ul class="header__nav-list">
-        <li><a class="header__nav-link" href="../index.html">Home</a></li>
-        <li><a class="header__nav-link is-active" href="about.html">O nas</a></li>
-        <li><a class="header__nav-link" href="services.html">Usługi</a></li>
-        <li><a class="header__nav-link" href="projects.html">Projekty</a></li>
-        <li><a class="header__nav-link" href="contact.html">Kontakt</a></li>
-      </ul>
+  <!-- NAV (ten sam, co na index) -->
+  <nav class="header__nav" id="mobile-menu" aria-hidden="true">
+    <button class="header__nav-close" aria-label="Zamknij menu">
+      <img src="../photos/svg/x.svg" alt="" />
+    </button>
 
-      <a href="contact.html" class="button button--nav">Contact Us</a>
-    </nav>
-  </header>
+    <ul class="header__nav-list">
+      <li><a class="header__nav-link" href="../index.html">Home</a></li>
+      <li><a class="header__nav-link is-active" href="about.html">O nas</a></li>
+      <li><a class="header__nav-link" href="services.html">Usługi</a></li>
+      <li><a class="header__nav-link" href="../index.html">Projekty</a></li>
+      <li><a class="header__nav-link" href="contact.html">Kontakt</a></li>
+    </ul>
+
+    <a href="contact.html" class="button button--nav">Contact Us</a>
+  </nav>
+</header>
+
 
 
   <main>
@@ -526,6 +535,11 @@
   <script type="module" src="../js/projects-slider.js"></script>
   <script type="module" src="../js/about-stats.js"></script>
   <script type="module" src="../js/about-timeline-wires.js"></script>
+    <script type="module" src="../js/confiugurator-prompt-count.js"></script>
+      <script type="module" src="../js/nav-autohide-mobile.js"></script>
+            <script type="module" src="../js/"></script>
+  
+
 
   <script>
     (() => {

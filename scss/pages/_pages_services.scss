@@ -365,3 +365,378 @@
     .services-faq__container { @include section-grid-fluid(12, 24px, 24px, 300px); }
   }
 }
+/* ===== SERVICES: belka fixed + autohide, parity z index ===== */
+
+/* Hero może mieć tło/::after, ale belka ma być ponad tym */
+.services-page .header { position: relative; z-index: 1; }
+.services-page .header__wrap,
+.services-page .header__nav { position: relative; z-index: 3; }
+
+/* Podwieszenie belki do góry ekranu */
+.services-page .header .container.header__top {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  padding-inline: var(--content-x);
+  display: flex; align-items: center; justify-content: space-between;
+
+  z-index: 32; /* ponad tłem/overlayem headera */
+  background: rgba(23,23,23,.4);  /* mobile/tablet szkło, jak index */
+  backdrop-filter: blur(1px);
+  border-bottom: 1px solid rgba(0,0,0,1);
+  box-shadow: 0 4px 4px rgba(0,0,0,.35);
+  transition: transform .22s cubic-bezier(.2,.7,.3,1), background .18s ease;
+}
+
+/* Laptop+ — przezroczysta (tak jak index) */
+@media (min-width: $bp-laptop) {
+  .services-page .header .container.header__top {
+    background: transparent;
+    backdrop-filter: none;
+    border: 0;
+    box-shadow: none;
+  }
+}
+
+/* Treść nie może wpadać pod fixed belkę */
+.services-page main { padding-top: var(--nav-h); }
+
+/* Autohide — body dostaje .nav-hidden z tego samego JS co na index */
+.services-page.nav-hidden .header .container.header__top {
+  transform: translateY(-100%);
+}
+
+/* Na wszelki wypadek: sekcje pod belką, nie nad */
+.services-page .services-hero,
+.services-page .services-list,
+.services-page .services-faq {
+  position: relative; z-index: 0;
+}
+
+/* Jeśli gdzieś na przodkach jest transform/filter, zdejmij
+   (bo to potrafi „uwięzić” position: fixed) */
+.services-page .header,
+.services-page .header__wrap {
+  transform: none !important;
+  filter: none !important;
+  will-change: auto !important;
+}
+
+/* Gdy globalny .container ma pointer-events:none — odblokuj w belce */
+.services-page .header .container.header__top { pointer-events: auto !important; }
+
+
+/* ========= HARD FIX: belka zawsze NA WIERZCHU na services ========= */
+
+/* 0) Wyzeruj konteksty które więżą fixed */
+.services-page,
+.services-page .header,
+.services-page .header__wrap {
+  transform: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+  perspective: none !important;
+  will-change: auto !important;
+  isolation: auto !important;
+  z-index: auto !important;
+}
+
+/* 1) Na wszelki wypadek nadajemy headerowi własne „piętro”, a belce jeszcze wyższe */
+.services-page .header {
+  position: relative !important;
+  z-index: 2147483646 !important; /* pod belką, ale nad resztą */
+}
+
+/* 2) Sama belka – fixed do viewportu + MAX z-index */
+.services-page .header .container.header__top {
+  position: fixed !important;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  padding-inline: var(--content-x);
+  display: flex; align-items: center; justify-content: space-between;
+
+  z-index: 2147483647 !important; /* praktycznie sufit */
+  pointer-events: auto !important;
+
+  /* szkło na mobile/tablet; laptop+ robi się transparent */
+  background: rgba(23,23,23,.4);
+  backdrop-filter: blur(2px);
+  border-bottom: 1px solid rgba(0,0,0,.86);
+  box-shadow: 0 4px 4px rgba(0,0,0,.35);
+  transition: transform .22s cubic-bezier(.2,.7,.3,1), background .18s ease;
+}
+
+@media (min-width: $bp-laptop) {
+  .services-page .header .container.header__top {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+}
+
+/* 3) Odsuń treść pod belką */
+.services-page main { padding-top: var(--nav-h) !important; }
+
+/* 4) Problemowe sekcje – kasujemy im własne warstwy */
+.services-page .process-steps,
+.services-page .process-steps *,
+.services-page .timeline,
+.services-page .timeline *,
+.services-page .process-card,
+.services-page .process-card *,
+.services-page .services-hero,
+.services-page .services-list,
+.services-page .services-faq {
+  position: relative !important;
+  z-index: 0 !important;
+  transform: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+  will-change: auto !important;
+}
+
+/* 5) Autohide (JS z index) */
+.services-page.nav-hidden .header .container.header__top {
+  transform: translateY(-100%);
+}
+/* ===== SERVICES: mobile menu nad belką ===== */
+
+/* menu ma przykrywać cały viewport */
+.services-page .header__nav {
+  position: fixed;          /* niech nie „siedzi” w headerze */
+  inset: 0;
+  padding-top: calc(env(safe-area-inset-top, 0px) + var(--nav-h));
+  background: rgba(0,0,0,.86);
+  backdrop-filter: blur(2px);
+  z-index: 2147483646;      /* domyślnie tuż POD belką (gdy zamknięte) */
+}
+
+/* gdy otwarte – idzie NA belkę */
+.services-page .header__nav[aria-hidden="false"] {
+  z-index: 2147483647 !important;   /* > z-index belki */
+  pointer-events: auto;             /* klikalne */
+  visibility: visible;
+  opacity: 1;
+}
+
+/* pomocniczo: belkę daj minimalnie niżej, żeby menu mogło ją przykryć */
+.services-page .header .container.header__top {
+  z-index: 2147483646 !important;
+}
+
+/* jeżeli globalnie chowasz menu display:none – zostaw to,
+   ale upewnij się, że gdy otwarte, jest blokiem i łapie klik */
+@media (max-width: 1439px) {
+  #mobile-menu[aria-hidden="true"]  { display: none !important; }
+  #mobile-menu[aria-hidden="false"] { display: block !important; }
+}
+
+
+/* ===== SERVICES: wysokość i kadr zdjęcia w headerze per MQ ===== */
+
+/* USTAWIAMY TYLKO min-height + background-position, bez podmiany obrazka */
+body.services-page .header {
+  /* MOBILE (do 744px) */
+  min-height: 380px !important;
+  background-position: center 28% !important; /* przesuwaj kadr: mniejsza wartość = wyżej */
+
+  /* TABLET (744–1439) */
+  @media (min-width: $bp-tablet) {
+    min-height: 540px !important;
+    background-position: center 32% !important;
+  }
+
+  /* LAPTOP (1440–1919) */
+  @media (min-width: $bp-laptop) {
+    min-height: 680px !important;
+    background-position: center 50% !important; /* środek */
+  }
+
+  /* DESKTOP (≥1920) */
+  @media (min-width: $bp-desktop) {
+    min-height: 700px !important;
+    background-position: center 40% !important; /* niżej – pokaż dół kadru */
+  }
+}
+/* === SERVICES: naprawa klikalności belki === */
+
+/* 1) Nic w headerze nie przechwytuje klików ponad belką */
+.services-page .header::before,
+.services-page .header::after,
+.services-page .header__overlay,
+.services-page .header__video {
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
+/* 2) Belka podwieszona i nad wszystkim */
+.services-page .header .container.header__top {
+  position: fixed !important;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  padding-inline: var(--content-x);
+  display: flex; align-items: center; justify-content: space-between;
+
+  z-index: 10000 !important;      /* ponad overlayami/treścią */
+  pointer-events: auto !important; /* belka klikalna */
+}
+
+/* 3) Mobilne menu nad belką i stroną */
+.services-page .header__nav {
+  position: fixed;   /* jak na innych podstronach */
+  inset: 0;          /* pełny ekran */
+  z-index: 10001 !important;
+  pointer-events: auto !important;
+}
+
+/* 4) Na wszelki wypadek: wrapper headera nie tworzy wyższych kontekstów */
+.services-page .header,
+.services-page .header__wrap {
+  position: relative;
+  z-index: 0 !important;
+  transform: none !important;
+  filter: none !important;
+  will-change: auto !important;
+}
+/* === SERVICES: belka zawsze nad overlayem, logo NA WIERZCHU (≥1440) === */
+
+/* 1) Overlay headera trzymamy pod belką */
+.services-page .header::after {
+  z-index: 0 !important;
+}
+
+/* 2) Sama belka nad overlayem */
+.services-page .header__wrap,
+.services-page .header .container.header__top {
+  position: relative;
+  z-index: 10 !important;
+}
+
+/* 3) Laptop+ – belka przezroczysta jak na index (bez „dymienia”) */
+@media (min-width: 1440px) {
+  .services-page .header .container.header__top {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+}
+
+/* 4) LOGO absolutnie na wierzchu względem wszystkiego */
+@media (min-width: 1440px) {
+  .services-page .header__logo {
+    position: fixed !important;
+    top: 0;
+    left: var(--content-x);
+    height: var(--nav-h);
+    display: flex; align-items: center;
+
+    /* klucz: największy z-index w aplikacji + własny stacking (isolate) */
+    z-index: 2147483647 !important;
+    isolation: isolate;        /* tworzy własny stacking context */
+    pointer-events: auto !important;
+  }
+
+  /* kapsułka wokół logo też wynosimy na wierzch, bez blendów/filtrów */
+  .services-page .header__logo-bg {
+    position: relative;
+    z-index: 1;
+    mix-blend-mode: normal;
+    filter: none !important;
+    background: rgba(255,255,255,0.90);   /* jak na index */
+    border-radius: 0 6px 0 0;
+    padding: 4px 8px;
+    box-shadow: 0 4px 3.5px rgba(12,12,12,.35);
+  }
+}
+
+/* 5) Na wszelki wypadek – overlay nie zasłania klików */
+.services-page .header::after { pointer-events: none !important; }
+/* === SERVICES: LOGO NAD OVERLAYEM === */
+body.services-page .header__logo,
+body.services-page .header__logo a,
+body.services-page .header__logo-img,
+body.services-page .header_logo-bg {
+  position: relative;
+  z-index: 12000 !important; /* wyżej niż nav i overlay */
+  pointer-events: auto !important;
+}
+/* === FIX: Logo zawsze nad nav overlay (services) === */
+
+
+/* === /services — NAV FIX (tylko ≥ laptop) === */
+@media (min-width: $bp-laptop) {
+  /* 0) wyłącz konteksty „stacking” nad belką */
+  .services-page,
+  .services-page .header,
+  .services-page .header__wrap {
+    transform: none !important;
+    filter: none !important;
+    will-change: auto !important;
+    z-index: auto !important;
+  }
+
+  /* 1) belka zawsze na wierzchu i PRZYTWIERDZONA do topu */
+  .services-page .header__top,
+  .services-page .header .container.header__top {
+    position: fixed !important;
+    top: 0; left: 0; right: 0;
+    height: var(--nav-h);
+    padding-inline: var(--content-x);
+    display: flex; align-items: center; justify-content: space-between;
+
+    z-index: 2147483646 !important;  /* ponad treścią i overlayami */
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    pointer-events: auto !important;
+  }
+
+  /* 2) logo absolutnie nad wszystkim (gdy obrazki mają z-index) */
+  .services-page .header__logo {
+    position: relative !important;
+    z-index: 2147483647 !important;
+    isolation: isolate;
+    pointer-events: auto !important;
+  }
+
+  /* 3) treść nie wchodzi pod fixed belkę */
+  .services-page main { padding-top: var(--nav-h) !important; }
+
+  /* 4) sekcje pod spodem nie tworzą „pięter” nad belką */
+  .services-page .services-hero,
+  .services-page .services-list,
+  .services-page .services-faq,
+  .services-page .process-steps,
+  .services-page .timeline,
+  .services-page .process-card {
+    position: relative !important;
+    z-index: 0 !important;
+    transform: none !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+  }
+
+  /* 5) overlaye / pseudo-elementy w headerze nie łapią klików */
+  .services-page .header::before,
+  .services-page .header::after,
+  .services-page .header__overlay,
+  .services-page .header__video {
+    pointer-events: none !important;
+    z-index: 0 !important;
+  }
+}
+@media (min-width: $bp-laptop) {
+  /* kontener belki nie łapie klików */
+  .services-page .header .container.header__top {
+    pointer-events: none !important;
+  }
+
+  /* ale jego dzieci normalnie klikalne */
+  .services-page .header .container.header__top > * {
+    pointer-events: auto !important;
+  }
+}

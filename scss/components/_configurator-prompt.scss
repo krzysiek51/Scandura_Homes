@@ -135,7 +135,9 @@ body.about .configurator-prompt{
    Content: full width • Grid: 8 kol • Gap: 20px • Margins: 42px
    ========================================================= */
 @media (min-width: 744px) and (max-width: 1439px) {
-  .configurator-prompt {
+  body.home .configurator-prompt,
+  body.about .configurator-prompt {
+  
     width: calc(100% - 84px);  /* = pełna szerokość - marginesy */
     margin-left: 42px;
     margin-right: 42px;
@@ -186,7 +188,7 @@ body.about .configurator-prompt{
       font-size: 32px;
       line-height: 1.25;
       font-weight: 800;
-      margin: 0 0 6px 0;
+      margin: 0 0 6px 10px;
      }
    
      .configurator-prompt__sub      {

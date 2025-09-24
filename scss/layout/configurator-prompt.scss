@@ -2,7 +2,8 @@
 @use '../utils/variables' as *;/* ===== AI BOX — mobile-first ===== */
 @use "sass:color";
 
-.configurator-prompt {
+.configurator-prompt,
+body.about .configurator-prompt {
   /* === Wymiary ramki — ŚCIŚLE (MOBILE) === */
   grid-column: 1 / span 3;
   justify-self: start;        
@@ -183,7 +184,9 @@
    Content: full width • Grid: 8 kol • Gap: 20px • Margins: 42px
    ========================================================= */
 @media (min-width: 744px) and (max-width: 1439px) {
-  .configurator-prompt {
+  
+    .configurator-prompt,
+    body.about .configurator-prompt {
     width: calc(100% - 84px);  /* = pełna szerokość - marginesy */
     margin-left: 42px;
     margin-right: 42px;
@@ -518,3 +521,76 @@
     
   }
 
+/* BASE (poza animacją) – przywróć normalny rendering na about */
+body.about .configurator-prompt:not(.ai-armed):not(.ai-animate) .configurator-prompt__title,
+body.about .configurator-prompt:not(.ai-armed):not(.ai-animate) .configurator-prompt__sub {
+  opacity: 1 !important;
+  transform: none !important;
+  background-image: none !important;
+  background-size: auto !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: initial !important;
+  color: #111 !important;
+}
+body.about .configurator-prompt:not(.ai-armed):not(.ai-animate) .configurator-prompt__sub {
+  color: #6b6b6b !important;
+}
+
+/* FINAL — jeśli używasz klasy .ai-revealed, także ją zresetuj na about */
+body.about .configurator-prompt .configurator-prompt__title.ai-revealed,
+body.about .configurator-prompt .configurator-prompt__sub.ai-revealed {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  background-image: none !important;
+  -webkit-text-fill-color: initial !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  color: #111 !important;
+}
+body.about .configurator-prompt .configurator-prompt__sub.ai-revealed {
+  color: #6b6b6b !important;
+}
+/* FIX dla listy korzyści na about */
+body.about .configurator-prompt .configurator-prompt__benefits li {
+  opacity: 1 !important;
+  transform: none !important;
+
+  /* odetnij ewentualny clip/transparent z innych styli */
+  background-image: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: initial !important;
+
+  /* kolor jak na index (zmień jeśli chcesz jaśniejszy) */
+  color: #111 !important;
+}
+
+/* jeśli w li masz <span> z ikoną/emoji i tekstem, też zresetuj */
+body.about .configurator-prompt .configurator-prompt__benefits li > * {
+  -webkit-text-fill-color: initial !important;
+  background-image: none !important;
+}
+/* === HARD FIX dla listy korzyści – tylko na about === */
+body.about .configurator-prompt .configurator-prompt__benefits,
+body.about .configurator-prompt .configurator-prompt__benefits *,
+body.about .configurator-prompt.ai-armed .configurator-prompt__benefits,
+body.about .configurator-prompt.ai-armed .configurator-prompt__benefits *,
+body.about .configurator-prompt.ai-animate .configurator-prompt__benefits,
+body.about .configurator-prompt.ai-animate .configurator-prompt__benefits * {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+
+  /* odetnij wszelkie „clipy” i transparenty */
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: initial !important;
+
+  color: #111 !important; /* tekst jak na index */
+}
+
+/* jeśli chcesz szary dla opisu w li (druga linia), dopnij selektor np.: */
+/* body.about .configurator-prompt .configurator-prompt__benefits li small { color:#6b6b6b !important; } */

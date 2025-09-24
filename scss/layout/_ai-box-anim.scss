@@ -8,7 +8,8 @@
    - benefits: fade-in + stagger li
    ========================================================= */
 
-.configurator-prompt {
+.configurator-prompt,
+body.about .configurator-prompt {
   --ai-bg: #ffffff;
 
   --ai-enter-duration: .65s;

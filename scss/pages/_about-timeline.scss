@@ -282,6 +282,10 @@ body.about .header {
 /* ================== LAPTOP+ (≥1440) – TIMELINE clean ================== */
 /* ================== LAPTOP+ (≥1440) – TIMELINE clean ================== */
 @media (min-width: $bp-laptop) {
+
+  /* tylko w sekcji about-cta przy AI Boxie */
+.about-cta > .container { pointer-events: auto; }
+
   :root{
     --container-max: 1280px;
     --container-pad: 40px;

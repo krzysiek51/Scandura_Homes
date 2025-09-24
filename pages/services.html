@@ -9,38 +9,46 @@
 </head>
 
 <body class="services-page">
-  <!-- ===== NAV (tak jak na innych podstronach) ===== -->
-  <header class="header">
-    <div class="header__wrap">
-      <div class="container header__top">
-        <a class="header__logo" href="/">
-          <img class="header__logo-img" src="../photos/mobile_logo.png" alt="Scandura Homes" />
-        </a>
+ <header class="header">
+  <div class="header__wrap">
+    <div class="container header__top">
+      <!-- Logo w kapsułce (parity z index) -->
+      <a class="header__logo" href="../index.html">
+        <span class="header__logo-bg">
+          <img class="header__logo--img" src="../photos/logo.svg" alt="Scandura Homes">
+        </span>
+      </a>
 
-        <button class="header__burger" id="burger-toggle" type="button" aria-label="Otwórz menu" aria-expanded="false"
-          aria-controls="mobile-menu">
-          <img class="header__burger-icon" src="../photos/svg/burger.svg" width="20" height="14" alt="" />
-        </button>
-      </div>
-    </div>
+      <!-- Telefon w belce (opcjonalnie, jak na index) -->
+      <a class="header__call" href="tel:+48796122598" aria-label="Zadzwoń do Scandura Homes">
+        <img src="../photos/svg/phone.svg" alt="" width="20" height="20">
+        <span class="header__call-text">+48 796 122 598</span>
+      </a>
 
-    <nav class="header__nav" id="mobile-menu" aria-hidden="true">
-      <button class="header__nav-close" aria-label="Zamknij menu">
-        <img class="header__nav-close-icon" src="../photos/svg/x.svg" alt="Zamknij" />
+      <!-- Burger -->
+      <button class="header__burger" id="burger-toggle" type="button"
+              aria-label="Otwórz menu" aria-expanded="false" aria-controls="mobile-menu">
+        <img class="header__burger-icon" src="../photos/svg/burger.svg" width="20" height="14" alt="">
       </button>
+    </div>
+  </div>
 
-      <ul class="header__nav-list">
-        <li class="header__nav-item"><a class="header__nav-link" href="/">Home</a></li>
-        <li class="header__nav-item"><a class="header__nav-link" href="../pages/about.html">O nas</a></li>
-        <li class="header__nav-item"><a class="header__nav-link header__nav-link--active"
-            href="../pages/services.html">Usługi</a></li>
-        <li class="header__nav-item"><a class="header__nav-link" href="../index.html#projects">Projekty</a></li>
-        <li class="header__nav-item"><a class="header__nav-link" href="../pages/contact.html">Kontakt</a></li>
-      </ul>
+  <nav class="header__nav" id="mobile-menu" aria-hidden="true">
+    <button class="header__nav-close" aria-label="Zamknij menu">
+      <img class="header__nav-close-icon" src="../photos/svg/x.svg" alt="">
+    </button>
 
-      <a class="button button--nav" href="../pages/contact.html">Contact Us</a>
-    </nav>
-  </header>
+    <ul class="header__nav-list">
+      <li class="header__nav-item"><a class="header__nav-link" href="../index.html">Home</a></li>
+      <li class="header__nav-item"><a class="header__nav-link" href="about.html">O nas</a></li>
+      <li class="header__nav-item"><a class="header__nav-link header__nav-link--active" href="services.html">Usługi</a></li>
+      <li class="header__nav-item"><a class="header__nav-link" href="../index.html#projects">Projekty</a></li>
+      <li class="header__nav-item"><a class="header__nav-link" href="contact.html">Kontakt</a></li>
+    </ul>
+
+    <a class="button button--nav" href="contact.html">Contact Us</a>
+  </nav>
+</header>
 
 
   <!-- ===== TREŚĆ PODSTRONY ===== -->
@@ -76,7 +84,7 @@
       <article class="service-card" data-service="koncepcyjny">
         <div class="service-card__media">
           <img class="service-card__image"
-               src="../photos/pages/services/services-header.jpg"
+               src="../photos/pages/services/services-header.webp"
                alt="Miniatura: projekt koncepcyjny"
                loading="lazy" decoding="async" />
         </div>

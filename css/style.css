@@ -695,6 +695,39 @@ html.nav-open, body.nav-open {
     display: none;
   }
 }
+/* ABOUT: podwieszona belka, używa tego samego autohide JS co index */
+body.about .header .container.header__top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-h);
+  padding-inline: var(--content-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 31;
+  background: rgba(23, 23, 23, 0.4); /* mobile/tablet */
+  backdrop-filter: blur(1px);
+  border-bottom: 1px solid rgb(0, 0, 0);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.35);
+  transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.3, 1), background 0.18s ease;
+}
+
+/* Laptop+: transparentne tło (jak na index) */
+@media (min-width: 1440px) {
+  body.about .header .container.header__top {
+    background: transparent;
+    backdrop-filter: none;
+    border: 0;
+    box-shadow: none;
+  }
+}
+/* Przesunięcie treści pod fixed belkę */
+body.about main {
+  padding-top: var(--nav-h);
+}
+
 /* =========================================================
    Sekcja: MISJA (mobile first)
    ========================================================= */
@@ -6042,7 +6075,8 @@ nav#mobile-menu .button--nav {
    - title + sub (lead): fade-in + lift
    - benefits: fade-in + stagger li
    ========================================================= */
-.configurator-prompt {
+.configurator-prompt,
+body.about .configurator-prompt {
   --ai-bg: #ffffff;
   --ai-enter-duration: .65s;
   --ai-enter-delay: .12s;
@@ -6595,7 +6629,8 @@ section.services.is-armed.is-inview .services__title .char {
 }
 
 /* ===== AI BOX — mobile-first ===== */
-.configurator-prompt {
+.configurator-prompt,
+body.about .configurator-prompt {
   /* === Wymiary ramki — ŚCIŚLE (MOBILE) === */
   grid-column: 1/span 3;
   justify-self: start;
@@ -6618,7 +6653,8 @@ section.services.is-armed.is-inview .services__title .char {
   border-radius: 0 42px 0 0;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
-.configurator-prompt .configurator-prompt__content {
+.configurator-prompt .configurator-prompt__content,
+body.about .configurator-prompt .configurator-prompt__content {
   /* wypełnia całość ramki 218 × 360 */
   width: 100%;
   height: 100%;
@@ -6628,10 +6664,12 @@ section.services.is-armed.is-inview .services__title .char {
   padding: 20px 16px; /* góra/dół 12px, boki 16px */
   box-sizing: border-box;
 }
-.configurator-prompt {
+.configurator-prompt,
+body.about .configurator-prompt {
   /* --- badge --- */
 }
-.configurator-prompt .configurator-prompt__badge {
+.configurator-prompt .configurator-prompt__badge,
+body.about .configurator-prompt .configurator-prompt__badge {
   align-self: flex-start;
   padding: 3px 8px;
   font-size: 11px;
@@ -6642,34 +6680,41 @@ section.services.is-armed.is-inview .services__title .char {
   margin-bottom: 6px;
   white-space: nowrap;
 }
-.configurator-prompt {
+.configurator-prompt,
+body.about .configurator-prompt {
   /* --- tytuł --- */
 }
-.configurator-prompt .configurator-prompt__title {
+.configurator-prompt .configurator-prompt__title,
+body.about .configurator-prompt .configurator-prompt__title {
   font-size: 16px;
   line-height: 1.25;
   font-weight: 800;
   margin: 0 0 6px 0;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
 }
-.configurator-prompt {
+.configurator-prompt,
+body.about .configurator-prompt {
   /* --- subhead --- */
 }
-.configurator-prompt .configurator-prompt__sub {
+.configurator-prompt .configurator-prompt__sub,
+body.about .configurator-prompt .configurator-prompt__sub {
   font-size: 12.5px;
   line-height: 1.4;
   color: #6b6b6b;
   margin: 0 0 10px 0;
 }
-.configurator-prompt {
+.configurator-prompt,
+body.about .configurator-prompt {
   /* --- lista korzyści --- */
 }
-.configurator-prompt .configurator-prompt__benefits {
+.configurator-prompt .configurator-prompt__benefits,
+body.about .configurator-prompt .configurator-prompt__benefits {
   list-style: none;
   padding: 0;
   margin: 0 0 10px 0;
 }
-.configurator-prompt .configurator-prompt__benefits li {
+.configurator-prompt .configurator-prompt__benefits li,
+body.about .configurator-prompt .configurator-prompt__benefits li {
   font-size: 12.5px;
   line-height: 1.4;
   margin-bottom: 4px;
@@ -6677,19 +6722,23 @@ section.services.is-armed.is-inview .services__title .char {
   align-items: center;
   gap: 6px;
 }
-.configurator-prompt {
+.configurator-prompt,
+body.about .configurator-prompt {
   /* --- mikro-zaufanie --- */
 }
-.configurator-prompt .configurator-prompt__trust {
+.configurator-prompt .configurator-prompt__trust,
+body.about .configurator-prompt .configurator-prompt__trust {
   font-size: 11px;
   line-height: 1.3;
   color: #8e8e8e;
   margin: 0 0 10px 0;
 }
-.configurator-prompt {
+.configurator-prompt,
+body.about .configurator-prompt {
   /* === CTA: konfigurator AI === */
 }
-.configurator-prompt .configurator-prompt__button {
+.configurator-prompt .configurator-prompt__button,
+body.about .configurator-prompt .configurator-prompt__button {
   width: 100%;
   padding: 14px 20px;
   font-size: 16px;
@@ -6712,15 +6761,18 @@ section.services.is-armed.is-inview .services__title .char {
   box-shadow: 0 0 0 0 rgba(220, 155, 89, 0.6);
   animation: pulseGlow 2.5s infinite;
 }
-.configurator-prompt .configurator-prompt__button:hover {
+.configurator-prompt .configurator-prompt__button:hover,
+body.about .configurator-prompt .configurator-prompt__button:hover {
   transform: translateY(-2px);
   background: linear-gradient(135deg, rgb(221.75, 160, 97.3), rgb(12.75, 12.75, 12.75));
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
 }
-.configurator-prompt .configurator-prompt__button:active {
+.configurator-prompt .configurator-prompt__button:active,
+body.about .configurator-prompt .configurator-prompt__button:active {
   transform: scale(0.98);
 }
-.configurator-prompt {
+.configurator-prompt,
+body.about .configurator-prompt {
   /* animacja pulsującego glow */
 }
 @keyframes pulseGlow {
@@ -6734,7 +6786,8 @@ section.services.is-armed.is-inview .services__title .char {
     box-shadow: 0 0 0 0 rgba(220, 155, 89, 0);
   }
 }
-.configurator-prompt .configurator-prompt__link {
+.configurator-prompt .configurator-prompt__link,
+body.about .configurator-prompt .configurator-prompt__link {
   font-size: 12px;
   font-weight: 600;
   text-decoration: underline;
@@ -6747,15 +6800,18 @@ section.services.is-armed.is-inview .services__title .char {
   display: block; /* link zajmie całą szerokość */
   text-align: center; /* i wyśrodkuje tekst */
 }
-.configurator-prompt .configurator-prompt__link {
+.configurator-prompt .configurator-prompt__link,
+body.about .configurator-prompt .configurator-prompt__link {
   display: block;
   width: 100%; /* zajmuje pełną szerokość kolumny */
   text-align: center; /* tekst w środku */
 }
-.configurator-prompt {
+.configurator-prompt,
+body.about .configurator-prompt {
   /* --- nota prawna --- */
 }
-.configurator-prompt .configurator-prompt__legal {
+.configurator-prompt .configurator-prompt__legal,
+body.about .configurator-prompt .configurator-prompt__legal {
   font-size: 10px;
   line-height: 1.3;
   color: #8e8e8e;
@@ -6767,7 +6823,8 @@ section.services.is-armed.is-inview .services__title .char {
    Content: full width • Grid: 8 kol • Gap: 20px • Margins: 42px
    ========================================================= */
 @media (min-width: 744px) and (max-width: 1439px) {
-  .configurator-prompt {
+  .configurator-prompt,
+  body.about .configurator-prompt {
     width: calc(100% - 84px); /* = pełna szerokość - marginesy */
     margin-left: 42px;
     margin-right: 42px;
@@ -6776,7 +6833,8 @@ section.services.is-armed.is-inview .services__title .char {
     min-height: 209px;
     --ai-lift: 40px;
   }
-  .configurator-prompt .configurator-prompt__content {
+  .configurator-prompt .configurator-prompt__content,
+  body.about .configurator-prompt .configurator-prompt__content {
     display: grid;
     grid-template-columns: repeat(8, minmax(0, 1fr));
     column-gap: 20px;
@@ -6785,14 +6843,18 @@ section.services.is-armed.is-inview .services__title .char {
     min-height: 209px;
     align-content: start;
   }
-  .configurator-prompt .configurator-prompt__content > * {
+  .configurator-prompt .configurator-prompt__content > *,
+  body.about .configurator-prompt .configurator-prompt__content > * {
     min-width: 0;
   }
-  .configurator-prompt .configurator-prompt__content { /* zabezpieczenie przed overflowem */ }
-  .configurator-prompt {
+  .configurator-prompt .configurator-prompt__content,
+  body.about .configurator-prompt .configurator-prompt__content { /* zabezpieczenie przed overflowem */ }
+  .configurator-prompt,
+  body.about .configurator-prompt {
     /* ROZMIESZCZENIE W 8-KOLUMNOWEJ SIATCE (bez zmian w treści) */
   }
-  .configurator-prompt .configurator-prompt__badge {
+  .configurator-prompt .configurator-prompt__badge,
+  body.about .configurator-prompt .configurator-prompt__badge {
     /* NIE rozciągaj w kolumnach grida */
     /* grid-column: 1 / span 3;   <- usuń */
     display: inline-flex; /* szerokość = treść */
@@ -6809,7 +6871,8 @@ section.services.is-armed.is-inview .services__title .char {
     margin-bottom: 6px;
     /* box-sizing dziedziczy border-box – ok */
   }
-  .configurator-prompt .configurator-prompt__title {
+  .configurator-prompt .configurator-prompt__title,
+  body.about .configurator-prompt .configurator-prompt__title {
     grid-column: 1/span 6;
     margin: 0;
     font-family: dm sans, sans-serif;
@@ -6818,20 +6881,23 @@ section.services.is-armed.is-inview .services__title .char {
     font-weight: 800;
     margin: 0 0 6px 0;
   }
-  .configurator-prompt .configurator-prompt__sub {
+  .configurator-prompt .configurator-prompt__sub,
+  body.about .configurator-prompt .configurator-prompt__sub {
     grid-column: 1/span 6;
     font-size: 16px;
     line-height: 1.4;
     color: #6b6b6b;
     margin: 0 0 10px 0;
   }
-  .configurator-prompt .configurator-prompt__benefits {
+  .configurator-prompt .configurator-prompt__benefits,
+  body.about .configurator-prompt .configurator-prompt__benefits {
     grid-column: 1/span 6;
     list-style: none;
     padding: 0;
     margin: 0 0 10px 0;
   }
-  .configurator-prompt .configurator-prompt__benefits li {
+  .configurator-prompt .configurator-prompt__benefits li,
+  body.about .configurator-prompt .configurator-prompt__benefits li {
     font-size: 16px;
     line-height: 1.4;
     margin-bottom: 4px;
@@ -6839,18 +6905,21 @@ section.services.is-armed.is-inview .services__title .char {
     align-items: center;
     gap: 6px;
   }
-  .configurator-prompt .configurator-prompt__cta {
+  .configurator-prompt .configurator-prompt__cta,
+  body.about .configurator-prompt .configurator-prompt__cta {
     grid-column: 7/span 2; /* obszar CTA */
     justify-self: end; /* dosuń do prawej linii grida */
     margin-right: 24px; /* 24px „powietrza” od prawej */
     align-items: flex-end; /* zawartość w prawo */
     text-align: right;
   }
-  .configurator-prompt .configurator-prompt__button {
+  .configurator-prompt .configurator-prompt__button,
+  body.about .configurator-prompt .configurator-prompt__button {
     height: 42px;
     width: auto;
   }
-  .configurator-prompt .configurator-prompt__link {
+  .configurator-prompt .configurator-prompt__link,
+  body.about .configurator-prompt .configurator-prompt__link {
     white-space: nowrap;
   }
 }
@@ -7062,6 +7131,79 @@ section.services.is-armed.is-inview .services__title .char {
     margin-top: 12px;
   }
 }
+/* BASE (poza animacją) – przywróć normalny rendering na about */
+body.about .configurator-prompt:not(.ai-armed):not(.ai-animate) .configurator-prompt__title,
+body.about .configurator-prompt:not(.ai-armed):not(.ai-animate) .configurator-prompt__sub {
+  opacity: 1 !important;
+  transform: none !important;
+  background-image: none !important;
+  background-size: auto !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: initial !important;
+  color: #111 !important;
+}
+
+body.about .configurator-prompt:not(.ai-armed):not(.ai-animate) .configurator-prompt__sub {
+  color: #6b6b6b !important;
+}
+
+/* FINAL — jeśli używasz klasy .ai-revealed, także ją zresetuj na about */
+body.about .configurator-prompt .configurator-prompt__title.ai-revealed,
+body.about .configurator-prompt .configurator-prompt__sub.ai-revealed {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  background-image: none !important;
+  -webkit-text-fill-color: initial !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  color: #111 !important;
+}
+
+body.about .configurator-prompt .configurator-prompt__sub.ai-revealed {
+  color: #6b6b6b !important;
+}
+
+/* FIX dla listy korzyści na about */
+body.about .configurator-prompt .configurator-prompt__benefits li {
+  opacity: 1 !important;
+  transform: none !important;
+  /* odetnij ewentualny clip/transparent z innych styli */
+  background-image: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: initial !important;
+  /* kolor jak na index (zmień jeśli chcesz jaśniejszy) */
+  color: #111 !important;
+}
+
+/* jeśli w li masz <span> z ikoną/emoji i tekstem, też zresetuj */
+body.about .configurator-prompt .configurator-prompt__benefits li > * {
+  -webkit-text-fill-color: initial !important;
+  background-image: none !important;
+}
+
+/* === HARD FIX dla listy korzyści – tylko na about === */
+body.about .configurator-prompt .configurator-prompt__benefits,
+body.about .configurator-prompt .configurator-prompt__benefits *,
+body.about .configurator-prompt.ai-armed .configurator-prompt__benefits,
+body.about .configurator-prompt.ai-armed .configurator-prompt__benefits *,
+body.about .configurator-prompt.ai-animate .configurator-prompt__benefits,
+body.about .configurator-prompt.ai-animate .configurator-prompt__benefits * {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+  /* odetnij wszelkie „clipy” i transparenty */
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: initial !important;
+  color: #111 !important; /* tekst jak na index */
+}
+
+/* jeśli chcesz szary dla opisu w li (druga linia), dopnij selektor np.: */
+/* body.about .configurator-prompt .configurator-prompt__benefits li small { color:#6b6b6b !important; } */
 /* =========================================
    SMARTBAR — mobilny pasek akcji
    ========================================= */
@@ -9374,6 +9516,10 @@ body.about .header {
 /* ================== LAPTOP+ (≥1440) – TIMELINE clean ================== */
 /* ================== LAPTOP+ (≥1440) – TIMELINE clean ================== */
 @media (min-width: 1440px) {
+  /* tylko w sekcji about-cta przy AI Boxie */
+  .about-cta > .container {
+    pointer-events: auto;
+  }
   :root {
     --container-max: 1280px;
     --container-pad: 40px;
@@ -10469,72 +10615,190 @@ body.contact-page .header::after {
   z-index: 1;
 }
 
-/* =================================================================
-   GLOBAL GRID DLA STRON W /pages (contact, services, projects itd.)
-   ================================================================= */
-/* Kontener główny podstron */
-.pages__container {
-  box-sizing: border-box;
-  margin-inline: auto;
-  width: 100%;
-  max-width: none;
-  padding-inline: 20px; /* MOBILE */
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-}
-
-/* Rozpuść wewnętrzne .container WYŁĄCZNIE w treści (nie header/footer) */
-main.pages__container > .container {
-  display: contents;
-  max-width: none;
-  padding: 0;
-  margin: 0;
-}
-
-/* TABLET */
-@media (min-width: 744px) {
-  .pages__container {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-    gap: 20px;
-    padding-inline: 42px;
-  }
-}
-/* LAPTOP */
-@media (min-width: 1440px) {
-  .pages__container {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: 24px;
-    padding-inline: 40px;
-  }
-}
-/* DESKTOP */
-@media (min-width: 1920px) {
-  .pages__container {
-    padding-inline: 300px;
-  }
-}
-/* ================================================================
-   LOKALNE USTAWIENIA DLA PODSTRON (bez wpływu na index)
-   ================================================================ */
-.services-page {
-  /* Hero nigdy nie przykrywa nawigacji; unikanie nowych stacking contexts */
-}
-.services-page .services-hero,
-.services-page .services-hero__container {
+/* ===== CONTACT: belka fixed + autohide ===== */
+/* Header tło + overlay zostają, ale belka wychodzi nad to */
+body.contact-page .header {
   position: relative;
-  z-index: 0;
-  transform: none;
-  filter: none;
-}
-.services-page {
-  /* Overlay/gradient w hero pod nawigacją */
-}
-.services-page .hero__overlay {
-  position: absolute;
-  inset: auto 0 0 0; /* overlay przy dole hero – dostosuj jeśli masz inny */
   z-index: 1;
-  pointer-events: none;
+}
+
+/* Podwieszona belka */
+body.contact-page .header .container.header__top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-h);
+  padding-inline: var(--content-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 32; /* nad overlayem headera */
+  background: rgba(23, 23, 23, 0.4); /* mobile/tablet – szkło jak na index */
+  backdrop-filter: blur(1px);
+  border-bottom: 1px solid rgb(0, 0, 0);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.35);
+  transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.3, 1), background 0.18s ease;
+}
+
+/* Laptop+ – transparentne jak na index */
+@media (min-width: 1440px) {
+  body.contact-page .header .container.header__top {
+    background: transparent;
+    backdrop-filter: none;
+    border: 0;
+    box-shadow: none;
+  }
+}
+/* Dajemy miejsce pod belką, żeby treść nie wpadała pod nią */
+body.contact-page main,
+body.contact-page .pages__container {
+  padding-top: var(--nav-h);
+}
+
+/* === AUTOHIDE (wykorzystuje ten sam JS co index) === */
+body.contact-page.nav-hidden .header .container.header__top {
+  transform: translateY(-100%);
+}
+
+/* animacja logo (opcjonalnie, jak na index) */
+@media (min-width: 1440px) {
+  body.contact-page .header__logo {
+    transition: transform 220ms cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+  body.contact-page.nav-hidden .header__logo {
+    transform: translateY(-100%);
+  }
+}
+/* ===== Podwieszona belka NAV na contact.html ===== */
+body.contact-page .header .container.header__top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-h);
+  padding-inline: var(--content-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 32;
+  background: rgba(23, 23, 23, 0.4);
+  backdrop-filter: blur(1px);
+  border-bottom: 1px solid rgb(0, 0, 0);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.35);
+  transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.3, 1), background 0.18s ease;
+}
+
+/* Laptop+ → transparentna belka jak na index */
+@media (min-width: 1440px) {
+  body.contact-page .header .container.header__top {
+    background: transparent;
+    backdrop-filter: none;
+    border: 0;
+    box-shadow: none;
+  }
+}
+/* Padding-top, żeby treść nie wjeżdżała pod belkę */
+body.contact-page main,
+body.contact-page .pages__container {
+  padding-top: var(--nav-h);
+}
+
+/* === Autohide (to samo co na index) === */
+body.contact-page.nav-hidden .header .container.header__top {
+  transform: translateY(-100%);
+}
+
+/* ===== CONTACT: belka ZAWSZE nad treścią ===== */
+/* 1) Wyłącz ewentualne konteksty malowania na przodkach belki */
+body.contact-page .header,
+body.contact-page .header__wrap {
+  transform: none !important;
+  filter: none !important;
+  will-change: auto !important;
+}
+
+/* 2) Belka: fixed do viewportu + bardzo wysoki z-index */
+body.contact-page .header .container.header__top {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000 !important; /* przebija wszystko na stronie */
+  height: var(--nav-h);
+  padding-inline: var(--content-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.3, 1);
+  /* szkło na mobile/tablet; na laptop+ zrobisz jak niżej */
+  background: rgba(23, 23, 23, 0.4);
+  backdrop-filter: blur(2px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.86);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.35);
+}
+
+/* 3) Laptop+: przezroczysta jak na index */
+@media (min-width: 1440px) {
+  body.contact-page .header .container.header__top {
+    background: transparent;
+    backdrop-filter: none;
+    border: 0;
+    box-shadow: none;
+  }
+}
+/* 4) Treść podsunąć poniżej belki */
+body.contact-page main,
+body.contact-page .pages__container {
+  padding-top: var(--nav-h) !important;
+  position: relative; /* utwórz „słabszy” stacking context dla treści */
+  z-index: 0;
+}
+
+/* 5) Na wszelki wypadek: te sekcje trzymać POD belką */
+body.contact-page .contact-hero,
+body.contact-page .contact-info,
+body.contact-page .contact-form {
+  position: relative;
+  z-index: 0 !important;
+}
+
+/* 6) Autohide korzysta z istniejącego JS (class 'nav-hidden' na <body>) */
+body.contact-page.nav-hidden .header .container.header__top {
+  transform: translateY(-100%);
+}
+
+body.contact-page .header {
+  background: url("../../photos/pages/contact/contact_picture_header.webp") center/cover no-repeat;
+  position: relative;
+  /* === MOBILE (do 744px) === */
+  min-height: 460px;
+  background-position: center bottom;
+  /* === TABLET (744px+) === */
+}
+@media (min-width: 744px) {
+  body.contact-page .header {
+    min-height: 600px;
+    background-position: center top;
+  }
+}
+body.contact-page .header {
+  /* === LAPTOP (1440px+) === */
+}
+@media (min-width: 1440px) {
+  body.contact-page .header {
+    min-height: 700px;
+    background-position: center bottom;
+  }
+}
+body.contact-page .header {
+  /* === DESKTOP (1920px+) === */
+}
+@media (min-width: 1920px) {
+  body.contact-page .header {
+    min-height: 900px;
+    background-position: center bottom;
+  }
 }
 
 /* ===== Namespace strony ===== */
@@ -11159,6 +11423,404 @@ main.pages__container > .container {
     margin-inline: auto;
     min-width: 0;
     box-sizing: content-box;
+  }
+}
+/* ===== SERVICES: belka fixed + autohide, parity z index ===== */
+/* Hero może mieć tło/::after, ale belka ma być ponad tym */
+.services-page .header {
+  position: relative;
+  z-index: 1;
+}
+
+.services-page .header__wrap,
+.services-page .header__nav {
+  position: relative;
+  z-index: 3;
+}
+
+/* Podwieszenie belki do góry ekranu */
+.services-page .header .container.header__top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-h);
+  padding-inline: var(--content-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 32; /* ponad tłem/overlayem headera */
+  background: rgba(23, 23, 23, 0.4); /* mobile/tablet szkło, jak index */
+  backdrop-filter: blur(1px);
+  border-bottom: 1px solid rgb(0, 0, 0);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.35);
+  transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.3, 1), background 0.18s ease;
+}
+
+/* Laptop+ — przezroczysta (tak jak index) */
+@media (min-width: 1440px) {
+  .services-page .header .container.header__top {
+    background: transparent;
+    backdrop-filter: none;
+    border: 0;
+    box-shadow: none;
+  }
+}
+/* Treść nie może wpadać pod fixed belkę */
+.services-page main {
+  padding-top: var(--nav-h);
+}
+
+/* Autohide — body dostaje .nav-hidden z tego samego JS co na index */
+.services-page.nav-hidden .header .container.header__top {
+  transform: translateY(-100%);
+}
+
+/* Na wszelki wypadek: sekcje pod belką, nie nad */
+.services-page .services-hero,
+.services-page .services-list,
+.services-page .services-faq {
+  position: relative;
+  z-index: 0;
+}
+
+/* Jeśli gdzieś na przodkach jest transform/filter, zdejmij
+   (bo to potrafi „uwięzić” position: fixed) */
+.services-page .header,
+.services-page .header__wrap {
+  transform: none !important;
+  filter: none !important;
+  will-change: auto !important;
+}
+
+/* Gdy globalny .container ma pointer-events:none — odblokuj w belce */
+.services-page .header .container.header__top {
+  pointer-events: auto !important;
+}
+
+/* ========= HARD FIX: belka zawsze NA WIERZCHU na services ========= */
+/* 0) Wyzeruj konteksty które więżą fixed */
+.services-page,
+.services-page .header,
+.services-page .header__wrap {
+  transform: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+  perspective: none !important;
+  will-change: auto !important;
+  isolation: auto !important;
+  z-index: auto !important;
+}
+
+/* 1) Na wszelki wypadek nadajemy headerowi własne „piętro”, a belce jeszcze wyższe */
+.services-page .header {
+  position: relative !important;
+  z-index: 2147483646 !important; /* pod belką, ale nad resztą */
+}
+
+/* 2) Sama belka – fixed do viewportu + MAX z-index */
+.services-page .header .container.header__top {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-h);
+  padding-inline: var(--content-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 2147483647 !important; /* praktycznie sufit */
+  pointer-events: auto !important;
+  /* szkło na mobile/tablet; laptop+ robi się transparent */
+  background: rgba(23, 23, 23, 0.4);
+  backdrop-filter: blur(2px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.86);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.35);
+  transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.3, 1), background 0.18s ease;
+}
+
+@media (min-width: 1440px) {
+  .services-page .header .container.header__top {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+}
+/* 3) Odsuń treść pod belką */
+.services-page main {
+  padding-top: var(--nav-h) !important;
+}
+
+/* 4) Problemowe sekcje – kasujemy im własne warstwy */
+.services-page .process-steps,
+.services-page .process-steps *,
+.services-page .timeline,
+.services-page .timeline *,
+.services-page .process-card,
+.services-page .process-card *,
+.services-page .services-hero,
+.services-page .services-list,
+.services-page .services-faq {
+  position: relative !important;
+  z-index: 0 !important;
+  transform: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+  will-change: auto !important;
+}
+
+/* 5) Autohide (JS z index) */
+.services-page.nav-hidden .header .container.header__top {
+  transform: translateY(-100%);
+}
+
+/* ===== SERVICES: mobile menu nad belką ===== */
+/* menu ma przykrywać cały viewport */
+.services-page .header__nav {
+  position: fixed; /* niech nie „siedzi” w headerze */
+  inset: 0;
+  padding-top: calc(env(safe-area-inset-top, 0px) + var(--nav-h));
+  background: rgba(0, 0, 0, 0.86);
+  backdrop-filter: blur(2px);
+  z-index: 2147483646; /* domyślnie tuż POD belką (gdy zamknięte) */
+}
+
+/* gdy otwarte – idzie NA belkę */
+.services-page .header__nav[aria-hidden=false] {
+  z-index: 2147483647 !important; /* > z-index belki */
+  pointer-events: auto; /* klikalne */
+  visibility: visible;
+  opacity: 1;
+}
+
+/* pomocniczo: belkę daj minimalnie niżej, żeby menu mogło ją przykryć */
+.services-page .header .container.header__top {
+  z-index: 2147483646 !important;
+}
+
+/* jeżeli globalnie chowasz menu display:none – zostaw to,
+   ale upewnij się, że gdy otwarte, jest blokiem i łapie klik */
+@media (max-width: 1439px) {
+  #mobile-menu[aria-hidden=true] {
+    display: none !important;
+  }
+  #mobile-menu[aria-hidden=false] {
+    display: block !important;
+  }
+}
+/* ===== SERVICES: wysokość i kadr zdjęcia w headerze per MQ ===== */
+/* USTAWIAMY TYLKO min-height + background-position, bez podmiany obrazka */
+body.services-page .header {
+  /* MOBILE (do 744px) */
+  min-height: 380px !important;
+  background-position: center 28% !important; /* przesuwaj kadr: mniejsza wartość = wyżej */
+  /* TABLET (744–1439) */
+}
+@media (min-width: 744px) {
+  body.services-page .header {
+    min-height: 540px !important;
+    background-position: center 32% !important;
+  }
+}
+body.services-page .header {
+  /* LAPTOP (1440–1919) */
+}
+@media (min-width: 1440px) {
+  body.services-page .header {
+    min-height: 680px !important;
+    background-position: center 50% !important; /* środek */
+  }
+}
+body.services-page .header {
+  /* DESKTOP (≥1920) */
+}
+@media (min-width: 1920px) {
+  body.services-page .header {
+    min-height: 700px !important;
+    background-position: center 40% !important; /* niżej – pokaż dół kadru */
+  }
+}
+
+/* === SERVICES: naprawa klikalności belki === */
+/* 1) Nic w headerze nie przechwytuje klików ponad belką */
+.services-page .header::before,
+.services-page .header::after,
+.services-page .header__overlay,
+.services-page .header__video {
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
+/* 2) Belka podwieszona i nad wszystkim */
+.services-page .header .container.header__top {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-h);
+  padding-inline: var(--content-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10000 !important; /* ponad overlayami/treścią */
+  pointer-events: auto !important; /* belka klikalna */
+}
+
+/* 3) Mobilne menu nad belką i stroną */
+.services-page .header__nav {
+  position: fixed; /* jak na innych podstronach */
+  inset: 0; /* pełny ekran */
+  z-index: 10001 !important;
+  pointer-events: auto !important;
+}
+
+/* 4) Na wszelki wypadek: wrapper headera nie tworzy wyższych kontekstów */
+.services-page .header,
+.services-page .header__wrap {
+  position: relative;
+  z-index: 0 !important;
+  transform: none !important;
+  filter: none !important;
+  will-change: auto !important;
+}
+
+/* === SERVICES: belka zawsze nad overlayem, logo NA WIERZCHU (≥1440) === */
+/* 1) Overlay headera trzymamy pod belką */
+.services-page .header::after {
+  z-index: 0 !important;
+}
+
+/* 2) Sama belka nad overlayem */
+.services-page .header__wrap,
+.services-page .header .container.header__top {
+  position: relative;
+  z-index: 10 !important;
+}
+
+/* 3) Laptop+ – belka przezroczysta jak na index (bez „dymienia”) */
+@media (min-width: 1440px) {
+  .services-page .header .container.header__top {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+}
+/* 4) LOGO absolutnie na wierzchu względem wszystkiego */
+@media (min-width: 1440px) {
+  .services-page .header__logo {
+    position: fixed !important;
+    top: 0;
+    left: var(--content-x);
+    height: var(--nav-h);
+    display: flex;
+    align-items: center;
+    /* klucz: największy z-index w aplikacji + własny stacking (isolate) */
+    z-index: 2147483647 !important;
+    isolation: isolate; /* tworzy własny stacking context */
+    pointer-events: auto !important;
+  }
+  /* kapsułka wokół logo też wynosimy na wierzch, bez blendów/filtrów */
+  .services-page .header__logo-bg {
+    position: relative;
+    z-index: 1;
+    mix-blend-mode: normal;
+    filter: none !important;
+    background: rgba(255, 255, 255, 0.9); /* jak na index */
+    border-radius: 0 6px 0 0;
+    padding: 4px 8px;
+    box-shadow: 0 4px 3.5px rgba(12, 12, 12, 0.35);
+  }
+}
+/* 5) Na wszelki wypadek – overlay nie zasłania klików */
+.services-page .header::after {
+  pointer-events: none !important;
+}
+
+/* === SERVICES: LOGO NAD OVERLAYEM === */
+body.services-page .header__logo,
+body.services-page .header__logo a,
+body.services-page .header__logo-img,
+body.services-page .header_logo-bg {
+  position: relative;
+  z-index: 12000 !important; /* wyżej niż nav i overlay */
+  pointer-events: auto !important;
+}
+
+/* === FIX: Logo zawsze nad nav overlay (services) === */
+/* === /services — NAV FIX (tylko ≥ laptop) === */
+@media (min-width: 1440px) {
+  /* 0) wyłącz konteksty „stacking” nad belką */
+  .services-page,
+  .services-page .header,
+  .services-page .header__wrap {
+    transform: none !important;
+    filter: none !important;
+    will-change: auto !important;
+    z-index: auto !important;
+  }
+  /* 1) belka zawsze na wierzchu i PRZYTWIERDZONA do topu */
+  .services-page .header__top,
+  .services-page .header .container.header__top {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--nav-h);
+    padding-inline: var(--content-x);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 2147483646 !important; /* ponad treścią i overlayami */
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    pointer-events: auto !important;
+  }
+  /* 2) logo absolutnie nad wszystkim (gdy obrazki mają z-index) */
+  .services-page .header__logo {
+    position: relative !important;
+    z-index: 2147483647 !important;
+    isolation: isolate;
+    pointer-events: auto !important;
+  }
+  /* 3) treść nie wchodzi pod fixed belkę */
+  .services-page main {
+    padding-top: var(--nav-h) !important;
+  }
+  /* 4) sekcje pod spodem nie tworzą „pięter” nad belką */
+  .services-page .services-hero,
+  .services-page .services-list,
+  .services-page .services-faq,
+  .services-page .process-steps,
+  .services-page .timeline,
+  .services-page .process-card {
+    position: relative !important;
+    z-index: 0 !important;
+    transform: none !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+  }
+  /* 5) overlaye / pseudo-elementy w headerze nie łapią klików */
+  .services-page .header::before,
+  .services-page .header::after,
+  .services-page .header__overlay,
+  .services-page .header__video {
+    pointer-events: none !important;
+    z-index: 0 !important;
+  }
+}
+@media (min-width: 1440px) {
+  /* kontener belki nie łapie klików */
+  .services-page .header .container.header__top {
+    pointer-events: none !important;
+  }
+  /* ale jego dzieci normalnie klikalne */
+  .services-page .header .container.header__top > * {
+    pointer-events: auto !important;
   }
 }
 /* ===========================

@@ -1,7 +1,8 @@
 // @use "../utils/variables" as v;
 
 // /* Pokrętła (łatwo pod ręką) */
-// .configurator-prompt {
+// .configurator-prompt,
+// body.about .configurator-prompt {
 //   --ai-lift: 20px;                    /* ile obniżone na starcie */
 //   --ai-ease: cubic-bezier(.2,.6,.2,1);
 //   --ai-rise-duration: .55s;           /* czas podnoszenia */

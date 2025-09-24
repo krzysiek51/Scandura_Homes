@@ -1,73 +1,73 @@
-@use "../utils/variables" as *;
-@use "../utils/mixins" as *;
+// @use "../utils/variables" as *;
+// @use "../utils/mixins" as *;
 
-/* =================================================================
-   GLOBAL GRID DLA STRON W /pages (contact, services, projects itd.)
-   ================================================================= */
+// /* =================================================================
+//    GLOBAL GRID DLA STRON W /pages (contact, services, projects itd.)
+//    ================================================================= */
 
-/* Kontener główny podstron */
-.pages__container {
-  box-sizing: border-box;
-  margin-inline: auto;
-  width: 100%;
-  max-width: none;
-  padding-inline: 20px;   /* MOBILE */
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-}
+// /* Kontener główny podstron */
+// .pages__container {
+//   box-sizing: border-box;
+//   margin-inline: auto;
+//   width: 100%;
+//   max-width: none;
+//   padding-inline: 20px;   /* MOBILE */
+//   display: grid;
+//   grid-template-columns: repeat(4, minmax(0, 1fr));
+//   gap: 16px;
+// }
 
-/* Rozpuść wewnętrzne .container WYŁĄCZNIE w treści (nie header/footer) */
-main.pages__container > .container {
-  display: contents;
-  max-width: none;
-  padding: 0;
-  margin: 0;
-}
+// /* Rozpuść wewnętrzne .container WYŁĄCZNIE w treści (nie header/footer) */
+// main.pages__container > .container {
+//   display: contents;
+//   max-width: none;
+//   padding: 0;
+//   margin: 0;
+// }
 
-/* TABLET */
-@media (min-width: $bp-tablet) {
-  .pages__container {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-    gap: 20px;
-    padding-inline: 42px;
-  }
-}
+// /* TABLET */
+// @media (min-width: $bp-tablet) {
+//   .pages__container {
+//     grid-template-columns: repeat(8, minmax(0, 1fr));
+//     gap: 20px;
+//     padding-inline: 42px;
+//   }
+// }
 
-/* LAPTOP */
-@media (min-width: $bp-laptop) {
-  .pages__container {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: 24px;
-    padding-inline: 40px;
-  }
-}
+// /* LAPTOP */
+// @media (min-width: $bp-laptop) {
+//   .pages__container {
+//     grid-template-columns: repeat(12, minmax(0, 1fr));
+//     gap: 24px;
+//     padding-inline: 40px;
+//   }
+// }
 
-/* DESKTOP */
-@media (min-width: $bp-desktop) {
-  .pages__container {
-    padding-inline: 300px;
-  }
-}
+// /* DESKTOP */
+// @media (min-width: $bp-desktop) {
+//   .pages__container {
+//     padding-inline: 300px;
+//   }
+// }
 
-/* ================================================================
-   LOKALNE USTAWIENIA DLA PODSTRON (bez wpływu na index)
-   ================================================================ */
-.services-page {
-  /* Hero nigdy nie przykrywa nawigacji; unikanie nowych stacking contexts */
-  .services-hero,
-  .services-hero__container {
-    position: relative;
-    z-index: 0;
-    transform: none;
-    filter: none;
-  }
+// /* ================================================================
+//    LOKALNE USTAWIENIA DLA PODSTRON (bez wpływu na index)
+//    ================================================================ */
+// .services-page {
+//   /* Hero nigdy nie przykrywa nawigacji; unikanie nowych stacking contexts */
+//   .services-hero,
+//   .services-hero__container {
+//     position: relative;
+//     z-index: 0;
+//     transform: none;
+//     filter: none;
+//   }
 
-  /* Overlay/gradient w hero pod nawigacją */
-  .hero__overlay {
-    position: absolute;
-    inset: auto 0 0 0; /* overlay przy dole hero – dostosuj jeśli masz inny */
-    z-index: 1;
-    pointer-events: none;
-  }
-}
+//   /* Overlay/gradient w hero pod nawigacją */
+//   .hero__overlay {
+//     position: absolute;
+//     inset: auto 0 0 0; /* overlay przy dole hero – dostosuj jeśli masz inny */
+//     z-index: 1;
+//     pointer-events: none;
+//   }
+// }
