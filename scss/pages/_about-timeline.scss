@@ -5,7 +5,7 @@
 body.about .header {
   min-height: 0 !important;
   height: auto;
-  
+
 
 }
 
@@ -18,16 +18,19 @@ body.about .header {
 
 
   /* --- GLOBALNY FIX dla osi timeline --- */
-.about-timeline {
-  position: relative;     /* tworzy kontekst */
-  isolation: isolate;     /* własna warstwa (żeby pseudo overlaye z zewnątrz nie wchodziły nad nią) */
-}
+  .about-timeline {
+    position: relative;
+    /* tworzy kontekst */
+    isolation: isolate;
+    /* własna warstwa (żeby pseudo overlaye z zewnątrz nie wchodziły nad nią) */
+  }
 
-.about-timeline .timeline-grid::before,
-.about-timeline::before,
-.about-timeline::after {
-  pointer-events: none;   /* dekoracje osi nie blokują klików */
-}
+  .about-timeline .timeline-grid::before,
+  .about-timeline::before,
+  .about-timeline::after {
+    pointer-events: none;
+    /* dekoracje osi nie blokują klików */
+  }
 
 
   /* KONTENER (MOBILE): 4 kol., gap 16, pad 20 */
@@ -69,14 +72,17 @@ body.about .header {
   .timeline-grid {
     grid-column: 1 / -1;
     display: grid;
-    grid-template-columns: 1fr; /* mobile: jedna kolumna */
+    grid-template-columns: 1fr;
+    /* mobile: jedna kolumna */
     gap: 44px;
     list-style: none;
     padding: 0;
     margin: 0;
 
-    position: relative;   /* baza pod linię czasu */
-    counter-reset: step;  /* numeracja kart */
+    position: relative;
+    /* baza pod linię czasu */
+    counter-reset: step;
+    /* numeracja kart */
 
     /* pionowa przerywana linia czasu */
     &::before {
@@ -87,11 +93,9 @@ body.about .header {
       top: 0;
       bottom: 0;
       width: 2px;
-      background: repeating-linear-gradient(
-        to bottom,
-        #DC9B59 0 8px,
-        transparent 8px 16px
-      );
+      background: repeating-linear-gradient(to bottom,
+          #DC9B59 0 8px,
+          transparent 8px 16px);
       z-index: 0;
     }
   }
@@ -99,16 +103,21 @@ body.about .header {
   /* Karta na osi czasu */
   .timeline-card {
     /* rozmiary ikony + obrazka w kółku */
-    --icon-size: 64px;    /* średnica kółka (mobile) */
-    --icon-img: 70%;      /* procent średnicy dla <img> w środku */
+    --icon-size: 64px;
+    /* średnica kółka (mobile) */
+    --icon-img: 70%;
+    /* procent średnicy dla <img> w środku */
     /* niezależne kotwiczenie do dołu media: */
-    --media-h: 75cqw;     /* mobile: aspect-ratio 4/3 => 3/4 = 75% szerokości karty */
-    --icon-nudge: 0px;    /* drobna korekta gdyby trzeba było (opcjonalna) */
+    --media-h: 75cqw;
+    /* mobile: aspect-ratio 4/3 => 3/4 = 75% szerokości karty */
+    --icon-nudge: 0px;
+    /* drobna korekta gdyby trzeba było (opcjonalna) */
 
     position: relative;
     z-index: 1;
     counter-increment: step;
-    container-type: inline-size; /* <--- pozwala używać cqw (nie zmienia layoutu) */
+    container-type: inline-size;
+    /* <--- pozwala używać cqw (nie zmienia layoutu) */
 
     background: #FAF7F4;
     border-radius: 0 16px 0 0;
@@ -155,7 +164,8 @@ body.about .header {
     &__media {
       position: relative;
       width: 100%;
-      aspect-ratio: 4 / 3; /* MOBILE default */
+      aspect-ratio: 4 / 3;
+      /* MOBILE default */
       height: auto;
       overflow: hidden;
       border-radius: 0 16px 0 0;
@@ -173,7 +183,8 @@ body.about .header {
     &__icon {
       position: absolute;
       left: 50%;
-      top: 0; /* kotwica: górna krawędź karty */
+      top: 0;
+      /* kotwica: górna krawędź karty */
       transform: translateX(-50%);
       /* pozycja = wysokość media - połowa ikony (+ ewentualna korekta) */
       margin-top: calc(var(--media-h) - (var(--icon-size) / 2) + var(--icon-nudge));
@@ -190,7 +201,8 @@ body.about .header {
 
     /* tytuł i tekst */
     &__title {
-      margin: calc(var(--icon-size) / 2 + 12px) 16px 6px; /* odsunięcie spod ikony */
+      margin: calc(var(--icon-size) / 2 + 12px) 16px 6px;
+      /* odsunięcie spod ikony */
       font-weight: 600;
       font-size: 16px;
       line-height: 1.3;
@@ -212,7 +224,8 @@ body.about .header {
     width: var(--icon-img);
     height: var(--icon-img);
     display: block;
-    object-fit: contain; /* nie rozciąga proporcji */
+    object-fit: contain;
+    /* nie rozciąga proporcji */
     object-position: center;
     margin: 0 auto;
   }
@@ -221,21 +234,37 @@ body.about .header {
 /* ====== TABLET (≥744) ====== */
 @media (min-width: $bp-tablet) {
   .about-timeline {
-    .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+    .about__container {
+      @include section-grid-fluid(8, 20px, 20px, 42px);
+    }
 
-    .timeline-grid { gap: 80px; }
-    .timeline-grid::before { width: 2.5px; }
+    .timeline-grid {
+      gap: 80px;
+    }
 
-    .section-title { font-size: 42px; }
-    .section-lead  { font-size: 24px; }
+    .timeline-grid::before {
+      width: 2.5px;
+    }
+
+    .section-title {
+      font-size: 42px;
+    }
+
+    .section-lead {
+      font-size: 24px;
+    }
 
     .timeline-card {
-      --icon-size: 72px;   /* większe kółko */
+      --icon-size: 72px;
+      /* większe kółko */
       --icon-img: 72%;
-      --media-h: 50cqw;    /* aspect-ratio 6/3 => 1/2 szerokości karty */
+      --media-h: 50cqw;
+      /* aspect-ratio 6/3 => 1/2 szerokości karty */
       /* --icon-nudge: 0px; // opcjonalnie, jeśli potrzebujesz korekty */
 
-      &__media { aspect-ratio: 6 / 3; }
+      &__media {
+        aspect-ratio: 6 / 3;
+      }
 
       &__title {
         font-size: 20px;
@@ -250,75 +279,297 @@ body.about .header {
   }
 }
 
-/* =========================================================
-   LAPTOP (≥1440) — układ w gridzie 12 kolumn
-   ========================================================= */
-
-/* ===== LAPTOP+ (≥1440px): 12 kolumn, wiersze przypisane jawnie ===== */
+/* ================== LAPTOP+ (≥1440) – TIMELINE clean ================== */
+/* ================== LAPTOP+ (≥1440) – TIMELINE clean ================== */
 @media (min-width: $bp-laptop) {
-  .about-timeline .timeline-grid{
+  :root{
+    --container-max: 1280px;
+    --container-pad: 40px;
+  }
+
+  .about__container{
+    box-sizing: border-box;
+    width: min(100%, var(--container-max));
+    margin-inline: auto;
+    padding-inline: var(--container-pad);
+  }
+  
+
+  /* GAŁKI */
+  :root{
+    --tl-col-gap:     24px;
+    --tl-row-h:       600px;           /* WYSOKOŚĆ WIERSZA */
+    --tl-pad-x:       20px;            /* wewnętrzny pad L/P elementów */
+    --row-pad-y:      20px;            /* pad góra/dół całego wiersza */
+    --tl-icon-size:   92px;
+    --tl-row-bg-odd:  #FAF7F4;
+    --tl-row-bg-even: #FAF7F4;
+
+    /* padding kontenera strony (gutter) – dopasuj do projektu */
+    --container-pad:  40px;
+  }
+.about-timeline .timeline-grid {
+    gap: 280px;
+  }
+  /* WIERSZ/KARTA – full-bleed tło, treść w gutterach strony */
+  .about-timeline .timeline-card__row{
     display: grid;
-    grid-template-columns: repeat(12, minmax(0,1fr));
-    column-gap: 24px;
-    row-gap: 96px;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: minmax(0, var(--tl-row-h));
+    grid-auto-rows: 0;
+    column-gap: var(--tl-col-gap);
+
+    /* full-bleed: tło przez cały viewport */
+    width: calc(100vw - (100vw - 100%));
+  margin-left:  calc(50% - 50vw + (100vw - 100%) / 2);
+  margin-right: calc(50% - 50vw + (100vw - 100%) / 2);
+
+   
+
+    height: var(--tl-row-h);
+    background: var(--row-bg, var(--tl-row-bg-odd));
     position: relative;
-  }
-
-  /* jedna karta = jeden wiersz; dzieci układamy w tej siatce */
-  .about-timeline .timeline-card{ display: contents; }
-
-  /* --- Wiersz 1 ---------------------------------------------------- */
-  .about-timeline .timeline-grid > .timeline-card:nth-child(1) .timeline-card__media { 
-    grid-column: 1 / 7; grid-row: 1; 
-  }
-  .about-timeline .timeline-grid > .timeline-card:nth-child(1) .timeline-card__title,
-  .about-timeline .timeline-grid > .timeline-card:nth-child(1) .timeline-card__text {
-    grid-column: 7 / 13; grid-row: 1; text-align: left;
-  }
-  .about-timeline .timeline-grid > .timeline-card:nth-child(1) .timeline-card__icon{
-    grid-column: 7; grid-row: 1; justify-self: center;
-  }
-
-  /* --- Wiersz 2 (zamiana stron) ----------------------------------- */
-  .about-timeline .timeline-grid > .timeline-card:nth-child(2) .timeline-card__media { 
-    grid-column: 7 / 13; grid-row: 2; 
-  }
-  .about-timeline .timeline-grid > .timeline-card:nth-child(2) .timeline-card__title,
-  .about-timeline .timeline-grid > .timeline-card:nth-child(2) .timeline-card__text {
-    grid-column: 1 / 7; grid-row: 2; text-align: left;
-  }
-  .about-timeline .timeline-grid > .timeline-card:nth-child(2) .timeline-card__icon{
-    grid-column: 7; grid-row: 2; justify-self: center;
-  }
-
-  /* --- Wiersz 3 ---------------------------------------------------- */
-  .about-timeline .timeline-grid > .timeline-card:nth-child(3) .timeline-card__media { 
-    grid-column: 1 / 7; grid-row: 3; 
-  }
-  .about-timeline .timeline-grid > .timeline-card:nth-child(3) .timeline-card__title,
-  .about-timeline .timeline-grid > .timeline-card:nth-child(3) .timeline-card__text {
-    grid-column: 7 / 13; grid-row: 3; text-align: left;
-  }
-  .about-timeline .timeline-grid > .timeline-card:nth-child(3) .timeline-card__icon{
-    grid-column: 7; grid-row: 3; justify-self: center;
-  }
-
-  /* kosmetyka – żeby obrazek wyglądał OK, ale układu nie rusza */
-  .about-timeline .timeline-card__media{
-    aspect-ratio: 3 / 2;
-    border-radius: 12px;
     overflow: hidden;
-    position: relative;
-    z-index: 1;
+    box-sizing: border-box;             /* brak poziomego scrolla */
   }
-  .about-timeline .timeline-card__photo{ width:100%; height:100%; object-fit:cover; }
-  .about-timeline .timeline-card__title,
-  .about-timeline .timeline-card__text{ position: relative; z-index: 2; }
-  .about-timeline .timeline-card__icon{ width:92px; height:92px; border-radius:50%; display:grid; place-items:center; }
+  .about-timeline .timeline-card:nth-child(odd)  .timeline-card__row{ --row-bg: var(--tl-row-bg-odd); }
+  .about-timeline .timeline-card:nth-child(even) .timeline-card__row{ --row-bg: var(--tl-row-bg-even); }
+
+  /* wszystkie dzieci jadą w JEDNYM rzędzie */
+  .about-timeline .timeline-card__row > *{
+    grid-row: 1;
+    min-height: 0;
+    position: relative;
+    z-index: 2;                          /* nad przewodem */
+  }
+
+  /* PRZEWÓD z JS */
+  .timeline-wires{
+    position:absolute; inset:0;
+    pointer-events:none;
+    z-index:1;                           /* nad tłem, pod treścią */
+    background:transparent !important;
+  }
+  .timeline-wire{
+    fill:none !important;
+    stroke:#DC9B59 !important;
+    stroke-width:3;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    opacity:.95;
+  }
+
+  /* MEDIA – dokładnie w obrębie wiersza (uwzględnia pad wiersza) */
+  .about-timeline .timeline-card__media{
+    // height: calc(100% - (var(--row-pad-y) * 2));
+    box-sizing: border-box;
+    
+    overflow: hidden;
+    display:flex; align-items:center; justify-content:center;
+    padding: 20px;
+    height: 600px;
+  }
+ 
+.about-timeline .timeline-card__photo{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+  border-radius:0 60px 0 0;
 }
 
-/* DESKTOP (≥1920) – większe odstępy/medalion, układ bez zmian */
-@media (min-width: $bp-desktop){
-  .about-timeline .timeline-grid{ column-gap: 32px; row-gap: 120px; }
-  .about-timeline .timeline-card__icon{ width:100px; height:100px; }
+/* foto w DRUGIEJ .timeline-card */
+.about-timeline :nth-child(2 of .timeline-card) .timeline-card__photo{
+  /* Twoje inne ustawienia: */
+  border-radius:60px 0 0 0;
+  object-position:top;
+}
+
+  /* TEKSTY */
+  .about-timeline .timeline-card__title{
+    font-family: dm sans, sans-serif;
+    font-size: 48px;
+    line-height: 48px;
+    letter-spacing: 0.1em;
+     text-align: left;  
+  }
+  .about-timeline .timeline-card__text{
+    font-family: dm sans, sans-serif;
+    font-size: 24px;
+    align-self:center;
+    overflow:hidden;
+     text-align: left;  
+     margin-top: 150px;
+  }
+
+  /* IKONA */
+  .about-timeline .timeline-card__icon{
+    place-self:center;
+    width:var(--tl-icon-size); height:var(--tl-icon-size);
+    border-radius:50%;
+    background:#fff;
+    box-shadow:0 8px 24px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.08);
+    z-index:4;
+    display: none;
+  }
+  .about-timeline .timeline-card__icon img{
+    width:100%; height:100%; object-fit:contain; display:block;
+  }
+
+  /* POZYCJE (Twój układ – tylko kolumny, wiersz zawsze = 1) */
+  .about-timeline .timeline-card:nth-child(1) .timeline-card__media { grid-column: 1 / 7; }
+  .about-timeline .timeline-card:nth-child(1) .timeline-card__title,
+  .about-timeline .timeline-card:nth-child(1) .timeline-card__text  { grid-column: 7 / 13; }
+  .about-timeline .timeline-card:nth-child(1) .timeline-card__icon  { grid-column: 7; }
+
+  .about-timeline .timeline-card:nth-child(2) .timeline-card__media { grid-column: 7 / 13; }
+  .about-timeline .timeline-card:nth-child(2) .timeline-card__title,
+  .about-timeline .timeline-card:nth-child(2) .timeline-card__text  { grid-column: 1 / 7; }
+  .about-timeline .timeline-card:nth-child(2) .timeline-card__icon  { grid-column: 7; }
+
+  .about-timeline .timeline-card:nth-child(3) .timeline-card__media { grid-column: 1 / 7; }
+  .about-timeline .timeline-card:nth-child(3) .timeline-card__title,
+  .about-timeline .timeline-card:nth-child(3) .timeline-card__text  { grid-column: 7 / 13; }
+  .about-timeline .timeline-card:nth-child(3) .timeline-card__icon  { grid-column: 7; }
+
+  /* Wyłącz pionową oś/markery z CSS (bo rysuje to JS) */
+  .about-timeline .timeline-grid::before,
+  .about-timeline .timeline-card::before,
+  .about-timeline .timeline-card::after{
+    display:none !important;
+    content:none !important;
+  }
+}
+
+
+
+/* =========================================================
+   DESKTOP (≥1920) — delikatne powiększenie przez zmienne
+   ========================================================= */
+@media (min-width: $bp-desktop) {
+  :root {
+    --tl-row-gap: 112px;
+    --tl-row-pad-y: 48px;
+    --tl-media-height: 600px;
+    /* wyższy wrapper na desktopie */
+    --tl-icon-size: 100px;
+    --tl-title-size: 24px;
+    --tl-text-size: 17px;
+  }
+}
+
+
+@media (min-width: $bp-laptop) {
+  /* 1) Kontener About nigdy nie większy niż viewport (i nie powiększany przez dzieci) */
+  body.about .about__container{
+    box-sizing: border-box;
+    inline-size: 100%;            /* = width, ale w writing-mode safe */
+    max-inline-size: 100%;
+    margin-inline: auto;
+    /* Twoje pady jak chcesz; ważne by były wewnątrz boxu */
+    padding-inline: 40px !important;
+
+    /* kluczowe – dzieci nie rozszerzą inline-size kontenera */
+    overflow-x: clip;             /* albo: hidden */
+  }
+
+  /* 1a) Grid items nie mogą rozszerzać kolumn przez intrinsic sizing */
+  body.about .about__container > * { min-width: 0; }
+
+  /* 2) Full-bleed timeline: „scrollbar-safe” zamiast gołego 100vw */
+  .about-timeline .timeline-card__row{
+    width: calc(100vw - (100vw - 100%));
+    margin-left:  calc(50% - 50vw + (100vw - 100%) / 2);
+    margin-right: calc(50% - 50vw + (100vw - 100%) / 2);
+  }
+}
+// @media (min-width: 1440px) {
+//   /* 1) Nie przycinaj całej karty – tylko media */
+//   .about-timeline .timeline-card{
+//     overflow: visible !important;   /* ← było hidden w _about-timeline.scss:104 */
+//   }
+//   .about-timeline .timeline-card__row{
+//     overflow: visible !important;   /* asekuracyjnie */
+//   }
+//   .about-timeline .timeline-card__media{
+//     overflow: hidden !important;    /* radius/cover zostają na mediach */
+//     position: relative; 
+//     z-index: 1;
+//   }
+
+//   /* 2) Ustal porządek warstw w jednym miejscu */
+//   .about-timeline .timeline-wires{ z-index: 0 !important; pointer-events: none; }
+//   .about-timeline .timeline-card__row > *{ z-index: 1 !important; }  /* teksty itd. */
+//   .about-timeline .timeline-card__icon{
+//     position: relative !important;
+//     z-index: 3 !important;          /* ponad mediami i tekstami */
+//     grid-row: 1 !important;
+//     grid-column: 7 !important;
+//     place-self: center !important;
+//     //display: flex !important; align-items: center !important; justify-content: center !important;
+//     width: var(--tl-icon-size) !important; height: var(--tl-icon-size) !important;
+//     border-radius: 50% !important; background:#fff; 
+//     box-shadow: 0 8px 24px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.08);
+//     pointer-events: none;
+//     display: none;
+//   }
+// }
+/* === TIMELINE — WIRES (≥1440) =================================== */
+@media (min-width: 1440px){
+  .about-timeline{
+    position: relative;
+  }
+  /* SVG kontener */
+  .about-timeline .timeline-wires{
+    position:absolute; inset:0;
+    pointer-events:none;
+    z-index: 1;                   /* pod treścią, nad tłem */
+    background: transparent !important;
+  }
+
+  /* OŚ i SZYNY */
+  .timeline-rail{
+    fill:none;
+    stroke:#E9B785;               /* jaśniejsza baza */
+    stroke-width:2;
+    stroke-linecap:round;
+    opacity:.85;
+    filter: url(#tl-glow);
+  }
+  .timeline-axis{
+    stroke-dasharray: 8 8;        /* oś z „kropek” */
+    animation: tl-dash 6s linear infinite;
+  }
+
+  /* ŁĄCZNIKI */
+  .timeline-wire{
+    fill:none;
+    stroke:#DC9B59;
+    stroke-width:3;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    filter: url(#tl-glow);
+    stroke-dasharray: 12 12;      /* subtelny „flow” po przewodzie */
+    animation: tl-dash 5.5s linear infinite;
+  }
+
+  /* WĘZŁY (nody przy kartach + start/end) */
+  .timeline-node{
+    fill:#fff;
+    stroke:#DC9B59;
+    stroke-width:3;
+    filter: url(#tl-glow);
+  }
+  .timeline-cap{
+    fill:#fff;
+    stroke:#E9B785;
+    stroke-width:2.5;
+    filter: url(#tl-glow);
+  }
+
+  /* lekka aureola */
+  @keyframes tl-dash {
+    to { stroke-dashoffset: -20; }
+  }
 }
