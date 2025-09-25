@@ -74,6 +74,7 @@
 
 @use "components/callback";
 @use 'components/callback-modal';
+@use 'patches/hover-lift';
 
 
 /* "Pusta kartka": chowamy tylko elementy do rysowania */
@@ -98,3 +99,16 @@
   z-index:3; background:#FAF7F4; box-shadow:0 4px 4px rgba(202,200,200,.25);
 }
 .services__icon{ width:93px; height:93px; display:block; color:#0B0B0C; }
+/* About Process — klik zawsze trafia w kartę */
+.about-process .process-grid .progress-fill,
+.about-process .process-grid .progress-dot,
+.about-process .process-grid [data-decor],
+.about-process .process-grid svg,
+.about-process .process-grid::before,
+.about-process .process-grid::after { pointer-events: none; }
+
+/* header karty nad dekoracjami w 2-kolumnowym układzie (tablet) */
+.about-process .process-grid article h3 { position: relative; z-index: 2; }
+
+/* otwarta karta nad sąsiadami */
+.about-process .process-grid article.is-open { z-index: 3; position: relative; }

@@ -1041,7 +1041,7 @@ body.about main {
   line-height: 24px;
   letter-spacing: 0.07em;
   font-style: italic;
-  color: #1D1F2C;
+  color: #1d1f2c;
   align-self: start;
 }
 .mission__text-title {
@@ -1051,7 +1051,7 @@ body.about main {
   line-height: 100%;
   letter-spacing: 0.07em;
   font-style: italic;
-  color: #1D1F2C;
+  color: #1d1f2c;
   margin-top: 16px;
   align-self: start;
 }
@@ -1061,7 +1061,7 @@ body.about main {
   font-size: 14px;
   line-height: 150%;
   letter-spacing: 0.05em;
-  color: #1D1F2C;
+  color: #1d1f2c;
   margin-top: 24px;
   align-self: start;
 }
@@ -1170,7 +1170,7 @@ body.about main {
     font-size: 32px;
     line-height: 32px;
     letter-spacing: 0.07em;
-    color: #1D1F2C;
+    color: #1d1f2c;
   }
   .mission__text-title {
     grid-column: 1/span 5;
@@ -1184,14 +1184,22 @@ body.about main {
     letter-spacing: 0.05em;
     color: var(--gray-black-500);
   }
+  .mission {
+    /* Jesteśmy w: .mission { ... } */
+  }
   .mission__button {
-    grid-column: 1/span 3;
-    width: auto;
-    min-width: 200px;
-    height: 56px;
-    padding: 0 24px;
-    margin-top: 22px;
-    border-radius: 0 16px 0 0;
+    /* zostawiasz swoje style jak są; tylko rozszerzamy transition */
+    transition: transform 0.24s cubic-bezier(0.2, 0.7, 0.3, 1), box-shadow 0.24s cubic-bezier(0.2, 0.7, 0.3, 1), opacity 0.15s ease;
+    /* LIFT na hover (bez kombinowania z top) */
+  }
+  .mission__button:hover {
+    opacity: 1;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+  }
+  .mission__button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.24);
   }
 }
 
@@ -1318,7 +1326,7 @@ body.about main {
     font-size: 48px;
     line-height: 1.2;
     letter-spacing: 0.07em;
-    color: #1D1F2C;
+    color: #1d1f2c;
     margin-top: 0;
   }
   .mission__text-title {
@@ -1443,7 +1451,8 @@ body.about main {
   .mission__divider {
     display: none;
   }
-  .mission { /* wyłączamy stary element dividera */
+  .mission {
+    /* wyłączamy stary element dividera */
     /* typografia */
   }
   .mission__title {
@@ -1451,7 +1460,7 @@ body.about main {
     grid-row: 1;
     font: italic 600 48px/1.2 "DM Sans", sans-serif;
     letter-spacing: 0.07em;
-    color: #1D1F2C;
+    color: #1d1f2c;
     margin-top: 306px;
   }
   .mission__text-title {
@@ -10382,6 +10391,10 @@ body.about .header {
     height: 14px;
   }
 }
+.about-process .process-grid article.is-open .drawer {
+  box-shadow: none !important;
+}
+
 /* =========================================================
    CTA — karta w kontenerze
    ========================================================= */
@@ -13684,6 +13697,25 @@ body.cb-lock {
     white-space: nowrap;
   }
 }
+@media (hover: hover) and (min-width: 1440px) {
+  .mission__button,
+  .services__button {
+    transform: translate3d(0, 0, 0) !important;
+    backface-visibility: hidden;
+    will-change: transform, box-shadow;
+    transition: transform 0.24s cubic-bezier(0.2, 0.7, 0.3, 1), box-shadow 0.24s cubic-bezier(0.2, 0.7, 0.3, 1) !important;
+  }
+  .mission__button:hover,
+  .services__button:hover {
+    transform: translate3d(0, -4px, 0) scale(1.01) !important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.28) !important;
+  }
+  .mission__button:active,
+  .services__button:active {
+    transform: translate3d(0, -1px, 0) scale(0.995) !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.24) !important;
+  }
+}
 /* "Pusta kartka": chowamy tylko elementy do rysowania */
 .services__icon [data-draw] {
   fill: none !important;
@@ -13721,6 +13753,28 @@ body.cb-lock {
   height: 93px;
   display: block;
   color: #0B0B0C;
+}
+
+/* About Process — klik zawsze trafia w kartę */
+.about-process .process-grid .progress-fill,
+.about-process .process-grid .progress-dot,
+.about-process .process-grid [data-decor],
+.about-process .process-grid svg,
+.about-process .process-grid::before,
+.about-process .process-grid::after {
+  pointer-events: none;
+}
+
+/* header karty nad dekoracjami w 2-kolumnowym układzie (tablet) */
+.about-process .process-grid article h3 {
+  position: relative;
+  z-index: 2;
+}
+
+/* otwarta karta nad sąsiadami */
+.about-process .process-grid article.is-open {
+  z-index: 3;
+  position: relative;
 }
 
 /*# sourceMappingURL=style.css.map */
