@@ -11,6 +11,7 @@
   color: #fff;
   overflow: hidden;
   isolation: auto;
+  padding-top: 80px;
   // z-index: 1;
 .header__logo-bg {
   display: inline-flex;
@@ -86,7 +87,7 @@
     letter-spacing: 2%;
     font-weight: 600;
 
-    margin-top: 26px;
+    margin-top: 75px;
     }
     .header__description {
       // grid-column: 1 / span 8; 
@@ -103,7 +104,7 @@
   .button--header      { 
       grid-column: 1 / span 3; 
       width: 335px;
-      height: 56px;
+      height: 40px;
       justify-self: start; 
       margin-bottom: 37px;
       font-family: dm sans, sans-serif;
@@ -754,3 +755,6 @@ body.about main {
 }
 
 
+.header{
+  padding-top: 20px;
+}

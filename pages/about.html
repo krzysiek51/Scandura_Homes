@@ -9,49 +9,49 @@
 </head>
 
 <body class="about">
-<!-- HEADER LITE: tylko belka nawigacyjna -->
-<header class="header">
-  <div class="header__wrap">
-    <div class="container header__top">
-      <!-- Logo (jak na index: kapsułka .header__logo-bg) -->
-      <a href="../index.html" class="header__logo">
-        <span class="header__logo-bg">
-          <img class="header__logo--img" src="../photos/logo.svg" alt="Scandura Homes" />
-        </span>
-      </a>
+  <!-- HEADER LITE: tylko belka nawigacyjna -->
+  <header class="header">
+    <div class="header__wrap">
+      <div class="container header__top">
+        <!-- Logo (jak na index: kapsułka .header__logo-bg) -->
+        <a href="../index.html" class="header__logo">
+          <span class="header__logo-bg">
+            <img class="header__logo--img" src="../photos/logo.svg" alt="Scandura Homes" />
+          </span>
+        </a>
 
- <!-- Telefon w belce -->
-          <a class="header__call" href="tel:+48796122598" aria-label="Zadzwoń do Scandura Homes">
-            <img src="../photos/svg/phone.svg" alt="" width="20" height="20" />
-            <span class="header__call-text">+48 796 122 598</span>
-          </a>
+        <!-- Telefon w belce -->
+        <a class="header__call" href="tel:+48796122598" aria-label="Zadzwoń do Scandura Homes">
+          <img src="../photos/svg/phone.svg" alt="" width="20" height="20" />
+          <span class="header__call-text">+48 796 122 598</span>
+        </a>
 
 
-      <!-- Burger (mobile/tablet) -->
-      <button class="header__burger" id="burger-toggle" type="button"
-              aria-label="Otwórz menu" aria-expanded="false" aria-controls="mobile-menu">
-        <img class="header__burger-icon" src="../photos/svg/burger.svg" width="20" height="14" alt="" />
-      </button>
+        <!-- Burger (mobile/tablet) -->
+        <button class="header__burger" id="burger-toggle" type="button" aria-label="Otwórz menu" aria-expanded="false"
+          aria-controls="mobile-menu">
+          <img class="header__burger-icon" src="../photos/svg/burger.svg" width="20" height="14" alt="" />
+        </button>
+      </div>
     </div>
-  </div>
 
-  <!-- NAV (ten sam, co na index) -->
-  <nav class="header__nav" id="mobile-menu" aria-hidden="true">
-    <button class="header__nav-close" aria-label="Zamknij menu">
-      <img src="../photos/svg/x.svg" alt="" />
-    </button>
+    <!-- NAV (ten sam, co na index) -->
+    <nav class="header__nav" id="mobile-menu" aria-hidden="true">
+      <button class="header__nav-close" aria-label="Zamknij menu">
+        <img src="../photos/svg/x.svg" alt="" />
+      </button>
 
-    <ul class="header__nav-list">
-      <li><a class="header__nav-link" href="../index.html">Home</a></li>
-      <li><a class="header__nav-link is-active" href="about.html">O nas</a></li>
-      <li><a class="header__nav-link" href="services.html">Usługi</a></li>
-      <li><a class="header__nav-link" href="../index.html">Projekty</a></li>
-      <li><a class="header__nav-link" href="contact.html">Kontakt</a></li>
-    </ul>
+      <ul class="header__nav-list">
+        <li><a class="header__nav-link" href="../index.html">Home</a></li>
+        <li><a class="header__nav-link is-active" href="about.html">O nas</a></li>
+        <li><a class="header__nav-link" href="services.html">Usługi</a></li>
+        <li><a class="header__nav-link" href="../index.html">Projekty</a></li>
+        <li><a class="header__nav-link" href="contact.html">Kontakt</a></li>
+      </ul>
 
-    <a href="contact.html" class="button button--nav">Contact Us</a>
-  </nav>
-</header>
+      <a href="contact.html" class="button button--nav">Contact Us</a>
+    </nav>
+  </header>
 
 
 
@@ -79,27 +79,45 @@
         </figure>
         <div class="about-hero__content">
           <div class="section-divider"></div>
+
+          <!-- Wiersz 1 -->
           <h1 class="about-hero__title">Nazywam się Krzysztof Torczyło</h1>
+
+          <!-- Wiersz 2 -->
           <p class="about-hero__lead">
-            W Norwegii nauczyłem się, że dom musi być ciepły, szczelny i służyć pokoleniom. Dziś tę wiedzę przenoszę do
-            Polski — budując domy w skandynawskim standardzie, z jasną umową i realną ceną. <br><br>
+            W Norwegii nauczyłem się, że dom musi być ciepły, szczelny i służyć pokoleniom.
+            Dziś tę wiedzę przenoszę do Polski — budując domy w skandynawskim standardzie,
+            z jasną umową i realną ceną. <br><br>
 
-            Posiadam norweski certyfikat Sentral Godkjenning, przyznawany wyłącznie firmom spełniającym najwyższe
-            wymagania. Aby go otrzymać, musiałem udokumentować realizację minimum 3 projektów rocznie przez 6 kolejnych
-            lat, przedstawić opinie klientów, pełną dokumentację techniczną i wykazać, że moja firma działa bez żadnych
-            zaległości podatkowych.
+            Posiadam norweski certyfikat Sentral Godkjenning, przyznawany wyłącznie firmom
+            spełniającym najwyższe wymagania. Aby go otrzymać, musiałem udokumentować realizację
+            minimum 3 projektów rocznie przez 6 kolejnych lat, przedstawić opinie klientów,
+            pełną dokumentację techniczną i wykazać, że moja firma działa bez żadnych zaległości podatkowych.
           </p>
-          <div class="about-hero__cta">
-            <a href="/pages/contact.html" class="btn btn--primary">Umów konsultację</a>
-          </div>
 
-          <!-- Blok certyfikatu -->
+          <!-- Wiersz 3 -->
+          <ul class="about-hero__list">
+            <li>Skandynawskim standard</li>
+            <li>Norweski certyfikat Sentral Godkjenning</li>
+            <li>Transparentne ceny i umowy</li>
+          </ul>
+
           <div class="about-hero__certificate">
-            <img src="/photos/pages/services/infografika.webp"
+            <img src="/photos/pages/SG_GULL_HVITBOKS.png"
               alt="Certyfikat Sentral Godkjenning – norweskie potwierdzenie jakości"
               class="about-hero__certificate-img" />
           </div>
+
+          <!-- Wiersz 4 -->
+          <div class="about-hero__cta">
+            <a href="/index.html#booking" class="btn btn--primary">
+              Umów konsultację
+            </a>
+          </div>
+
         </div>
+
+
 
 
 
@@ -116,14 +134,16 @@
       <div class="about__container">
         <div class="section-divider"></div>
         <h2 class="section-title">W co wierzę</h2>
-        <p class="section-lead">Rzemiosło, transparentność i terminowość — to filary, na których opieram każdą
-          realizację. Wierzę, że dom nie jest tylko budynkiem, ale przestrzenią, w której rodzi się poczucie
-          bezpieczeństwa i komfortu na lata. Dlatego każdy etap traktuję z taką samą powagą — od pierwszej rozmowy,
-          przez szczegółowy kosztorys, po oddanie kluczy.<br><br>
+        <p class="section-lead"><strong>Rzemiosło. Transparentność. Terminowość.</strong> <br> <br>
+          To trzy filary, na których opieram każdą realizację.
+          Dom nie jest tylko budynkiem. To przestrzeń, w której rodzi się poczucie bezpieczeństwa i komfortu na lata.
+          Dlatego każdy etap traktuję z równą uwagą – od pierwszej rozmowy, przez kosztorys, aż po przekazanie kluczy.
+          <br> <br>
 
           Budując w skandynawskim standardzie, stawiam na sprawdzone technologie i uczciwe zasady współpracy. Klienci
-          wiedzą dokładnie, za co płacą, kiedy dom będzie gotowy i w jakim standardzie zostanie wykonany. Tylko tak
-          można budować trwałe domy i trwałe relacje oparte na zaufaniu.</p>
+          zawsze wiedzą, za co płacą, kiedy dom będzie gotowy i w jakim standardzie. To jedyna droga do budowania
+          trwałych domów i relacji opartych na zaufaniu.
+        </p>
 
         <div class="about-values__grid">
           <article class="value value-card">
@@ -138,8 +158,8 @@
             <div class="value-card__body">
               <h3 class="value-card__title">Doskonałe Rzemiosło</h3>
               <p class="value-card__text">
-                Każdy detal ma znaczenie. Stawiam na powtarzalną jakość i brak prowizorki — tak, by Twój dom był trwały
-                i bezpieczny przez pokolenia.
+                Każdy detal ma znaczenie. Zero prowizorki, zero kompromisów – tylko powtarzalna jakość, dzięki której
+                Twój dom będzie bezpieczny przez pokolenia.
               </p>
               <a class="value-card__btn" href="#">Read more</a>
             </div>
@@ -157,8 +177,8 @@
             <div class="value-card__body">
               <h3 class="value-card__title">Transparentność</h3>
               <p class="value-card__text">
-                Kosztorys rozpisany linijka po linijce. Zero ukrytych kosztów, jasna umowa i uczciwe zasady od początku
-                do końca współpracy.
+                Kosztorys linijka po linijce. Zero ukrytych opłat, zero zaskoczeń. Jasne umowy i uczciwe zasady – od
+                początku do końca współpracy.
               </p>
               <a class="value-card__btn" href="#">Read more</a>
             </div>
@@ -176,8 +196,8 @@
             <div class="value-card__body">
               <h3 class="value-card__title">Terminowość</h3>
               <p class="value-card__text">
-                Harmonogram traktuję jak kontrakt. Umawiamy się na konkretną datę i ją dotrzymujemy — bez przesuwania i
-                wymówek.
+                Harmonogram to dla mnie kontrakt. Umawiamy się na konkretną datę i jej dotrzymujemy – bez przesuwania i
+                bez wymówek.
               </p>
               <a class="value-card__btn" href="#">Read more</a>
             </div>
@@ -283,63 +303,77 @@
       <div class="about__container">
         <div class="process-intro">
           <h2 class="section-title">Jak pracuję?</h2>
-          <p class="section-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque vero reiciendis
-            dolores exercitationem facilis dicta veniam nihil cum sit aspernatur.</p>
+          <p class="section-description">
+          Budowa domu to duża decyzja — dlatego proces musi być jasny i przewidywalny.
+
+            U mnie nie ma niespodzianek ani „budowlanego chaosu”. Każdy etap jest rozpisany krok po kroku: od pierwszej
+            rozmowy, przez wycenę i prefabrykację, aż po odbiór z checklistą i wsparcie po przeprowadzce.
+           <br> <br><strong>Dzięki temu od początku wiesz:</strong> co się dzieje, kiedy i za ile.
+          </p>
         </div>
 
         <div class="process-grid">
           <article>
             <h3>01. Brief</h3>
-            <p>Zbieramy wymagania i ograniczenia.</p>
+            <p>Podstawy współpracy</p>
             <span class="progress-dot" aria-hidden="true"></span>
             <div class="drawer">
-              <p>Na tym etapie spotykamy się, omawiamy potrzeby inwestora i badamy ograniczenia działki oraz budżetu.
+              <p>Na pierwszym spotkaniu zbieram Twoje potrzeby, ograniczenia i marzenia. Omawiamy działkę, budżet,
+                wymagania funkcjonalne i styl życia. To moment, w którym poznaję Twoje oczekiwania — tak, by każdy
+                kolejny krok był dopasowany do Ciebie.
               </p>
             </div>
           </article>
 
           <article>
             <h3>02. Koncepcja</h3>
-            <p>Warianty układu i technologii.</p>
+            <p>Od pomysłu do wizji</p>
             <span class="progress-dot" aria-hidden="true"></span>
             <div class="drawer">
-              <p>Przygotowuję różne warianty funkcjonalne i technologiczne, aby dobrać optymalne rozwiązanie.</p>
+              <p>Przedstawiam kilka wariantów układu i technologii, bazując na sprawdzonych skandynawskich standardach.
+                Zobaczysz różne opcje i wspólnie wybierzemy tę, która najlepiej odpowiada Twoim priorytetom.</p>
             </div>
           </article>
 
           <article>
             <h3>03. Wycena</h3>
-            <p>Transparentny kosztorys i harmonogram.</p>
+            <p>Pełna transparentność</p>
             <span class="progress-dot" aria-hidden="true"></span>
             <div class="drawer">
-              <p>Otrzymujesz pełny kosztorys materiałów, robocizny oraz planowany harmonogram prac.</p>
+              <p>Kosztorys jest rozpisany linijka po linijce — wiesz dokładnie, ile kosztuje każdy etap. Do tego jasny
+                harmonogram, bez ukrytych gwiazdek i drobnego druku. To fundament uczciwej współpracy.</p>
             </div>
           </article>
 
           <article>
             <h3>04. Realizacja</h3>
-            <p>Prefabrykacja + montaż na placu.</p>
+            <p>Prefabrykacja i montaż</p>
             <span class="progress-dot" aria-hidden="true"></span>
             <div class="drawer">
-              <p>Produkcja elementów odbywa się w hali prefabrykacji, a następnie montaż na Twojej działce.</p>
+              <p>Produkcja elementów odbywa się w kontrolowanych warunkach — szybko, precyzyjnie i z najwyższą jakością
+                C24. Potem transport na działkę i montaż konstrukcji na miejscu. Dzięki temu proces jest sprawny,
+                przewidywalny i bez chaosu na placu budowy.</p>
             </div>
           </article>
 
           <article>
             <h3>05. Odbiór</h3>
-            <p>Checklista i opieka posprzedażowa.</p>
+            <p>Przekazanie kluczy</p>
             <span class="progress-dot" aria-hidden="true"></span>
             <div class="drawer">
-              <p>Przekazanie kluczy odbywa się na podstawie checklisty jakości i z pełnym wsparciem gwarancyjnym.</p>
+              <p>Odbiór odbywa się na podstawie checklisty jakości. Sprawdzamy każdy detal razem, punkt po punkcie.
+                Dostajesz klucze do gotowego domu wraz z pełnym wsparciem gwarancyjnym i moją osobistą
+                odpowiedzialnością za efekt.</p>
             </div>
           </article>
 
           <article>
             <h3>06. Serwis</h3>
-            <p>Stałe wsparcie po oddaniu domu.</p>
+            <p>Stała opieka</p>
             <span class="progress-dot" aria-hidden="true"></span>
             <div class="drawer">
-              <p>Zapewniam opiekę techniczną, serwis i pomoc przy późniejszych modernizacjach domu.</p>
+              <p>Relacja nie kończy się na odbiorze. Zapewniam serwis i wsparcie także po zamieszkaniu — bo dom to
+                przestrzeń, która żyje. Możesz liczyć na pomoc i doradztwo zawsze, gdy tego potrzebujesz.</p>
             </div>
           </article>
         </div>
@@ -375,46 +409,47 @@
 
     <section class="about-cta">
       <div class="container">
-      
-<!-- ====== AI BOX (mobile-first, trzyma się gridu 4 kol) ====== -->
-<section class="configurator-prompt" id="configurator-prompt">
-  <div class="configurator-prompt__content" aria-labelledby="ai-title">
-    <span class="configurator-prompt__badge">🚀 Nowość! • Konfigurator AI</span>
 
-    <h2 class="configurator-prompt__title">
-      Już <span class="js-ai-count" data-base="87" data-max-weekly="+60"></span> osób policzyło koszt swojego domu w
-      tym tygodniu!
-    </h2>
+        <!-- ====== AI BOX (mobile-first, trzyma się gridu 4 kol) ====== -->
+        <section class="configurator-prompt" id="configurator-prompt">
+          <div class="configurator-prompt__content" aria-labelledby="ai-title">
+            <span class="configurator-prompt__badge">🚀 Nowość! • Konfigurator AI</span>
 
-    <p class="configurator-prompt__sub">
-      Wybierz typ, standard i region. Otrzymasz <strong>realną cenę materiałów + robocizny.</strong>
-    </p>
+            <h2 class="configurator-prompt__title">
+              Już <span class="js-ai-count" data-base="87" data-max-weekly="+60"></span> osób policzyło koszt swojego
+              domu w
+              tym tygodniu!
+            </h2>
 
-    <ul class="configurator-prompt__benefits" aria-label="Korzyści">
-      <li class="configurator-prompt__benefit">
-        <span aria-hidden="true">⚡</span> Szybko: wynik w 3–5 min
-      </li>
-      <li class="configurator-prompt__benefit">
-        <span aria-hidden="true">🎯</span> Precyzyjnie: realne widełki
-      </li>
-    </ul>
+            <p class="configurator-prompt__sub">
+              Wybierz typ, standard i region. Otrzymasz <strong>realną cenę materiałów + robocizny.</strong>
+            </p>
 
-    <!-- CTA WRAPPER: button + link razem (link pod przyciskiem) -->
-    <div class="configurator-prompt__cta">
-      <button class="configurator-prompt__button" id="open-configurator-button" data-open-configurator
-        aria-label="Uruchom konfigurator AI">
-        Darmowa wycena w 3 minuty🤖
-      </button>
+            <ul class="configurator-prompt__benefits" aria-label="Korzyści">
+              <li class="configurator-prompt__benefit">
+                <span aria-hidden="true">⚡</span> Szybko: wynik w 3–5 min
+              </li>
+              <li class="configurator-prompt__benefit">
+                <span aria-hidden="true">🎯</span> Precyzyjnie: realne widełki
+              </li>
+            </ul>
 
-      <button type="button" class="configurator-prompt__link" data-scroll="#example-quote"
-        aria-label="Zobacz przykład wyceny">
-        Bezpłatnie, bez zobowiązań!
-      </button>
-    </div>
-    <!-- /CTA WRAPPER -->
-  </div>
-</section>
-<!-- ====== /AI BOX ====== -->
+            <!-- CTA WRAPPER: button + link razem (link pod przyciskiem) -->
+            <div class="configurator-prompt__cta">
+              <button class="configurator-prompt__button" id="open-configurator-button" data-open-configurator
+                aria-label="Uruchom konfigurator AI">
+                Darmowa wycena w 3 minuty🤖
+              </button>
+
+              <button type="button" class="configurator-prompt__link" data-scroll="#example-quote"
+                aria-label="Zobacz przykład wyceny">
+                Bezpłatnie, bez zobowiązań!
+              </button>
+            </div>
+            <!-- /CTA WRAPPER -->
+          </div>
+        </section>
+        <!-- ====== /AI BOX ====== -->
 
 
 
@@ -535,10 +570,14 @@
   <script type="module" src="../js/projects-slider.js"></script>
   <script type="module" src="../js/about-stats.js"></script>
   <script type="module" src="../js/about-timeline-wires.js"></script>
-    <script type="module" src="../js/confiugurator-prompt-count.js"></script>
-      <script type="module" src="../js/nav-autohide-mobile.js"></script>
-            <script type="module" src="../js/"></script>
-  
+  <script type="module" src="../js/confiugurator-prompt-count.js"></script>
+  <script type="module" src="../js/nav-autohide-mobile.js"></script>
+
+  <script type="module" src="../js/booking-modal.js"></script>
+
+
+
+
 
 
   <script>

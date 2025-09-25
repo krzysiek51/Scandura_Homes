@@ -3,7 +3,7 @@
 
 .about-values {
   background: #FAF7F4;
-  padding: 40px 0;
+  padding: 40 0;
 
   .about__container {
     @include section-grid-fluid(4, 16px, 16px, 20px); // spójnie z resztą M
@@ -185,10 +185,10 @@
     .about__container { @include section-grid-fluid(12, 24px, 24px, 40px); }
     .about-values__grid { display: contents; }
 
-    .section-title { grid-column: 1 / 4; grid-row: 1; margin: 70px 0 0; }
-    .section-lead  { grid-column: 1 / 4; grid-row: 2; margin: 12px 0 0; } // FIX „0x”
+    .section-title { grid-column: 1 / 4; grid-row: 1; margin: 70px 0 0; font-size: 28px; }
+    .section-lead  { grid-column: 1 / 4; grid-row: 2; margin: 12px 0 0; font-size: 16px; } // FIX „0x”
 
-    .about-values__grid > .value-card { justify-self: stretch; width: 100%; height: auto; }
+    .about-values__grid > .value-card { justify-self: stretch; width: 100%; height: auto; margin-top: 50px;}
 
     /* 3 karty w jednej linii (kolumny 4–13) */
     .about-values__grid > .value-card:nth-of-type(1) { grid-column: 4 / 7;  grid-row: 1 / span 2; }

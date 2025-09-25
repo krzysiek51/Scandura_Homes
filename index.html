@@ -1487,6 +1487,18 @@
   </div>
   <!-- /BOOKING MODAL -->
 
+
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+  // jeśli w adresie jest #booking → automatycznie otwórz modal
+  if (location.hash === "#booking") {
+    const trigger = document.querySelector(".js-booking-trigger");
+    if (trigger) {
+      trigger.click(); // symuluje kliknięcie
+    }
+  }
+});
+</script>
 </body>
 
 </html>
