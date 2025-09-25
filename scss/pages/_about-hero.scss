@@ -1,33 +1,25 @@
-
 @use "../utils/variables" as *;
 @use "../utils/mixins" as *;
-
-
-
-
 
 /* =========================================================
    HERO
    ========================================================= */
 .about-hero {
   padding: 0;
-  
-  
-
 
   .about__container {
     @include section-grid-fluid(4, 16px, 16px, 20px);
   }
-
-
-
 
   &__content {
     grid-column: 1 / -1;
     color: $color-dark-text;
     font-family: $ff;
   }
-
+  .section-divider {
+    grid-column: 1 / -1;
+    margin: 20px 0 16px;
+  }
   &__title {
     font-family: $ff;
     font-weight: $h-title-weight;
@@ -93,14 +85,13 @@
     }
   }
 
-
-&__certificate {
+  &__certificate {
     width: 150px;
-    position: relative;          /* ma być elementem gridu, nie absolute */
-    grid-column: 3 / 5;          /* działa, jeśli jest bezpośrednim dzieckiem .about__container */
-    justify-self: start;         /* opcjonalnie: wyrównanie w kolumnie */
-    align-self: start;           /* opcjonalnie: wyrównanie w wierszu */
-    z-index: 3;                  /* nad zdjęciem, jeśli trzeba */
+    position: relative; /* ma być elementem gridu, nie absolute */
+    grid-column: 3 / 5; /* działa, jeśli jest bezpośrednim dzieckiem .about__container */
+    justify-self: start; /* opcjonalnie: wyrównanie w kolumnie */
+    align-self: start; /* opcjonalnie: wyrównanie w wierszu */
+    z-index: 3; /* nad zdjęciem, jeśli trzeba */
   }
 
   .about-hero__dots {
@@ -114,14 +105,12 @@
   }
 }
 
-
 /* ====== TABLET (≥744) ====== */
 
 @media (min-width: $bp-tablet) {
-
   /* HERO */
   .about-hero {
-    padding: 112px 0 48px;
+    padding: 2px 0 48px;
 
     .about__container {
       @include section-grid-fluid(8, 20px, 20px, 42px);
@@ -139,13 +128,11 @@
     &__photo img {
       border-radius: 154px 0 0 0;
     }
-  }}
+  }
+}
 
-
-  
-  /* ====== LAPTOP (≥1440) ====== */
+/* ====== LAPTOP (≥1440) ====== */
 @media (min-width: $bp-laptop) {
-
   /* HERO */
   .about-hero {
     padding: 120px 0 56px;
@@ -174,9 +161,10 @@
       right: -32px;
       width: 180px;
     }
-  }}
+  }
+}
 
-  /* === ABOUT HERO — LISTA W WIERSZU 3 === */
+/* === ABOUT HERO — LISTA W WIERSZU 3 === */
 .about-hero__content {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -185,8 +173,12 @@
 }
 
 /* W1 + W2 zostają jak masz: */
-.about-hero__title { grid-column: 1 / -1; }
-.about-hero__lead  { grid-column: 1 / -1; }
+.about-hero__title {
+  grid-column: 1 / -1;
+}
+.about-hero__lead {
+  grid-column: 1 / -1;
+}
 
 /* --- W3: LISTA + CERTYFIKAT --- */
 .about-hero__list {
@@ -196,7 +188,8 @@
   list-style: none;
   display: grid;
   grid-auto-rows: min-content;
-  row-gap: 19px;           /* dokładnie 19 px między wierszami */
+  align-self: center;         /* wyśrodkuj całą listę względem sąsiedniego elementu w gridzie rodzica */
+  row-gap: 19px; /* dokładnie 19 px między wierszami */
 }
 
 .about-hero__list li {
@@ -206,7 +199,7 @@
   align-items: center;
 
   font-family: $ff;
-  font-weight: 600;        /* SemiBold */
+  font-weight: 600; /* SemiBold */
   font-size: 14px;
   line-height: 1.26;
   color: $color-dark-text;
@@ -215,20 +208,25 @@
 /* Ikona ptaszka (vectorbird.svg), kolor #DC9B59 */
 .about-hero__list li::before {
   content: "";
-  width: 16px; height: 16px;
+  width: 16px;
+  height: 16px;
 
   /* mask pozwala kolorować SVG jednym kolorem */
-  background-color: #DC9B59;
+  background-color: #dc9b59;
   -webkit-mask: url("/photos/pages/about/Vectorbird.svg") no-repeat center;
-          mask: url("/photos/pages/about/Vectorbird.svg") no-repeat center;
+  mask: url("/photos/pages/about/Vectorbird.svg") no-repeat center;
   -webkit-mask-size: contain;
-          mask-size: contain;
+  mask-size: contain;
 }
 
 /* Fallback gdy mask nie wspierany */
-@supports not ((mask: url("/photos/pages/about/Vectorbird.svg")) or (-webkit-mask: url("/pages/about/vectorbird.svg"))) {
+@supports not (
+  (mask: url("/photos/pages/about/Vectorbird.svg")) or
+    (-webkit-mask: url("/pages/about/vectorbird.svg"))
+) {
   .about-hero__list li::before {
-    background: url("/photos/pages/about/Vectorbird.svg") no-repeat center / contain;
+    background: url("/photos/pages/about/Vectorbird.svg") no-repeat center /
+      contain;
   }
 }
 

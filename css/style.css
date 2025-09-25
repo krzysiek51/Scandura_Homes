@@ -8890,7 +8890,7 @@ body.about .about__container .container {
 @media (min-width: 744px) {
   body.about .about__container {
     grid-template-columns: repeat(8, minmax(0, 1fr));
-    gap: 20px;
+    gap: 50px;
     padding-inline: 42px !important; /* TABLET */
   }
 }
@@ -8980,6 +8980,10 @@ body.about section.about-featured > .about__container > section.projects.project
   color: #1D1F2C;
   font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
+.about-hero .section-divider {
+  grid-column: 1/-1;
+  margin: 20px 0 16px;
+}
 .about-hero__title {
   font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   font-weight: 600;
@@ -9061,7 +9065,7 @@ body.about section.about-featured > .about__container > section.projects.project
 @media (min-width: 744px) {
   /* HERO */
   .about-hero {
-    padding: 112px 0 48px;
+    padding: 2px 0 48px;
   }
   .about-hero .about__container {
     position: relative;
@@ -9150,6 +9154,7 @@ body.about section.about-featured > .about__container > section.projects.project
   list-style: none;
   display: grid;
   grid-auto-rows: min-content;
+  align-self: center; /* wyśrodkuj całą listę względem sąsiedniego elementu w gridzie rodzica */
   row-gap: 19px; /* dokładnie 19 px między wierszami */
 }
 
@@ -9171,7 +9176,7 @@ body.about section.about-featured > .about__container > section.projects.project
   width: 16px;
   height: 16px;
   /* mask pozwala kolorować SVG jednym kolorem */
-  background-color: #DC9B59;
+  background-color: #dc9b59;
   -webkit-mask: url("/photos/pages/about/Vectorbird.svg") no-repeat center;
   mask: url("/photos/pages/about/Vectorbird.svg") no-repeat center;
   -webkit-mask-size: contain;
@@ -9201,6 +9206,7 @@ body.about section.about-featured > .about__container > section.projects.project
 .about-values {
   background: #FAF7F4;
   padding: 40 0;
+  padding-bottom: 40px;
 }
 .about-values .about__container {
   position: relative;
@@ -9364,9 +9370,15 @@ body.about section.about-featured > .about__container > section.projects.project
     margin-inline: auto;
     min-width: 0;
     box-sizing: content-box;
+    padding-top: 30px;
   }
   .about-values .about-values__grid {
     display: contents;
+  }
+  .about-values .section-divider {
+    grid-column: 1/-1;
+    grid-row: 1;
+    margin: 20px 0 16px;
   }
   .about-values .section-title {
     grid-column: 1/5;
@@ -9515,7 +9527,7 @@ body.about .header {
    TIMELINE — „Moja droga” (mobile-first, full file)
    ========================================================= */
 .about-timeline {
-  padding: 40px 40px;
+  padding: 40px 0;
   background: #ffffff;
   /* --- GLOBALNY FIX dla osi timeline --- */
 }
@@ -10078,6 +10090,9 @@ body.about .header {
 }
 .about-process {
   /* ===== NAGŁÓWEK + OPIS — MOBILE ===== */
+}
+.about-process .section-divider {
+  margin-bottom: 20px;
 }
 .about-process .section-title {
   margin: 0 0 12px;

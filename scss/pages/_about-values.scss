@@ -4,6 +4,7 @@
 .about-values {
   background: #FAF7F4;
   padding: 40 0;
+  padding-bottom: 40px;
 
   .about__container {
     @include section-grid-fluid(4, 16px, 16px, 20px); // spójnie z resztą M
@@ -157,8 +158,14 @@
 
 @media (min-width: $bp-tablet) {
   .about-values {
-    .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); }
+    .about__container { @include section-grid-fluid(8, 20px, 20px, 42px); padding-top: 30px; }
     .about-values__grid { display: contents; }
+
+      .section-divider {
+      grid-column: 1 / -1; grid-row: 1;
+      margin: 20px 0 16px;
+    }
+
 
     .section-title {
       grid-column: 1 / 5; grid-row: 1;
