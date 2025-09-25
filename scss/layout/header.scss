@@ -747,7 +747,7 @@ body.about main {
     transition: transform .22s cubic-bezier(.2,.7,.3,1);
     transform: translateZ(0);
   }
-  .header__logo img{ display:block; height:60px; width:auto; }
+  .header__logo img{ display:block; height:60px; width:138px; }
 
   /* autohide: chowaj obie warstwy */
   html.nav-hidden .header .container.header__top{ transform: translate3d(0,-100%,0) !important; }

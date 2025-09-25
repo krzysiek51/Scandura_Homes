@@ -905,7 +905,7 @@ body.about main {
   .header__logo img {
     display: block;
     height: 60px;
-    width: auto;
+    width: 138px;
   }
   /* autohide: chowaj obie warstwy */
   html.nav-hidden .header .container.header__top {
