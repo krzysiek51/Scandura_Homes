@@ -1,68 +1,68 @@
-/* scss/konfigurator_header/_fields.scss */
+// /* scss/konfigurator_header/_fields.scss */
 
-.cfg-field {
-  background: #fff;
-  border: 1px solid #eee;
-  border-radius: 14px;
-  padding: 12px 14px;
-  box-shadow: 0 1px 0 rgba(0,0,0,.02);
-}
+// .cfg-field {
+//   background: #fff;
+//   border: 1px solid #eee;
+//   border-radius: 14px;
+//   padding: 12px 14px;
+//   box-shadow: 0 1px 0 rgba(0,0,0,.02);
+// }
 
-.cfg-field__label {
-  display: block;
-  font-size: 14px;
-  color: #4a4a4a;
-  margin-bottom: 6px;
-}
+// .cfg-field__label {
+//   display: block;
+//   font-size: 14px;
+//   color: #4a4a4a;
+//   margin-bottom: 6px;
+// }
 
-.cfg-input {
-  width: 100%;
-  border: 1px solid #e6e6e6;
-  background: #fafafa;
-  border-radius: 10px;
-  padding: 12px 14px;
-  font-size: 16px;
-  transition: border-color .15s, box-shadow .15s;
-}
-.cfg-input:focus {
-  outline: none;
-  border-color: #d19953;
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(209,153,83,.25);
-}
+// .cfg-input {
+//   width: 100%;
+//   border: 1px solid #e6e6e6;
+//   background: #fafafa;
+//   border-radius: 10px;
+//   padding: 12px 14px;
+//   font-size: 16px;
+//   transition: border-color .15s, box-shadow .15s;
+// }
+// .cfg-input:focus {
+//   outline: none;
+//   border-color: #d19953;
+//   background: #fff;
+//   box-shadow: 0 0 0 3px rgba(209,153,83,.25);
+// }
 
-/* Radio kafle */
-.cfg-radio-card,
-.cfg-checkbox-card {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border: 1px solid #ddd;
-  border-radius: 14px;
-  padding: 14px 16px;
-  background: #fff;
-  cursor: pointer;
-  transition: all .2s;
-}
-.cfg-radio-card:hover,
-.cfg-checkbox-card:hover {
-  border-color: #d19953;
-  background: #faf6ef;
-}
-.cfg-radio-card input,
-.cfg-checkbox-card input {
-  display: none;
-}
-.cfg-radio-card.selected,
-.cfg-checkbox-card.selected {
-  border-color: #d19953;
-  background: #fff5e9;
-  box-shadow: 0 0 0 3px rgba(209,153,83,.25);
-}
+// /* Radio kafle */
+// .cfg-radio-card,
+// .cfg-checkbox-card {
+//   display: flex;
+//   align-items: center;
+//   gap: 12px;
+//   border: 1px solid #ddd;
+//   border-radius: 14px;
+//   padding: 14px 16px;
+//   background: #fff;
+//   cursor: pointer;
+//   transition: all .2s;
+// }
+// .cfg-radio-card:hover,
+// .cfg-checkbox-card:hover {
+//   border-color: #d19953;
+//   background: #faf6ef;
+// }
+// .cfg-radio-card input,
+// .cfg-checkbox-card input {
+//   display: none;
+// }
+// .cfg-radio-card.selected,
+// .cfg-checkbox-card.selected {
+//   border-color: #d19953;
+//   background: #fff5e9;
+//   box-shadow: 0 0 0 3px rgba(209,153,83,.25);
+// }
 
-/* Grid na kafle */
-.cfg-options-grid {
-  display: grid;
-  gap: 16px;
-  grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
-}
+// /* Grid na kafle */
+// .cfg-options-grid {
+//   display: grid;
+//   gap: 16px;
+//   grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+// }

@@ -9,46 +9,47 @@
 </head>
 
 <body class="services-page">
- <header class="header">
-  <div class="header__wrap">
-    <div class="container header__top">
-      <!-- Logo w kapsułce (parity z index) -->
-      <a class="header__logo" href="../index.html">
-        <span class="header__logo-bg">
-          <img class="header__logo--img" src="../photos/logo.svg" alt="Scandura Homes">
-        </span>
-      </a>
+  <header class="header">
+    <div class="header__wrap">
+      <div class="container header__top">
+        <!-- Logo w kapsułce (parity z index) -->
+        <a class="header__logo" href="../index.html">
+          <span class="header__logo-bg">
+            <img class="header__logo--img" src="../photos/logo.svg" alt="Scandura Homes">
+          </span>
+        </a>
 
-      <!-- Telefon w belce (opcjonalnie, jak na index) -->
-      <a class="header__call" href="tel:+48796122598" aria-label="Zadzwoń do Scandura Homes">
-        <img src="../photos/svg/phone.svg" alt="" width="20" height="20">
-        <span class="header__call-text">+48 796 122 598</span>
-      </a>
+        <!-- Telefon w belce (opcjonalnie, jak na index) -->
+        <a class="header__call" href="tel:+48796122598" aria-label="Zadzwoń do Scandura Homes">
+          <img src="../photos/svg/phone.svg" alt="" width="20" height="20">
+          <span class="header__call-text">+48 796 122 598</span>
+        </a>
 
-      <!-- Burger -->
-      <button class="header__burger" id="burger-toggle" type="button"
-              aria-label="Otwórz menu" aria-expanded="false" aria-controls="mobile-menu">
-        <img class="header__burger-icon" src="../photos/svg/burger.svg" width="20" height="14" alt="">
-      </button>
+        <!-- Burger -->
+        <button class="header__burger" id="burger-toggle" type="button" aria-label="Otwórz menu" aria-expanded="false"
+          aria-controls="mobile-menu">
+          <img class="header__burger-icon" src="../photos/svg/burger.svg" width="20" height="14" alt="">
+        </button>
+      </div>
     </div>
-  </div>
 
-  <nav class="header__nav" id="mobile-menu" aria-hidden="true">
-    <button class="header__nav-close" aria-label="Zamknij menu">
-      <img class="header__nav-close-icon" src="../photos/svg/x.svg" alt="">
-    </button>
+    <nav class="header__nav" id="mobile-menu" aria-hidden="true">
+      <button class="header__nav-close" aria-label="Zamknij menu">
+        <img class="header__nav-close-icon" src="../photos/svg/x.svg" alt="">
+      </button>
 
-    <ul class="header__nav-list">
-      <li class="header__nav-item"><a class="header__nav-link" href="../index.html">Home</a></li>
-      <li class="header__nav-item"><a class="header__nav-link" href="about.html">O nas</a></li>
-      <li class="header__nav-item"><a class="header__nav-link header__nav-link--active" href="services.html">Usługi</a></li>
-      <li class="header__nav-item"><a class="header__nav-link" href="../index.html#projects">Projekty</a></li>
-      <li class="header__nav-item"><a class="header__nav-link" href="contact.html">Kontakt</a></li>
-    </ul>
+      <ul class="header__nav-list">
+        <li class="header__nav-item"><a class="header__nav-link" href="../index.html">Home</a></li>
+        <li class="header__nav-item"><a class="header__nav-link" href="about.html">O nas</a></li>
+        <li class="header__nav-item"><a class="header__nav-link header__nav-link--active"
+            href="services.html">Usługi</a></li>
+        <li class="header__nav-item"><a class="header__nav-link" href="../index.html#projects">Projekty</a></li>
+        <li class="header__nav-item"><a class="header__nav-link" href="contact.html">Kontakt</a></li>
+      </ul>
 
-    <a class="button button--nav" href="contact.html">Contact Us</a>
-  </nav>
-</header>
+      <a class="button button--nav" href="contact.html">Contact Us</a>
+    </nav>
+  </header>
 
 
   <!-- ===== TREŚĆ PODSTRONY ===== -->
@@ -57,465 +58,335 @@
     <section class="services-hero" aria-labelledby="services-hero-title">
       <div class="pages__container services-hero__container">
         <h1 class="services-hero__title" id="services-hero-title">
-          Usługi budowy domów drewnianych
+          Budujemy domy drewniane, które rosną razem z Twoją rodziną
         </h1>
         <p class="services-hero__lead">
-          Od koncepcji po odbiór — kompleksowo prowadzimy proces budowy w technologii timber frame.
+          Od pierwszej koncepcji po przekazanie kluczy — prowadzimy Cię krok po kroku przez cały proces.
+          Bez chaosu, bez niespodzianek. Tylko precyzja skandynawskiej technologii timber frame.
         </p>
         <div class="services-hero__cta-row">
           <a class="services-hero__btn services-hero__btn--primary" href="../pages/contact.html">Wyceń projekt</a>
-          <a class="services-hero__btn services-hero__btn--ghost" href="../index.html#projects">Zobacz realizacje</a>
+          <button class="booking__button js-booking-trigger js-callback-link">
+            Umów spotkanie na żywo
+          </button>
+
+
+
         </div>
       </div>
     </section>
 
-<!-- ===== LISTA USŁUG (karty) ===== -->
-<!-- ======================================================================
+    <!-- ===== LISTA USŁUG (karty) ===== -->
+    <!-- ======================================================================
      [SECTION] LISTA USŁUG (karty + przycisk "Szczegóły" -> #service-modal)
      Każdy kafelek ma własny <template.service-card__details-template> z .qv-*:
        .qv-image  | .qv-title | .qv-lead | .qv-bullets li | .qv-cta
      ====================================================================== -->
-<section class="services-list" aria-labelledby="services-list-title">
-  <div class="pages__container services-list__container">
-    <h2 class="services-list__title" id="services-list-title">Co robimy</h2>
+    <section class="services-list" aria-labelledby="services-list-title">
+      <div class="pages__container services-list__container">
+        <h2 class="services-list__title" id="services-list-title">Co robimy</h2>
 
-    <div class="services-grid">
-      <!-- ===== KARTA 1 — PROJEKT KONCEPCYJNY ===== -->
-      <article class="service-card" data-service="koncepcyjny">
-        <div class="service-card__media">
-          <img class="service-card__image"
-               src="../photos/pages/services/services-header.webp"
-               alt="Miniatura: projekt koncepcyjny"
-               loading="lazy" decoding="async" />
-        </div>
-        <div class="service-card__body">
-          <h3 class="service-card__title">Projekt koncepcyjny</h3>
-          <p class="service-card__text">Funkcjonalne układy, bryła, technologia i wstępny kosztorys dopasowany do budżetu.</p>
-          <ul class="service-card__bullets">
-            <li class="service-card__bullet">2–3 warianty układu</li>
-            <li class="service-card__bullet">Dobór technologii i materiałów</li>
-            <li class="service-card__bullet">Szacunkowa wycena</li>
-          </ul>
-
-          <div class="service-card__actions">
-            <a class="service-card__btn" href="../pages/contact.html">Zapytaj o termin</a>
-            <button class="service-card__more-btn" type="button"
-                    data-quickview-open aria-controls="service-modal"
-                    aria-label="Szczegóły: Projekt koncepcyjny">Szczegóły</button>
-          </div>
-
-          <!-- DEDYKOWANE TREŚCI DO MODALA -->
-          <template class="service-card__details-template">
-            <div class="qv">
-              <img class="qv-image"
-                   src="../photos/pages/services/services-header.jpg"
-                   alt="Projekt koncepcyjny — rozwinięcie" loading="lazy" decoding="async">
-              <h4 class="qv-title">Projekt koncepcyjny – pakiet rozszerzony</h4>
-              <p class="qv-lead">
-                Warsztaty startowe i analiza działki (MPZP/WT/media). Definiujemy wymagania,
-                ryzyka oraz kierunek projektowy. Efekt: rysunki koncepcyjne + model bryły,
-                punkt wyjścia do wyceny i projektu wykonawczego.
-              </p>
-              <ul class="qv-bullets">
-                <li>3 rundy iteracji koncepcji w krótkich sprintach</li>
-                <li>Moodboardy materiałowe i wstępna paleta kolorów</li>
-                <li>Wstępna tabela powierzchni i estymacja kosztów</li>
-                <li>Sprawdzenie pod kątem MPZP/WT i przyłączy</li>
-              </ul>
-              <a class="qv-cta" href="../pages/contact.html">Zamów pakiet koncepcyjny</a>
+        <div class="services-grid">
+          <!-- ===== KARTA 1 — PROJEKT KONCEPCYJNY ===== -->
+          <article class="service-card" data-service="koncepcyjny">
+            <div class="service-card__media">
+              <img class="service-card__image" src="../photos/pages/services/weryfikacja.webp"
+                alt="Miniatura: projekt koncepcyjny" loading="lazy" decoding="async" />
             </div>
-          </template>
-        </div>
-      </article>
-
-      <!-- ===== KARTA 2 — PROJEKT WYKONAWCZY ===== -->
-      <article class="service-card" data-service="wykonawczy">
-        <div class="service-card__media">
-          <img class="service-card__image"
-               src="../photos/pages/services/Gemini_Generated_Image_i0pbnqi0pbnqi0pb.png"
-               alt="Miniatura: projekt wykonawczy"
-               loading="lazy" decoding="async" />
-        </div>
-        <div class="service-card__body">
-          <h3 class="service-card__title">Projekt wykonawczy</h3>
-          <p class="service-card__text">Dokumentacja warsztatowa i rysunki montażowe pod prefabrykację i budowę.</p>
-          <ul class="service-card__bullets">
-            <li class="service-card__bullet">Rysunki detali</li>
-            <li class="service-card__bullet">Specyfikacje materiałowe</li>
-            <li class="service-card__bullet">Koordynacja branż</li>
-          </ul>
-
-          <div class="service-card__actions">
-            <a class="service-card__btn" href="../pages/contact.html">Poznaj zakres</a>
-            <button class="service-card__more-btn" type="button"
-                    data-quickview-open aria-controls="service-modal"
-                    aria-label="Szczegóły: Projekt wykonawczy">Szczegóły</button>
-          </div>
-
-          <template class="service-card__details-template">
-            <div class="qv">
-              <img class="qv-image"
-                   src="../photos/pages/services/Gemini_Generated_Image_i0pbnqi0pbnqi0pb.png"
-                   alt="Projekt wykonawczy — rozwinięcie" loading="lazy" decoding="async">
-              <h4 class="qv-title">Projekt wykonawczy – prefab gotowy do produkcji</h4>
-              <p class="qv-lead">
-                Kompletna dokumentacja pod produkcję i montaż: zestawy rysunkowe, listy cięć,
-                specyfikacje i karty technologiczne zoptymalizowane pod prefabrykację.
-              </p>
-              <ul class="qv-bullets">
-                <li>Rysunki konstrukcyjne ścian, stropów i dachu</li>
-                <li>Zestawienia materiałowe oraz listy cięć</li>
-                <li>Koordynacja z instalacjami (przejścia, otwory)</li>
-                <li>Checklisty kontroli jakości na produkcji i montażu</li>
+            <div class="service-card__body">
+              <h3 class="service-card__title">Weryfikacja dokumentacji</h3>
+              <p class="service-card__text">Sprawdzamy Twój projekt pod kątem prefabrykacji i montażu.</p>
+              <ul class="service-card__bullets">
+                <li class="service-card__bullet">Audyt rysunków pod kątem kolizji i braków</li>
+                <li class="service-card__bullet">Usprawnienia montażowe bez zmian architektury</li>
+                <li class="service-card__bullet">Harmonogram etapów i wstępna wycena</li>
+                    <li class="service-card__bullet">Lista zaleceń dla inwestora</li>
               </ul>
-              <a class="qv-cta" href="../pages/contact.html">Poproś o wycenę projektu</a>
+
+              <div class="service-card__actions">
+                <a class="service-card__btn" href="../pages/contact.html">Zapytaj o termin</a>
+                
+              </div>
+
+              <!-- DEDYKOWANE TREŚCI DO MODALA -->
+              <template class="service-card__details-template">
+                <div class="qv">
+                  <img class="qv-image" src="../photos/pages/services/rysunki.webp"
+                    alt="Projekt koncepcyjny — rozwinięcie" loading="lazy" decoding="async">
+                  <h4 class="qv-title">Weryfikacja dokumentacji</h4>
+                  <p class="qv-lead">
+                    Sprawdzamy Twój projekt pod kątem prefabrykacji i montażu.
+                  </p>
+                  <ul class="qv-bullets">
+                    <li>Audyt rysunków pod kątem kolizji i braków</li>
+                    <li>Usprawnienia montażowe bez zmian architektury</li>
+                    <li>Harmonogram etapów i wstępna wycena</li>
+                    <li>Sprawdzenie pod kątem MPZP/WT i przyłączy</li>
+                  </ul>
+                  <a class="qv-cta" href="../pages/contact.html">Zamów pakiet koncepcyjny</a>
+                </div>
+              </template>
             </div>
-          </template>
-        </div>
-      </article>
+          </article>
 
-      <!-- ===== KARTA 3 — PREFABRYKACJA ELEMENTÓW ===== -->
-      <article class="service-card" data-service="prefabrykacja">
-        <div class="service-card__media">
-          <img class="service-card__image"
-               src="../photos/pages/services/services-header.webp"
-               alt="Miniatura: prefabrykacja elementów"
-               loading="lazy" decoding="async" />
-        </div>
-        <div class="service-card__body">
-          <h3 class="service-card__title">Prefabrykacja elementów</h3>
-          <p class="service-card__text">Produkcja ścian, stropów i więźb w kontrolowanych warunkach hali.</p>
-          <ul class="service-card__bullets">
-            <li class="service-card__bullet">Powtarzalna jakość</li>
-            <li class="service-card__bullet">Skrócony czas budowy</li>
-            <li class="service-card__bullet">Mniejsza ilość odpadów</li>
-          </ul>
-
-          <div class="service-card__actions">
-            <a class="service-card__btn" href="../pages/contact.html">Umów oględziny</a>
-            <button class="service-card__more-btn" type="button"
-                    data-quickview-open aria-controls="service-modal"
-                    aria-label="Szczegóły: Prefabrykacja elementów">Szczegóły</button>
-          </div>
-
-          <template class="service-card__details-template">
-            <div class="qv">
-              <img class="qv-image"
-                   src="../photos/pages/services/services-header.webp"
-                   alt="Prefabrykacja — rozwinięcie" loading="lazy" decoding="async">
-              <h4 class="qv-title">Prefabrykacja w hali – proces i kontrola jakości</h4>
-              <p class="qv-lead">
-                Produkcja w stabilnych warunkach: cięcie CNC, montaż na stołach, kontrola połączeń,
-                foliowanie i pakowanie modułów do transportu.
-              </p>
-              <ul class="qv-bullets">
-                <li>Kontrola wilgotności i wytrzymałości łączeń</li>
-                <li>Dokumentacja jakościowa do każdego modułu</li>
-                <li>Optymalizacja logistyki i układu transportu</li>
-                <li>Minimalizacja strat materiałowych</li>
+          <!-- ===== KARTA 2 — PROJEKT WYKONAWCZY ===== -->
+          <article class="service-card" data-service="wykonawczy">
+            <div class="service-card__media">
+              <img class="service-card__image"
+                src="../photos/pages/services/rysunki.webp"
+                alt="Miniatura: projekt wykonawczy" loading="lazy" decoding="async" />
+            </div>
+            <div class="service-card__body">
+              <h3 class="service-card__title">Rysunki warsztatowe</h3>
+              <p class="service-card__text">Detale, na których hala i ekipa nie zgubią się w pracy.</p>
+              <ul class="service-card__bullets">
+                <li class="service-card__bullet">Warsztatówka modułów ścian, stropów i więźby</li>
+                <li class="service-card__bullet">Specyfikacje materiałowe i listy cięć</li>
+                <li class="service-card__bullet">Numeracja elementów i łączników</li>
+                <li class="service-card__bullet">Pakiet dla nadzoru budowy</li>
               </ul>
-              <a class="qv-cta" href="../pages/contact.html">Zobacz halę produkcyjną</a>
+
+              <div class="service-card__actions">
+                <a class="service-card__btn" href="../pages/contact.html">Poznaj zakres</a>
+                
+              </div>
+
+             
             </div>
-          </template>
-        </div>
-      </article>
+          </article>
 
-      <!-- ===== KARTA 4 — MONTAŻ NA DZIAŁCE ===== -->
-      <article class="service-card" data-service="montaz">
-        <div class="service-card__media">
-          <img class="service-card__image"
-               src="../photos/pages/kt-snickers-mobile-desktop.webp"
-               alt="Miniatura: montaż na działce"
-               loading="lazy" decoding="async" />
-        </div>
-        <div class="service-card__body">
-          <h3 class="service-card__title">Montaż na działce</h3>
-          <p class="service-card__text">Ekipa montażowa realizuje prace w ścisłym harmonogramie i standardzie jakości.</p>
-          <ul class="service-card__bullets">
-            <li class="service-card__bullet">Koordynacja dostaw</li>
-            <li class="service-card__bullet">Bezpieczeństwo i BHP</li>
-            <li class="service-card__bullet">Stały nadzór</li>
-          </ul>
-
-          <div class="service-card__actions">
-            <a class="service-card__btn" href="../pages/contact.html">Zapytaj o wolne sloty</a>
-            <button class="service-card__more-btn" type="button"
-                    data-quickview-open aria-controls="service-modal"
-                    aria-label="Szczegóły: Montaż na działce">Szczegóły</button>
-          </div>
-
-          <template class="service-card__details-template">
-            <div class="qv">
-              <img class="qv-image"
-                   src="../photos/pages/kt-snickers-mobile-desktop.webp"
-                   alt="Montaż — rozwinięcie" loading="lazy" decoding="async">
-              <h4 class="qv-title">Montaż na działce – standard wykonania</h4>
-              <p class="qv-lead">
-                Składanie modułów, montaż stolarki, uszczelnienia i obróbki zgodnie z kartami technologii.
-                Transparentny harmonogram i protokoły etapowe.
-              </p>
-              <ul class="qv-bullets">
-                <li>Harmonogram dzienny + raporty postępu</li>
-                <li>Test szczelności połączeń i przeglądy BHP</li>
-                <li>Odbiór międzybranżowy na koniec montażu</li>
+          <!-- ===== KARTA 3 — PREFABRYKACJA ELEMENTÓW ===== -->
+          <article class="service-card" data-service="prefabrykacja">
+            <div class="service-card__media">
+              <img class="service-card__image" src="../photos/pages/services/prefabrykacja.webp"
+                alt="Miniatura: prefabrykacja elementów" loading="lazy" decoding="async" />
+            </div>
+            <div class="service-card__body">
+              <h3 class="service-card__title">Prefabrykacja elementów w hali</h3>
+              <p class="service-card__text">Precyzja i powtarzalność — mniej niespodzianek na działce.</p>
+              <ul class="service-card__bullets">
+                <li class="service-card__bullet">Konstrukcje z drewna C24, kontrola wilgotności</li>
+                <li class="service-card__bullet">Montaż modułów w kontrolowanych warunkach</li>
+                <li class="service-card__bullet">QA/QC i dokumentacja powykonawcza</li>
+                <li class="service-card__bullet">Oznaczenia ułatwiające montaż na budowie</li>
               </ul>
-              <a class="qv-cta" href="../pages/contact.html">Zarezerwuj termin montażu</a>
+
+              <div class="service-card__actions">
+                <a class="service-card__btn" href="../pages/contact.html">Umów oględziny</a>
+              
+              </div>
+
             </div>
-          </template>
-        </div>
-      </article>
+          </article>
 
-      <!-- ===== KARTA 5 — WYKOŃCZENIE ===== -->
-      <article class="service-card" data-service="wykonczenie">
-        <div class="service-card__media">
-          <img class="service-card__image"
-               src="../photos/pages/kt-snickers-mobile-desktop.webp"
-               alt="Miniatura: wykończenie"
-               loading="lazy" decoding="async" />
-        </div>
-        <div class="service-card__body">
-          <h3 class="service-card__title">Wykończenie</h3>
-          <p class="service-card__text">Standardy materiałowe dobrane do preferencji estetycznych i użytkowych.</p>
-          <ul class="service-card__bullets">
-            <li class="service-card__bullet">Podłogi, stolarka, łazienki</li>
-            <li class="service-card__bullet">Instalacje i AGD</li>
-            <li class="service-card__bullet">Checklisty jakości</li>
-          </ul>
-
-          <div class="service-card__actions">
-            <a class="service-card__btn" href="../pages/contact.html">Poproś o katalog</a>
-            <button class="service-card__more-btn" type="button"
-                    data-quickview-open aria-controls="service-modal"
-                    aria-label="Szczegóły: Wykończenie">Szczegóły</button>
-          </div>
-
-          <template class="service-card__details-template">
-            <div class="qv">
-              <img class="qv-image"
-                   src="../photos/pages/kt-snickers-mobile-desktop.webp"
-                   alt="Wykończenie — rozwinięcie" loading="lazy" decoding="async">
-              <h4 class="qv-title">Pakiety wykończeniowe – od Basic po Premium</h4>
-              <p class="qv-lead">
-                Konfigurujemy materiały i detale pod Twój styl życia. Każdy pakiet ma jasno
-                zdefiniowany zakres, gwarantując przewidywalny koszt i termin.
-              </p>
-              <ul class="qv-bullets">
-                <li>Dobór okładzin, stolarki, armatury i oświetlenia</li>
-                <li>Warianty: Basic / Comfort / Premium</li>
-                <li>Checklisty odbiorowe dla każdego pomieszczenia</li>
+          <!-- ===== KARTA 4 — MONTAŻ NA DZIAŁCE ===== -->
+          <article class="service-card" data-service="montaz">
+            <div class="service-card__media">
+              <img class="service-card__image" src="../photos/pages/services/logistyka.webp"
+                alt="Miniatura: montaż na działce" loading="lazy" decoding="async" />
+            </div>
+            <div class="service-card__body">
+              <h3 class="service-card__title">Logistyka i przygotowanie montażu</h3>
+              <p class="service-card__text">Wszystko przyjeżdża na czas i we właściwej kolejności.</p>
+              <ul class="service-card__bullets">
+                <li class="service-card__bullet">Harmonogram dostaw just-in-time</li>
+                <li class="service-card__bullet">Wytyczne dla fundamentów i przyłączy</li>
+                <li class="service-card__bullet">Koordynacja BHP i zabezpieczenie placu</li>
+                <li class="service-card__bullet">Koordynacja BHP i zabezpieczenie placu</li>
               </ul>
-              <a class="qv-cta" href="../pages/contact.html">Dobierz pakiet wykończenia</a>
+
+              <div class="service-card__actions">
+                <a class="service-card__btn" href="../pages/contact.html">Zapytaj o wolne sloty</a>
+                
+              </div>
+
+              
             </div>
-          </template>
-        </div>
-      </article>
+          </article>
 
-      <!-- ===== KARTA 6 — SERWIS I OPIEKA ===== -->
-      <article class="service-card" data-service="serwis">
-        <div class="service-card__media">
-          <img class="service-card__image"
-               src="../photos/pages/kt-snickers-mobile-desktop.webp"
-               alt="Miniatura: serwis i opieka"
-               loading="lazy" decoding="async" />
-        </div>
-        <div class="service-card__body">
-          <h3 class="service-card__title">Serwis i opieka</h3>
-          <p class="service-card__text">Gwarancja, przeglądy okresowe i wsparcie przy modernizacjach.</p>
-          <ul class="service-card__bullets">
-            <li class="service-card__bullet">Gwarancyjne i pogwarancyjne</li>
-            <li class="service-card__bullet">Modernizacje i rozbudowy</li>
-            <li class="service-card__bullet">Wsparcie techniczne</li>
-          </ul>
-
-          <div class="service-card__actions">
-            <a class="service-card__btn" href="../pages/contact.html">Zgłoś potrzebę</a>
-            <button class="service-card__more-btn" type="button"
-                    data-quickview-open aria-controls="service-modal"
-                    aria-label="Szczegóły: Serwis i opieka">Szczegóły</button>
-          </div>
-
-          <template class="service-card__details-template">
-            <div class="qv">
-              <img class="qv-image"
-                   src="../photos/pages/kt-snickers-mobile-desktop.webp"
-                   alt="Serwis — rozwinięcie" loading="lazy" decoding="async">
-              <h4 class="qv-title">Opieka posprzedażowa – dom zawsze w formie</h4>
-              <p class="qv-lead">
-                Po odbiorze nie znikamy: cykliczne przeglądy, regulacje, szybkie naprawy i doradztwo
-                przy modernizacjach oraz rozbudowie domu.
-              </p>
-              <ul class="qv-bullets">
-                <li>Przeglądy okresowe (6–12 miesięcy)</li>
-                <li>Program drobnych napraw i regulacji</li>
-                <li>Audyt przed modernizacją lub rozbudową</li>
+          <!-- ===== KARTA 5 — WYKOŃCZENIE ===== -->
+          <article class="service-card" data-service="wykonczenie">
+            <div class="service-card__media">
+              <img class="service-card__image" src="../photos/pages/services/montarz.webp"
+                alt="Miniatura: wykończenie" loading="lazy" decoding="async" />
+            </div>
+            <div class="service-card__body">
+              <h3 class="service-card__title">Montaż konstrukcji</h3>
+              <p class="service-card__text">Montaż konstrukcji (SSO/SSZ). Kilka dni i konstrukcja stoi.</p>
+              <ul class="service-card__bullets">
+                <li class="service-card__bullet">Montaż ścian, stropów i więźby</li>
+                <li class="service-card__bullet">Opcja SSZ: stolarka i uszczelnienie bryły</li>
+                <li class="service-card__bullet">dbiory międzyetapowe i dokumentacja</li>
               </ul>
-              <a class="qv-cta" href="../pages/contact.html">Umów przegląd/serwis</a>
+
+              <div class="service-card__actions">
+                <a class="service-card__btn" href="../pages/contact.html">Poproś o katalog</a>
+                
+              </div>
+
+              
             </div>
-          </template>
+          </article>
+
+          <!-- ===== KARTA 6 — SERWIS I OPIEKA ===== -->
+          <article class="service-card" data-service="serwis">
+            <div class="service-card__media">
+              <img class="service-card__image" src="../photos/pages/kt-snickers-mobile-desktop.webp"
+                alt="Miniatura: serwis i opieka" loading="lazy" decoding="async" />
+            </div>
+            <div class="service-card__body">
+              <h3 class="service-card__title">Wykończenie i opieka</h3>
+              <p class="service-card__text">Możemy dokończyć dom lub przekazać go Twojej ekipie.</p>
+              <ul class="service-card__bullets">
+                <li class="service-card__bullet">Instrukcje użytkownika i dokumentacja końcowa</li>
+                <li class="service-card__bullet">Gwarancja i przeglądy 3/12/24 miesiące</li>
+                <li class="service-card__bullet">Modernizacje i rozbudowy w przyszłości</li>
+              </ul>
+
+              <div class="service-card__actions">
+                <a class="service-card__btn" href="../pages/contact.html">Zgłoś potrzebę</a>
+                
+              </div>
+
+              
+            </div>
+          </article>
         </div>
-      </article>
-    </div>
 
-    <!-- WYŚRODKOWANA nawigacja slidera (rodzeństwo grida) -->
-    <div class="services-slider-nav" aria-label="Nawigacja karuzeli">
-      <button class="snav snav--prev" type="button" aria-label="Poprzednie">
-        <img src="../photos/svg/arow-left-testim.svg" alt="">
-      </button>
-      <button class="snav snav--next" type="button" aria-label="Następne">
-        <img src="../photos/svg/arow-right-testim.svg" alt="">
-      </button>
-    </div>
-  </div>
-</section>
-
-
-
-<!-- ====== QUICK-VIEW MODAL (wklej na końcu <body>) ====== -->
-<div id="service-modal" class="service-modal" role="dialog" aria-modal="true" aria-hidden="true" hidden>
-  <div class="service-modal__backdrop" data-close></div>
-
-  <div class="service-modal__panel" role="document" tabindex="-1">
-    <button class="service-modal__close" type="button" aria-label="Zamknij" data-close>
-      <span aria-hidden="true">×</span>
-    </button>
-
-    <div class="service-modal__media">
-      <img class="service-modal__image" alt="" />
-    </div>
-
-    <div class="service-modal__body">
-      <h3 class="service-modal__title"></h3>
-      <p class="service-modal__lead"></p>
-
-      <ul class="service-modal__bullets"></ul>
-
-      <div class="service-modal__cta">
-        <a class="service-modal__btn" href="#" target="_self" rel="noopener">Poznaj zakres</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== PROCES (kroki) ===== -->
-<section class="services-process" aria-labelledby="services-process-title">
-  <div class="pages__container services-process__container">
-    <h2 class="services-process__title" id="services-process-title">Jak pracujemy</h2>
-
-    <!-- OŚ timeline (SVG) – JEDYNA oś -->
-    <svg class="process-spine" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-      <defs>
-        <linearGradient id="spineGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#DC9B59"/>
-          <stop offset="100%" stop-color="#000000"/>
-        </linearGradient>
-      </defs>
-      <path class="spine-bg" d="M50 2 L50 98" />
-      <path class="spine-fg" d="M50 2 L50 98" />
-    </svg>
-
-    <ol class="process-steps timeline" aria-labelledby="services-process-title">
-      <!-- 1 -->
-      <li class="process-step" data-step="1">
-        <button class="process-card" type="button" aria-expanded="false" aria-controls="step1-more">
-          <span class="process-card__icon">
-            <img class="process-card__icon-img" src="../photos/svg/partners/glava.svg" alt="">
-          </span>
-          <span class="process-card__title">Brief</span>
-          <span class="process-card__text">Zbieramy wymagania i ograniczenia.</span>
-          <span class="process-card__more" id="step1-more" hidden>
-            Ustalamy cele, budżet, priorytety oraz ograniczenia działki i formalności.
-          </span>
-        </button>
-      </li>
-
-      <!-- 2 -->
-      <li class="process-step" data-step="2">
-        <button class="process-card" type="button" aria-expanded="false" aria-controls="step2-more">
-          <span class="process-card__icon">
-            <img class="process-card__icon-img" src="../photos/svg/socials/in.svg" alt="">
-          </span>
-          <span class="process-card__title">Koncepcja</span>
-          <span class="process-card__text">Warianty układu i technologii.</span>
-          <span class="process-card__more" id="step2-more" hidden>
-            2–3 warianty, wstępne rzuty, bryła i dobór systemów.
-          </span>
-        </button>
-      </li>
-
-      <!-- 3 -->
-      <li class="process-step" data-step="3">
-        <button class="process-card" type="button" aria-expanded="false" aria-controls="step3-more">
-          <span class="process-card__icon">
-            <img class="process-card__icon-img" src="../photos/svg/partners/nordan.svg" alt="">
-          </span>
-          <span class="process-card__title">Wycena</span>
-          <span class="process-card__text">Transparentny kosztorys i harmonogram.</span>
-          <span class="process-card__more" id="step3-more" hidden>
-            Zakres, terminy i koszt całości + opcjonalne pakiety.
-          </span>
-        </button>
-      </li>
-
-      <!-- 4 -->
-      <li class="process-step" data-step="4">
-        <button class="process-card" type="button" aria-expanded="false" aria-controls="step4-more">
-          <span class="process-card__icon">
-            <img class="process-card__icon-img" src="../photos/svg/arow-right-testim.svg" alt="">
-          </span>
-          <span class="process-card__title">Realizacja</span>
-          <span class="process-card__text">Prefabrykacja + montaż na działce.</span>
-          <span class="process-card__more" id="step4-more" hidden>
-            Koordynacja dostaw, BHP i stały nadzór kierownika.
-          </span>
-        </button>
-      </li>
-
-      <!-- 5 -->
-      <li class="process-step" data-step="5">
-        <button class="process-card" type="button" aria-expanded="false" aria-controls="step5-more">
-          <span class="process-card__icon">
-            <img class="process-card__icon-img" src="../photos/svg/burger.svg" alt="">
-          </span>
-          <span class="process-card__title">Odbiór</span>
-          <span class="process-card__text">Checklisty jakości i wsparcie gwarancyjne.</span>
-          <span class="process-card__more" id="step5-more" hidden>
-            Odbiór, gwarancja i pomoc przy modernizacjach.
-          </span>
-        </button>
-      </li>
-    </ol>
-  </div>
-</section>
-
-
-
-
-    <!-- Sekcja z pełnoekranowym zdjęciem i hotspotami -->
-    <section class="interactive-house">
-      <!-- Zdjęcie w tle -->
-      <div class="interactive-house__image">
-        <img src="../photos/infografika.webp" alt="Dom szkieletowy" loading="lazy">
-      </div>
-
-      <!-- Hotspoty -->
-      <div class="hotspots">
-        <!-- Przykładowy hotspot -->
-        <button class="hotspot" style="top: 30%; left: 60%;" data-title="Dach"
-          data-desc="Opis dachu i jego technologii.">
-          +
-        </button>
-
-        <button class="hotspot" style="top: 55%; left: 40%;" data-title="Ściana"
-          data-desc="Informacje o ścianach w konstrukcji szkieletowej.">
-          +
-        </button>
-
-        <button class="hotspot" style="top: 80%; left: 50%;" data-title="Fundament"
-          data-desc="Opis fundamentu i izolacji.">
-          +
-        </button>
+        <!-- WYŚRODKOWANA nawigacja slidera (rodzeństwo grida) -->
+        <div class="services-slider-nav" aria-label="Nawigacja karuzeli">
+          <button class="snav snav--prev" type="button" aria-label="Poprzednie">
+            <img src="../photos/svg/arow-left-testim.svg" alt="">
+          </button>
+          <button class="snav snav--next" type="button" aria-label="Następne">
+            <img src="../photos/svg/arow-right-testim.svg" alt="">
+          </button>
+        </div>
       </div>
     </section>
+
+
+
+    <!-- ====== QUICK-VIEW MODAL (wklej na końcu <body>) ====== -->
+    <div id="service-modal" class="service-modal" role="dialog" aria-modal="true" aria-hidden="true" hidden>
+      <div class="service-modal__backdrop" data-close></div>
+
+      <div class="service-modal__panel" role="document" tabindex="-1">
+        <button class="service-modal__close" type="button" aria-label="Zamknij" data-close>
+          <span aria-hidden="true">×</span>
+        </button>
+
+        <div class="service-modal__media">
+          <img class="service-modal__image" alt="" />
+        </div>
+
+        <div class="service-modal__body">
+          <h3 class="service-modal__title"></h3>
+          <p class="service-modal__lead"></p>
+
+          <ul class="service-modal__bullets"></ul>
+
+          <div class="service-modal__cta">
+            <a class="service-modal__btn" href="#" target="_self" rel="noopener">Poznaj zakres</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PROCES (kroki) ===== -->
+    <section class="services-process" aria-labelledby="services-process-title">
+      <div class="pages__container services-process__container">
+        <h2 class="services-process__title" id="services-process-title">Jak pracujemy</h2>
+
+        <!-- OŚ timeline (SVG) – JEDYNA oś -->
+        <svg class="process-spine" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="spineGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#DC9B59" />
+              <stop offset="100%" stop-color="#000000" />
+            </linearGradient>
+          </defs>
+          <path class="spine-bg" d="M50 2 L50 98" />
+          <path class="spine-fg" d="M50 2 L50 98" />
+        </svg>
+
+        <ol class="process-steps timeline" aria-labelledby="services-process-title">
+          <!-- 1 -->
+          <li class="process-step" data-step="1">
+            <button class="process-card" type="button" aria-expanded="false" aria-controls="step1-more">
+              <span class="process-card__icon">
+                <img class="process-card__icon-img" src="../photos/svg/partners/glava.svg" alt="">
+              </span>
+              <span class="process-card__title">Brief</span>
+              <span class="process-card__text">Zbieramy wymagania i ograniczenia.</span>
+              <span class="process-card__more" id="step1-more" hidden>
+                Ustalamy cele, budżet, priorytety oraz ograniczenia działki i formalności.
+              </span>
+            </button>
+          </li>
+
+          <!-- 2 -->
+          <li class="process-step" data-step="2">
+            <button class="process-card" type="button" aria-expanded="false" aria-controls="step2-more">
+              <span class="process-card__icon">
+                <img class="process-card__icon-img" src="../photos/svg/socials/in.svg" alt="">
+              </span>
+              <span class="process-card__title">Koncepcja</span>
+              <span class="process-card__text">Warianty układu i technologii.</span>
+              <span class="process-card__more" id="step2-more" hidden>
+                2–3 warianty, wstępne rzuty, bryła i dobór systemów.
+              </span>
+            </button>
+          </li>
+
+          <!-- 3 -->
+          <li class="process-step" data-step="3">
+            <button class="process-card" type="button" aria-expanded="false" aria-controls="step3-more">
+              <span class="process-card__icon">
+                <img class="process-card__icon-img" src="../photos/svg/partners/nordan.svg" alt="">
+              </span>
+              <span class="process-card__title">Wycena</span>
+              <span class="process-card__text">Transparentny kosztorys i harmonogram.</span>
+              <span class="process-card__more" id="step3-more" hidden>
+                Zakres, terminy i koszt całości + opcjonalne pakiety.
+              </span>
+            </button>
+          </li>
+
+          <!-- 4 -->
+          <li class="process-step" data-step="4">
+            <button class="process-card" type="button" aria-expanded="false" aria-controls="step4-more">
+              <span class="process-card__icon">
+                <img class="process-card__icon-img" src="../photos/svg/arow-right-testim.svg" alt="">
+              </span>
+              <span class="process-card__title">Realizacja</span>
+              <span class="process-card__text">Prefabrykacja + montaż na działce.</span>
+              <span class="process-card__more" id="step4-more" hidden>
+                Koordynacja dostaw, BHP i stały nadzór kierownika.
+              </span>
+            </button>
+          </li>
+
+          <!-- 5 -->
+          <li class="process-step" data-step="5">
+            <button class="process-card" type="button" aria-expanded="false" aria-controls="step5-more">
+              <span class="process-card__icon">
+                <img class="process-card__icon-img" src="../photos/svg/burger.svg" alt="">
+              </span>
+              <span class="process-card__title">Odbiór</span>
+              <span class="process-card__text">Checklisty jakości i wsparcie gwarancyjne.</span>
+              <span class="process-card__more" id="step5-more" hidden>
+                Odbiór, gwarancja i pomoc przy modernizacjach.
+              </span>
+            </button>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+
+
+
 
 
 
@@ -631,121 +502,145 @@
   }
 }
 </script>
+  <!-- ====== WSPÓLNY MODAL: callbackSection ====== -->
+  <div id="callbackSection" class="modal" aria-hidden="true" hidden>
+    <div class="modal__overlay js-close" tabindex="-1"></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="callbackTitle">
+      <button type="button" class="modal__close js-close" aria-label="Zamknij">×</button>
+      <h2 id="callbackTitle" class="modal__title">Poproś o telefon</h2>
+
+      <!-- tu Twoja treść/formularz -->
+      <form class="modal__form" action="/api/callback" method="post" novalidate>
+        <label class="modal__label">
+          Imię i nazwisko
+          <input class="modal__input" type="text" name="name" required />
+        </label>
+        <label class="modal__label">
+          Telefon
+          <input class="modal__input" type="tel" name="phone" required />
+        </label>
+        <button class="modal__cta" type="submit">Wyślij prośbę o telefon</button>
+      </form>
+    </div>
+  </div>
 
 
   <!-- <script src="../js/services.js" type="module"></script> -->
-  
+
   <script src="../js/pages_services-slider.js"></script>
   <script type="module" src="../js/services-process-timeline.js"></script>
   <script src="../js/service-modal.js" defer></script>
   <script src="../js/service-modal.js?v=5" defer></script>
+  <script src="../js/booking-modal.js" defer></script>
+  <script src="../js/callback.js" defer></script>
 
 
 
 
-<script>
-(() => {
-  const btn  = document.getElementById('burger-toggle');   // <button id="burger-toggle">
-  const menu = document.getElementById('mobile-menu');     // <nav id="mobile-menu">
-  if (!btn || !menu) return;
+  <script>
+    (() => {
+      const btn = document.getElementById('burger-toggle');   // <button id="burger-toggle">
+      const menu = document.getElementById('mobile-menu');     // <nav id="mobile-menu">
+      if (!btn || !menu) return;
 
-  // zabezpieczenie przed wielokrotnym podpięciem
-  if (btn.dataset.bound === '1') return;
-  btn.dataset.bound = '1';
+      // zabezpieczenie przed wielokrotnym podpięciem
+      if (btn.dataset.bound === '1') return;
+      btn.dataset.bound = '1';
 
-  // ——— WYMUSZENIE OVERLAYA „OD GÓRY” (niezależnie od CSS) ———
-  const cs = getComputedStyle(menu);
-  // tylko jeśli ktoś nie ustawił już fixed — nie będziemy „walczyć” z istniejącym stylem
-  if (cs.position !== 'fixed') {
-    Object.assign(menu.style, {
-      position: 'fixed',
-      top: '0', left: '0', right: '0', bottom: '0', // pełny ekran
-      zIndex: '9999',
-      background: 'rgba(0,0,0,.86)',
-      backdropFilter: 'blur(2px)',
-      transform: 'translateY(-100%)',               // start ponad viewportem
-      transition: 'transform .35s ease',
-      paddingTop: 'calc(env(safe-area-inset-top, 0px) + 12px)',
-      paddingInline: '16px'
-    });
-  }
+      // ——— WYMUSZENIE OVERLAYA „OD GÓRY” (niezależnie od CSS) ———
+      const cs = getComputedStyle(menu);
+      // tylko jeśli ktoś nie ustawił już fixed — nie będziemy „walczyć” z istniejącym stylem
+      if (cs.position !== 'fixed') {
+        Object.assign(menu.style, {
+          position: 'fixed',
+          top: '0', left: '0', right: '0', bottom: '0', // pełny ekran
+          zIndex: '9999',
+          background: 'rgba(0,0,0,.86)',
+          backdropFilter: 'blur(2px)',
+          transform: 'translateY(-100%)',               // start ponad viewportem
+          transition: 'transform .35s ease',
+          paddingTop: 'calc(env(safe-area-inset-top, 0px) + 12px)',
+          paddingInline: '16px'
+        });
+      }
 
-  // a11y
-  btn.setAttribute('aria-expanded', 'false');
-  if (!menu.hasAttribute('aria-hidden')) menu.setAttribute('aria-hidden', 'true');
+      // a11y
+      btn.setAttribute('aria-expanded', 'false');
+      if (!menu.hasAttribute('aria-hidden')) menu.setAttribute('aria-hidden', 'true');
 
-  let lastFocus = null;
+      let lastFocus = null;
 
-  const firstFocusable = () =>
-    menu.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      const firstFocusable = () =>
+        menu.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
 
-  const open = () => {
-    lastFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    btn.setAttribute('aria-expanded', 'true');
-    menu.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('nav-open');
+      const open = () => {
+        lastFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+        btn.setAttribute('aria-expanded', 'true');
+        menu.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('nav-open');
 
-    // animacja wejścia z góry
-    menu.style.transform = 'translateY(0)';
+        // animacja wejścia z góry
+        menu.style.transform = 'translateY(0)';
 
-    const ff = firstFocusable();
-    if (ff) ff.focus({ preventScroll: true });
-  };
+        const ff = firstFocusable();
+        if (ff) ff.focus({ preventScroll: true });
+      };
 
-  const close = () => {
-    // zabierz fokus z menu zanim je ukryjesz (bez warningu aria-hidden)
-    if (menu.contains(document.activeElement)) {
-      btn.focus({ preventScroll: true });
-    }
-    btn.setAttribute('aria-expanded', 'false');
-    menu.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('nav-open');
+      const close = () => {
+        // zabierz fokus z menu zanim je ukryjesz (bez warningu aria-hidden)
+        if (menu.contains(document.activeElement)) {
+          btn.focus({ preventScroll: true });
+        }
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('nav-open');
 
-    // animacja schowania ponad górę
-    menu.style.transform = 'translateY(-100%)';
+        // animacja schowania ponad górę
+        menu.style.transform = 'translateY(-100%)';
 
-    if (lastFocus && document.body.contains(lastFocus)) {
-      lastFocus.focus({ preventScroll: true });
-    }
-  };
+        if (lastFocus && document.body.contains(lastFocus)) {
+          lastFocus.focus({ preventScroll: true });
+        }
+      };
 
-  const isOpen = () => menu.getAttribute('aria-hidden') === 'false';
+      const isOpen = () => menu.getAttribute('aria-hidden') === 'false';
 
-  // Ustaw rok w stopce – bezpiecznie
-  const y = document.getElementById('year');
-  if (y) y.textContent = new Date().getFullYear();
+      // Ustaw rok w stopce – bezpiecznie
+      const y = document.getElementById('year');
+      if (y) y.textContent = new Date().getFullYear();
 
-  // LISTENERY (bez passive, używamy preventDefault/stopPropagation)
-  btn.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    isOpen() ? close() : open();
-  });
+      // LISTENERY (bez passive, używamy preventDefault/stopPropagation)
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        isOpen() ? close() : open();
+      });
 
-  // klik poza menu zamyka
-  document.addEventListener('click', (e) => {
-    if (!isOpen()) return;
-    if (menu.contains(e.target) || btn.contains(e.target)) return;
-    close();
-  }, { capture: true });
+      // klik poza menu zamyka
+      document.addEventListener('click', (e) => {
+        if (!isOpen()) return;
+        if (menu.contains(e.target) || btn.contains(e.target)) return;
+        close();
+      }, { capture: true });
 
-  // ESC zamyka
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && isOpen()) close();
-  });
+      // ESC zamyka
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isOpen()) close();
+      });
 
-  // delegacja: X lub link w menu zamyka
-  document.addEventListener('click', (e) => {
-    if (!isOpen()) return;
-    if (e.target.closest('.header__nav-close')) {
-      e.preventDefault();
-      close();
-    } else if (menu.contains(e.target) && e.target.closest('a[href]')) {
-      close();
-    }
-  }, { capture: true });
-})();
-</script>
+      // delegacja: X lub link w menu zamyka
+      document.addEventListener('click', (e) => {
+        if (!isOpen()) return;
+        if (e.target.closest('.header__nav-close')) {
+          e.preventDefault();
+          close();
+        } else if (menu.contains(e.target) && e.target.closest('a[href]')) {
+          close();
+        }
+      }, { capture: true });
+    })();
+  </script>
+
 
 
 

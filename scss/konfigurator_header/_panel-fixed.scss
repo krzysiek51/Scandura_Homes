@@ -1,72 +1,72 @@
-/* scss/konfigurator_header/_panel-fixed.scss
-   Stała wysokość panelu konfiguratora + przewijane body kroku
-   Wersja „twarda” – nadpisuje inne reguły (specyficzność + !important)
-*/
+// /* scss/konfigurator_header/_panel-fixed.scss
+//    Stała wysokość panelu konfiguratora + przewijane body kroku
+//    Wersja „twarda” – nadpisuje inne reguły (specyficzność + !important)
+// */
 
-.cfg.cfg { /* podwójny selektor = wyższa specyficzność bez !important przy wszystkim */
-  .cfg__panel {
-    display: grid !important;
-    grid-template-rows: auto 1fr auto !important; /* stepper / body / footer */
-    gap: 12px !important;
+// .cfg.cfg { /* podwójny selektor = wyższa specyficzność bez !important przy wszystkim */
+//   .cfg__panel {
+//     display: grid !important;
+//     grid-template-rows: auto 1fr auto !important; /* stepper / body / footer */
+//     gap: 12px !important;
 
-    /* stała rama dla wszystkich kroków */
-    height: min(88vh, 880px) !important;
-    width: min(1080px, calc(100vw - 32px)) !important;
-    max-width: 1080px !important;
+//     /* stała rama dla wszystkich kroków */
+//     height: min(88vh, 880px) !important;
+//     width: min(1080px, calc(100vw - 32px)) !important;
+//     max-width: 1080px !important;
 
-    background: #fff !important;
-    border-radius: 16px !important;
-    box-shadow: 0 24px 64px rgba(0,0,0,.18) !important;
-    overflow: hidden !important; /* scroll tylko w .cfg-step */
-  }
+//     background: #fff !important;
+//     border-radius: 16px !important;
+//     box-shadow: 0 24px 64px rgba(0,0,0,.18) !important;
+//     overflow: hidden !important; /* scroll tylko w .cfg-step */
+//   }
 
-  /* Stepper na górze */
-  > .cfg__panel > .cfg-stepper {
-    grid-row: 1 / 2 !important;
-    min-height: 0 !important;
-  }
+//   /* Stepper na górze */
+//   > .cfg__panel > .cfg-stepper {
+//     grid-row: 1 / 2 !important;
+//     min-height: 0 !important;
+//   }
 
-  /* ŚRODEK – przewijany tylko body kroku */
-  > .cfg__panel > .cfg-step {
-    grid-row: 2 / 3 !important;
-    min-height: 0 !important;            /* nie blokuj overflow w gridzie */
-    overflow: auto !important;            /* przewijamy treść kroku, nie cały panel */
-    -webkit-overflow-scrolling: touch;
-    padding-inline: 8px !important;       /* miejsce na scrollbar */
-    padding-bottom: 16px !important;      /* żeby treść nie wchodziła pod stopkę */
-  }
+//   /* ŚRODEK – przewijany tylko body kroku */
+//   > .cfg__panel > .cfg-step {
+//     grid-row: 2 / 3 !important;
+//     min-height: 0 !important;            /* nie blokuj overflow w gridzie */
+//     overflow: auto !important;            /* przewijamy treść kroku, nie cały panel */
+//     -webkit-overflow-scrolling: touch;
+//     padding-inline: 8px !important;       /* miejsce na scrollbar */
+//     padding-bottom: 16px !important;      /* żeby treść nie wchodziła pod stopkę */
+//   }
 
-  /* ukryte kroki realnie znikają z grida */
-  > .cfg__panel > .cfg-step[hidden] {
-    display: none !important;
-  }
+//   /* ukryte kroki realnie znikają z grida */
+//   > .cfg__panel > .cfg-step[hidden] {
+//     display: none !important;
+//   }
 
-  /* Stopka zawsze na dole ramy */
-  > .cfg__panel > .cfg-nav {
-    grid-row: 3 / 4 !important;
-    background: #fff !important;
-    border-top: 1px solid rgba(0,0,0,.06) !important;
-    padding: 10px 12px !important;
-    position: sticky !important;
-    bottom: 0 !important;
-    z-index: 2 !important;
-  }
-}
+//   /* Stopka zawsze na dole ramy */
+//   > .cfg__panel > .cfg-nav {
+//     grid-row: 3 / 4 !important;
+//     background: #fff !important;
+//     border-top: 1px solid rgba(0,0,0,.06) !important;
+//     padding: 10px 12px !important;
+//     position: sticky !important;
+//     bottom: 0 !important;
+//     z-index: 2 !important;
+//   }
+// }
 
-/* Responsywność */
-@media (max-width: 1024px) {
-  .cfg.cfg .cfg__panel {
-    height: min(92vh, 820px) !important;
-    width: min(100vw - 16px, 960px) !important;
-  }
-}
-@media (max-width: 480px) {
-  .cfg.cfg .cfg__panel {
-    height: 92vh !important;
-    width: calc(100vw - 12px) !important;
-    border-radius: 12px !important;
-  }
-  .cfg.cfg > .cfg__panel > .cfg-step {
-    padding-inline: 6px !important;
-  }
-}
+// /* Responsywność */
+// @media (max-width: 1024px) {
+//   .cfg.cfg .cfg__panel {
+//     height: min(92vh, 820px) !important;
+//     width: min(100vw - 16px, 960px) !important;
+//   }
+// }
+// @media (max-width: 480px) {
+//   .cfg.cfg .cfg__panel {
+//     height: 92vh !important;
+//     width: calc(100vw - 12px) !important;
+//     border-radius: 12px !important;
+//   }
+//   .cfg.cfg > .cfg__panel > .cfg-step {
+//     padding-inline: 6px !important;
+//   }
+// }
