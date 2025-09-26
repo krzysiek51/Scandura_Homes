@@ -197,3 +197,10 @@ fieldset {
   border: 0;
   outline: 0;
 }
+/* Krok 2 – układ inline dla „Dokładnie m²” */
+.cfg-opt--exact .cfg-exact__row{
+  display:flex; gap:12px; align-items:center; flex-wrap:wrap;
+}
+.cfg-opt--exact .cfg-exact__box{
+  width: 120px; // możesz zwiększyć do 140–160
+}

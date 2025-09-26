@@ -12729,6 +12729,18 @@ fieldset {
   outline: 0;
 }
 
+/* Krok 2 – układ inline dla „Dokładnie m²” */
+.cfg-opt--exact .cfg-exact__row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.cfg-opt--exact .cfg-exact__box {
+  width: 120px;
+}
+
 /* "Pusta kartka": chowamy tylko elementy do rysowania */
 .services__icon [data-draw] {
   fill: none !important;
