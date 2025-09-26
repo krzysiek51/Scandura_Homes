@@ -1,0 +1,66 @@
+============================================================
+RAPORT STRUKTURY — /c/Dev/Scandura_Homes — 2025-09-26 10:17:06
+============================================================
+
+• Wymagane pliki (modal + kalkulator):
+  ✅ ./js/configurator-modal.js
+  ✅ ./js/configurator-modal-anim.js
+  ❌ ./js/configurator-quote-hook.js
+  ✅ ./scss/modalAI/_configurator-modal.scss
+  ✅ ./scss/modalAI/_configurator-anim.scss
+  ❌ ./scss/modalAI/_configurator-quote.scss
+  ✅ ./apps/kalkulator-2.0/engine/index.js
+  ✅ ./apps/kalkulator-2.0/ui/step-quote.js
+  ✅ ./apps/kalkulator-2.0/ui/router.js
+
+• Ostatnio modyfikowane (TOP 15):
+-rw-r--r-- 1 ktorc 197609      644 Sep 26 10:17 structure-report.txt
+-rwxr-xr-x 1 ktorc 197609     2440 Sep 26 10:16 audit_structure.sh
+-rw-r--r-- 1 ktorc 197609    78889 Sep 26 09:13 index.html
+drwxr-xr-x 1 ktorc 197609        0 Sep 26 09:13 js
+drwxr-xr-x 1 ktorc 197609        0 Sep 26 08:14 scss
+drwxr-xr-x 1 ktorc 197609        0 Sep 26 06:09 apps
+-rw-r--r-- 1 ktorc 197609   188126 Sep 23 07:44 package-lock.json
+-rw-r--r-- 1 ktorc 197609     1473 Sep 23 07:42 package.json
+drwxr-xr-x 1 ktorc 197609        0 Sep 22 20:07 pages
+-rw-r--r-- 1 ktorc 197609 14483456 Sep 22 16:57 bfg.jar
+drwxr-xr-x 1 ktorc 197609        0 Sep 22 16:57 scandura-booking
+-rw-r--r-- 1 ktorc 197609     1498 Sep 22 15:00 terms.html
+-rw-r--r-- 1 ktorc 197609     1841 Sep 22 15:00 privacy.html
+drwxr-xr-x 1 ktorc 197609        0 Sep 17 19:13 photos
+drwxr-xr-x 1 ktorc 197609        0 Sep 15 13:29 content
+drwxr-xr-x 1 ktorc 197609        0 Sep 11 10:26 css
+drwxr-xr-x 1 ktorc 197609        0 Sep 11 10:15 recovered
+-rw-r--r-- 1 ktorc 197609      184 Sep 11 10:08 NUL
+drwxr-xr-x 1 ktorc 197609        0 Sep 11 09:05 src
+-rw-r--r-- 1 ktorc 197609     1386 Sep 11 09:05 gulpfile.js
+-rw-r--r-- 1 ktorc 197609    35505 Sep 11 09:05 js.zip
+drwxr-xr-x 1 ktorc 197609        0 Sep 11 09:05 server
+-rw-r--r-- 1 ktorc 197609      168 Sep 11 09:05 README.md
+-rw-r--r-- 1 ktorc 197609  2866 Sep 26 09:25 configurator-modal-anim.js
+-rw-r--r-- 1 ktorc 197609 10964 Sep 26 09:09 configurator-modal.js
+drwxr-xr-x 1 ktorc 197609     0 Sep 25 18:51 steps
+-rw-r--r-- 1 ktorc 197609 11764 Sep 25 15:57 about-process.js
+-rw-r--r-- 1 ktorc 197609  3884 Sep 24 23:11 nav-autohide-mobile.js
+-rw-r--r-- 1 ktorc 197609   384 Sep 24 15:56 header-anim-config.js
+-rw-r--r-- 1 ktorc 197609  2623 Sep 24 15:44 ai-box-enter.js
+-rw-r--r-- 1 ktorc 197609  1033 Sep 24 15:44 ai-box-config.js
+-rw-r--r-- 1 ktorc 197609  4343 Sep 24 15:43 confiugurator-prompt-count.js
+-rw-r--r-- 1 ktorc 197609  5911 Sep 24 15:43 configurator.js
+-rw-r--r-- 1 ktorc 197609  6599 Sep 24 14:24 about-timeline-wires.js
+-rw-r--r-- 1 ktorc 197609 11140 Sep 22 13:36 booking-modal.js
+-rw-r--r-- 1 ktorc 197609   422 Sep 22 12:23 booking.js
+-rw-r--r-- 1 ktorc 197609  1448 Sep 22 08:27 smartbar.js
+-rw-r--r-- 1 ktorc 197609 11049 Sep 21 11:59 callback.js
+-rw-r--r-- 1 ktorc 197609 14665 Sep 21 09:13 mission-anim.js
+-rw-r--r-- 1 ktorc 197609  7226 Sep 19 15:03 services-icons-watch.js
+-rw-r--r-- 1 ktorc 197609  2948 Sep 19 12:18 services-icons-draw.js
+-rw-r--r-- 1 ktorc 197609 12432 Sep 19 11:28 services-slider.js
+-rw-r--r-- 1 ktorc 197609  9004 Sep 18 14:41 why-us-anim.js
+-rw-r--r-- 1 ktorc 197609  3093 Sep 18 09:40 services-enter.js
+-rw-r--r-- 1 ktorc 197609  3756 Sep 17 17:53 mobile-menu.js
+-rw-r--r-- 1 ktorc 197609  3454 Sep 17 13:51 render-services.js
+-rw-r--r-- 1 ktorc 197609  5057 Sep 17 13:50 service-modal.js
+-rw-r--r-- 1 ktorc 197609  1457 Sep 16 19:15 header-anim.js
+-rw-r--r-- 1 ktorc 197609  5315 Sep 16 11:05 projects-slider.js
+-rw-r--r-- 1 ktorc 197609  2745 Sep 15 11:22 services-process-timeline.js

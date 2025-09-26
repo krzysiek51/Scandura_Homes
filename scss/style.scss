@@ -34,7 +34,7 @@
 // @use "layout/configurator-prompt";
 
 /* KONFIGURATOR (jeden agregat) */
-@use "konfigurator_header/index";
+
 
 //pages*
 
@@ -76,6 +76,11 @@
 @use 'components/callback-modal';
 @use 'patches/hover-lift';
 
+
+// AI KalkulaTOR 2.0
+
+@use 'modalAI/configurator-modal';
+@use "modalAI/configurator-anim";      // NOWY — musi być po bazowym
 
 /* "Pusta kartka": chowamy tylko elementy do rysowania */
 .services__icon [data-draw]{

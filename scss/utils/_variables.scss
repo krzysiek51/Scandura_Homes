@@ -67,3 +67,18 @@ $btn-weight:     500;
 $btn-size:       16px;
 $btn-lh:         1;
 $btn-ls:         0;
+
+
+:root{
+  /* Elevations */
+  --elev-modal: 7px 16px 106.4px rgba(99,99,99,.10);
+  /* Możesz też mieć inne poziomy, jeśli używasz w projekcie: */
+  --elev-1: 2px 4px 12px rgba(99,99,99,.10);
+  --elev-2: 4px 8px 32px rgba(99,99,99,.10);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    /* lekko mocniejszy w dark, ale ten sam „kształt” */
+    --elev-modal: 7px 16px 106.4px rgba(0,0,0,.45);
+  }
+}
