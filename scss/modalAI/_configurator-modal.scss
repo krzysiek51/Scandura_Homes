@@ -204,3 +204,7 @@ fieldset {
 .cfg-opt--exact .cfg-exact__box{
   width: 120px; // możesz zwiększyć do 140–160
 }
+/* bazowo ukryte */
+.cfg-opt--other .cfg-other{ display:none; }
+/* pokaż, gdy .is-open na etykiecie */
+.cfg-opt--other.is-open .cfg-other{ display:block; }

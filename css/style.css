@@ -12741,6 +12741,16 @@ fieldset {
   width: 120px;
 }
 
+/* bazowo ukryte */
+.cfg-opt--other .cfg-other {
+  display: none;
+}
+
+/* pokaż, gdy .is-open na etykiecie */
+.cfg-opt--other.is-open .cfg-other {
+  display: block;
+}
+
 /* "Pusta kartka": chowamy tylko elementy do rysowania */
 .services__icon [data-draw] {
   fill: none !important;
