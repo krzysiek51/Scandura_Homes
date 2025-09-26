@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "unit_base_m2": 100,
+    "notes": "Kwoty to ŚREDNIE za 100 m². Skalujemy liniowo do area_m2. Klient widzi jedną cenę (średnia suma × wariant)."
+  },
+  "variant_multipliers": {
+    "basic": 0.95,
+    "standard": 1.00,
+    "premium": 1.30
+  },
+  "floor_modifiers": {
+    "1": { "fundament": 1.00, "dach": 1.00, "konstrukcja_stropy": 1.00 },
+    "2": { "fundament": 0.90, "dach": 0.85, "konstrukcja_stropy": 1.12 }
+  },
+  "scopes": {
+    "ssz": {
+      "label": "Stan surowy zamknięty",
+      "sections": {
+        "fundament": 60000,
+        "konstrukcja_stropy": 80000,
+        "wiezba": 70000,
+        "pokrycie_dachu": 40000,
+        "stolarka": 30000,
+        "transport_organizacja": 15000
+      }
+    },
+    "pod_klucz_standard": {
+      "label": "Pod klucz — Standard",
+      "sections": {
+        "fundament": 30000,
+        "konstrukcja_dach": 152500,
+        "stolarka": 32500,
+        "instalacje": 50000,
+        "wykonczenie": 67500,
+        "zagospodarowanie_przylacza": 25000
+      }
+    },
+    "pod_klucz_premium": {
+      "label": "Pod klucz — Premium",
+      "sections": {
+        "fundament": 60000,
+        "konstrukcja_sciany": 95000,
+        "dach": 47500,
+        "stolarka": 35000,
+        "instalacje_reku": 95000,
+        "wykonczenie_premium": 140000,
+        "elewacja_ocieplenie": 47500
+      }
+    },
+    "pod_klucz_basic": {
+      "label": "Pod klucz — Ekonomiczny (Basic)",
+      "sections": {
+        "fundament": 75000,
+        "konstrukcja_dach": 220000,
+        "instalacje_pelet": 70000,
+        "wykonczenie_ekonomiczne": 120000,
+        "elewacja_ocieplenie": 45000
+      }
+    }
+  }
+}

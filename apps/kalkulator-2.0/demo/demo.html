@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kalkulator 2.0 — Demo</title>
+  <link rel="stylesheet" href="../public/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Demo Kalkulator 2.0</h1>
+    <div id="calc-quote"></div>
+  </main>
+
+  <!-- Kolejność: state → core → loaders → index → router → UI -->
+  <script src="../engine/state.js"></script>
+  <script src="../engine/pricing-core.js"></script>
+  <script src="../engine/pricing-loaders.js"></script>
+  <script src="../engine/index.js"></script>
+  <script src="../ui/router.js"></script>
+  <script src="../ui/step-quote.js"></script>
+  <script>
+    // Wersja demo — ładowanie danych i mount placeholdera
+    (async () => {
+      await window.CALC.init({ base: '../' });
+      window.UI_QUOTE.mount({ mountSelector: '#calc-quote' });
+    })();
+  </script>
+</body>
+</html>

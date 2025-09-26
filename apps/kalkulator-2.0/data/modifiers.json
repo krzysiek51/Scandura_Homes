@@ -1,0 +1,6 @@
+{
+  "roof_types": { "dwuspadowy": 1.00, "czterospadowy": 1.05 },
+  "heating": { "gaz": 1.00, "pelet": 1.00 },
+  "region": { "default": 1.00 },
+  "notes": "Mnożniki pomocnicze — kalibracja później."
+}

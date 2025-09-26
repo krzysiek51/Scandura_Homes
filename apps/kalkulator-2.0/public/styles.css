@@ -1,0 +1,5 @@
+:root { --content-x: 20px; --max-w: 960px; }
+* { box-sizing: border-box; }
+body { margin:0; font:16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+.container { max-width: var(--max-w); margin: 0 auto; padding: 40px var(--content-x); }
+#calc-quote { margin-top: 24px; padding: 16px; border: 1px dashed #aaa; border-radius: 12px; }

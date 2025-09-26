@@ -1,0 +1,10 @@
+{
+  "by_unit": {
+    "one_stall": 45000,
+    "detached_30m2": 127500
+  },
+  "by_m2": {
+    "generic": 1850
+  },
+  "notes": "Garaż liczony osobno — nie zmniejsza m² domu."
+}
