@@ -12336,6 +12336,399 @@ body.services-page .header_logo-bg {
     padding: 120px 24px;
   }
 }
+/* WRAPPER */
+.cfg-hide-scroll {
+  overflow: hidden !important;
+}
+
+.cfg-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  justify-items: center;
+  align-items: end;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+}
+.cfg-modal[hidden] {
+  display: none !important;
+}
+
+.cfg-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.46);
+  opacity: 0;
+  transition: opacity 0.22s ease;
+}
+
+/* CARD */
+.cfg-modal__card {
+  position: relative;
+  background: #fff;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  opacity: 0;
+  transform: translateY(6px) scale(0.992);
+  transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.3, 1), opacity 0.22s ease;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 0 28px 0 0;
+}
+
+.cfg-modal.is-open .cfg-modal__backdrop {
+  opacity: 1;
+}
+.cfg-modal.is-open .cfg-modal__card {
+  opacity: 1;
+  transform: none;
+}
+
+/* HEADER */
+.cfg-head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #EFEFEF;
+  padding: 20px 16px 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.cfg-head__bar {
+  height: 8px;
+  background: #fff;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.cfg-head__progress {
+  display: block;
+  height: 100%;
+  width: var(--cfg-progress, 0%);
+  background: #DC9B59;
+}
+
+.cfg-title {
+  margin: 0;
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.35;
+  font-size: 22px;
+}
+
+/* BODY */
+.cfg-body {
+  padding: 16px 16px;
+  overflow: auto;
+}
+
+/* FOOTER */
+.cfg-foot {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #F2F2F2;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.cfg-foot__left, .cfg-foot__right {
+  display: flex;
+  gap: 8px;
+}
+
+/* BUTTONS */
+.cfg-btn {
+  appearance: none;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  background: #fff;
+  padding: 12px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.cfg-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+.cfg-btn:active {
+  transform: translateY(0);
+}
+.cfg-btn--primary {
+  background: #DC9B59;
+  color: #fff;
+  border-color: #DC9B59;
+}
+
+.cfg-link {
+  appearance: none;
+  background: none;
+  border: none;
+  padding: 12px 0;
+  font-weight: 700;
+  color: #333;
+  cursor: pointer;
+}
+
+/* CLOSE */
+.cfg-close {
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  padding: 6px;
+  cursor: pointer;
+}
+
+/* LISTA OPCJI */
+.cfg-list {
+  display: block;
+}
+
+.cfg-opt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  position: relative;
+}
+
+.cfg-opt + .cfg-opt {
+  border-top: 1px solid #EDEDED;
+}
+
+.cfg-opt__label {
+  font-weight: 600;
+}
+
+.cfg-opt__sub {
+  font-size: 13px;
+  color: #6B6B6B;
+}
+
+/* RADIO — idle czarny, hover/active pomarańcz */
+.cfg-dot {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #000;
+  display: inline-grid;
+  place-items: center;
+  outline: none;
+}
+.cfg-dot::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #DC9B59;
+  transform: scale(0);
+  transition: transform 0.16s ease;
+}
+.cfg-dot:hover {
+  box-shadow: 0 0 0 3px color-mix(in oklab, #DC9B59 30%, transparent);
+}
+.cfg-dot:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in oklab, #DC9B59 45%, transparent);
+}
+.cfg-dot:checked {
+  border-color: #DC9B59;
+  border-width: 3px;
+}
+.cfg-dot:checked::after {
+  transform: scale(1);
+}
+
+/* „Inny” inline */
+.cfg-opt--other .cfg-other {
+  display: none;
+  margin-left: 30px;
+  margin-top: 8px;
+}
+.cfg-opt--other .cfg-dot:checked ~ .cfg-other {
+  display: block;
+}
+
+.cfg-input {
+  width: 100%;
+  max-width: 360px;
+  padding: 10px 12px;
+  border: 1px solid #D9D9D9;
+  border-radius: 10px;
+  font: inherit;
+}
+
+/* BŁĘDY */
+.cfg-error {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #d93025;
+}
+
+/* EXIT-INTENT */
+.cfg-exit[hidden] {
+  display: none !important;
+}
+
+.cfg-exit {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 2;
+}
+
+.cfg-exit__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.cfg-exit__card {
+  position: relative;
+  width: min(560px, 90vw);
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.35);
+  padding: 20px;
+  display: grid;
+  gap: 10px;
+  animation: cfg-pop 0.22s ease both;
+}
+
+@keyframes cfg-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.cfg-exit__title {
+  margin: 0;
+  font-weight: 800;
+  font-size: 22px;
+  text-align: center;
+}
+
+.cfg-exit__lead {
+  margin: 6px 0 0;
+  text-align: center;
+}
+
+.cfg-exit__sub {
+  margin: 0;
+  opacity: 0.8;
+  text-align: center;
+}
+
+.cfg-exit__actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* MQ */
+@media (min-width: 744px) {
+  .cfg-modal__card {
+    width: 600px;
+    height: 600px;
+    max-height: none;
+    border-radius: 0 36px 0 0;
+  }
+  .cfg-head {
+    padding-right: 48px;
+    padding-top: 28px;
+  }
+  .cfg-title {
+    font-size: 24px;
+  }
+}
+@media (min-width: 1440px) {
+  .cfg-modal__card {
+    width: 600px;
+    height: 600px;
+    border-radius: 0 42px 0 0;
+  }
+  .cfg-title {
+    font-size: 26px;
+  }
+}
+/* ===== Mobile default: fullscreen (do 743px) ===== */
+.cfg-modal {
+  display: grid;
+  justify-items: stretch; /* karta rozciąga się na całą szerokość */
+  align-items: stretch; /* i na całą wysokość */
+  padding: 0; /* bez dolnego odstępu na mobile */
+}
+
+.cfg-modal__card {
+  width: 100vw;
+  /* porządek fallbacków dla różnych przeglądarek mobilnych */
+  height: 100vh; /* stary fallback */
+  height: 100svh; /* „small viewport” */
+  height: 100dvh; /* „dynamic viewport” – najlepsze, gdy dostępne */
+  max-height: none;
+  border-radius: 0 var(--cfg-radius-m) 0 0; /* tylko prawy górny róg */
+  overflow: hidden; /* nic nie wychodzi poza radius */
+}
+
+/* iOS fallback, gdy 100dvh/svh nie działa */
+@supports (-webkit-touch-callout: none) {
+  .cfg-modal__card {
+    height: -webkit-fill-available;
+  }
+}
+/* ===== ≥744 px: doklejona do dołu, 600 × 600 ===== */
+@media (min-width: 744px) {
+  .cfg-modal {
+    justify-items: center;
+    align-items: end;
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
+  .cfg-modal__card {
+    width: 600px;
+    height: 600px;
+    max-height: none;
+    overflow: hidden;
+    border-radius: 0 48px 0 0;
+  }
+}
+/* ===== ≥1440 px: ten sam rozmiar, większy promień ===== */
+@media (min-width: 1440px) {
+  .cfg-modal__card {
+    width: 600px;
+    height: 600px;
+    overflow: hidden;
+    border-radius: 0 48px 0 0;
+  }
+}
+.cfg-list {
+  border: none;
+  outline: none;
+  margin: 0;
+  padding: 0;
+}
+
+fieldset {
+  border: 0;
+  outline: 0;
+}
+
 /* "Pusta kartka": chowamy tylko elementy do rysowania */
 .services__icon [data-draw] {
   fill: none !important;

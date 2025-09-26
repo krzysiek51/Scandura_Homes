@@ -72,6 +72,9 @@
 @use "pages/_thanks";
 
 
+@use 'modalAI/tokens';
+@use 'modalAI/configurator-modal';
+
 
 /* "Pusta kartka": chowamy tylko elementy do rysowania */
 .services__icon [data-draw]{

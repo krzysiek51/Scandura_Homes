@@ -1204,6 +1204,10 @@
 <script type="module" src="/apps/kalkulator-2.0/engine/calc-adapters.js"></script>
 <script type="module" src="/apps/kalkulator-2.0/ui/step-quote.js"></script>
 
+<script type="module" src="/js/configurator/modal/configurator-steps.js"></script>
+
+
+
 
 <!-- (opcjonalnie) guard – zostaw, ale nie jest już potrzebny -->
 <!-- <script type="module" src="/js/configurator/modal/configurator-modal-guard.js"></script> -->
@@ -1284,6 +1288,8 @@
     })();
   </script>
   <!--  -->
+
+
   <!-- //script sticky header//  -->
   <!-- js/hero-steps.js (jeśli jeszcze nie masz; dodaj na dole body z defer) -->
   <!-- Minimalny JS: przypisuje .hs-step-1/2/3 na .hero-steps w trakcie scrolla -->
@@ -1335,20 +1341,11 @@
       window.addEventListener('resize', onScroll, { passive: true });
       onScroll();
     })();
-
-
-
-
-
   </script>
-
-
   <script>
     window.BOOKING_API_BASE = 'https://api.scandura.com.pl';
   </script>
   <script src="/js/booking-modal.js" defer></script>
-
-
 
 
   <!-- //script sticky header//  -->
@@ -1521,7 +1518,7 @@
 </div>
 
 <!-- ===== MODAL v2 — SCSS/CSS (umieść w scss/modalAI/_configurator-modal.scss i zaimportuj) ===== -->
-<style>
+<!-- <style>
 :root{
   --cfg-z:10000; --cfg-backdrop:rgba(0,0,0,.46);
   --cfg-accent:#DC9B59;
@@ -1535,12 +1532,28 @@
 .cfg-modal{ position:fixed; inset:0; z-index:var(--cfg-z); display:grid; place-items:center; }
 .cfg-modal[hidden]{ display:none !important; }
 .cfg-modal__backdrop{ position:absolute; inset:0; background:var(--cfg-backdrop); opacity:0; transition:opacity .22s ease; }
-
+.cfg-modal{
+    display: grid;
+    /* poziomo center, pionowo na dole */
+    justify-items: center;
+    align-items: end;
+    /* odstęp od krawędzi i bezpieczny notch na iOS */
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
+  
 /* card */
-.cfg-modal__card{ position:relative; width:100vw; height:100vh; background:#fff; 
-  border-radius:0 var(--cfg-radius-m) 0 0; box-shadow:0 20px 60px rgba(0,0,0,.25);
-  display:grid; grid-template-rows:auto 1fr auto; opacity:0; transform:translateY(6px) scale(.992);
+.cfg-modal__card{ 
+  position:relative; 
+  width:100vw; 
+  height:100vh; 
+  background:#fff; 
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+  display:grid; 
+  grid-template-rows:auto 1fr auto; 
+  opacity:0; 
+  transform:translateY(6px) scale(.992);
   transition:transform .22s cubic-bezier(.2,.7,.3,1),opacity .22s ease;
+  margin: 0;
 }
 
 
@@ -1608,6 +1621,12 @@
 
 /* exit-intent */
 .cfg-exit[hidden]{ display:none !important; }
+.cfg-error{ 
+  margin-top:8px; 
+  font-size:14px; 
+  color:#d93025;
+
+}
 .cfg-exit{ position:absolute; inset:0; display:grid; place-items:center; z-index:2; }
 .cfg-exit__backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.12); }
 .cfg-exit__card{ position:relative; width:min(560px,90vw); background:#fff; border-radius:16px; box-shadow:0 28px 80px rgba(0,0,0,.35); padding:20px; display:grid; gap:10px; animation: cfg-pop .22s ease both; }
@@ -1644,7 +1663,8 @@
 }
 }
 
-</style>
+
+</style> -->
 
 <!-- ===== MODAL v2 — JS core (js/configurator/modal/configurator-modal.js) ===== -->
 <script>
@@ -1697,7 +1717,8 @@
 })();
 </script>
 
-
+<!-- ---------------------------Modal V2 ---------------- -->
+ 
 
 </body>
 
