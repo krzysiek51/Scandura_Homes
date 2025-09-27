@@ -9,6 +9,8 @@
   const BODY     = MODAL.querySelector('[data-cfg="body"]');
   const BTN_PREV = MODAL.querySelector('[data-cfg="prev"]');
   const BTN_NEXT = MODAL.querySelector('[data-cfg="next"]');
+  const BTN_SKIP = MODAL.querySelector('[data-cfg="skip"]');
+
   const { setTitle, setProgress } = window.ScanduraConfigurator;
 
   const pct = (i, total) => Math.round((i / total) * 100);
@@ -19,7 +21,13 @@
 
     setTitle('Jaki zakres (stan budowy) planujesz?');
     setProgress(pct(4, state.totalSteps));
+   
     BTN_PREV.hidden = false;
+    BTN_NEXT.hidden = false;
+    BTN_NEXT.textContent = 'Dalej';
+    BTN_SKIP.hidden = true;
+    BTN_SKIP.classList.remove('cfg-btn--primary');
+
 
     BODY.innerHTML = `
       <form class="cfg-step" data-step="4" novalidate>

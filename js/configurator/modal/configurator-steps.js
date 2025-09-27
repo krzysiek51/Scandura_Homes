@@ -18,6 +18,7 @@
   const BODY    = MODAL.querySelector('[data-cfg="body"]');
   const BTN_PREV= MODAL.querySelector('[data-cfg="prev"]');
   const BTN_NEXT= MODAL.querySelector('[data-cfg="next"]');
+  const BTN_SKIP = MODAL.querySelector('[data-cfg="skip"]');
   const { setTitle, setProgress } = window.ScanduraConfigurator;
 
   const pct = (i) => Math.round((i / state.totalSteps) * 100);
@@ -27,7 +28,13 @@
     state.step = 1;
     setTitle('Jaki budynek chcesz wybudować?');
     setProgress(pct(1));
-    BTN_PREV.hidden = true; // brak "Wstecz" w K1
+    
+    BTN_PREV.hidden = true;              // K1 bez Wstecz
+    BTN_NEXT.hidden = false;
+    BTN_NEXT.textContent = 'Dalej';
+    BTN_SKIP.hidden = true;
+    BTN_SKIP.classList.remove('cfg-btn--primary');
+
 
     BODY.innerHTML = `
       <form class="cfg-step" data-step="1" novalidate>
