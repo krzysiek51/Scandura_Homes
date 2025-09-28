@@ -18,8 +18,6 @@
   // Publiczny renderer kroku 2
   window.renderStep2 = (state) => {
     state.step = 2;
-
-    BTN_PREV.hidden = false;
     BTN_NEXT.hidden = false;
     BTN_NEXT.textContent = 'Dalej';
     BTN_SKIP.hidden = true;

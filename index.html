@@ -1200,10 +1200,29 @@
 <script type="module" src="js/confiugurator-prompt-count.js"></script>
 <script type="module" src="js/about-process.js"></script>
 
+
+
+
 <!-- Kalkulator 2.0 -->
 <script type="module" src="/apps/kalkulator-2.0/engine/calc-adapters.js"></script>
 <script type="module" src="/apps/kalkulator-2.0/ui/step-quote.js"></script>
 
+<!-- Ustaw bazę katalogu z JSON-ami (u Ciebie /apps/kalkulator-2.0/engine/) -->
+<script>
+  window.PRICING_ASSETS_BASE = '/apps/kalkulator-2.0/engine/';
+</script>
+
+<!-- ⏳ NOWE: globalny Promise gotowości (musi istnieć ZANIM wystartuje loader) + mostek z eventu -->
+<script>
+  window.whenPricingReady = window.whenPricingReady || new Promise(res => { window.__pricingReadyResolve = res; });
+  window.addEventListener('ScanduraPricing:ready', () => window.__pricingReadyResolve?.(), { once:true });
+</script>
+
+<!-- 1) Loader danych → ustawia window.SCANDURA_PRICING_DATA i rozwiązuje whenPricingReady -->
+<script src="/js/configurator/integrations/price-engine.js?v=7"></script>
+<script src="/js/configurator/integrations/pricing-data-loader.js?v=5"></script>
+
+<!-- 3) Dopiero teraz skrypty kroków modala, które wołają computePrice(...) -->
 <script type="module" src="/js/configurator/modal/configurator-steps.js"></script>
 <script type="module" src="/js/configurator/modal/configurator-step2.js"></script>
 <script type="module" src="/js/configurator/modal/configurator-step3.js"></script>
@@ -1214,8 +1233,9 @@
 <script type="module" src="/js/configurator/modal/configurator-step7.js"></script>
 <script type="module" src="/js/configurator/modal/configurator-step8.js"></script>
 <script type="module" src="/js/configurator/integrations/formspree.js"></script>
+<script type="module" src="/js/configurator/modal/configurator-step9.js?v=12"></script>
+<script type="module" src="/js/configurator/modal/configurator-summary-overlay.js"></script>
 
-<!-- Kalkulator 2.0 -->
 <script>
   window.FORMSPREE_ENDPOINT = 'https://formspree.io/f/myzdrpob'; // ← Twój endpoint
 </script>

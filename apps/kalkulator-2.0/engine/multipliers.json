@@ -1,0 +1,198 @@
+{
+  "meta": {
+    "use_corrections": true,
+    "policy_missing_multiplier": "FALLBACK_1_0_WARN"
+  },
+  "roof": {
+    "key": [
+      "gabled_2",
+      "hip_4",
+      "flat"
+    ],
+    "values": {
+      "gabled_2": {
+        "mult": 1.0
+      },
+      "hip_4": {
+        "mult_min": 1.12,
+        "mult_max": 1.22
+      },
+      "flat": {
+        "mult_min": 0.85,
+        "mult_max": 0.95
+      }
+    },
+    "cross_effects": {
+      "foundation_slab": {
+        "hip_4": {
+          "mult_min": 1.03,
+          "mult_max": 1.06
+        },
+        "flat": {
+          "mult_min": 1.05,
+          "mult_max": 1.12
+        }
+      },
+      "structure": {
+        "hip_4": {
+          "mult_min": 1.02,
+          "mult_max": 1.04
+        },
+        "flat": {
+          "mult_min": 1.0,
+          "mult_max": 1.0
+        }
+      },
+      "elevation": {
+        "hip_4": {
+          "mult_min": 1.0,
+          "mult_max": 1.0
+        },
+        "flat": {
+          "mult_min": 1.03,
+          "mult_max": 1.06
+        }
+      }
+    }
+  },
+  "start": {
+    "enabled": false,
+    "presets": [
+      "asap",
+      "in_1m",
+      "in_3m",
+      "in_6m",
+      "date_fixed"
+    ],
+    "values": {
+      "asap": {
+        "mult": 1.0
+      },
+      "in_1m": {
+        "mult": 1.0
+      },
+      "in_3m": {
+        "mult": 1.0
+      },
+      "in_6m": {
+        "mult": 1.0
+      },
+      "date_fixed": {
+        "mult": 1.0
+      }
+    }
+  },
+  "region": {
+    "country": "PL",
+    "tiers": {
+      "A_expensive": {
+        "cities": [
+          "Warszawa",
+          "Kraków"
+        ],
+        "mult_min": 1.12,
+        "mult_max": 1.18
+      },
+      "B_mid": {
+        "cities": [
+          "Gdańsk",
+          "Poznań",
+          "Wrocław"
+        ],
+        "mult_min": 1.05,
+        "mult_max": 1.1
+      },
+      "C_budget": {
+        "regions": [
+          "Podkarpackie",
+          "Lubelskie"
+        ],
+        "mult_min": 0.92,
+        "mult_max": 0.97
+      }
+    },
+    "fallback_mult": 1.0
+  },
+  "storeys": {
+    "parter": {
+      "mult_structure": 1.0,
+      "mult_mep": 1.0,
+      "stairs_pln_min": 0,
+      "stairs_pln_max": 0
+    },
+    "plus_1": {
+      "mult_structure_min": 1.1,
+      "mult_structure_max": 1.15,
+      "mult_mep_min": 1.05,
+      "mult_mep_max": 1.05,
+      "stairs_pln_min": 12000,
+      "stairs_pln_max": 20000
+    }
+  },
+  "garage": {
+    "none": {
+      "add_pln_min": 0,
+      "add_pln_max": 0
+    },
+    "attached_1": {
+      "add_pln_min": 60000,
+      "add_pln_max": 85000
+    },
+    "attached_2": {
+      "add_pln_min": 90000,
+      "add_pln_max": 120000
+    },
+    "detached_1": {
+      "add_pln_min": 70000,
+      "add_pln_max": 95000
+    }
+  },
+  "ai_options": {
+    "floor_heating": {
+      "add_per_m2_min": 120,
+      "add_per_m2_max": 180,
+      "affects": [
+        "heating_co"
+      ],
+      "co_reduction": 0.2
+    },
+    "hvac_reku": {
+      "lump_min": 14000,
+      "lump_max": 22000,
+      "add_per_m2_min": 50,
+      "add_per_m2_max": 80
+    },
+    "source_heat_pump": {
+      "lump_min": 28000,
+      "lump_max": 45000
+    },
+    "source_gas": {
+      "lump_min": 15000,
+      "lump_max": 20000
+    },
+    "source_pellet": {
+      "lump_min": 20000,
+      "lump_max": 30000,
+      "chimney_pln_min": 4000,
+      "chimney_pln_max": 6000
+    },
+    "windows_premium": {
+      "mult_windows_min": 1.12,
+      "mult_windows_max": 1.22
+    },
+    "insulation_plus": {
+      "mult_elevation_min": 1.1,
+      "mult_elevation_max": 1.18
+    },
+    "roof_cover_ceramic": {
+      "mult_roof_min": 1.18,
+      "mult_roof_max": 1.3
+    },
+    "insulation_wool_vs_eps": {
+      "mult_elevation_min": 1.05,
+      "mult_elevation_max": 1.1,
+      "reverse_eps_discount_min": 0.03,
+      "reverse_eps_discount_max": 0.06
+    }
+  }
+}

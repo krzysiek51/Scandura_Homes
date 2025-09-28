@@ -1,0 +1,134 @@
+{
+  "baseline": {
+    "scenario": "gabled_2_parter_no_garage_standard_100m2",
+    "shell": "DEW",
+    "area_m2": 100,
+    "buckets": {
+      "foundation": {
+        "min": 35000,
+        "max": 45000
+      },
+      "structure": {
+        "min": 80000,
+        "max": 90000
+      },
+      "roof": {
+        "min": 40000,
+        "max": 60000
+      },
+      "windows": {
+        "min": 18000,
+        "max": 22000
+      },
+      "mep": {
+        "min": 50000,
+        "max": 65000
+      },
+      "elevation": {
+        "min": 32000,
+        "max": 38000
+      },
+      "finishes": {
+        "min": 40000,
+        "max": 60000
+      },
+      "logistics": {
+        "min": 10000,
+        "max": 20000
+      },
+      "project_supervision": {
+        "min": 35000,
+        "max": 40000
+      }
+    }
+  },
+  "baseline_SSZ": {
+    "scenario": "gabled_2_parter_no_garage_standard_100m2",
+    "shell": "SSZ",
+    "area_m2": 100,
+    "buckets": {
+      "foundation": {
+        "min": 35000,
+        "max": 45000
+      },
+      "structure": {
+        "min": 80000,
+        "max": 90000
+      },
+      "roof": {
+        "min": 40000,
+        "max": 60000
+      },
+      "windows": {
+        "min": 18000,
+        "max": 22000
+      },
+      "mep": {
+        "min": 50000,
+        "max": 65000
+      },
+      "elevation": {
+        "min": 32000,
+        "max": 38000
+      },
+      "finishes": {
+        "min": 40000,
+        "max": 60000
+      },
+      "logistics": {
+        "min": 10000,
+        "max": 20000
+      },
+      "project_supervision": {
+        "min": 35000,
+        "max": 40000
+      }
+    }
+  },
+  "baseline_SSO": {
+    "scenario": "gabled_2_parter_no_garage_standard_100m2",
+    "shell": "SSO",
+    "area_m2": 100,
+    "buckets": {
+      "foundation": {
+        "min": 35000,
+        "max": 45000
+      },
+      "structure": {
+        "min": 80000,
+        "max": 90000
+      },
+      "roof": {
+        "min": 40000,
+        "max": 60000
+      },
+      "windows": {
+        "min": 18000,
+        "max": 22000
+      },
+      "mep": {
+        "min": 50000,
+        "max": 65000
+      },
+      "elevation": {
+        "min": 32000,
+        "max": 38000
+      },
+      "finishes": {
+        "min": 40000,
+        "max": 60000
+      },
+      "logistics": {
+        "min": 10000,
+        "max": 20000
+      },
+      "project_supervision": {
+        "min": 35000,
+        "max": 40000
+      }
+    }
+  }
+
+  
+}
+

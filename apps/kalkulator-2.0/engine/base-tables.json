@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "currency": "PLN",
+    "vat": "brutto",
+    "rounding": {
+      "mode": "nearest",
+      "step_pln": 1000
+    },
+    "policy_missing_row": "HARD_ERROR"
+  },
+  "keys": {
+    "building": [
+      "single_family"
+    ],
+    "shell": [
+      "SSO",
+      "SSZ",
+      "DEW"
+    ],
+    "area_band": [
+      80,
+      100,
+      150
+    ]
+  },
+  "table": {
+    "single_family": {
+      "SSO": {
+        "80": {
+          "min": null,
+          "max": null,
+          "status": "REQUIRED"
+        },
+        "100": {
+          "min": null,
+          "max": null,
+          "status": "REQUIRED"
+        },
+        "150": {
+          "min": null,
+          "max": null,
+          "status": "REQUIRED"
+        }
+      },
+      "SSZ": {
+        "80": {
+          "min": null,
+          "max": null,
+          "status": "REQUIRED"
+        },
+        "100": {
+          "min": null,
+          "max": null,
+          "status": "REQUIRED"
+        },
+        "150": {
+          "min": null,
+          "max": null,
+          "status": "REQUIRED"
+        }
+      },
+      "DEW": {
+        "80": {
+          "min": null,
+          "max": null,
+          "status": "REQUIRED"
+        },
+        "100": {
+          "min": 280000,
+          "max": 380000,
+          "status": "PROVISIONAL_FROM_GDANSK_BASELINE"
+        },
+        "150": {
+          "min": null,
+          "max": null,
+          "status": "REQUIRED"
+        }
+      }
+    }
+  }
+}

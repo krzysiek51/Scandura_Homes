@@ -3,14 +3,63 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Kalkulator 2.0 — Demo (placeholder)</title>
+  <title>Kalkulator 2.0 — Demo</title>
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
   <main class="container">
     <h1>Kalkulator 2.0 — Demo</h1>
     <p>To tylko podgląd. UI i silnik zostaną podłączone później.</p>
-    <div id="calc-quote"></div>
+    <div id="calc-quote" style="padding:12px;border:1px solid #eee;border-radius:12px;background:#fafafa"></div>
   </main>
+
+  <!-- === PRICING ENGINE WIRING (KOLEJNOŚĆ JEST KLUCZOWA) === -->
+
+  <!-- 1) gdzie są JSON-y (u Ciebie /apps/kalkulator-2.0/engine/) -->
+  <script>
+    window.PRICING_ASSETS_BASE = '/apps/kalkulator-2.0/engine/';
+  </script>
+
+  <!-- 2) obietnica gotowości (musi istnieć zanim wystartuje loader) -->
+  <script>
+    window.whenPricingReady = window.whenPricingReady || new Promise(res => { window.__pricingReadyResolve = res; });
+  </script>
+
+  <!-- 3) LOADER DANYCH (ŚCIEŻKA PRZEZ /js/ — bo /content/js/ u Ciebie ma 404) -->
+  <script src="/js/configurator/integrations/pricing-data-loader.js?v=4"></script>
+
+  <!-- 4) TWÓJ SILNIK KALKULATORA (wystawia window.computePrice) -->
+  <script src="/js/configurator/integrations/price-engine.js?v=4"></script>
+
+  <!-- 5) DEMO: licz po inicjalizacji i pokaż wynik na stronie -->
+  <script>
+    (async () => {
+      // jeśli loader emituje event (asekuracja, gdyby Promise nie istniał wcześniej)
+      window.addEventListener('ScanduraPricing:ready', () => {
+        window.__pricingReadyResolve?.();
+      }, { once: true });
+
+      await window.whenPricingReady;
+
+      const out = document.getElementById('calc-quote');
+      if (typeof window.computePrice !== 'function') {
+        out.textContent = 'Błąd: computePrice nie jest dostępny (nie załadował się price-engine.js).';
+        return;
+      }
+      const res = computePrice({
+        shell:'DEW',
+        area_m2:100,
+        storeys:'parter',
+        roof:'gabled_2',
+        garage:'none',
+        city:'Gdańsk'
+      });
+      const fmt = n => (typeof n==='number' ? n.toLocaleString('pl-PL') : '—');
+      out.innerHTML = `<strong>100 m² (DEW, dwuspadowy, parter, bez garażu):</strong><br>${fmt(res.min)} – ${fmt(res.max)} zł brutto`;
+      console.log('[Pricing demo] wynik', res);
+    })();
+  </script>
+
+  <!-- === /PRICING ENGINE WIRING === -->
 </body>
 </html>
