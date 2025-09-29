@@ -65,14 +65,16 @@
           Bez chaosu, bez niespodzianek. Tylko precyzja skandynawskiej technologii timber frame.
         </p>
         <div class="services-hero__cta-row">
-          <a class="services-hero__btn services-hero__btn--primary" href="../pages/contact.html">Wyceń projekt</a>
+          <a class="services-hero__btn services-hero__btn--primary" href="#" role="button" data-open-configurator>
+            Wyceń projekt
+          </a>
+
           <button class="booking__button js-booking-trigger js-callback-link">
             Umów spotkanie na żywo
           </button>
-
-
-
         </div>
+
+
       </div>
     </section>
 
@@ -100,12 +102,12 @@
                 <li class="service-card__bullet">Audyt rysunków pod kątem kolizji i braków</li>
                 <li class="service-card__bullet">Usprawnienia montażowe bez zmian architektury</li>
                 <li class="service-card__bullet">Harmonogram etapów i wstępna wycena</li>
-                    <li class="service-card__bullet">Lista zaleceń dla inwestora</li>
+                <li class="service-card__bullet">Lista zaleceń dla inwestora</li>
               </ul>
 
               <div class="service-card__actions">
                 <a class="service-card__btn" href="../pages/contact.html">Zapytaj o termin</a>
-                
+
               </div>
 
               <!-- DEDYKOWANE TREŚCI DO MODALA -->
@@ -132,8 +134,7 @@
           <!-- ===== KARTA 2 — PROJEKT WYKONAWCZY ===== -->
           <article class="service-card" data-service="wykonawczy">
             <div class="service-card__media">
-              <img class="service-card__image"
-                src="../photos/pages/services/rysunki.webp"
+              <img class="service-card__image" src="../photos/pages/services/rysunki.webp"
                 alt="Miniatura: projekt wykonawczy" loading="lazy" decoding="async" />
             </div>
             <div class="service-card__body">
@@ -148,10 +149,10 @@
 
               <div class="service-card__actions">
                 <a class="service-card__btn" href="../pages/contact.html">Poznaj zakres</a>
-                
+
               </div>
 
-             
+
             </div>
           </article>
 
@@ -173,7 +174,7 @@
 
               <div class="service-card__actions">
                 <a class="service-card__btn" href="../pages/contact.html">Umów oględziny</a>
-              
+
               </div>
 
             </div>
@@ -197,18 +198,18 @@
 
               <div class="service-card__actions">
                 <a class="service-card__btn" href="../pages/contact.html">Zapytaj o wolne sloty</a>
-                
+
               </div>
 
-              
+
             </div>
           </article>
 
           <!-- ===== KARTA 5 — WYKOŃCZENIE ===== -->
           <article class="service-card" data-service="wykonczenie">
             <div class="service-card__media">
-              <img class="service-card__image" src="../photos/pages/services/montarz.webp"
-                alt="Miniatura: wykończenie" loading="lazy" decoding="async" />
+              <img class="service-card__image" src="../photos/pages/services/montarz.webp" alt="Miniatura: wykończenie"
+                loading="lazy" decoding="async" />
             </div>
             <div class="service-card__body">
               <h3 class="service-card__title">Montaż konstrukcji</h3>
@@ -221,10 +222,10 @@
 
               <div class="service-card__actions">
                 <a class="service-card__btn" href="../pages/contact.html">Poproś o katalog</a>
-                
+
               </div>
 
-              
+
             </div>
           </article>
 
@@ -245,10 +246,10 @@
 
               <div class="service-card__actions">
                 <a class="service-card__btn" href="../pages/contact.html">Zgłoś potrzebę</a>
-                
+
               </div>
 
-              
+
             </div>
           </article>
         </div>
@@ -533,6 +534,10 @@
   <script src="../js/service-modal.js?v=5" defer></script>
   <script src="../js/booking-modal.js" defer></script>
   <script src="../js/callback.js" defer></script>
+  
+<script src="../apps/kalkulator-2.0/engine/pricing-loader.js"></script>
+<script src="../apps/kalkulator-2.0/engine/index.js"></script>
+
 
 
 
@@ -643,7 +648,203 @@
 
 
 
+  <script>
+    (() => {
+      // 1) Jedno, ścisłe wejście do otwarcia WYŁĄCZNIE konfiguratora 2.0
+      function openConfiguratorStrict() {
+        // a) oficjalny hook, jeśli jest
+        if (typeof window.openConfigurator === 'function') {
+          window.openConfigurator();
+          return true;
+        }
+        // b) API obiektu konfiguratora
+        if (window.ScanduraConfigurator?.open) {
+          window.ScanduraConfigurator.open();
+          return true;
+        }
+        // c) klik w DEDYKOWANY trigger konfiguratora (nie mylić z booking!)
+        const trigger =
+          document.querySelector('[data-open-configurator]') ||   // np. #open-configurator-button
+          document.getElementById('open-configurator-button') ||
+          document.querySelector('[data-cfg="open-configurator"]');
+        if (trigger) {
+          trigger.dispatchEvent(new Event('click', { bubbles: true }));
+          return true;
+        }
+        // d) awaryjnie pokaż modal konfiguratora po id (bez booking!)
+        const modal = document.getElementById('cfg-modal'); // to MUSI być modal konfiguratora 2.0
+        if (modal) {
+          modal.removeAttribute('hidden');
+          modal.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+          return true;
+        }
+        return false;
+      }
 
+      // 2) Delegacja klików — tylko dla data-open-configurator
+      document.addEventListener('click', (e) => {
+        const el = e.target.closest('[data-open-configurator]');
+        if (!el) return;
+        e.preventDefault();
+        e.stopPropagation();
+        const ok = openConfiguratorStrict();
+        if (!ok) {
+          // jeżeli skrypty konfiguratora ładują się asynchronicznie — spróbuj po klatce
+          requestAnimationFrame(openConfiguratorStrict);
+        }
+      });
+
+      // 3) Opcjonalnie: link typu /strona#configurator otworzy od razu konfigurator
+      if (location.hash === '#configurator') {
+        requestAnimationFrame(openConfiguratorStrict);
+      }
+
+      // 4) Wystaw globalny alias (można wywołać z innych skryptów)
+      window.openConfiguratorStrict = openConfiguratorStrict;
+    })();
+  </script>
+
+<!-- ========= KONFIGURATOR 2.0 (GOTOWIEC) — WSTAW PRZED </body> ========= -->
+
+<!-- 0) Gdzie leżą JSON-y z cennikami -->
+<script>
+  window.PRICING_ASSETS_BASE = '/apps/kalkulator-2.0/engine/';
+</script>
+
+<!-- 1) Globalny „gotowy” promise (musi być zanim wystartuje loader) -->
+<script>
+  window.whenPricingReady = window.whenPricingReady || new Promise(res => { window.__pricingReadyResolve = res; });
+  window.addEventListener('ScanduraPricing:ready', () => window.__pricingReadyResolve?.(), { once:true });
+</script>
+
+<!-- 2) Loader danych i engine (te same co na home) -->
+<script src="/js/configurator/integrations/pricing-data-loader.js" defer></script>
+<script src="/js/configurator/integrations/price-engine.js" defer></script>
+
+<!-- 2a) (opcjonalnie) podmiana anchorów 100 m² jak na home -->
+<script>
+  (async () => {
+    await window.whenPricingReady;
+    const bt = window.SCANDURA_PRICING_DATA?.base_tables?.single_family;
+    if (!bt) return;
+    bt.DEW  = bt.DEW  || {};
+    bt.SSO  = bt.SSO  || {};
+    bt.SSZ  = bt.SSZ  || {};
+    bt.DEW["100"] = { min: 565000, max: 715000 };
+    bt.SSO["100"] = { min: 270000, max: 320000 };
+    bt.SSZ["100"] = { min: 350000, max: 420000 };
+  })();
+</script>
+
+<!-- 3) Modal V2 — HTML szkielet -->
+<div class="cfg-modal" id="cfg-modal" role="dialog" aria-modal="true" aria-labelledby="cfg-title" hidden>
+  <div class="cfg-modal__backdrop" data-cfg="backdrop"></div>
+  <div class="cfg-modal__card" data-cfg="card">
+    <button class="cfg-close" data-cfg="close" aria-label="Zamknij">×</button>
+
+    <header class="cfg-head">
+      <div class="cfg-head__bar" aria-hidden="true">
+        <span class="cfg-head__progress" style="--cfg-progress: 0%;"></span>
+      </div>
+      <h3 class="cfg-title" id="cfg-title">&nbsp;</h3>
+    </header>
+
+    <main class="cfg-body" data-cfg="body" tabindex="0" aria-live="polite" aria-atomic="true"></main>
+
+    <footer class="cfg-foot">
+      <div class="cfg-foot__left">
+        <button type="button" class="cfg-btn" data-cfg="prev">Wstecz</button>
+      </div>
+      <div class="cfg-foot__right">
+        <button type="button" class="cfg-btn" data-cfg="skip" hidden>Pomiń</button>
+        <button type="button" class="cfg-btn cfg-btn--primary" data-cfg="next">Dalej</button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Exit-intent (opcjonalne) -->
+  <div class="cfg-exit" id="cfg-exit" hidden role="dialog" aria-modal="true" aria-labelledby="cfg-exit-title">
+    <div class="cfg-exit__backdrop" data-exit="backdrop"></div>
+    <div class="cfg-exit__card">
+      <h4 class="cfg-exit__title" id="cfg-exit-title">Na pewno chcesz przerwać?</h4>
+      <p class="cfg-exit__lead">Mamy już wstępny zakres Twojej wyceny.</p>
+      <p class="cfg-exit__sub">Wystarczy podać dane kontaktowe, aby zobaczyć cenę.</p>
+      <div class="cfg-exit__actions">
+        <button type="button" class="cfg-link" data-exit="abort">Przerwij</button>
+        <button type="button" class="cfg-btn cfg-btn--primary" data-exit="continue">Kontynuuj zlecenie</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4) Modal V2 — JS core (otwieranie/zamykanie + API) -->
+<script>
+(() => {
+  'use strict';
+  if (window.__SCANDURA_CFG_V2__) return; window.__SCANDURA_CFG_V2__ = true;
+  const $ = (s, r=document) => r.querySelector(s);
+  const MODAL = $('#cfg-modal');
+  const BODY  = MODAL?.querySelector('[data-cfg="body"]');
+  const TITLE = MODAL?.querySelector('#cfg-title');
+  const PROG  = MODAL?.querySelector('.cfg-head__progress');
+
+  function open(){ if(!MODAL) return; MODAL.hidden=false; MODAL.classList.add('is-open'); document.body.classList.add('cfg-hide-scroll'); trapInit(); MODAL.dispatchEvent(new CustomEvent('cfg:open',{bubbles:true})); }
+  function close(){ if(!MODAL) return; MODAL.classList.remove('is-open'); document.removeEventListener('keydown', onKey); setTimeout(()=>{ MODAL.hidden=true; document.body.classList.remove('cfg-hide-scroll'); MODAL.dispatchEvent(new CustomEvent('cfg:close',{bubbles:true})); },200); }
+  function setTitle(text=''){ if(TITLE) TITLE.textContent=text; }
+  function setProgress(pct=0){ if(PROG) PROG.style.setProperty('--cfg-progress', pct+'%'); }
+
+  let firstF, lastF; function trapInit(){ const f = MODAL.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])'); firstF=f[0]; lastF=f[f.length-1]; document.addEventListener('keydown', onKey); firstF&&firstF.focus(); }
+  function onKey(e){ if(e.key==='Escape'){ attemptClose(); } if(e.key==='Tab'){ const a=document.activeElement; if(e.shiftKey&&a===firstF){e.preventDefault(); lastF?.focus();} else if(!e.shiftKey&&a===lastF){e.preventDefault(); firstF?.focus();} } }
+  MODAL?.addEventListener('click', (e)=>{ const t=e.target; if(t.matches('[data-cfg="backdrop"], [data-cfg="close"]')) attemptClose(); });
+
+  function attemptClose(){ close(); }
+
+  // globalny trigger: klik na dowolnym elemencie z data-open-configurator
+  document.addEventListener('click', (e)=>{ const btn = e.target.closest('[data-open-configurator]'); if(btn){ e.preventDefault(); e.stopPropagation(); open(); } });
+
+  // API globalne
+  window.ScanduraConfigurator = { open, close, setTitle, setProgress };
+  // Alias zgodny z home (jeśli gdzieś w kodzie używasz openConfigurator())
+  window.openConfigurator = () => window.ScanduraConfigurator?.open();
+})();
+</script>
+
+<!-- 5) Kroki konfiguratora (te same co na home) -->
+<script type="module" src="/js/configurator/modal/configurator-steps.js"></script>
+<script type="module" src="/js/configurator/modal/configurator-step2.js"></script>
+<script type="module" src="/js/configurator/modal/configurator-step3.js"></script>
+<script type="module" src="/js/configurator/modal/configurator-step4.js"></script>
+<script type="module" src="/js/configurator/modal/configurator-step5.js"></script>
+<script type="module" src="/js/configurator/modal/configurator-step6.js"></script>
+<script src="/apps/kalkulator-2.0/data/pomorskie.min.js"></script>
+<script type="module" src="/js/configurator/modal/configurator-step7.js"></script>
+<script type="module" src="/js/configurator/modal/configurator-step8.js"></script>
+<script type="module" src="/js/configurator/integrations/formspree.js"></script>
+<script type="module" src="/js/configurator/modal/configurator-step9.js?v=12"></script>
+<script type="module" src="/js/configurator/modal/configurator-summary-overlay.js"></script>
+
+<!-- 6) Tiers (Basic/Classic/Premium) – jeśli używasz wersji V2 cen -->
+<script type="application/json" id="pricing-tiers-json">
+{
+  "meta": { "currency":"PLN", "vat_rate":0.08 },
+  "tiers": {
+    "basic":   { "label":"Basic",   "unit_net_pln_per_m2":4791, "display_bias":-0.10, "display_band_pct":0.02 },
+    "classic": { "label":"Classic", "unit_net_pln_per_m2":5436, "display_band_pct":0.02 },
+    "premium": { "label":"Premium", "unit_net_pln_per_m2":5693, "display_band_pct":0.02 }
+  },
+  "foundation_slab": { "label":"Płyta fundamentowa", "unit_net_pln_per_m2":654 }
+}
+</script>
+<script>
+  window.PRICING_TIERS = JSON.parse(document.getElementById('pricing-tiers-json').textContent);
+</script>
+
+<!-- 7) Silnik kalkulatora 2.0 (ux/ulepszacz, computePriceV2 itp.) -->
+<script src="/apps/kalkulator-2.0/engine/index.js"></script>
+<script src="/apps/kalkulator-2.0/engine/pricing-loader.js"></script>
+
+<!-- ========= /KONFIGURATOR 2.0 (GOTOWIEC) ========= -->
 
 
 </body>

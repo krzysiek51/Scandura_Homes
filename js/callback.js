@@ -1,4 +1,4 @@
-// js/callback-modal.js
+// js/callback.js
 (() => {
   'use strict';
 
@@ -71,7 +71,7 @@
   /* ===== STAN ===== */
   const state = { root: null, lastFocused: null };
   const phoneOk = (v) => /^\+(48|47)\s?\d(?:[\s-]?\d){7,}$/.test((v || '').trim());
-  const nameOk  = (v) => (v || '').trim().length >= 2; // prosta walidacja, bez nadmiernej restrykcji
+  const nameOk  = (v) => (v || '').trim().length >= 2;
 
   /* ===== UTYLsy ===== */
   document.querySelectorAll('.callback-pop[data-cb="root"]').forEach((el, i) => { if (i > 0) el.remove(); });
@@ -138,7 +138,10 @@
     state.root.classList.add('is-active');
     showCentered();
 
-    setTimeout(() => { const input = state.root.querySelector('#cbFirst') || state.root.querySelector('#cbPhone'); if (input) input.focus(); }, 60);
+    setTimeout(() => {
+      const input = state.root.querySelector('#cbFirst') || state.root.querySelector('#cbPhone');
+      if (input) input.focus();
+    }, 60);
 
     document.addEventListener('keydown', onKeydown);
     document.addEventListener('keydown', trapFocus, true);
@@ -238,9 +241,7 @@
       success.hidden = false;
       success.setAttribute('tabindex', '-1');
       success.focus();
-      status.textContent = ''; // czyścimy status, żeby nie dublować komunikatu
-
-      // opcjonalnie: form.reset(); // jeśli chcesz wyczyścić przed zamknięciem
+      status.textContent = '';
 
     } catch (err) {
       console.error(err);
@@ -250,11 +251,18 @@
     }
   }
 
-  /* ===== PODPIĘCIE DO CTA ===== */
-  document.addEventListener('click', (e) => {
-    const trigger = e.target.closest('.js-callback-link');
+  /* ===== PODPIĘCIE DO CTA (twarde) ===== */
+  const triggerSelector = '.js-callback-link, [data-callback="open"], a[href="#callbackSection"]';
+
+  // pointerdown wyprzedza click (w razie gdyby inny skrypt zjadał klik)
+  function onTrigger(e) {
+    const trigger = e.target.closest(triggerSelector);
     if (!trigger) return;
     e.preventDefault();
+    e.stopPropagation();
     open();
-  });
+  }
+
+  document.addEventListener('pointerdown', onTrigger, { capture: true });
+  document.addEventListener('click',       onTrigger, { capture: true });
 })();

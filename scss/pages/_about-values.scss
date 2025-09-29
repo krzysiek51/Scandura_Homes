@@ -65,7 +65,7 @@
 
   &__media {
     position: relative;
-    aspect-ratio: 320 / 218;
+    
     overflow: hidden;
 
     img {
@@ -111,7 +111,7 @@
   }
 
   &__title {
-    margin: calc(var(--badge-size) * .5) 0 12px; // „odsuniecie” od badge
+    margin: calc(var(--badge-size) * .9) 0 12px; // „odsuniecie” od badge
     font-weight: 600;
     font-size: 20px;
     line-height: 1.25;
@@ -120,6 +120,7 @@
 
   &__text {
     margin: 0 0 12px;
+    margin-top: 30px;
     font-weight: 400;
     font-size: 14px;
     line-height: 1.5;
@@ -129,6 +130,7 @@
   }
 
   &__btn {
+  
     position: absolute;
     left: 24px;
     right: auto;                   // trzymajmy go przy lewej
@@ -152,6 +154,7 @@
 
     &:hover { filter: brightness(.97); }
     &:active { transform: translateY(1px); }
+      display: none;
   }
 }
 

@@ -314,20 +314,60 @@
     }
   }
 
-  function goToPrice(state){
-    if (typeof window.renderPrice === 'function'){ window.renderPrice(state); return; }
-    if (typeof window.renderSummary === 'function'){ window.renderSummary(state); return; }
+function goToPrice(state){
+  // 1) zbuduj stan w formacie dla karty ceny
+  const valOf = (x) => (x && (x.key ?? x.value ?? x.label)) || (typeof x === 'string' ? x : '');
 
-    // fallback stub
-    setTitle?.('Twoja wycena — (stub)');
-    setProgress?.(100);
-    BODY.innerHTML = `
-      <div>
-        <p>Dziękujemy, ${esc(state.contact?.name || '')}. Wysłaliśmy potwierdzenie na <strong>${esc(state.contact?.email || '')}</strong>.</p>
-        <p>(Tutaj pojawi się animacja liczenia i wynik wyceny z wariantami.)</p>
-      </div>
-    `;
+  // area: preferuj exact (m2), w innym wypadku pasmo (preset)
+  let area;
+  if (typeof state?.area?.m2 === 'number' || typeof state?.area?.value === 'number' || typeof state?.areaExact === 'number') {
+    const m2 = Number(state?.area?.m2 ?? state?.area?.value ?? state?.areaExact);
+    area = { type: 'exact', m2: Number.isFinite(m2) ? m2 : null };
+  } else {
+    const band = state?.area?.value ?? state?.area?.label ?? state?.area?.choice ?? state?.areaChoice ?? '';
+    area = { type: 'preset', value: String(band) };
   }
+
+  const st = {
+    step: 8,
+    totalSteps: state.totalSteps || 8,
+    building: state.building?.key || state.building || 'jednorodzinny',
+
+    area, // <- jak wyżej
+
+    roof:    { type: 'preset', value: valOf(state.roof)    },
+    scope:   { type: 'preset', value: valOf(state.scope ?? state.shell) },
+    storeys: { type: 'preset', value: valOf(state.storeys) },
+    garage:  { type: 'preset', value: valOf(state.garage)  },
+
+    start: state.start?.key || state.start?.value || state.start?.label || state.start || '',
+    location: { city: state.location?.city || '', country: state.location?.country || '' },
+    contact: state.contact || {}
+  };
+
+  // 2) jeśli mamy API z pliku ceny – użyj go
+  if (typeof window.openPriceWithState === 'function') {
+    window.openPriceWithState(st);
+    return;
+  }
+
+  // 3) fallback: przekaż stan ręcznie do karty ceny
+  window.__CFG_STATE = JSON.parse(JSON.stringify(st));
+  if (typeof window.renderPrice === 'function'){ 
+    window.renderPrice(window.__CFG_STATE); 
+    return; 
+  }
+
+  // 4) awaryjny stub
+  setTitle?.('Twoja wycena — (stub)');
+  setProgress?.(100);
+  BODY.innerHTML = `
+    <div>
+      <p>Dziękujemy, ${esc(state.contact?.name || '')}. Wysłaliśmy potwierdzenie na <strong>${esc(state.contact?.email || '')}</strong>.</p>
+      <p>(Brak widoku ceny — upewnij się, że załadowany jest plik configurator-price.js)</p>
+    </div>
+  `;
+}
 
   // ===== helpers =====
   function hideAllErrors(){ BODY.querySelectorAll('.cfg-error').forEach(el => { el.hidden = true; el.textContent=''; }); }

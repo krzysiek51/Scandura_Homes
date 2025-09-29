@@ -1,0 +1,57 @@
+Scandura Price Tuner UI
+
+Interaktywne narzędzie do regulacji widełek cenowych kalkulatora 2.0.
+Uruchamiane w przeglądarce (popup z gałkami suwaków).
+
+Instalacja
+
+Skopiuj plik price-tuner-ui.js do katalogu projektu, np.:
+
+/js/tools/price-tuner-ui.js
+
+
+Upewnij się, że plik jest ładowany w index.html (lub innej stronie z kalkulatorem).
+Dodaj przed zamknięciem </body>:
+
+<script src="/js/tools/price-tuner-ui.js"></script>
+
+Uruchomienie
+
+Otwórz stronę z kalkulatorem w przeglądarce.
+
+W konsoli deweloperskiej (F12 → Console) wpisz:
+
+window.PriceTunerUI.open();
+
+
+Pojawi się popup z gałkami suwaków.
+
+Użycie
+
+Suwaki pozwalają regulować mnożniki i stawki bazowe:
+
+DEW / SSZ / SSO
+
+Mnożniki dachu
+
+Korekta dla kondygnacji
+
+Wartości od razu aktualizują działanie computePrice().
+
+Zmiany zapisywane są w localStorage, więc po odświeżeniu strony zostają zachowane.
+
+Reset
+
+Aby przywrócić domyślne wartości:
+
+window.PriceTunerUI.reset();
+
+Uwagi
+
+Popup działa tylko lokalnie w przeglądarce (development/testy).
+
+Nie wysyła danych na serwer — wszystko trzymane jest w localStorage.
+
+Wersję produkcyjną kalkulatora zaleca się podpiąć do plików .json (base-tables.json, multipliers.json), a nie do UI tunera.
+
+Chcesz żebym Ci od razu przygotował wersję z gałkami dla bazowych widełek 100 m² (SSO, SSZ, DEW) i gałkami dla dachu (dwuspadowy, czterospadowy, płaski, mansardowy, wielospadowy, inny) — wszystko w jednym popupie?

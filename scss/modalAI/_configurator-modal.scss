@@ -278,3 +278,8 @@ fieldset {
 .cfg-field { margin: 10px 0; }
 .cfg-field .cfg-error { margin-top: 6px; color: #d93025; font-size: 14px; }
 .cfg-check input[type="checkbox"] { margin-top: 4px; }
+.price-step__tiers .is-active {
+  border: 2px solid #DC9B59;
+  background: #FFF7F0;
+  color: #000;
+}

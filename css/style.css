@@ -7129,8 +7129,11 @@ body.about .configurator-prompt .configurator-prompt__legal {
   }
   .configurator-prompt .configurator-prompt__button,
   body.about .configurator-prompt .configurator-prompt__button {
-    height: 42px;
+    height: 80px;
     width: auto;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 1px;
   }
   .configurator-prompt .configurator-prompt__link,
   body.about .configurator-prompt .configurator-prompt__link {
@@ -7493,6 +7496,334 @@ html.nav-open .smartbar {
 
 /* CTA konfiguratora (jeden plik - bez zadnych nakladek) */
 /* KONFIGURATOR (jeden agregat) */
+/* =========================================================
+   CALLBACK POPUP — czysty, responsywny, bez wycieków
+   ========================================================= */
+/* --- Breakpointy (zgodnie z Twoimi progami) --- */
+/* --- Scroll lock — kompensacja paska tylko na body --- */
+html.cb-lock {
+  overflow-y: hidden;
+}
+
+body.cb-lock {
+  overflow: hidden;
+  padding-right: var(--sbw, 0px);
+  width: 100%;
+}
+
+/* --- Root popupa (port) --- */
+.callback-pop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* oddech + notche */
+  padding: max(16px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
+  pointer-events: none; /* zamknięty nie łapie klików */
+  overflow-x: hidden; /* anty poziomy scroll */
+}
+.callback-pop.is-active {
+  pointer-events: auto;
+}
+
+/* --- Overlay --- */
+.callback-pop__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.28);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+.callback-pop.is-active .callback-pop__overlay {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .callback-pop__overlay {
+    transition: none;
+  }
+}
+
+/* --- Karta (content) --- */
+.callback-pop__card {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  /* nie wyjdzie poza ekran – uwzględnia padding kontenera (24+24) */
+  max-width: min(520px, 100dvw - 48px);
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.18);
+  padding: 20px;
+  transform: scale(0.96);
+  transform-origin: 50% 50%;
+  opacity: 0;
+  transition: transform 0.18s cubic-bezier(0.2, 0.6, 0.2, 1), opacity 0.18s ease;
+}
+.callback-pop.is-active .callback-pop__card {
+  transform: scale(1);
+  opacity: 1;
+}
+@media (min-width: 744px) {
+  .callback-pop__card {
+    padding: 24px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .callback-pop__card {
+    transition: none;
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* --- Zamknij --- */
+.callback-pop__close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  color: #333;
+  transition: background 0.15s ease, transform 0.06s ease;
+}
+.callback-pop__close:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+.callback-pop__close:active {
+  transform: translateY(1px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .callback-pop__close {
+    transition: none;
+  }
+}
+
+/* --- Head --- */
+.callback-pop__title {
+  margin: 0 36px 6px 0; /* miejsce dla X */
+  font-size: 20px;
+  font-weight: 700;
+  color: #0b0b0c;
+}
+@media (min-width: 744px) {
+  .callback-pop__title {
+    font-size: 22px;
+  }
+}
+
+.callback-pop__lead {
+  margin: 0 0 14px;
+  font-size: 14px;
+  color: #555;
+}
+@media (min-width: 744px) {
+  .callback-pop__lead {
+    font-size: 15px;
+  }
+}
+
+/* --- Forma --- */
+.callback-pop__form {
+  display: grid;
+  gap: 12px;
+}
+
+/* Imię + Nazwisko (2 kolumny, na wąskich jedna) */
+.callback-pop__row {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.callback-pop__row--2 {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+@media (max-width: 480px) {
+  .callback-pop__row--2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.callback-pop__cell {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.callback-pop__label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #222;
+}
+
+/* Telefon + przycisk — PRZYCISK POD INPUTEM (pełna szerokość) */
+.callback-pop__field {
+  display: grid;
+  grid-template-columns: 1fr; /* 1 kolumna: input pełny, pod nim button */
+  gap: 8px;
+  align-items: stretch;
+  min-width: 0;
+}
+
+/* Inputy */
+.callback-pop__input {
+  height: 48px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 0 14px;
+  font-size: 16px;
+  color: #111;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.callback-pop__input::placeholder {
+  color: #bbb;
+}
+.callback-pop__input:focus {
+  border-color: #DC9B59;
+  box-shadow: 0 0 0 4px rgba(220, 155, 89, 0.2);
+}
+.callback-pop__input.is-invalid {
+  border-color: #e25454;
+  box-shadow: 0 0 0 4px rgba(226, 84, 84, 0.16);
+}
+@media (prefers-reduced-motion: reduce) {
+  .callback-pop__input {
+    transition: none;
+  }
+}
+
+/* Button (100% szerokości pod telefonem) */
+.callback-pop__btn {
+  height: 48px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  border: 0;
+  border-radius: 12px;
+  padding: 0 16px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  background: linear-gradient(135deg, #DC9B59 0%, #000000 100%);
+  color: #fff;
+  transition: transform 0.06s ease, opacity 0.2s ease;
+}
+.callback-pop__btn:active {
+  transform: translateY(1px);
+}
+.callback-pop__btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+@media (prefers-reduced-motion: reduce) {
+  .callback-pop__btn {
+    transition: none;
+  }
+}
+
+/* Checkbox + opis */
+.callback-pop__consent {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: 8px;
+  font-size: 13px;
+  color: #444;
+}
+.callback-pop__consent a {
+  color: #DC9B59;
+  text-decoration: underline;
+}
+.callback-pop__consent a:hover {
+  text-decoration: none;
+}
+.callback-pop__consent input[type=checkbox] {
+  inline-size: 18px;
+  block-size: 18px;
+  accent-color: #DC9B59; /* nowoczesny UA */
+}
+
+/* Hint i status */
+.callback-pop__hint {
+  font-size: 12px;
+  color: #777;
+  margin: 0;
+}
+
+.callback-pop__status {
+  font-size: 14px;
+  min-height: 20px;
+  color: #2b2b2b;
+}
+
+/* Honeypot */
+.callback-pop__hp {
+  display: none !important;
+}
+
+/* Widok sukcesu */
+.callback-pop__success {
+  display: grid;
+  gap: 12px;
+}
+.callback-pop__success .callback-pop__btn {
+  width: 100%;
+}
+
+/* Hard hide gdy globalny reset psuje [hidden] */
+.callback-pop [hidden] {
+  display: none !important;
+}
+
+/* --- Micro-fixy anty-overflow (wszystko w box-sizing: border-box) --- */
+.callback-pop__card,
+.callback-pop__card * {
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+/* --- Dodatkowe dopasowanie do szerokości viewportu na dużych ekranach --- */
+@media (min-width: 1440px) {
+  .callback-pop__card {
+    max-width: 560px;
+  }
+}
+@media (min-width: 1920px) {
+  .callback-pop__card {
+    max-width: 600px;
+  }
+}
+/* =========================================================
+   Opcjonalny układ INLINE na szerokich (gdybyś chciał kiedyś
+   mieć telefon + button w 1 rzędzie na >= laptop)
+   — Wystarczy dodać modyfikator na kontener: .callback-pop__field--inline
+   ========================================================= */
+@media (min-width: 1440px) {
+  .callback-pop__field--inline {
+    grid-template-columns: minmax(0, 1fr) auto; /* input + wąski button */
+    align-items: center;
+  }
+  .callback-pop__field--inline .callback-pop__btn {
+    width: auto; /* przycisk dopasowany do treści */
+    justify-self: end;
+    white-space: nowrap;
+  }
+}
 /* =========================================================
    POPUP KONFIGURATORA — stała ramka i zachowanie
    (przeniesione z <style id="cfg-fixed-frame-css">)
@@ -8371,7 +8702,6 @@ body.about section.about-featured > .about__container > section.projects.project
 }
 .value-card__media {
   position: relative;
-  aspect-ratio: 320/218;
   overflow: hidden;
 }
 .value-card__media img {
@@ -8415,7 +8745,7 @@ body.about section.about-featured > .about__container > section.projects.project
   z-index: 1;
 }
 .value-card__title {
-  margin: calc(var(--badge-size) * 0.5) 0 12px;
+  margin: calc(var(--badge-size) * 0.9) 0 12px;
   font-weight: 600;
   font-size: 20px;
   line-height: 1.25;
@@ -8423,6 +8753,7 @@ body.about section.about-featured > .about__container > section.projects.project
 }
 .value-card__text {
   margin: 0 0 12px;
+  margin-top: 30px;
   font-weight: 400;
   font-size: 14px;
   line-height: 1.5;
@@ -8457,6 +8788,9 @@ body.about section.about-featured > .about__container > section.projects.project
 }
 .value-card__btn:active {
   transform: translateY(1px);
+}
+.value-card__btn {
+  display: none;
 }
 
 @media (min-width: 744px) {
@@ -12898,6 +13232,12 @@ fieldset {
   margin-top: 4px;
 }
 
+.price-step__tiers .is-active {
+  border: 2px solid #DC9B59;
+  background: #FFF7F0;
+  color: #000;
+}
+
 /* "Pusta kartka": chowamy tylko elementy do rysowania */
 .services__icon [data-draw] {
   fill: none !important;
@@ -12957,6 +13297,10 @@ fieldset {
 .about-process .process-grid article.is-open {
   z-index: 3;
   position: relative;
+}
+
+#callbackSection[hidden] {
+  display: none !important;
 }
 
 /*# sourceMappingURL=style.css.map */

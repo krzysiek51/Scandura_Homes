@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "currency": "PLN",
+    "vat_rate": 0.08,
+    "notes": "Ceny netto/m2 na podstawie oferty 140 m2 (Domihaus). Dom bez płyty. Płyta liczona osobno."
+  },
+  "tiers": {
+    "basic": {
+      "label": "Basic",
+      "unit_net_pln_per_m2": 4791,
+      "display_bias": -0.10,
+      "display_band_pct": 0.02
+    },
+    "classic": {
+      "label": "Classic",
+      "unit_net_pln_per_m2": 5436,
+      "display_bias": 0.0,
+      "display_band_pct": 0.02
+    },
+    "premium": {
+      "label": "Premium",
+      "unit_net_pln_per_m2": 5693,
+      "display_bias": 0.0,
+      "display_band_pct": 0.02
+    }
+  },
+  "foundation_slab": {
+    "label": "Płyta fundamentowa",
+    "unit_net_pln_per_m2": 654
+  }
+}

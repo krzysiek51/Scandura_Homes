@@ -9,19 +9,9 @@
     "policy_missing_row": "HARD_ERROR"
   },
   "keys": {
-    "building": [
-      "single_family"
-    ],
-    "shell": [
-      "SSO",
-      "SSZ",
-      "DEW"
-    ],
-    "area_band": [
-      80,
-      100,
-      150
-    ]
+    "building": ["single_family"],
+    "shell": ["SSO", "SSZ", "DEW"],
+    "area_band": [80, 100, 150]
   },
   "table": {
     "single_family": {
@@ -32,9 +22,10 @@
           "status": "REQUIRED"
         },
         "100": {
-          "min": null,
-          "max": null,
-          "status": "REQUIRED"
+         
+          "min": 250000,
+          "max": 320000,
+          "status": "SET_2025"
         },
         "150": {
           "min": null,
@@ -49,9 +40,9 @@
           "status": "REQUIRED"
         },
         "100": {
-          "min": null,
-          "max": null,
-          "status": "REQUIRED"
+          "min": 350000,
+          "max": 420000,
+          "status": "SET_2025"
         },
         "150": {
           "min": null,
@@ -66,9 +57,9 @@
           "status": "REQUIRED"
         },
         "100": {
-          "min": 280000,
-          "max": 380000,
-          "status": "PROVISIONAL_FROM_GDANSK_BASELINE"
+          "min": 560000,
+          "max": 720000,
+          "status": "SET_2025"
         },
         "150": {
           "min": null,

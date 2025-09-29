@@ -273,7 +273,7 @@ body.about .configurator-prompt {
     text-align: right;
   }
 
-  .configurator-prompt__button { height: 42px; width: auto; }
+  .configurator-prompt__button { height: 80px; width: auto; font-size: 16px; line-height: 20px; letter-spacing: 1px; }
   .configurator-prompt__link   { white-space: nowrap; }
   }
 }

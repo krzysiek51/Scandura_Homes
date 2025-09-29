@@ -1192,7 +1192,9 @@
 <script type="module" src="/js/services-enter.js"></script>
 <script defer src="/js/services-icons-draw.js"></script>
 <script src="js/services-icons-watch.js"></script>
-<script src="js/callback.js"></script>
+
+
+
 
 <script type="module" src="js/config.js"></script>
 
@@ -1219,8 +1221,42 @@
 </script>
 
 <!-- 1) Loader danych → ustawia window.SCANDURA_PRICING_DATA i rozwiązuje whenPricingReady -->
-<script src="/js/configurator/integrations/price-engine.js?v=7"></script>
-<script src="/js/configurator/integrations/pricing-data-loader.js?v=5"></script>
+<!-- 0) gdzie leżą JSON-y -->
+<script>window.PRICING_ASSETS_BASE = '/apps/kalkulator-2.0/engine/';</script>
+
+<!-- 1) globalny promise gotowości (musi być zanim wystartuje loader) -->
+<script>
+  window.whenPricingReady = window.whenPricingReady || new Promise(res => { window.__pricingReadyResolve = res; });
+  window.addEventListener('ScanduraPricing:ready', () => window.__pricingReadyResolve?.(), { once:true });
+</script>
+
+<!-- 2) LOADER DANYCH (USTAWIA window.SCANDURA_PRICING_DATA) -->
+<script src="/js/configurator/integrations/pricing-data-loader.js?v=5" defer></script>
+
+<!-- 3) ENGINE (DEFINIUJE window.computePrice) -->
+<script src="/js/configurator/integrations/price-engine.js?v=7" defer></script>
+
+<!-- 3a) PATCH anchorów 100 m² (Twoje nowe stawki) -->
+<script>
+  (async () => {
+    await window.whenPricingReady;
+    const bt = window.SCANDURA_PRICING_DATA?.base_tables?.single_family;
+    if (!bt) { console.warn('Brak base_tables'); return; }
+
+    // DEW — 100 m² (parter, gabled_2, bez garażu)
+    bt.DEW  = bt.DEW  || {};
+    bt.DEW["100"] = { min: 565000, max: 715000 };
+
+    // SSO / SSZ — 100 m² (parter, bez garażu)
+    bt.SSO  = bt.SSO  || {};
+    bt.SSZ  = bt.SSZ  || {};
+    bt.SSO["100"] = { min: 270000, max: 320000 };
+    bt.SSZ["100"] = { min: 350000, max: 420000 };
+
+    console.log('[Pricing anchors set]', bt);
+  })();
+</script>
+
 
 <!-- 3) Dopiero teraz skrypty kroków modala, które wołają computePrice(...) -->
 <script type="module" src="/js/configurator/modal/configurator-steps.js"></script>
@@ -1235,6 +1271,8 @@
 <script type="module" src="/js/configurator/integrations/formspree.js"></script>
 <script type="module" src="/js/configurator/modal/configurator-step9.js?v=12"></script>
 <script type="module" src="/js/configurator/modal/configurator-summary-overlay.js"></script>
+
+
 
 <script>
   window.FORMSPREE_ENDPOINT = 'https://formspree.io/f/myzdrpob'; // ← Twój endpoint
@@ -1494,6 +1532,21 @@
 });
 </script>
 
+<script type="application/json" id="pricing-tiers-json">
+{
+  "meta": { "currency":"PLN", "vat_rate":0.08 },
+  "tiers": {
+    "basic":   { "label":"Basic",   "unit_net_pln_per_m2":4791, "display_bias":-0.10, "display_band_pct":0.02 },
+    "classic": { "label":"Classic", "unit_net_pln_per_m2":5436, "display_band_pct":0.02 },
+    "premium": { "label":"Premium", "unit_net_pln_per_m2":5693, "display_band_pct":0.02 }
+  },
+  "foundation_slab": { "label":"Płyta fundamentowa", "unit_net_pln_per_m2":654 }
+}
+</script>
+<script>
+  window.PRICING_TIERS = JSON.parse(document.getElementById('pricing-tiers-json').textContent);
+</script>
+
 
 <!-- ===== MODAL v2 — HTML szkielet (na końcu <body>) ===== -->
 <div class="cfg-modal" id="cfg-modal" role="dialog" aria-modal="true" aria-labelledby="cfg-title" hidden>
@@ -1741,7 +1794,23 @@
 </script>
 
 <!-- ---------------------------Modal V2 ---------------- -->
- 
+ <script src="/js/callback.js" defer></script>
+<script src="/apps/kalkulator-2.0/data/Tools/price-tuner.js"></script>
+<script src="/apps/kalkulator-2.0/data/Tools/price-tuner-ui.js"></script>
+<script src="/apps/kalkulator-2.0/engine/index.js"></script>
+
+<!-- 2) PRICING_TIERS z inline JSON -->
+<script type="application/json" id="pricing-tiers-json">
+{ ...twój JSON z tiers i foundation_slab... }
+</script>
+<script>
+  window.PRICING_TIERS = JSON.parse(
+    document.getElementById('pricing-tiers-json').textContent
+  );
+</script>
+
+<script src="/apps/kalkulator-2.0/engine/pricing-loader.js"></script>
+
 
 </body>
 

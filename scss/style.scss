@@ -38,7 +38,7 @@
 
 //pages*
 
-
+@use "components/callback-modal";
 
 @use "components/cfg-modal-fixed";
 @use "components/booking-modal";
@@ -111,3 +111,4 @@
 
 /* otwarta karta nad sąsiadami */
 .about-process .process-grid article.is-open { z-index: 3; position: relative; }
+#callbackSection[hidden] { display: none !important; }

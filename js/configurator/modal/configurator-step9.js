@@ -4,6 +4,32 @@
   if (window.__SCANDURA_CFG_PRICE__) return;
   window.__SCANDURA_CFG_PRICE__ = true;
 
+
+// --- GLOBAL HELPERS (wystarczą raz w całej aplikacji) ---
+window.__CFG_GET_STATE = () =>
+  (window.__CFG_LAST_STATE || window.__CFG_STATE || window.__CFG?.state || {});
+
+window.__deriveAreaM2 = window.__deriveAreaM2 || function(state){
+  const n = (v) => { const x = Number(v); return Number.isFinite(x) && x > 0 ? Math.round(x) : null; };
+
+  // 1) bezpośrednio podane liczby
+  const direct =
+      n(state?.area_m2) ??
+      n(state?.areaExact) ??
+      n(state?.area?.exact) ??
+      n(state?.area?.m2);
+  if (direct != null) return direct;
+
+  // 2) pasmo z UI
+  const raw = state?.areaChoice ?? state?.area?.choice ?? state?.area?.value ?? state?.area?.label ?? state?.area?.range;
+  if (!raw) return null;
+
+  const key = String(raw).replace(/\s+/g,'').replace(/[\u2010-\u2015–—−-]/g,'-').toLowerCase(); // "do-35" → "do-35"
+  const map = { '0-35':25,'do-35':25,'36-70':55,'71-100':85,'101-150':125,'151-200':175,'200-250':225,'201-250':225 };
+  return map[key] ?? null;
+};
+
+
   // ===== odporne selektory modala =====
   const MODAL =
     document.getElementById('cfg-modal') ||
@@ -35,8 +61,16 @@
   const clamp = (x,min,max)=>Math.min(max,Math.max(min,x));
 
   function midFromRange(key){
-    const map = { '0-35':25,'36-70':55,'71-100':85,'101-150':125,'151-200':175,'200-250':225 };
-    return map[key] || null;
+    const map = {
+    '0-35': 25,
+    '36-70': 55,
+    '71-100': 85,
+    '101-150': 125,
+    '151-200': 175,
+    '200-250': 225,
+    '201-250': 225
+  };
+  return map[key] || null;
   }
 
   // ——— Ustawienie labela ceny w karcie
@@ -53,54 +87,231 @@ function setPriceLabel(state){
 
 
 
-// A) deriveAreaM2 — wyprowadza area_m2 z exact lub z pasma (obsługuje area.value/choice/label)
-function deriveAreaM2(state){
-  // liczba?
-  if (typeof state.area_m2 === 'number' && isFinite(state.area_m2) && state.area_m2 > 0)
-    return Math.round(state.area_m2);
-  if (typeof state.areaExact === 'number' && isFinite(state.areaExact) && state.areaExact > 0)
-    return Math.round(state.areaExact);
-  if (state.area && typeof state.area.exact === 'number' && isFinite(state.area.exact) && state.area.exact > 0)
-    return Math.round(state.area.exact);
+// === V2: blok przełącznika Basic/Classic/Premium + płyta ===
+function initTierBlockV2(root, initState) {
+  if (!root) return;
 
-  // pasmo z UI: choice/value/label
-  const rawBand = state.areaChoice || state.area?.choice || state.area?.value || state.area?.label;
+  const $ = (s) => root.querySelector(s);
+
+  // startowy stan (bazuje na initState)
+  const state = {
+    area_m2: Number(initState?.area_m2) > 0 ? Math.round(initState.area_m2) : 100,
+    tier: (initState?.tier || 'basic'),
+    includeSlab: (initState?.includeSlab !== false)
+  };
+
+  const tierBtnsWrap = root.querySelector('[data-price="tiers"]');
+  const btns = tierBtnsWrap ? tierBtnsWrap.querySelectorAll('button[data-tier]') : [];
+  const elHouse = $('[data-price="house"]');
+  const elSlab  = $('[data-price="slab"]');
+  const elTotal = $('[data-price="total"]');
+  const elVat   = $('[data-price="vat"]');
+  const slabToggle = $('[data-price="toggle-slab"]');
+
+  function render() {
+    if (typeof window.computePriceV2 !== 'function') return;
+
+    const res = window.computePriceV2({
+      area_m2: state.area_m2,
+      tier: state.tier,
+      includeSlab: !!state.includeSlab
+    });
+
+    if (elHouse) elHouse.textContent = `${res.fmt.house_min} – ${res.fmt.house_max} NETTO`;
+    if (elSlab)  elSlab.textContent  = `${res.fmt.slab} NETTO`;
+    if (elTotal) elTotal.textContent = `${res.fmt.total_min} – ${res.fmt.total_max} NETTO`;
+    if (elVat)   elVat.textContent   = res.fmt.vat_hint;
+
+    btns.forEach(b => b.classList.toggle('is-active', b.dataset.tier === state.tier));
+    if (slabToggle) slabToggle.checked = !!state.includeSlab;
+  }
+
+  // handlery
+  btns.forEach(b => b.addEventListener('click', () => {
+    state.tier = b.dataset.tier || 'basic';
+    // zapamiętaj w globalnym stanie, wyślij event
+    (window.__CFG_LAST_STATE ||= {}).priceTier = state.tier;
+    root.dispatchEvent(new CustomEvent('tier:change', { detail: { tier: state.tier }}));
+    // opcj. analityka
+    window.dataLayer?.push?.({ event:'price_tier_select', tier: state.tier });
+    render();
+  }));
+
+  if (slabToggle) {
+    slabToggle.addEventListener('change', () => {
+      state.includeSlab = !!slabToggle.checked;
+      (window.__CFG_LAST_STATE ||= {}).includeSlab = state.includeSlab;
+      root.dispatchEvent(new CustomEvent('slab:toggle', { detail: { includeSlab: state.includeSlab }}));
+      window.dataLayer?.push?.({ event:'price_slab_toggle', includeSlab: state.includeSlab });
+      render();
+    });
+  }
+
+  // API do zmiany metrażu z zewnątrz
+  root.__setAreaM2 = (m2) => {
+    const n = Number(m2);
+    if (Number.isFinite(n) && n > 0) { state.area_m2 = Math.round(n); render(); }
+  };
+
+  render();
+}
+
+
+// === PATCH: robust area + roof/storeys/garage mapping ===
+
+// normalizacja "101–150 m²" -> "101-150"
+function _cleanRangeKey(s){
+  return String(s ?? '')
+    .replace(/[^\d\-–— ]+/g, '')     // usuń "m²", przecinki, itp.
+    .replace(/\s+/g, '')
+    .replace(/[–—−]/g, '-');         // wszystkie rodzaje dashy -> '-'
+}
+
+// środek pasma ze stringa; fallback do LUT
+function _midFromStrRange(s){
+  const m = String(s ?? '').match(/(\d+)\D+(\d+)/);
+  if (m) {
+    const a = +m[1], b = +m[2];
+    if (a > 0 && b > a) return Math.round((a + b) / 2);
+  }
+  const key = _cleanRangeKey(s);
+  const LUT = { '0-35':25,'36-70':55,'71-100':85,'101-150':125,'151-200':175,'200-250':225 };
+  return LUT[key] ?? null;
+}
+
+// A) deriveAreaM2 — wyprowadza area_m2 z exact/m2 lub z pasma
+function deriveAreaM2(state){
+  const pickNum = (v) => {
+    const n = Number(v);
+    return Number.isFinite(n) && n > 0 ? Math.round(n) : null;
+  };
+
+  // 1) najpierw twarde liczby w różnych miejscach
+  const direct =
+    pickNum(state?.area_m2) ??
+    pickNum(state?.areaExact) ??
+    pickNum(state?.area?.exact) ??
+    pickNum(state?.area?.m2);
+  if (direct != null) return direct;
+
+  // 2) pasmo z UI: choice/value/label/range itp.
+  const rawBand =
+    state?.areaChoice ??
+    state?.area?.choice ??
+    state?.area?.value ??
+    state?.area?.label ??
+    state?.area?.range;
   if (!rawBand) return null;
 
-  // normalizacja: usuń spacje i zamień wszystkie rodzaje „dashy” na zwykły '-'
-  const bandKey = String(rawBand).replace(/\s+/g,'').replace(/[\u2010-\u2015–—−-]/g,'-');
+  const asStr   = String(rawBand).trim();
+  // a) jeśli wygląda jak zakres, policz środek (np. "101–150 m²" → 126)
+  const m = asStr.match(/(\d+)\D+(\d+)/);
+  if (m) {
+    const a = +m[1], b = +m[2];
+    if (a > 0 && b > a) return Math.round((a + b) / 2);
+  }
 
-  const map = { '0-35':25,'36-70':55,'71-100':85,'101-150':125,'151-200':175,'200-250':225 };
+  // b) normalizacja skrótów/kluczy UI
+  const bandKey = asStr
+    .replace(/\s+/g,'')
+    .replace(/[\u2010-\u2015–—−-]/g,'-')
+    .toLowerCase();
+
+  // c) LUT dla nazw własnych i edge-case'ów z kroku 2
+  const map = {
+    'do-35':   25,   // "Do 35" → 0–35
+    '0-35':    25,
+    '36-70':   55,
+    '71-100':  85,
+    '101-150': 125,
+    '151-200': 175,
+    '200-250': 225,
+    '201-250': 225   // obsłuż nowy preset
+  };
+
   return map[bandKey] ?? null;
 }
 
-// Adapter: stan z UI -> wejście silnika
+
+// helper: normalizacja tekstu PL -> klucz
+function _normKey(s){
+  return String(s || '')
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[._]/g,' ')
+    .replace(/\s+/g,' ')
+    .trim();
+}
+
+// mapy etykiet -> klucze silnika
+const ROOF_FROM_LABEL = {
+  // bazowe
+  'dwuspadowy':'gabled_2','dwu spadowy':'gabled_2',
+  'czterospadowy':'hip_4','cztero spadowy':'hip_4','hip 4':'hip_4',
+  'plaski':'flat','płaski':'flat','plaski dach':'flat',
+  // nowe
+  'wielospadowy':'multi_gable','wielo spadowy':'multi_gable',
+  'mansardowy':'mansard','dach mansardowy':'mansard',
+  'inny':'other','pozostaly':'other','pozostały':'other'
+};
+
+const GARAGE_FROM_LABEL = {
+  'bez garazu':'none','bez garażu':'none','bez garazu.':'none',
+  'w bryle (1-stan.)':'attached_1','1 stan w bryle':'attached_1',
+  'w bryle (2-stan.)':'attached_2','2 stan w bryle':'attached_2',
+  'wolnostojacy':'detached_1','wolnostojący':'detached_1','wolno stojacy':'detached_1'
+};
+const SHELL_FROM_LABEL = {
+  'deweloperski':'DEW','pod klucz':'DEW',
+  'ssz':'SSZ','stan surowy zamkniety':'SSZ','stan surowy zamknięty':'SSZ',
+  'sso':'SSO','stan surowy otwarty':'SSO'
+};
+const STOREYS_FROM_LABEL = {
+  'parter':'parter','parterowy':'parter',
+  'z poddaszem':'plus_1','1 pietro':'plus_1','1 piętro':'plus_1','plus 1':'plus_1'
+};
+
+// >>> PODMIEN TO: adapter stanu z UI -> wejście silnika (z mapowaniem etykiet)
+// Adapter: stan z UI -> wejście silnika (z mapowaniem PL -> kody)
 function toEngineInput(state){
   const pick = (x) => (x && (x.key ?? x.value ?? x.label)) || (typeof x === 'string' ? x : '');
 
-  // shell (scope): pod-klucz -> DEW, SSZ/SSO po słowach-kluczach
+  // --- shell/scope -> DEW/SSZ/SSO
   const rawShell = pick(state.shell) || pick(state.scope) || '';
   let shell = rawShell.toUpperCase();
   if (!['DEW','SSZ','SSO'].includes(shell)) {
-    const s = rawShell.toLowerCase();
-    if (s.includes('klucz')) shell = 'DEW';
-    else if (s.includes('ssz') || s.includes('zamk')) shell = 'SSZ';
-    else if (s.includes('sso') || s.includes('otwar')) shell = 'SSO';
-    else shell = 'DEW';
+    const s = _normKey(rawShell);
+    shell = (SHELL_FROM_LABEL && SHELL_FROM_LABEL[s]) || (s.includes('klucz') ? 'DEW'
+           : s.includes('zamkn') || s.includes('ssz') ? 'SSZ'
+           : s.includes('otwar') || s.includes('sso') ? 'SSO'
+           : 'DEW');
   }
 
-  // roof: nieznane -> gabled_2
+  // --- roof (dach)
   const rawRoof = pick(state.roof);
-  const roof = ['gabled_2','hip_4','flat'].includes(rawRoof) ? rawRoof : 'gabled_2';
+  let roof = rawRoof;
+  if (!['gabled_2','hip_4','flat'].includes(roof)) {
+    const rk = _normKey(rawRoof);
+    roof = (ROOF_FROM_LABEL && ROOF_FROM_LABEL[rk]) || 'gabled_2';
+  }
 
-  // storeys: tylko 'parter' / 'plus_1'
-  const storeysRaw = pick(state.storeys);
-  const storeys = storeysRaw === 'plus_1' ? 'plus_1' : 'parter';
+  // --- storeys (kondygnacje)
+  const rawStoreys = pick(state.storeys);
+  let storeys = rawStoreys;
+  if (!['parter','plus_1'].includes(storeys)) {
+    const sk = _normKey(rawStoreys);
+    storeys = (STOREYS_FROM_LABEL && STOREYS_FROM_LABEL[sk]) || 'parter';
+  }
 
-  // garage: jeśli brak -> 'none'
-  const garage = pick(state.garage) || 'none';
+  // --- garage (garaż)
+  const rawGarage = pick(state.garage);
+  let garage = rawGarage || 'none';
+  if (!['none','attached_1','attached_2','detached_1'].includes(garage)) {
+    const gk = _normKey(rawGarage);
+    garage = (GARAGE_FROM_LABEL && GARAGE_FROM_LABEL[gk]) || 'none';
+  }
 
-  // city
+  // --- miasto
   const city = state.location?.city || state.city || 'Gdańsk';
 
   return { shell, roof, storeys, garage, city };
@@ -153,17 +364,67 @@ function toEngineInput(state){
     const country  = state.location?.country || '';
     return { building, roof, shell, area, start, city, country };
   }
-  function summaryFromNorm(n) {
-    const m2 = n.area.exact != null ? `${n.area.exact} m²` : (n.area.choice || '—');
-    return [
-      `Typ: ${n.building.label || '—'}`,
-      `Pow.: ${m2}`,
-      `Dach: ${n.roof.label || '—'}`,
-      `Stan: ${n.shell.label || '—'}`,
-      `Start: ${n.start.label || n.start.date || '—'}`,
-      `Lokalizacja: ${n.city || '—'}, ${n.country || '—'}`
-    ].join(' | ');
+ // zwięzłe przycięcie opisu do maila
+function clip(s, n = 160){
+  s = String(s || '').trim();
+  return s.length > n ? (s.slice(0, n - 1) + '…') : s;
+}
+
+// NOWA wersja: pełne podsumowanie 1–8 (zgodne z krokami)
+function summaryFromNorm(n, state = window.__CFG_LAST_STATE || window.__CFG_STATE || {}) {
+  const pick = (x) => (x && (x.key ?? x.value ?? x.label)) || (typeof x === 'string' ? x : '');
+
+  const ROOF_MAP    = { gabled_2:'dwuspadowy', hip_4:'czterospadowy', flat:'płaski' };
+  const GARAGE_MAP  = { none:'bez garażu', attached_1:'w bryle (1-stan.)', attached_2:'w bryle (2-stan.)', detached_1:'wolnostojący (1-stan.)' };
+  const SHELL_MAP   = { DEW:'pod klucz', SSZ:'stan surowy zamknięty', SSO:'stan surowy otwarty' };
+  const STOREYS_MAP = { parter:'parterowy', plus_1:'z poddaszem / 1 piętro' };
+
+  // metraż (exact albo pasmo)
+  const m2 = (n.area.exact != null) ? `${n.area.exact} m²` : (n.area.choice || '—');
+
+  // kody techniczne z raw state
+  const roofKey    = pick(state.roof)    || 'gabled_2';
+  const garageKey  = pick(state.garage)  || 'none';
+  let   shellRaw   = pick(state.shell) || pick(state.scope) || 'DEW';
+  let   shellKey   = String(shellRaw).toUpperCase();
+  if (!['DEW','SSZ','SSO'].includes(shellKey)) {
+    const s = String(shellRaw).toLowerCase();
+    shellKey = s.includes('zamk') || s.includes('ssz') ? 'SSZ'
+             : s.includes('otwar') || s.includes('sso') ? 'SSO'
+             : 'DEW';
   }
+  const storeysKey = pick(state.storeys) === 'plus_1' ? 'plus_1' : 'parter';
+
+  // opis + załączniki
+  const notes   = (state.notes || '').trim();
+  const atts    = Array.isArray(state.attachments) ? state.attachments : [];
+  const attInfo = atts.length
+    ? (atts.map(a => a?.file?.name).filter(Boolean).slice(0,3).join(', ') + (atts.length>3 ? ` +${atts.length-3}` : ''))
+    : 'brak';
+
+  // kontakt
+  const C = state.contact || {};
+  const contactTxt = [C.name, C.email, (C.phone||'').trim()].filter(Boolean).join(' • ') || '—';
+
+  // wiersze 1–8
+  const rows = [
+    ['1. Rodzaj budynku',        n.building.label || 'jednorodzinny'],
+    ['2. Powierzchnia użytkowa', m2],
+    ['3. Rodzaj dachu',          ROOF_MAP[roofKey] || n.roof.label || '—'],
+    ['4. Zakres zlecenia',       SHELL_MAP[shellKey] || '—'],
+    ['5. Opis i załączniki',     (notes ? clip(notes) : '—') + '  •  Załączniki: ' + attInfo],
+    ['6. Planowany start',       n.start.label || n.start.date || '—'],
+    ['7. Lokalizacja budowy',    [n.city, n.country].filter(Boolean).join(', ') || '—'],
+    ['8. Dane kontaktowe',       contactTxt],
+    // dodatki (nienumerowane):
+    ['Kondygnacje',              STOREYS_MAP[storeysKey] || '—'],
+    ['Garaż',                    GARAGE_MAP[garageKey]   || '—'],
+  ];
+
+  // jednowierszowy string do Formspree
+  return rows.map(([k,v]) => `${k.replace(/^\d+\.\s*/,'')}: ${v}`).join(' | ');
+}
+
 
 // B) ensurePrice — czeka na dane, wyprowadza area_m2 i dopiero liczy; błędy pokazuje w UI
 function ensurePrice(state){
@@ -221,55 +482,98 @@ const est = window.computePrice({ ...input, area_m2: areaM2 });
   }
 
 // ===== Szczegóły w stylu "Szczegóły zapytania" =====
-function openDetails(state, source='price'){
+// ===== Szczegóły w stylu "Szczegóły zapytania" =====
+function openDetails(state, source = 'price') {
   // 1) normalizacja i pomocnicze mapy PL
   const N = normAll(state);
-
   const pick = (x) => (x && (x.key ?? x.value ?? x.label)) || (typeof x === 'string' ? x : '');
 
+  // mapy: kody -> ładne etykiety
   const ROOF_MAP    = { gabled_2: 'dwuspadowy', hip_4: 'czterospadowy', flat: 'płaski' };
   const GARAGE_MAP  = { none: 'bez garażu', attached_1: 'w bryle (1-stan.)', attached_2: 'w bryle (2-stan.)', detached_1: 'wolnostojący (1-stan.)' };
   const SHELL_MAP   = { DEW: 'pod klucz', SSZ: 'stan surowy zamknięty', SSO: 'stan surowy otwarty' };
   const STOREYS_MAP = { parter: 'parterowy', plus_1: 'z poddaszem / 1 piętro' };
 
-  // klucze techniczne
-  const roofKey    = pick(state.roof) || 'gabled_2';
-  const garageKey  = pick(state.garage) || 'none';
-  let   shellRaw   = pick(state.shell) || pick(state.scope) || 'DEW';
-  let   shellKey   = shellRaw.toUpperCase();
-  if (!['DEW','SSZ','SSO'].includes(shellKey)) {
-    const s = shellRaw.toLowerCase();
-    shellKey = s.includes('zamk') || s.includes('ssz') ? 'SSZ'
-             : s.includes('otwar') || s.includes('sso') ? 'SSO'
-             : 'DEW';
-  }
-  const storeysKey = pick(state.storeys) === 'plus_1' ? 'plus_1' : 'parter';
+  // --- ROOF: akceptuj zarówno kody silnika jak i polskie etykiety
+  (function ensureRoofMapsExist(){
+    // wykorzystujemy słownik z góry pliku: ROOF_FROM_LABEL (etykieta -> kod)
+    // jeśli go nie ma, to i tak zadziała fallback na N.roof.label
+  })();
+  const rawRoof = pick(state.roof);
+  const roofCode = (['gabled_2','hip_4','flat'].includes(rawRoof))
+    ? rawRoof
+    : ( (typeof _normKey === 'function' && typeof ROOF_FROM_LABEL === 'object')
+        ? (ROOF_FROM_LABEL[_normKey(rawRoof)] || 'gabled_2')
+        : 'gabled_2'
+      );
+  const roofLabel = ROOF_MAP[roofCode] || N.roof.label || rawRoof || '—';
 
-  // metraż (exact albo pasmo)
+  // --- SHELL: akceptuj DEW/SSZ/SSO oraz PL etykiety
+  let shellRaw = pick(state.shell) || pick(state.scope) || 'DEW';
+  let shellKey = String(shellRaw).toUpperCase();
+  if (!['DEW','SSZ','SSO'].includes(shellKey)) {
+    const s = (typeof _normKey === 'function') ? _normKey(shellRaw) : String(shellRaw).toLowerCase();
+    shellKey = (typeof SHELL_FROM_LABEL === 'object' && SHELL_FROM_LABEL[s]) || (
+      s.includes('zamk') || s.includes('ssz') ? 'SSZ' :
+      s.includes('otwar') || s.includes('sso') ? 'SSO' : 'DEW'
+    );
+  }
+
+  // --- STOREYS: akceptuj kod i PL
+  const rawStoreys = pick(state.storeys);
+  let storeysKey = ['parter','plus_1'].includes(rawStoreys)
+    ? rawStoreys
+    : (typeof STOREYS_FROM_LABEL === 'object' && typeof _normKey === 'function'
+        ? (STOREYS_FROM_LABEL[_normKey(rawStoreys)] || 'parter')
+        : 'parter');
+
+  // --- GARAGE: akceptuj kod i PL
+  const rawGarage = pick(state.garage) || 'none';
+  let garageKey = ['none','attached_1','attached_2','detached_1'].includes(rawGarage)
+    ? rawGarage
+    : (typeof GARAGE_FROM_LABEL === 'object' && typeof _normKey === 'function'
+        ? (GARAGE_FROM_LABEL[_normKey(rawGarage)] || 'none')
+        : 'none');
+
+  // --- AREA: pokazuj exact, pasmo, albo wyliczony środek gdy brak
   const areaTxt = (N.area.exact != null)
     ? `${N.area.exact} m²`
-    : (N.area.choice || '—');
+    : (N.area.choice || (function(){
+        const m = (typeof deriveAreaM2 === 'function') ? deriveAreaM2(state) : null;
+        return m ? `${m} m²` : '—';
+      })());
 
-  const cityTxt = [N.city, N.country].filter(Boolean).join(', ') || '—';
+  const cityTxt  = [N.city, N.country].filter(Boolean).join(', ') || '—';
   const startTxt = N.start.label || N.start.date || '—';
   const priceTxt = priceLabel(state);
 
-  // 2) zbuduj wiersze jak w referencji
+  // 2) wiersze 1–8 + dodatki (tak jak oczekujesz)
+  const notes   = (state.notes || '').trim();
+  const atts    = Array.isArray(state.attachments) ? state.attachments : [];
+  const attInfo = atts.length
+    ? (atts.map(a => a?.file?.name).filter(Boolean).slice(0,3).join(', ') + (atts.length>3 ? ` +${atts.length-3}` : ''))
+    : 'brak';
+  const C = state.contact || {};
+  const contactTxt = [C.name, C.email, (C.phone||'').trim()].filter(Boolean).join(' • ') || '—';
+
   const rows = [
-    ['Rodzaj budynku',      N.building.label || 'jednorodzinny'],
-    ['Powierzchnia użytkowa', areaTxt],
-    ['Kondygnacje',         STOREYS_MAP[storeysKey] || '—'],
-    ['Garaż',               GARAGE_MAP[garageKey] || '—'],
-    ['Dach',                ROOF_MAP[roofKey] || '—'],
-    ['Zakres zlecenia',     SHELL_MAP[shellKey] || '—'],
-    ['Miejscowość',         cityTxt],
-    ['Start prac',          startTxt],
+    ['1. Rodzaj budynku',        N.building.label || 'jednorodzinny'],
+    ['2. Powierzchnia użytkowa', areaTxt],
+    ['3. Rodzaj dachu',          roofLabel],
+    ['4. Zakres zlecenia',       SHELL_MAP[shellKey] || '—'],
+    ['5. Opis i załączniki',     (notes || '—') + '  •  Załączniki: ' + attInfo],
+    ['6. Planowany start',       startTxt],
+    ['7. Lokalizacja budowy',    cityTxt],
+    ['8. Dane kontaktowe',       contactTxt],
+    // dodatki (nienumerowane)
+    ['Kondygnacje',              STOREYS_MAP[storeysKey] || '—'],
+    ['Garaż',                    GARAGE_MAP[garageKey]   || '—'],
   ];
 
   // 3) (opcjonalnie) audit kroków liczenia — rozwijany
   let auditHTML = '';
   try {
-    const aM2 = deriveAreaM2(state);
+    const aM2 = (typeof deriveAreaM2 === 'function') ? deriveAreaM2(state) : null;
     if (aM2 != null && typeof window.computePrice === 'function') {
       const est = window.computePrice({ ...toEngineInput(state), area_m2: aM2 });
       const items = (est.audit || []).map(a => `<li><code>${esc(a.step)}</code></li>`).join('');
@@ -280,50 +584,101 @@ function openDetails(state, source='price'){
   } catch(_) {}
 
   // 4) render widoku
-  BODY.setAttribute('data-view','details');
-  BODY.innerHTML = `
-    <style>
-      .cfg-details-card{background:#fff;border-radius:16px;padding:16px}
-      .cfg-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 0 12px}
-      .cfg-head h3{margin:0;font-size:18px}
-      .cfg-pill{font-weight:700;padding:8px 12px;border-radius:10px;background:#F3F4F6}
-      .cfg-table{border-top:1px solid #eee;margin-top:8px}
-      .cfg-row{display:grid;grid-template-columns:220px 1fr;gap:8px;padding:10px 0;border-bottom:1px solid #f1f1f1}
-      .cfg-row .lbl{color:#6b7280}
-      .cfg-actions{display:flex;gap:8px;margin-top:14px}
-      .cfg-audit{margin-top:12px}
-      .cfg-audit summary{cursor:pointer}
-      @media (max-width:640px){ .cfg-row{grid-template-columns:1fr} }
-    </style>
+BODY.setAttribute('data-view','details');
+BODY.innerHTML = `
+  <style>
+    .cfg-details-card{background:#fff;border-radius:16px;padding:16px}
+    .cfg-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 0 12px}
+    .cfg-head h3{margin:0;font-size:18px}
+    .cfg-pill{font-weight:700;padding:8px 12px;border-radius:10px;background:#F3F4F6}
+    .cfg-table{border-top:1px solid #eee;margin-top:8px}
+    .cfg-row{display:grid;grid-template-columns:220px 1fr;gap:8px;padding:10px 0;border-bottom:1px solid #f1f1f1}
+    .cfg-row .lbl{color:#6b7280}
+    .cfg-actions{display:flex;gap:8px;margin-top:14px}
+    .cfg-audit{margin-top:12px}
+    .cfg-audit summary{cursor:pointer}
+    @media (max-width:640px){ .cfg-row{grid-template-columns:1fr} }
 
-    <div class="cfg-details-card">
-      <div class="cfg-head">
-        <h3>Szczegóły wyceny</h3>
-        <div class="cfg-pill">${esc(priceTxt)}</div>
-      </div>
+    /* lekki styl V2 (guziki wariantów) */
+    .price-step__tiers{display:grid;grid-auto-flow:column;gap:8px;margin-bottom:10px}
+    .price-step__tiers .is-active{outline:2px solid #DC9B59}
+    .cfg-tier-block{background:#fff;border-radius:14px;padding:12px;box-shadow:0 1px 0 rgba(0,0,0,.06);margin-top:12px}
+    .cfg-tier-block .cfg-row{display:flex;justify-content:space-between;align-items:center;border:0;padding:6px 0}
+    .cfg-tier-block hr{border:none;border-top:1px solid #eee;margin:8px 0}
+    .cfg-tier-block .price-vat{opacity:.7;font-size:.9rem;margin-top:4px}
+  </style>
 
-      <div class="cfg-table">
-        ${rows.map(([l,v]) => `
-          <div class="cfg-row">
-            <div class="lbl">${esc(l)}</div>
-            <div class="val">${esc(v)}</div>
-          </div>
-        `).join('')}
-      </div>
-
-      ${auditHTML}
-
-      <div class="cfg-actions">
-        <button type="button" class="cfg-btn" data-cfg="details-back">Wróć</button>
-        <button type="button" class="cfg-btn cfg-btn--primary" data-cfg="details-close">Zamknij</button>
-      </div>
+  <div class="cfg-details-card">
+    <div class="cfg-head">
+      <h3>Szczegóły wyceny</h3>
+      <div class="cfg-pill">${esc(priceTxt)}</div>
     </div>
-  `;
+
+    <div class="cfg-table">
+      ${rows.map(([l,v]) => `
+        <div class="cfg-row">
+          <div class="lbl">${esc(l)}</div>
+          <div class="val">${esc(v)}</div>
+        </div>
+      `).join('')}
+    </div>
+
+    ${auditHTML}
+
+    <div class="cfg-actions">
+      <button type="button" class="cfg-btn" data-cfg="details-back">Wróć</button>
+      <button type="button" class="cfg-btn cfg-btn--primary" data-cfg="details-close">Zamknij</button>
+    </div>
+  </div>
+
+  <!-- V2: warianty Basic/Classic/Premium + płyta (NETTO) w widoku Szczegóły -->
+  <section id="v2-tier-details" class="cfg-tier-block" aria-label="Warianty cenowe">
+    <div class="price-step__tiers" data-price="tiers">
+      <button type="button" data-tier="basic"   class="cfg-btn cfg-btn--ghost is-active">Basic</button>
+      <button type="button" data-tier="classic" class="cfg-btn cfg-btn--ghost">Classic</button>
+      <button type="button" data-tier="premium" class="cfg-btn cfg-btn--ghost">Premium</button>
+    </div>
+
+    <div class="cfg-row">
+      <span>Dom (bez płyty):</span>
+      <strong data-price="house">—</strong>
+    </div>
+    <div class="cfg-row">
+      <label style="display:flex;gap:8px;align-items:center">
+        <input type="checkbox" data-price="toggle-slab" checked> Płyta fundamentowa
+      </label>
+      <strong data-price="slab">—</strong>
+    </div>
+    <hr>
+    <div class="cfg-row">
+      <span><b>Suma</b>:</span>
+      <strong data-price="total" style="font-size:1.05rem">—</strong>
+    </div>
+    <div class="price-vat" data-price="vat"></div>
+  </section>
+`;
+
+// ——— Inicjalizacja bloku V2 pod „Szczegóły”
+try {
+  const tierRoot = BODY.querySelector('#v2-tier-details');
+  if (tierRoot && typeof window.computePriceV2 === 'function') {
+    const m2 = (typeof deriveAreaM2 === 'function' ? deriveAreaM2(state) : null) || 100;
+    // initTierBlockV2 musi być zdefiniowane (dodałem je wyżej w pliku, pod setPriceLabel)
+    initTierBlockV2(tierRoot, { area_m2: m2, tier: 'basic', includeSlab: true });
+
+    // jeśli gdzieś w aplikacji zmienia się metraż po wejściu w Szczegóły:
+    window.__onAreaChanged = (newM2) => tierRoot.__setAreaM2?.(newM2);
+  }
+} catch(e) {
+  console.warn('[V2 tier details] init error', e);
+}
+
 
   // 5) akcje
   BODY.querySelector('[data-cfg="details-back"]')?.addEventListener('click', () => renderPrice(state));
   BODY.querySelector('[data-cfg="details-close"]')?.addEventListener('click', () => renderPrice(state));
 }
+
 
 
   // ===== Szybkie wysłanie do konsultanta =====
@@ -387,7 +742,7 @@ function openDetails(state, source='price'){
     BODY.querySelector('[data-cfg="back-price"]')?.addEventListener('click', ()=> renderPrice(state));
   }
 
- function renderPrice(state){
+function renderPrice(state){
   // 1) stan + debug
   state = state || window.__CFG_LAST_STATE || window.__CFG_STATE || {};
   window.__CFG_LAST_STATE = state;
@@ -408,39 +763,65 @@ function openDetails(state, source='price'){
   if (BTN_SKIP){ BTN_SKIP.hidden = true; BTN_SKIP.onclick = null; }
   if (BTN_PREV){ BTN_PREV.hidden = true; BTN_PREV.onclick = null; }
 
-  // 3) render karty z placeholderem
-  BODY.setAttribute('data-view','price');
-  BODY.innerHTML = `
-    <section class="cfg-price-card" style="display:flex;flex-direction:column;gap:12px">
-      <div><p class="cfg-muted" style="margin:0">
-        Odpowiedz na kilka dodatkowych pytań, by wycena była dokładniejsza.
-      </p></div>
+BODY.setAttribute('data-view','price');
+BODY.innerHTML = `
+  <section class="cfg-price-card" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;justify-content:flex-start">
+      <button class="cfg-btn cfg-btn--primary" data-cfg="ai-enhance" style="white-space:nowrap">
+        ✨ Ulepsz wycenę
+      </button>
+    </div>
 
-      <div class="cfg-price-row"
-           style="display:flex;align-items:center;gap:12px;justify-content:space-between;padding:12px;border-radius:14px;background:#fff;box-shadow:0 1px 0 rgba(0,0,0,.06)">
-        <div>
-          <div class="cfg-label" style="font-size:14px;color:#555">Orientacyjna wycena:</div>
-          <div class="cfg-price" style="font-size:20px;font-weight:700">—</div>
-        </div>
-        <button class="cfg-btn cfg-btn--primary" data-cfg="ai-enhance" style="white-space:nowrap">
-          ✨ Ulepsz wycenę
-        </button>
+    <!-- WARIANTY + PŁYTA (główna karta) -->
+    <section id="v2-tier" class="cfg-tier-block"
+             aria-label="Warianty cenowe"
+             style="margin-top:4px;background:#fff;border-radius:14px;padding:12px;box-shadow:0 1px 0 rgba(0,0,0,.06)">
+      <div class="price-step__tiers" data-price="tiers"
+           style="display:grid;grid-auto-flow:column;gap:8px;margin-bottom:10px">
+        <button type="button" data-tier="basic"   class="cfg-btn cfg-btn--ghost is-active">Basic</button>
+        <button type="button" data-tier="classic" class="cfg-btn cfg-btn--ghost">Classic</button>
+        <button type="button" data-tier="premium" class="cfg-btn cfg-btn--ghost">Premium</button>
       </div>
 
-      <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
-        <button class="cfg-btn cfg-btn--ghost" data-cfg="send-now">Wyślij teraz do konsultanta</button>
-        <button class="cfg-link" data-cfg="price-details"
-                style="background:none;border:0;color:inherit;text-decoration:underline;cursor:pointer">
-          Zobacz szczegóły wyceny
-        </button>
+      <div class="cfg-row" style="display:flex;justify-content:space-between;align-items:center;padding:6px 0">
+        <span>Dom (bez płyty):</span>
+        <strong data-price="house">—</strong>
       </div>
 
-      <div class="cfg-note" style="font-size:12px;color:#666;display:flex;gap:6px;align-items:flex-start">
-        <span aria-hidden="true" style="font-weight:700">i</span>
-        <span>Widełki obejmują materiały i robociznę, VAT wliczony. To wynik orientacyjny — dokładność poprawisz w Ulepszaczu.</span>
+      <div class="cfg-row" style="display:flex;justify-content:space-between;align-items:center;padding:6px 0">
+        <label style="display:flex;gap:8px;align-items:center">
+          <input type="checkbox" data-price="toggle-slab" checked> Płyta fundamentowa
+        </label>
+        <strong data-price="slab">—</strong>
+      </div>
+
+      <hr style="border:none;border-top:1px solid #eee;margin:8px 0">
+
+      <div class="cfg-row" style="display:flex;justify-content:space-between;align-items:center;padding:6px 0">
+        <span data-price="total-label"><b>SZACUNKOWA CENA BASIC Z PŁYTĄ FUNDAMENTOWĄ</b>:</span>
+        <strong data-price="total" style="font-size:1.05rem">—</strong>
+      </div>
+      <div class="price-vat" data-price="vat" style="opacity:.75;font-size:.92rem;margin-top:4px">
+        +8% VAT (budownictwo mieszkaniowe)
       </div>
     </section>
-  `;
+
+    <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+      <button class="cfg-btn cfg-btn--ghost" data-cfg="send-now">Wyślij teraz do konsultanta</button>
+      <button class="cfg-link" data-cfg="price-details"
+              style="background:none;border:0;color:inherit;text-decoration:underline;cursor:pointer">
+        Zobacz szczegóły wyceny
+      </button>
+    </div>
+
+    <div class="cfg-note" style="font-size:12px;color:#666;display:flex;gap:6px;align-items:flex-start">
+      <span aria-hidden="true" style="font-weight:700">i</span>
+      <span>Widełki obejmują materiały i robociznę, VAT wliczony. To wynik orientacyjny — dokładność poprawisz w Ulepszaczu.</span>
+    </div>
+  </section>
+`;
+
+
 
   // 4) handlery (raz)
   BODY.querySelector('[data-cfg="ai-enhance"]')?.addEventListener('click', () => {
@@ -454,7 +835,7 @@ function openDetails(state, source='price'){
   BODY.querySelector('[data-cfg="price-details"]')?.addEventListener('click', () => openDetails(state));
   BODY.querySelector('[data-cfg="send-now"]')?.addEventListener('click', () => sendImmediate(state));
 
-  // 5) obliczenia ceny i uzupełnienie labela
+  // 5) obliczenia ceny: V1 fallback (nie pokazujemy – label nadpisze V2)
   (async () => {
     try {
       if (!window.computePrice || !window.SCANDURA_PRICING_DATA) {
@@ -465,35 +846,75 @@ function openDetails(state, source='price'){
       const m2 = deriveAreaM2(state);
       if (!m2) {
         showInlineError('Brak metrażu — wróć do kroku 2 i wybierz metraż.');
-        // jeśli masz helpera do labela – odśwież pusty
         if (typeof setPriceLabel === 'function') setPriceLabel(state);
         return;
       }
-
       const input = toEngineInput(state);
       const res = window.computePrice({ ...input, area_m2: m2 });
-
       if (res && Number.isFinite(res.min) && Number.isFinite(res.max)) {
         state.price_est_min = res.min;
         state.price_est_max = res.max;
         state.areaComputed  = res.m2 ?? m2;
-
-        const el = BODY.querySelector('.cfg-price');
-        if (el) el.textContent = `${fmtPL(res.min)} – ${fmtPL(res.max)} zł brutto`;
-      } else {
-        showInlineError('Nie udało się policzyć widełek.');
       }
     } catch (e) {
       showInlineError((e && e.message) || 'Błąd liczenia.');
       console.warn('[price] compute error', e);
     } finally {
-      // bezpiecznie, tylko jeśli istnieje
       if (typeof setPriceLabel === 'function') setPriceLabel(state);
     }
   })();
 
+  // 6) INIT bloku V2 + podpięcie głównego labela pod V2
+  try {
+    const tierRoot = document.getElementById('v2-tier');
+    if (tierRoot && typeof initTierBlockV2 === 'function') {
+      const m2 = deriveAreaM2(state) || 100;
+      const startTier = window.__CFG_LAST_STATE?.priceTier || 'basic';             // DOMYŚLNIE BASIC
+      const startSlab = (window.__CFG_LAST_STATE?.includeSlab ?? true);
 
+      initTierBlockV2(tierRoot, {
+        area_m2: m2,
+        tier: startTier,
+        includeSlab: startSlab
+      });
+
+      // główny label (BRUTTO) liczony z V2
+      const fmtPL = (n) => (typeof n === 'number' && isFinite(n)) ? n.toLocaleString('pl-PL') : '—';
+      const VAT = 0.08;
+      const priceEl = BODY.querySelector('.cfg-price');
+
+      function updateMainPriceLabelFromV2() {
+        if (typeof window.computePriceV2 !== 'function' || !priceEl) return;
+        const res = window.computePriceV2({
+          area_m2: m2,
+          tier: (window.__CFG_LAST_STATE?.priceTier || startTier || 'basic'),
+          includeSlab: (window.__CFG_LAST_STATE?.includeSlab ?? startSlab ?? true)
+        });
+        const tmin = res?.breakdown_display_net?.total_min ?? res?.breakdown_net?.total_min;
+        const tmax = res?.breakdown_display_net?.total_max ?? res?.breakdown_net?.total_max;
+        if (typeof tmin === 'number' && typeof tmax === 'number') {
+          const gmin = Math.round(tmin * (1 + VAT));
+          const gmax = Math.round(tmax * (1 + VAT));
+          priceEl.textContent = `${fmtPL(gmin)} – ${fmtPL(gmax)} zł brutto`;
+        }
+      }
+
+      // pierwszy label + reakcja na zmiany wariantu i płyty
+      updateMainPriceLabelFromV2();
+      tierRoot.addEventListener('tier:change',  updateMainPriceLabelFromV2);
+      tierRoot.addEventListener('slab:toggle',  updateMainPriceLabelFromV2);
+
+      // zmiana metrażu z kroków 1–8
+      window.__onAreaChanged = (newM2) => {
+        tierRoot.__setAreaM2?.(newM2);
+        updateMainPriceLabelFromV2();
+      };
+    }
+  } catch(e) {
+    console.warn('[V2 @ price card] init error', e);
+  }
 }
+
 
 
 
@@ -503,16 +924,87 @@ function setBusy(btn, busy){ if (!btn) return; btn.disabled = !!busy; btn.setAtt
 function delay(ms){ return new Promise(r => setTimeout(r, ms)); }
 function esc(s=''){ return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c])); }
 
-
 // DEBUG: wystaw helpery do konsoli
 window.__CFG_DEBUG = {
-  deriveAreaM2,
+  deriveAreaM2: window.__deriveAreaM2,
   toEngineInput,
   midFromRange,
-  ensurePrice
+  ensurePrice,
+  openDetails
 };
 
-window.__CFG_DEBUG = { deriveAreaM2, toEngineInput, midFromRange, ensurePrice };
+
+
 window.renderPrice = renderPrice;
+
+
+
+// ========================================================================
+
+// === Fit label for the "Ulepsz wycenę" button (bez zmian globalnego CSS) ===
+(function(){
+  const MIN_W = 143;       // jak w Twoim CSS
+  const MAX_W = 240;       // ile maksymalnie pozwalamy temu jednemu przyciskowi urosnąć
+  const VARIANTS = ['✨ Ulepsz wycenę', '✨ Popraw wycenę', '✨ Ulepsz'];
+
+  function expandToFit(btn, capPx){
+    // pozwól przeliczyć naturalną szerokość tekstu
+    const prevMin = btn.style.minWidth;
+    const prevW   = btn.style.width;
+    btn.style.minWidth = '0px';
+    btn.style.width    = 'auto';
+
+    // naturalna szerokość (z paddingiem przycisku)
+    const need = Math.ceil(btn.scrollWidth);
+    // cel: między MIN_W a capPx
+    const target = Math.max(MIN_W, Math.min(capPx, need));
+
+    btn.style.minWidth = target + 'px';
+    btn.style.width    = '';     // wróć do normalnego
+    // zwraca: czy się mieści w jednej linii
+    const fits = btn.scrollWidth <= target + 1;
+    // nic nie przywracamy — zostawiamy ustawioną minWidth dla tego jednego przycisku
+    return fits;
+  }
+
+  function pickVariantThatFits(btn){
+    for (const txt of VARIANTS){
+      btn.textContent = txt;
+      if (expandToFit(btn, MAX_W)) {
+        btn.setAttribute('aria-label', 'Ulepsz wycenę'); // pełna fraza dla a11y
+        btn.title = 'Ulepsz wycenę';
+        return;
+      }
+    }
+    // awaryjnie: zostaw najkrótszą
+    btn.textContent = VARIANTS[VARIANTS.length - 1];
+    expandToFit(btn, MAX_W);
+  }
+
+  function fitEnhanceButton(root=document){
+    const btn = root.querySelector?.('[data-cfg="ai-enhance"]');
+    if (!btn) return;
+
+    pickVariantThatFits(btn);
+
+    // reaguj na zmiany szerokości kontenera (np. po otwarciu modala / zmianie viewportu)
+    const ro = new ResizeObserver(() => pickVariantThatFits(btn));
+    const host = btn.closest('.cfg-price-row') || btn.parentElement || document.body;
+    try { ro.observe(host); } catch(_) {}
+    // zachowaj referencję, by GC nie ubił obserwatora
+    btn.__fitRO = ro;
+  }
+
+  // uruchom po wyrenderowaniu karty ceny
+  const origRenderPrice = window.renderPrice;
+  window.renderPrice = function(state){
+    origRenderPrice?.(state);
+    // poczekaj jedną klatkę na DOM
+    requestAnimationFrame(() => fitEnhanceButton(document));
+  };
+
+  // na wszelki wypadek przy starcie (gdyby przycisk już był w DOM)
+  requestAnimationFrame(() => fitEnhanceButton(document));
+})();
 
 })(); // ← domknięcie IIFE
