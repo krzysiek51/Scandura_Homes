@@ -14103,6 +14103,157 @@ body.is-ptm-open {
     background: rgba(250, 247, 244, 0.28);
   }
 }
+/* ==== KROK 8 — Formularz kontaktowy (SCSS) ============================= */
+[data-cfg=root] [data-cfg=step8] .cfg-form {
+  background: #ffffff;
+  border: 1px solid #EAEAEA;
+  border-radius: 14px;
+  box-shadow: var(--elev-modal);
+  padding: 20px;
+}
+@media (min-width: 744px) {
+  [data-cfg=root] [data-cfg=step8] .cfg-form {
+    padding: 24px;
+  }
+}
+@media (min-width: 1440px) {
+  [data-cfg=root] [data-cfg=step8] .cfg-form {
+    padding: 28px;
+  }
+}
+[data-cfg=root] [data-cfg=step8] .cfg-form__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+@media (min-width: 744px) {
+  [data-cfg=root] [data-cfg=step8] .cfg-form__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 18px;
+  }
+}
+[data-cfg=root] [data-cfg=step8] .cfg-field {
+  display: grid;
+  gap: 6px;
+}
+[data-cfg=root] [data-cfg=step8] .cfg-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #6B7280;
+  line-height: 1.35;
+}
+[data-cfg=root] [data-cfg=step8] .cfg-input,
+[data-cfg=root] [data-cfg=step8] .cfg-textarea {
+  width: 100%;
+  font: inherit;
+  color: #1D1F2C;
+  background: #ffffff;
+  border: 1px solid #EAEAEA;
+  border-radius: 10px;
+  padding: 12px;
+}
+[data-cfg=root] [data-cfg=step8] .cfg-input::placeholder,
+[data-cfg=root] [data-cfg=step8] .cfg-textarea::placeholder {
+  color: rgb(127.6808510638, 134.6436170213, 148.5691489362);
+}
+[data-cfg=root] [data-cfg=step8] .cfg-input:focus,
+[data-cfg=root] [data-cfg=step8] .cfg-textarea:focus {
+  border-color: #DC9B59;
+  box-shadow: 0 0 0 3px rgba(220, 155, 89, 0.25);
+  outline: none;
+}
+[data-cfg=root] [data-cfg=step8] .cfg-input.is-invalid,
+[data-cfg=root] [data-cfg=step8] .cfg-textarea.is-invalid {
+  border-color: #C84141;
+}
+[data-cfg=root] [data-cfg=step8] .cfg-input.is-valid,
+[data-cfg=root] [data-cfg=step8] .cfg-textarea.is-valid {
+  border-color: #2E7D32;
+}
+[data-cfg=root] [data-cfg=step8] .cfg-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+[data-cfg=root] [data-cfg=step8] .cfg-error {
+  font-size: 12px;
+  color: #C84141;
+}
+[data-cfg=root] [data-cfg=step8] {
+  /* zgoda RODO */
+}
+[data-cfg=root] [data-cfg=step8] .cfg-consent {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px;
+  border: 1px dashed #EAEAEA;
+  border-radius: 10px;
+  background: #ffffff;
+}
+[data-cfg=root] [data-cfg=step8] .cfg-consent input[type=checkbox] {
+  accent-color: #DC9B59;
+  margin-top: 3px;
+}
+[data-cfg=root] [data-cfg=step8] .cfg-consent.is-invalid {
+  border-color: #C84141;
+}
+[data-cfg=root] [data-cfg=step8] .cfg-consent__text {
+  font-size: 13px;
+  color: #1D1F2C;
+  line-height: 1.4;
+}
+[data-cfg=root] [data-cfg=step8] {
+  /* stopka */
+}
+[data-cfg=root] [data-cfg=step8] .cfg-form__footer {
+  margin-top: 16px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+[data-cfg=root] [data-cfg=step8] .btn {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+[data-cfg=root] [data-cfg=step8] .btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+[data-cfg=root] [data-cfg=step8] .btn--ghost {
+  background: #ffffff;
+  color: #1D1F2C;
+  border-color: #EAEAEA;
+}
+[data-cfg=root] [data-cfg=step8] .btn--ghost:hover {
+  border-color: rgb(215.28, 215.28, 215.28);
+}
+[data-cfg=root] [data-cfg=step8] .btn--accent {
+  background: #DC9B59;
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(220, 155, 89, 0.35);
+}
+[data-cfg=root] [data-cfg=step8] .btn--accent:hover {
+  filter: brightness(0.96);
+}
+[data-cfg=root] [data-cfg=step8] .btn--accent:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(220, 155, 89, 0.35);
+}
+@media (max-width: 743px) {
+  [data-cfg=root] [data-cfg=step8] .cfg-form__footer {
+    justify-content: stretch;
+  }
+  [data-cfg=root] [data-cfg=step8] .btn {
+    flex: 1 1 auto;
+  }
+}
+
 /* "Pusta kartka": chowamy tylko elementy do rysowania */
 .services__icon [data-draw] {
   fill: none !important;

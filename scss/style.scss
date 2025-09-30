@@ -77,6 +77,8 @@
 @use 'modalAI/configurator-modal-table';
 @use 'modalAI/price-table-modal.scss';
 
+
+@use 'modalAI/formspre';
 /* "Pusta kartka": chowamy tylko elementy do rysowania */
 .services__icon [data-draw]{
   fill: none !important;

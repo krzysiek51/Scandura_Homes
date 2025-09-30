@@ -1,0 +1,143 @@
+@use 'tokens' as *;
+@use '../utils/variables' as *;
+
+@use "sass:color";
+
+/* ==== KROK 8 — Formularz kontaktowy (SCSS) ============================= */
+[data-cfg="root"] [data-cfg="step8"] {
+  // Tokens z variables.scss
+  $accent:        $color-accent;
+  $text:          $color-dark-text;
+  $muted:         $color-light-text;
+  $border:        $color-light-grey;   // EAEAEA
+  $bg-soft:       $color-beige-bg;     // F6F1EA
+  $error:         #C84141;
+  $ok:            #2E7D32;
+  $radius-lg:     14px;
+  $radius-sm:     10px;
+
+  // Formularz
+  .cfg-form {
+    background: $color-white;
+    border: 1px solid $border;
+    border-radius: $radius-lg;
+    box-shadow: var(--elev-modal);
+    padding: 20px;
+
+    @media (min-width: $bp-tablet) { padding: 24px; }
+    @media (min-width: $bp-laptop) { padding: 28px; }
+  }
+
+  .cfg-form__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+
+    @media (min-width: $bp-tablet) {
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 18px;
+    }
+  }
+
+  .cfg-field { display: grid; gap: 6px; }
+
+  .cfg-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: $muted;
+    line-height: 1.35;
+  }
+
+  .cfg-input,
+  .cfg-textarea {
+    width: 100%;
+    font: inherit;
+    color: $text;
+    background: $color-white;
+    border: 1px solid $border;
+    border-radius: $radius-sm;
+    padding: 12px;
+
+    &::placeholder { color: color.scale($muted, $lightness: +15%); }
+
+    &:focus {
+      border-color: $accent;
+      box-shadow: 0 0 0 3px rgba($accent, .25);
+      outline: none;
+    }
+
+    &.is-invalid { border-color: $error; }
+    &.is-valid   { border-color: $ok; }
+  }
+
+  .cfg-textarea { min-height: 120px; resize: vertical; }
+
+  .cfg-error { font-size: 12px; color: $error; }
+
+  /* zgoda RODO */
+  .cfg-consent {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 12px;
+    border: 1px dashed $border;
+    border-radius: $radius-sm;
+    background: $color-white;
+
+    input[type="checkbox"] {
+      accent-color: $accent;
+      margin-top: 3px;
+    }
+
+    &.is-invalid { border-color: $error; }
+
+    &__text {
+      font-size: 13px;
+      color: $text;
+      line-height: 1.4;
+    }
+  }
+
+  /* stopka */
+  .cfg-form__footer {
+    margin-top: 16px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .btn {
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 12px 18px;
+    font-weight: 600;
+    font-size: $btn-size;
+    cursor: pointer;
+    transition: background .2s, box-shadow .2s;
+
+    &:disabled { opacity: .6; cursor: not-allowed; }
+  }
+
+  .btn--ghost {
+    background: $color-white;
+    color: $text;
+    border-color: $border;
+
+    &:hover { border-color: color.scale($border, $lightness: -8%); }
+  }
+
+  .btn--accent {
+    background: $accent;
+    color: $color-white;
+    box-shadow: 0 6px 16px rgba($accent, .35);
+
+    &:hover { filter: brightness(.96); }
+    &:focus { outline: none; box-shadow: 0 0 0 3px rgba($accent,.35); }
+  }
+
+  @media (max-width: ($bp-tablet - 1)) {
+    .cfg-form__footer { justify-content: stretch; }
+    .btn { flex: 1 1 auto; }
+  }
+}
