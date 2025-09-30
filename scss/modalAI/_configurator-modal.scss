@@ -517,3 +517,38 @@ fieldset {
 .cfg-close:hover,
 .cfg-close:focus { background: rgba(0,0,0,.06); outline: none; }
 .cfg-head { padding-right: 36px; } /* żeby tytuł nie podchodził pod X */
+@media (min-width: 744px) {
+  /* np. układ wielokolumnowy */
+  #v2-tier .cfg-row {
+    display: grid;
+    grid-template-columns: 1fr auto auto; /* np. etykieta + 2 ceny */
+    gap: 12px;
+    align-items: center;
+    padding: 16px 0;
+  }
+
+  /* etykieta po lewej, normalny rozmiar */
+  #v2-tier .cfg-row > span:first-child,
+  #v2-tier .cfg-row label {
+    order: 1;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333; /* albo token zmiennej */
+    margin: 0;
+  }
+
+  /* ceny obok siebie (nie pod spodem) */
+  #v2-tier [data-price="house"],
+  #v2-tier [data-price="slab"],
+  #v2-tier [data-price="total"] {
+    order: 2;
+    justify-self: end;
+    text-align: right;
+    white-space: nowrap;
+    display: inline-block;
+  }
+
+  #v2-tier [data-price="house"],
+  #v2-tier [data-price="slab"] { font-size: 16px; font-weight: 700; }
+  #v2-tier [data-price="total"] { font-size: 18px; font-weight: 800; }
+}
