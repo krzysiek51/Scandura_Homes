@@ -1,0 +1,126 @@
+:root {
+  --ptm-accent: #DC9B59;
+  --ptm-bg: #fff;
+  --ptm-overlay: rgba(17,17,17,.55);
+  --ptm-muted: #6b7280;
+  --ptm-border: #eee;
+  --ptm-chip: #fafafa;
+}
+
+.ptm-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: var(--ptm-overlay);
+  // z-index nadawany w JS (100000), ale można też tu
+}
+
+.ptm {
+  background: var(--ptm-bg);
+  color: #111;
+  width: min(960px, 96vw);
+  max-height: 92vh;
+  overflow: auto;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  animation: ptm-pop .14s ease-out;
+  outline: none;
+}
+@keyframes ptm-pop {
+  from { transform: scale(.98); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.ptm__head {
+  position: sticky; top: 0; z-index: 1;
+  background: var(--ptm-bg);
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--ptm-border);
+  display: flex; gap: 10px; align-items: center; justify-content: space-between;
+}
+.ptm__title { margin: 0; font-weight: 800; font-size: 16px; }
+.ptm__meta  { color: var(--ptm-muted); font-size: 12px; }
+.ptm__close {
+  border: 0; background: #f3f4f6; border-radius: 10px;
+  padding: 8px 10px; cursor: pointer; font-weight: 700;
+}
+
+.ptm__body { padding: 12px 16px 16px; }
+
+.ptm__table-wrap {
+  width: 100%;
+  overflow-x: auto;             // poziomy scroll na mobile
+  -webkit-overflow-scrolling: touch;
+}
+
+.ptm__table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 0 rgba(0,0,0,.06);
+  min-width: 700px;             // zapobiega łamaniu kolumn; scrolluje się wrap
+}
+
+.ptm__table th,
+.ptm__table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--ptm-border);
+  vertical-align: top;
+  text-align: right;            // domyślnie prawa krawędź dla kolumn B/C/P
+}
+
+.ptm__table thead th {
+  background: var(--ptm-chip);
+  text-align: center;
+  font-weight: 800;
+  letter-spacing: .02em;
+}
+.ptm__table thead .col-h { text-align: left; }
+
+.col-h { width: 34%; text-align: left; position: sticky; left: 0; background: #fff; z-index: 2; }
+.col-b, .col-c, .col-p { width: auto; }
+
+.ptm__row--section td {
+  background: #fcfcfc;
+  font-weight: 700;
+  text-align: left;
+}
+
+.ptm__check { font-weight: 800; }
+.ptm__dash  { color: #bbb; }
+
+.ptm__card {
+  background: #f7f7f7;
+  border: 1px solid var(--ptm-border);
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+}
+.ptm__card h4 {
+  margin: 0 0 6px; font-size: 12px; font-weight: 700; color: #555; letter-spacing: .04em;
+}
+.ptm__card .price { font-size: 18px; font-weight: 900; white-space: nowrap; }
+
+.ptm__note { margin-top: 10px; color: var(--ptm-muted); font-size: 12px; }
+
+/* RESPONSYWNE DOSTOSOWANIA */
+@media (max-width: 900px) {
+  .ptm__table { min-width: 680px; }
+  .ptm__table th, .ptm__table td { padding: 8px 10px; }
+}
+@media (max-width: 744px) {
+  .ptm { width: 100%; max-height: 92vh; }
+  .ptm__table { min-width: 620px; }
+  .col-h { max-width: 260px; }
+}
+@media (max-width: 480px) {
+  .ptm__table { min-width: 580px; }
+  .ptm__title { font-size: 15px; }
+  .ptm__card .price { font-size: 16px; }
+}

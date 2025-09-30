@@ -1,0 +1,31 @@
+/* ===== PRICE TABLE MODAL ===== */
+.pt-modal[hidden]{ display:none !important; }
+.pt-modal{ position:fixed; inset:0; z-index:10050; display:grid; place-items:center; }
+.pt-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.46); }
+.pt-card{
+  position:relative;
+  width:600px; height:800px;
+  max-width:95vw; max-height:95vh;
+  background:#fff; border-radius:18px; overflow:hidden;
+  display:grid; grid-template-rows:auto 1fr;
+  box-shadow:0 20px 60px rgba(0,0,0,.35);
+}
+.pt-close{ position:absolute; right:8px; top:8px; border:0; background:transparent; font-size:22px; padding:8px; cursor:pointer;}
+.pt-head{ padding:14px 16px; border-bottom:1px solid #eee; }
+.pt-head h3{ margin:0 0 6px; font-weight:800; font-size:20px; }
+.pt-sub{ margin:0; opacity:.75; font-size:13px; }
+.pt-body{ overflow:auto; padding:12px; }
+
+.pt-table{ width:100%; border-collapse:separate; border-spacing:0; font-size:14px; }
+.pt-table thead th{ position:sticky; top:0; background:#fafafa; z-index:1; text-align:left; padding:10px; border-bottom:1px solid #eee; }
+.pt-col--name{ width:48%; }
+.pt-col--tier{ width:17.33%; text-align:center; }
+.pt-table tbody td{ padding:8px 10px; border-bottom:1px solid #f1f1f1; vertical-align:top; }
+.pt-sep td{ background:#fbfbfb; font-weight:700; text-transform:uppercase; font-size:12px; color:#666; padding-top:12px; }
+
+.pt-total td{ background:#fff7ef; font-weight:800; }
+.pt-vat-note{ font-size:12px; color:#666; padding:8px 10px; }
+
+@media (max-width:744px){
+  .pt-card{ width:100vw; height:100vh; border-radius:0; max-width:100vw; max-height:100vh; }
+}

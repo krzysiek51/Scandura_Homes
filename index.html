@@ -1792,6 +1792,100 @@
   window.ScanduraConfigurator = { open, close, setTitle, setProgress, showExit };
 })();
 </script>
+<!-- ====== PRICE TABLE MODAL (hidden template) ====== -->
+<section id="priceTableModal" class="pt-modal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="ptTitle">
+  <div class="pt-backdrop" data-pt="backdrop"></div>
+
+  <div class="pt-card" data-pt="card">
+    <button class="pt-close" data-pt="close" aria-label="Zamknij">×</button>
+
+    <header class="pt-head">
+      <h3 id="ptTitle">Tabela cenowa – zakres wykończenia</h3>
+      <p class="pt-sub">Zestawienie standardów wykończenia dla wariantów Basic / Classic / Premium.</p>
+    </header>
+
+    <main class="pt-body" tabindex="0">
+      <table class="pt-table" aria-describedby="ptTitle">
+        <thead>
+          <tr>
+            <th class="pt-col--name">Pozycja</th>
+            <th class="pt-col--tier">BASIC</th>
+            <th class="pt-col--tier">CLASSIC</th>
+            <th class="pt-col--tier">PREMIUM</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Wiersze stałe – treść zgodna z załączoną tabelą -->
+          <tr><td>Projekt budowlany</td><td>Standardowy projekt budowlany bez adaptacji</td><td>—</td><td>—</td></tr>
+
+          <tr class="pt-sep"><td colspan="4">Zmiany w projekcie</td></tr>
+          <tr><td>Zmiany w projekcie</td><td>—</td><td>✓</td><td>✓</td></tr>
+
+          <tr class="pt-sep"><td colspan="4">Konstrukcja</td></tr>
+          <tr>
+            <td>Drewno + płyta Fermacell (płyta konstrukcyjna na zew.)</td>
+            <td>✓</td><td>✓</td><td>✓</td>
+          </tr>
+
+          <tr class="pt-sep"><td colspan="4">Pokrycie dachu z rynnami</td></tr>
+          <tr><td>Pokrycie</td><td>Blacha</td><td>Blacha</td><td>Dachówka</td></tr>
+
+          <tr class="pt-sep"><td colspan="4">Elewacja</td></tr>
+          <tr><td>Lamel (impregnowany)</td><td>✓</td><td>✓</td><td>✓</td></tr>
+
+          <tr class="pt-sep"><td colspan="4">Parapety zewnętrzne</td></tr>
+          <tr><td>Materiał</td><td>Stalowe</td><td>Stalowe</td><td>Granitowe</td></tr>
+
+          <tr class="pt-sep"><td colspan="4">Stolarka okienna i drzwiowa</td></tr>
+          <tr>
+            <td>Okna/Drzwi (U≈0,74 W/m²K)</td>
+            <td>✓</td><td>✓</td><td>✓</td>
+          </tr>
+
+          <tr class="pt-sep"><td colspan="4">Okna dachowe</td></tr>
+          <tr><td>Okno 78×118 cm</td><td>—</td><td>✓</td><td>✓</td></tr>
+
+          <tr class="pt-sep"><td colspan="4">Instalacje el./W-K/C.O./Reku</td></tr>
+          <tr><td>Elektryczna (w korytach)</td><td>✓</td><td>✓</td><td>✓</td></tr>
+          <tr><td>Wod.-kan. (Alu-PEX, rury PCV)</td><td>✓</td><td>✓</td><td>✓</td></tr>
+          <tr><td>C.O.</td><td>—</td><td>✓</td><td>✓</td></tr>
+          <tr><td>Rekuperacja</td><td>—</td><td>—</td><td>✓</td></tr>
+
+          <tr class="pt-sep"><td colspan="4">Kominy</td></tr>
+          <tr><td>Kominek systemowy (blasza ponad dachem)</td><td>—</td><td>—</td><td>✓</td></tr>
+
+          <tr class="pt-sep"><td colspan="4">Płyta G-K / Fermacell</td></tr>
+          <tr><td>Okładziny wewnętrzne</td><td>Płyta G-K</td><td>Fermacell</td><td>Fermacell</td></tr>
+
+          <tr class="pt-sep"><td colspan="4">Posadzki</td></tr>
+          <tr><td>Parter (ocieplenie + styropian 15 cm)</td><td>✓</td><td>✓</td><td>✓</td></tr>
+
+          <tr class="pt-sep"><td colspan="4">Termoizolacja</td></tr>
+          <tr><td>Ściana (U≈0,035 W/m²K)</td><td>U=0,16</td><td>U=14</td><td>U=0,11</td></tr>
+
+          <tr class="pt-sep"><td colspan="4">Dodatkowa termoizolacja</td></tr>
+          <tr><td>W ruszcie instalacyjnym</td><td>—</td><td>—</td><td>✓</td></tr>
+
+          <tr class="pt-sep"><td colspan="4">Schody</td></tr>
+          <tr><td>Schody lakierowane w kolorze naturalnym</td><td>—</td><td>✓</td><td>✓</td></tr>
+        </tbody>
+
+        <tfoot>
+          <tr class="pt-total">
+            <td>CENA (netto)*</td>
+            <td><strong data-pt="price-basic">—</strong></td>
+            <td><strong data-pt="price-classic">—</strong></td>
+            <td><strong data-pt="price-premium">—</strong></td>
+          </tr>
+          <tr>
+            <td colspan="4" class="pt-vat-note">* Budownictwo mieszkaniowe: +8% VAT. Ceny pochodzą z aktualnej kalkulacji.</td>
+          </tr>
+        </tfoot>
+      </table>
+    </main>
+  </div>
+</section>
+
 
 <!-- ---------------------------Modal V2 ---------------- -->
  <script src="/js/callback.js" defer></script>
