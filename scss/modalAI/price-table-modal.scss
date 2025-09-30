@@ -1,126 +1,353 @@
-:root {
-  --ptm-accent: #DC9B59;
-  --ptm-bg: #fff;
-  --ptm-overlay: rgba(17,17,17,.55);
-  --ptm-muted: #6b7280;
-  --ptm-border: #eee;
-  --ptm-chip: #fafafa;
+@use '../utils/variables' as *;
+
+/* ==========================================================================
+   PRICE TABLE MODAL (ptm) — zintegrowany z projektem
+   Mobile-first: 375–743 pełny viewport, 744+ karta 600x800
+   Używa zmiennych z projektu (padding kontenera, breakpoints, typografia, kolory)
+   ========================================================================== */
+
+/* ===== 0) PRESETY & INTEGRACJA Z ZMIENNYMI PROJEKTU ===== */
+.ptm{
+  /* szerokości kolumn na MOBILE (łatwa regulacja) — suma 100% */
+  --col-h: 32%;  /* lewa kolumna z tytułem (było 34%, zawęziłem) */
+  --col-b: 22%;
+  --col-c: 23%;
+  --col-p: 23%;
+
+  /* siatka linii tabeli (jak w ref.) */
+  --grid:   #EFEFEF;
+  --headbg: #FAFAFA;
+  --muted:  $color-light-text;
+
+  /* nagłówki B/C/P – rozmiary (desktop / mobile) */
+  --thead-fs:   14px;
+  --thead-py:   10px;
+  --thead-fs-m: 12px;
+  --thead-py-m: 8px;
 }
 
-.ptm-overlay {
+/* ===== 1) OVERLAY + KARTA ===== */
+.ptm-overlay{
   position: fixed;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background: var(--ptm-overlay);
-  // z-index nadawany w JS (100000), ale można też tu
+  display: grid;
+  place-items: center;
+  background: $color-overlay-bg;              /* z projektu */
+  z-index: 100000;                            /* przykrywa inne modale */
+  padding-left:  max(16px, #{$container-padding-left});
+  padding-right: max(16px, #{$container-padding-right});
 }
 
-.ptm {
-  background: var(--ptm-bg);
-  color: #111;
-  width: min(960px, 96vw);
-  max-height: 92vh;
-  overflow: auto;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.25);
-  animation: ptm-pop .14s ease-out;
+.ptm{
+  background: $color-white;
+  color: $color-dark-text;
+  width: 100%;
+  height: 100svh;         /* stabilny viewport */
+  height: 100dvh;
+  border-radius: 0;
+  box-shadow: var(--elev-modal);
+  display: flex; flex-direction: column;
   outline: none;
-}
-@keyframes ptm-pop {
-  from { transform: scale(.98); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
+  font-family: $ff;
 }
 
-.ptm__head {
-  position: sticky; top: 0; z-index: 1;
-  background: var(--ptm-bg);
-  padding: 14px 16px;
-  border-bottom: 1px solid var(--ptm-border);
-  display: flex; gap: 10px; align-items: center; justify-content: space-between;
+.ptm__head{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:12px; padding:16px 18px;
+  border-bottom: 1px solid #E6E6E6;
 }
-.ptm__title { margin: 0; font-weight: 800; font-size: 16px; }
-.ptm__meta  { color: var(--ptm-muted); font-size: 12px; }
-.ptm__close {
-  border: 0; background: #f3f4f6; border-radius: 10px;
-  padding: 8px 10px; cursor: pointer; font-weight: 700;
-}
+.ptm__title{ margin:0; font-weight:$h-title-weight; font-size:18px; letter-spacing:$h-title-ls; }
+.ptm__meta{ color: var(--muted); font-size:12px; margin-top:2px; }
+.ptm__close{ background:none;border:0;font-size:20px;line-height:1;cursor:pointer }
 
-.ptm__body { padding: 12px 16px 16px; }
-
-.ptm__table-wrap {
-  width: 100%;
-  overflow-x: auto;             // poziomy scroll na mobile
+.ptm__body{
+  padding: 14px 18px 18px;
+  overflow: auto;                 /* przewija się tylko środek */
   -webkit-overflow-scrolling: touch;
+  flex: 1;
 }
 
-.ptm__table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  background: #fff;
-  border-radius: 12px;
+/* blokada scrolla tła, gdy modal otwarty */
+body.is-ptm-open{
   overflow: hidden;
-  box-shadow: 0 1px 0 rgba(0,0,0,.06);
-  min-width: 700px;             // zapobiega łamaniu kolumn; scrolluje się wrap
+  touch-action: none;
+}
+
+/* ===== 2) TABELA ===== */
+.ptm__table-wrap{ width: 100%; }
+
+.ptm__table{
+  width: 100%;
+  border-collapse: separate;      /* potrzebne do pionowych linii */
+  border-spacing: 0;
+  table-layout: fixed;            /* stabilne kolumny */
+}
+
+.ptm__table thead th,
+.ptm__table tbody td{
+  border-bottom: 1px solid var(--grid);
+}
+
+.ptm__table thead th:not(:first-child),
+.ptm__table tbody td:not(:first-child){
+  border-left: 1px solid var(--grid);
 }
 
 .ptm__table th,
-.ptm__table td {
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--ptm-border);
+.ptm__table td{
+  padding:10px 12px;
   vertical-align: top;
-  text-align: right;            // domyślnie prawa krawędź dla kolumn B/C/P
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  min-width: 0;
+  box-sizing: border-box;
+  font-size: $body-size;
+  line-height: 1.35;
+  color: $color-dark-text;
 }
 
-.ptm__table thead th {
-  background: var(--ptm-chip);
+.ptm__table thead th{
+  font-weight:800; text-align:left; background: var(--headbg);
+  font-size: var(--thead-fs);
+  padding-top: var(--thead-py);
+  padding-bottom: var(--thead-py);
+}
+.ptm__table thead th:not(:first-child){
+  text-align:center; white-space:nowrap;   /* nie łam „BASIC/COMFORT/PREMIUM” */
+}
+
+/* Tytuł pełny / skrót + podtytuł */
+.ptm__title-full{ display:inline; }
+.ptm__title-short{ display:none; font-weight:700; }
+.ptm__sub{
+  display:block;
+  margin-top:4px;
+  font-size:12px; line-height:1.35; color: var(--muted);
+}
+
+/* ✓ i — wyśrodkowane (teksty zostają do lewej) */
+.ptm__check, .ptm__dash{
+  display:block; text-align:center; font-weight:800;
+}
+.ptm__dash{ opacity:.6; }
+
+/* ===== 3) KARTY CEN — POD TABELĄ ===== */
+.ptm__prices{
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.ptm__card{
+  border:1px solid #EEE;
+  border-radius:10px;
+  padding:10px;
+  text-align:center;
+  background: $color-white;
+}
+.ptm__card h4{ margin:0 0 4px; font-weight:700; font-size:14px; }
+.ptm__card .price{ font-weight:700; font-size:14px; }
+
+/* Notka pod kartami */
+.ptm__note{ color: var(--muted); font-size:12px; margin-top:8px }
+
+/* ===== 4) MOBILE (≤ #{$bp-tablet - 1}) — brak h-scrolla, wszystko się mieści ===== */
+@media (max-width: #{$bp-tablet - 1}){
+  .ptm{ border-radius:0; }
+
+  .ptm__title-full{ display:none; }
+  .ptm__title-short{ display:inline; }
+  td.col-h .ptm__sub,
+  td.col-h ul, td.col-h ol, td.col-h small{ display:none !important; }
+
+  .ptm__table th, .ptm__table td{
+    padding: 6px 6px;
+    font-size: 12px;
+    line-height: 1.2;
+    white-space: normal;
+  }
+
+  /* Twarde proporcje kolumn — dopasowanie do viewportu */
+  .ptm__table thead th:first-child,
+  .ptm__table tbody td.col-h{ width: var(--col-h); }
+  .ptm__table thead th:nth-child(2),
+  .ptm__table tbody td.col-b{ width: var(--col-b); }
+  .ptm__table thead th:nth-child(3),
+  .ptm__table tbody td.col-c{ width: var(--col-c); }
+  .ptm__table thead th:nth-child(4),
+  .ptm__table tbody td.col-p{ width: var(--col-p); }
+
+  /* Nagłówki thead mniejsze */
+  .ptm__table thead th{
+    font-size: var(--thead-fs-m);
+    padding-top: var(--thead-py-m);
+    padding-bottom: var(--thead-py-m);
+  }
+
+  /* Karty cen pionowo (jedna pod drugą) */
+  .ptm__prices{ grid-template-columns: 1fr; }
+
+  /* absolutnie zero poziomego scrolla */
+  .ptm__body{ overflow-x: hidden; }
+  .ptm__table-wrap{ overflow-x: hidden !important; }
+}
+
+/* ===== 5) TABLET/DESKTOP (≥ $bp-tablet) — karta 600x800, 3 karty w rzędzie ===== */
+@media (min-width: $bp-tablet){
+  .ptm{
+    width: 600px;
+    max-height: 800px;
+    height: auto;
+    border-radius: 16px;
+  }
+  .ptm__body{
+    /* 56px nagłówek + paddingi — bezpieczny calc */
+    max-height: calc(800px - 56px - 18px - 14px);
+    overflow: auto;
+  }
+
+  .ptm__title-full{ display:inline; }
+  .ptm__title-short{ display:none; }
+
+  .ptm__table th, .ptm__table td{
+    padding-top: 8px; padding-bottom: 8px;
+  }
+
+  .ptm__prices{
+    grid-template-columns: repeat(3, 1fr);
+    align-items: stretch;
+  }
+
+  /* ładniejsze łamanie bardzo długich tytułów */
+  .ptm__title-full{ text-wrap: balance; }
+}
+
+/* ===== 6) DUŻE EKRANY (≥ $bp-laptop) – trzymamy 600x800 jak w projekcie ===== */
+@media (min-width: $bp-laptop){
+  .ptm{ width: 600px; max-height: 800px; }
+}
+/* ======= KARTY CEN – SKÓRKA zgodna z projektem (tylko project variables) ======= */
+/* użyte zmienne: $color-white, $color-black, $color-dark-text, $color-light-text,
+   $color-beige-bg, $color-beige-light-bg, $color-gradient-start, $color-gradient-end,
+   $color-stroke-grey, --elev-1, --elev-2                                          */
+
+.ptm__prices{
+  margin-top: 16px;
+  gap: 14px;
+}
+
+/* baza */
+.ptm__card{
+  position: relative;
+  padding: 14px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba($color-stroke-grey, .35);
+  background: $color-white;
   text-align: center;
-  font-weight: 800;
-  letter-spacing: .02em;
+  box-shadow: var(--elev-1);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
-.ptm__table thead .col-h { text-align: left; }
 
-.col-h { width: 34%; text-align: left; position: sticky; left: 0; background: #fff; z-index: 2; }
-.col-b, .col-c, .col-p { width: auto; }
-
-.ptm__row--section td {
-  background: #fcfcfc;
+.ptm__card h4{
+  margin: 0 0 8px;
   font-weight: 700;
-  text-align: left;
+  font-size: 13px;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: $color-dark-text;
 }
 
-.ptm__check { font-weight: 800; }
-.ptm__dash  { color: #bbb; }
+/* cena – mocniejsza typografia + wariant gradientowego napisu (spójny z hero) */
+.ptm__card .price{
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 1.1;
+  color: $color-black;
+}
+/* (chcesz gradientowy napis ceny? odkomentuj):
+.ptm__card .price{
+  background: linear-gradient(90deg, $color-gradient-start, $color-gradient-end);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+*/
+.ptm__card .price small{
+  display:block;
+  margin-top: 4px;
+  font-weight: 600;
+  font-size: 11px;
+  color: $color-light-text;
+}
 
-.ptm__card {
-  background: #f7f7f7;
-  border: 1px solid var(--ptm-border);
-  border-radius: 12px;
-  padding: 12px;
-  text-align: center;
+/* cienki pasek akcentu – gradient projektu */
+.ptm__card::before{
+  content:"";
+  position:absolute; inset:0 0 auto 0; height:4px;
+  border-radius:14px 14px 0 0;
+  background: linear-gradient(90deg, $color-gradient-start, $color-gradient-end);
+  opacity:.75;
 }
-.ptm__card h4 {
-  margin: 0 0 6px; font-size: 12px; font-weight: 700; color: #555; letter-spacing: .04em;
-}
-.ptm__card .price { font-size: 18px; font-weight: 900; white-space: nowrap; }
 
-.ptm__note { margin-top: 10px; color: var(--ptm-muted); font-size: 12px; }
+/* hover (desktop) */
+@media (hover:hover){
+  .ptm__card:hover{ transform: translateY(-2px); box-shadow: var(--elev-2); }
+}
 
-/* RESPONSYWNE DOSTOSOWANIA */
-@media (max-width: 900px) {
-  .ptm__table { min-width: 680px; }
-  .ptm__table th, .ptm__table td { padding: 8px 10px; }
+/* subtelne tła zgodne z resztą strony – bez nowych kolorów */
+.ptm__prices .ptm__card:nth-child(1){ background: $color-beige-bg; }
+.ptm__prices .ptm__card:nth-child(2){ background: $color-beige-light-bg; }
+.ptm__prices .ptm__card:nth-child(3){ background: $color-white; }
+
+/* drobna różnica obramowania, żeby „premium” było wyraźniejsze, nadal w palecie */
+.ptm__prices .ptm__card:nth-child(3){
+  border-color: rgba($color-stroke-grey, .55);
 }
-@media (max-width: 744px) {
-  .ptm { width: 100%; max-height: 92vh; }
-  .ptm__table { min-width: 620px; }
-  .col-h { max-width: 260px; }
+
+/* mobile – pionowo i ciaśniej */
+@media (max-width: #{$bp-tablet - 1}){
+  .ptm__card{ padding: 12px 10px; border-radius: 12px; }
+  .ptm__card .price{ font-size: 15px; }
 }
-@media (max-width: 480px) {
-  .ptm__table { min-width: 580px; }
-  .ptm__title { font-size: 15px; }
-  .ptm__card .price { font-size: 16px; }
+
+/* meta/nagłówek modala – dopasowanie do stylistyki strony */
+.ptm__meta{ font-size: 12px; color: $color-light-text; }
+.ptm__title{ font-size: 20px; font-weight: 700; }
+/* ====== Subtelne kolory tabeli (spójne z paletą projektu) ====== */
+
+/* Header: lekko beżowe tło i delikatniejsza linia */
+.ptm__table thead th{
+  background: $color-beige-light-bg;            /* subtelny beż jak na sekcjach */
+  border-bottom-color: rgba($color-stroke-grey, .35);
+}
+
+/* Lewa kolumna (opisy): minimalny tint dla czytelności */
+.ptm__table tbody td.col-h{
+  background: rgba($color-beige-bg, .35);
+}
+
+/* Zebra rows — bardzo delikatne */
+.ptm__table tbody tr:nth-child(odd) td{
+  background: rgba($color-beige-light-bg, .35);
+}
+
+/* ✓ akcentem (gradient start), „—” przygaszone */
+.ptm__check{ color: $color-gradient-start; }
+.ptm__dash{ color: $color-light-text; opacity: .6; }
+
+/* Hover na desktopie – lekkie podbicie tła wiersza */
+@media (hover:hover){
+  .ptm__table tbody tr:hover td{
+    background: rgba($color-beige-bg, .55);
+  }
+}
+
+/* Mobile: odrobinę słabsze tła, żeby nie „puchło” wizualnie */
+@media (max-width: #{$bp-tablet - 1}){
+  .ptm__table tbody td.col-h{
+    background: rgba($color-beige-bg, .28);
+  }
+  .ptm__table tbody tr:nth-child(odd) td{
+    background: rgba($color-beige-light-bg, .28);
+  }
 }

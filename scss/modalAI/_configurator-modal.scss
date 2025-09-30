@@ -1,4 +1,5 @@
 @use 'tokens' as *;
+@use '../utils/variables' as *;
 
 /* WRAPPER */
 .cfg-hide-scroll { overflow: hidden !important; }
@@ -27,13 +28,35 @@
   opacity: 0; transform: translateY(6px) scale(.992);
   transition: transform .22s cubic-bezier(.2,.7,.3,1), opacity .22s ease;
   margin: 0; overflow: hidden;
-  border-radius: 0 $cfg-radius-m 0 0;
+  //border-radius: 0 $cfg-radius-m 0 0;
 }
+
 
 .cfg-modal.is-open {
   .cfg-modal__backdrop { opacity: 1; }
   .cfg-modal__card { opacity: 1; transform: none; }
 }
+
+// ===== Close button (X) =====
+.cfg-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 100;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  color: #333; // dopasuj do designu
+
+  &:hover,
+  &:focus {
+    color: #000;
+    outline: none;
+  }
+}
+
 
 /* HEADER */
 .cfg-head {
@@ -86,7 +109,7 @@
 .cfg-link { appearance: none; background: none; border: none; padding: 12px 0; font-weight: 700; color: #333; cursor: pointer; }
 
 /* CLOSE */
-.cfg-close { position: absolute; right: 6px; top: 6px; border: none; background: transparent; font-size: 22px; line-height: 1; padding: 6px; cursor: pointer; }
+//.cfg-close { position: absolute; right: 6px; top: 6px; border: none; background: transparent; font-size: 22px; line-height: 1; padding: 6px; cursor: pointer; }
 
 /* LISTA OPCJI */
 .cfg-list { display: block; }
@@ -181,7 +204,7 @@
     height: 600px;
     max-height: none;
     overflow: hidden;
-    border-radius: 0 48px 0 0;
+    border-radius: 0 40px 0 0;
   }
 }
 
@@ -283,3 +306,214 @@ fieldset {
   background: #FFF7F0;
   color: #000;
 }
+/* MOBILE ≤743: przełączniki 100% szerokości, każdy taki sam */
+@media (max-width: 743px){
+  .price-step__tiers{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;           /* klucz: dzieci mają się rozciągać */
+  }
+
+  /* niezależnie czy przycisk ma wrappera czy nie — wszystko na 100% */
+  .price-step__tiers > *{
+    width: 100% !important;
+    flex: 0 0 auto;
+  }
+
+  .price-step__tiers .cfg-btn{
+    display: block;                 /* nie inline */
+    width: 100% !important;
+    min-width: 0 !important;        /* nadpisuje 143px */
+    box-sizing: border-box;
+    height: auto;
+    padding: 12px 14px;
+    border-radius: 10px;
+  }
+}
+
+
+/* --- KARTA PODSUMOWANIA (uspokojona) --- */
+.cfg-price-card{
+  background: $color-white;
+  border-radius: 16px;
+  box-shadow: var(--elev-1);
+  padding: 16px;
+  display: grid;
+  gap: 14px;
+  font-family: $ff;
+}
+
+/* pasek akcji u góry: Ulepsz ↔ Tabela cenowa */
+.cfg-price-card__top{
+  display:flex; align-items:center; justify-content:space-between; gap: 12px;
+}
+.cfg-price-card__top .cfg-btn{ white-space: nowrap; }
+.cfg-price-card__top [data-cfg="open-price-table"]{ 
+  padding: 12px 0; 
+  font-weight: 700; 
+  color: $color-dark-text; 
+  text-decoration: underline;
+}
+
+/* przełączniki wariantów: 3 równe kolumny, spokojny wygląd */
+.price-step__tiers{
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 8px;
+  margin: 2px 0 6px;
+}
+.price-step__tiers .cfg-btn{
+  min-width: 0; width: 100%; height: 44px; 
+  border-radius: 12px; font-weight: 700;
+}
+.price-step__tiers .is-active{
+  border-color: $color-gradient-start;
+  box-shadow: 0 0 0 2px color-mix(in oklab, $color-gradient-start 35%, transparent);
+  background: $color-beige-light-bg;
+}
+
+/* sekcja cen: kolumny „etykieta | wartość”, wartości do prawej */
+#v2-tier .cfg-row{
+  display:grid; grid-template-columns: 1fr auto; 
+  align-items:center; gap: 12px; padding: 8px 0;
+}
+#v2-tier .cfg-row span,
+#v2-tier label{ color: $color-dark-text; font-weight: 600; }
+#v2-tier .cfg-row strong{ text-align:right; font-weight: 800; }
+
+/* separator przed SUMĄ */
+#v2-tier hr{
+  border: none; border-top: 1px solid rgba(0,0,0,.08);
+  margin: 8px 0;
+}
+/* wiersz z SUMĄ – mocniej */
+#v2-tier [data-price="total"]{ 
+  font-size: 1.12rem; 
+}
+#v2-tier [data-price="total-label"]{
+  font-weight: 800;
+}
+
+/* przypis o VAT – cichszy */
+#v2-tier .price-vat{
+  color: $color-light-text; 
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* dolny blok akcji */
+.cfg-price-card .cfg-btn[data-cfg="send-now"]{
+  width: 100%; height: 48px; border-radius: 12px; 
+  font-weight: 800;
+}
+.cfg-price-card [data-cfg="price-details"]{
+  color: $color-dark-text; text-decoration: underline; font-weight: 700;
+}
+
+/* komunikat błędu – spokojny „chip” */
+.cfg-error{
+  background: $color-beige-light-bg;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: #b00020;
+  font-weight: 600;
+}
+
+/* drobne korekty responsywne */
+@media (min-width: $bp-tablet){
+  .cfg-price-card{ padding: 18px; gap: 16px; }
+  #v2-tier [data-price="total"]{ font-size: 1.18rem; }
+}
+/* === MOBILE ≤743px: jedna kolumna, label nad wartością === */
+@media (max-width: 743px){
+
+  /* każdy wiersz: jedna kolumna, mała przerwa */
+  #v2-tier .cfg-row{
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 4px;
+    align-items: start;
+    padding: 12px 0; /* troszkę powietrza pionowo */
+  }
+
+  /* etykieta (lewy tekst) idzie na górę, mniejsza i jaśniejsza */
+  #v2-tier .cfg-row > span:first-child,
+  #v2-tier .cfg-row label{
+    order: 1;
+    font-size: 13px;
+    line-height: 1.35;
+    font-weight: 600;
+    color: $color-light-text;
+    margin: 0;               /* zeruj ewent. marginesy */
+    word-break: normal;
+    overflow-wrap: break-word;  /* bez „anywhere” */
+    hyphens: auto;
+  }
+
+  /* wartości cenowe pod spodem – pełna szerokość, wyrównanie do lewej */
+  #v2-tier [data-price="house"],
+  #v2-tier [data-price="slab"],
+  #v2-tier [data-price="total"]{
+    order: 2;
+    justify-self: start;
+    text-align: left;
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: break-word;
+    display: block;
+  }
+
+  /* rozmiary: suma minimalnie większa dla hierarchii */
+  #v2-tier [data-price="house"],
+  #v2-tier [data-price="slab"]{ font-size: 16px; font-weight: 800; }
+
+  #v2-tier [data-price="total"]{ font-size: 18px; font-weight: 800; }
+
+  /* wiersz z checkboxem zachowuje się tak samo (etykieta nad wartością) */
+  #v2-tier .cfg-row label{
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+  }
+}
+.ptm__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 30px;
+  border-bottom: 1px solid #eee;
+}
+
+.ptm__title {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.ptm__close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  font-weight: 600;
+  color: #444;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.2s;
+
+  &:hover,
+  &:focus {
+    background: rgba(0,0,0,0.05);
+    outline: none;
+  }
+}
+/* karta musi być relative, by X (absolute) miał punkt odniesienia */
+
+
+
+.cfg-close:hover,
+.cfg-close:focus { background: rgba(0,0,0,.06); outline: none; }
+.cfg-head { padding-right: 36px; } /* żeby tytuł nie podchodził pod X */

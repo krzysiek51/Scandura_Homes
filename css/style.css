@@ -12708,7 +12708,6 @@ body.services-page .header_logo-bg {
   transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.3, 1), opacity 0.22s ease;
   margin: 0;
   overflow: hidden;
-  border-radius: 0 28px 0 0;
 }
 
 .cfg-modal.is-open .cfg-modal__backdrop {
@@ -12717,6 +12716,23 @@ body.services-page .header_logo-bg {
 .cfg-modal.is-open .cfg-modal__card {
   opacity: 1;
   transform: none;
+}
+
+.cfg-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 100;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  color: #333;
+}
+.cfg-close:hover, .cfg-close:focus {
+  color: #000;
+  outline: none;
 }
 
 /* HEADER */
@@ -12813,18 +12829,6 @@ body.services-page .header_logo-bg {
 }
 
 /* CLOSE */
-.cfg-close {
-  position: absolute;
-  right: 6px;
-  top: 6px;
-  border: none;
-  background: transparent;
-  font-size: 22px;
-  line-height: 1;
-  padding: 6px;
-  cursor: pointer;
-}
-
 /* LISTA OPCJI */
 .cfg-list {
   display: block;
@@ -13041,7 +13045,7 @@ body.services-page .header_logo-bg {
     height: 600px;
     max-height: none;
     overflow: hidden;
-    border-radius: 0 48px 0 0;
+    border-radius: 0 40px 0 0;
   }
 }
 /* ===== ≥1440 px: ten sam rozmiar, większy promień ===== */
@@ -13238,6 +13242,251 @@ fieldset {
   color: #000;
 }
 
+/* MOBILE ≤743: przełączniki 100% szerokości, każdy taki sam */
+@media (max-width: 743px) {
+  .price-step__tiers {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch; /* klucz: dzieci mają się rozciągać */
+  }
+  /* niezależnie czy przycisk ma wrappera czy nie — wszystko na 100% */
+  .price-step__tiers > * {
+    width: 100% !important;
+    flex: 0 0 auto;
+  }
+  .price-step__tiers .cfg-btn {
+    display: block; /* nie inline */
+    width: 100% !important;
+    min-width: 0 !important; /* nadpisuje 143px */
+    box-sizing: border-box;
+    height: auto;
+    padding: 12px 14px;
+    border-radius: 10px;
+  }
+}
+/* --- KARTA PODSUMOWANIA (uspokojona) --- */
+.cfg-price-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: var(--elev-1);
+  padding: 16px;
+  display: grid;
+  gap: 14px;
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* pasek akcji u góry: Ulepsz ↔ Tabela cenowa */
+.cfg-price-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cfg-price-card__top .cfg-btn {
+  white-space: nowrap;
+}
+
+.cfg-price-card__top [data-cfg=open-price-table] {
+  padding: 12px 0;
+  font-weight: 700;
+  color: #1D1F2C;
+  text-decoration: underline;
+}
+
+/* przełączniki wariantów: 3 równe kolumny, spokojny wygląd */
+.price-step__tiers {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 2px 0 6px;
+}
+
+.price-step__tiers .cfg-btn {
+  min-width: 0;
+  width: 100%;
+  height: 44px;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+.price-step__tiers .is-active {
+  border-color: #DC9B59;
+  box-shadow: 0 0 0 2px color-mix(in oklab, #DC9B59 35%, transparent);
+  background: #FAF7F4;
+}
+
+/* sekcja cen: kolumny „etykieta | wartość”, wartości do prawej */
+#v2-tier .cfg-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+#v2-tier .cfg-row span,
+#v2-tier label {
+  color: #1D1F2C;
+  font-weight: 600;
+}
+
+#v2-tier .cfg-row strong {
+  text-align: right;
+  font-weight: 800;
+}
+
+/* separator przed SUMĄ */
+#v2-tier hr {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  margin: 8px 0;
+}
+
+/* wiersz z SUMĄ – mocniej */
+#v2-tier [data-price=total] {
+  font-size: 1.12rem;
+}
+
+#v2-tier [data-price=total-label] {
+  font-weight: 800;
+}
+
+/* przypis o VAT – cichszy */
+#v2-tier .price-vat {
+  color: #6B7280;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* dolny blok akcji */
+.cfg-price-card .cfg-btn[data-cfg=send-now] {
+  width: 100%;
+  height: 48px;
+  border-radius: 12px;
+  font-weight: 800;
+}
+
+.cfg-price-card [data-cfg=price-details] {
+  color: #1D1F2C;
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+/* komunikat błędu – spokojny „chip” */
+.cfg-error {
+  background: #FAF7F4;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: #b00020;
+  font-weight: 600;
+}
+
+/* drobne korekty responsywne */
+@media (min-width: 744px) {
+  .cfg-price-card {
+    padding: 18px;
+    gap: 16px;
+  }
+  #v2-tier [data-price=total] {
+    font-size: 1.18rem;
+  }
+}
+/* === MOBILE ≤743px: jedna kolumna, label nad wartością === */
+@media (max-width: 743px) {
+  /* każdy wiersz: jedna kolumna, mała przerwa */
+  #v2-tier .cfg-row {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 4px;
+    align-items: start;
+    padding: 12px 0; /* troszkę powietrza pionowo */
+  }
+  /* etykieta (lewy tekst) idzie na górę, mniejsza i jaśniejsza */
+  #v2-tier .cfg-row > span:first-child,
+  #v2-tier .cfg-row label {
+    order: 1;
+    font-size: 13px;
+    line-height: 1.35;
+    font-weight: 600;
+    color: #6B7280;
+    margin: 0; /* zeruj ewent. marginesy */
+    word-break: normal;
+    overflow-wrap: break-word; /* bez „anywhere” */
+    hyphens: auto;
+  }
+  /* wartości cenowe pod spodem – pełna szerokość, wyrównanie do lewej */
+  #v2-tier [data-price=house],
+  #v2-tier [data-price=slab],
+  #v2-tier [data-price=total] {
+    order: 2;
+    justify-self: start;
+    text-align: left;
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: break-word;
+    display: block;
+  }
+  /* rozmiary: suma minimalnie większa dla hierarchii */
+  #v2-tier [data-price=house],
+  #v2-tier [data-price=slab] {
+    font-size: 16px;
+    font-weight: 800;
+  }
+  #v2-tier [data-price=total] {
+    font-size: 18px;
+    font-weight: 800;
+  }
+  /* wiersz z checkboxem zachowuje się tak samo (etykieta nad wartością) */
+  #v2-tier .cfg-row label {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+  }
+}
+.ptm__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 30px;
+  border-bottom: 1px solid #eee;
+}
+
+.ptm__title {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.ptm__close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  font-weight: 600;
+  color: #444;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+.ptm__close:hover, .ptm__close:focus {
+  background: rgba(0, 0, 0, 0.05);
+  outline: none;
+}
+
+/* karta musi być relative, by X (absolute) miał punkt odniesienia */
+.cfg-close:hover,
+.cfg-close:focus {
+  background: rgba(0, 0, 0, 0.06);
+  outline: none;
+}
+
+.cfg-head {
+  padding-right: 36px;
+} /* żeby tytuł nie podchodził pod X */
 /* ===== PRICE TABLE MODAL ===== */
 .pt-modal[hidden] {
   display: none !important;
@@ -13365,205 +13614,455 @@ fieldset {
     max-height: 100vh;
   }
 }
-:root {
-  --ptm-accent: #DC9B59;
-  --ptm-bg: #fff;
-  --ptm-overlay: rgba(17,17,17,.55);
-  --ptm-muted: #6b7280;
-  --ptm-border: #eee;
-  --ptm-chip: #fafafa;
+/* ==========================================================================
+   PRICE TABLE MODAL (ptm) — zintegrowany z projektem
+   Mobile-first: 375–743 pełny viewport, 744+ karta 600x800
+   Używa zmiennych z projektu (padding kontenera, breakpoints, typografia, kolory)
+   ========================================================================== */
+/* ===== 0) PRESETY & INTEGRACJA Z ZMIENNYMI PROJEKTU ===== */
+.ptm {
+  /* szerokości kolumn na MOBILE (łatwa regulacja) — suma 100% */
+  --col-h: 32%; /* lewa kolumna z tytułem (było 34%, zawęziłem) */
+  --col-b: 22%;
+  --col-c: 23%;
+  --col-p: 23%;
+  /* siatka linii tabeli (jak w ref.) */
+  --grid: #EFEFEF;
+  --headbg: #FAFAFA;
+  --muted: $color-light-text;
+  /* nagłówki B/C/P – rozmiary (desktop / mobile) */
+  --thead-fs: 14px;
+  --thead-py: 10px;
+  --thead-fs-m: 12px;
+  --thead-py-m: 8px;
 }
 
+/* ===== 1) OVERLAY + KARTA ===== */
 .ptm-overlay {
   position: fixed;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background: var(--ptm-overlay);
+  display: grid;
+  place-items: center;
+  background: rgba(91, 90, 90, 0.27); /* z projektu */
+  z-index: 100000; /* przykrywa inne modale */
+  padding-left: max(16px, 20px);
+  padding-right: max(16px, 20px);
 }
 
 .ptm {
-  background: var(--ptm-bg);
-  color: #111;
-  width: min(960px, 96vw);
-  max-height: 92vh;
-  overflow: auto;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-  animation: ptm-pop 0.14s ease-out;
+  background: #ffffff;
+  color: #1D1F2C;
+  width: 100%;
+  height: 100svh; /* stabilny viewport */
+  height: 100dvh;
+  border-radius: 0;
+  box-shadow: var(--elev-modal);
+  display: flex;
+  flex-direction: column;
   outline: none;
+  font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
-@keyframes ptm-pop {
-  from {
-    transform: scale(0.98);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
 .ptm__head {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  background: var(--ptm-bg);
-  padding: 14px 16px;
-  border-bottom: 1px solid var(--ptm-border);
   display: flex;
-  gap: 10px;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid #E6E6E6;
 }
 
 .ptm__title {
   margin: 0;
-  font-weight: 800;
-  font-size: 16px;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 0.07em;
 }
 
 .ptm__meta {
-  color: var(--ptm-muted);
+  color: var(--muted);
   font-size: 12px;
+  margin-top: 2px;
 }
 
 .ptm__close {
+  background: none;
   border: 0;
-  background: #f3f4f6;
-  border-radius: 10px;
-  padding: 8px 10px;
+  font-size: 20px;
+  line-height: 1;
   cursor: pointer;
-  font-weight: 700;
 }
 
 .ptm__body {
-  padding: 12px 16px 16px;
+  padding: 14px 18px 18px;
+  overflow: auto; /* przewija się tylko środek */
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
 }
 
+/* blokada scrolla tła, gdy modal otwarty */
+body.is-ptm-open {
+  overflow: hidden;
+  touch-action: none;
+}
+
+/* ===== 2) TABELA ===== */
 .ptm__table-wrap {
   width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
 .ptm__table {
   width: 100%;
-  border-collapse: separate;
+  border-collapse: separate; /* potrzebne do pionowych linii */
   border-spacing: 0;
-  background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
-  min-width: 700px;
+  table-layout: fixed; /* stabilne kolumny */
+}
+
+.ptm__table thead th,
+.ptm__table tbody td {
+  border-bottom: 1px solid var(--grid);
+}
+
+.ptm__table thead th:not(:first-child),
+.ptm__table tbody td:not(:first-child) {
+  border-left: 1px solid var(--grid);
 }
 
 .ptm__table th,
 .ptm__table td {
   padding: 10px 12px;
-  border-bottom: 1px solid var(--ptm-border);
   vertical-align: top;
-  text-align: right;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  min-width: 0;
+  box-sizing: border-box;
+  font-size: 14px;
+  line-height: 1.35;
+  color: #1D1F2C;
 }
 
 .ptm__table thead th {
-  background: var(--ptm-chip);
-  text-align: center;
   font-weight: 800;
-  letter-spacing: 0.02em;
-}
-
-.ptm__table thead .col-h {
   text-align: left;
+  background: var(--headbg);
+  font-size: var(--thead-fs);
+  padding-top: var(--thead-py);
+  padding-bottom: var(--thead-py);
 }
 
-.col-h {
-  width: 34%;
-  text-align: left;
-  position: sticky;
-  left: 0;
-  background: #fff;
-  z-index: 2;
+.ptm__table thead th:not(:first-child) {
+  text-align: center;
+  white-space: nowrap; /* nie łam „BASIC/COMFORT/PREMIUM” */
 }
 
-.col-b, .col-c, .col-p {
-  width: auto;
+/* Tytuł pełny / skrót + podtytuł */
+.ptm__title-full {
+  display: inline;
 }
 
-.ptm__row--section td {
-  background: #fcfcfc;
+.ptm__title-short {
+  display: none;
   font-weight: 700;
-  text-align: left;
 }
 
-.ptm__check {
+.ptm__sub {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--muted);
+}
+
+/* ✓ i — wyśrodkowane (teksty zostają do lewej) */
+.ptm__check, .ptm__dash {
+  display: block;
+  text-align: center;
   font-weight: 800;
 }
 
 .ptm__dash {
-  color: #bbb;
+  opacity: 0.6;
+}
+
+/* ===== 3) KARTY CEN — POD TABELĄ ===== */
+.ptm__prices {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
 }
 
 .ptm__card {
-  background: #f7f7f7;
-  border: 1px solid var(--ptm-border);
-  border-radius: 12px;
-  padding: 12px;
+  border: 1px solid #EEE;
+  border-radius: 10px;
+  padding: 10px;
   text-align: center;
+  background: #ffffff;
 }
 
 .ptm__card h4 {
-  margin: 0 0 6px;
-  font-size: 12px;
+  margin: 0 0 4px;
   font-weight: 700;
-  color: #555;
-  letter-spacing: 0.04em;
+  font-size: 14px;
 }
 
 .ptm__card .price {
-  font-size: 18px;
-  font-weight: 900;
-  white-space: nowrap;
+  font-weight: 700;
+  font-size: 14px;
 }
 
+/* Notka pod kartami */
 .ptm__note {
-  margin-top: 10px;
-  color: var(--ptm-muted);
+  color: var(--muted);
   font-size: 12px;
+  margin-top: 8px;
 }
 
-/* RESPONSYWNE DOSTOSOWANIA */
-@media (max-width: 900px) {
-  .ptm__table {
-    min-width: 680px;
+/* ===== 4) MOBILE (≤ 743px) — brak h-scrolla, wszystko się mieści ===== */
+@media (max-width: 743px) {
+  .ptm {
+    border-radius: 0;
+  }
+  .ptm__title-full {
+    display: none;
+  }
+  .ptm__title-short {
+    display: inline;
+  }
+  td.col-h .ptm__sub,
+  td.col-h ul, td.col-h ol, td.col-h small {
+    display: none !important;
   }
   .ptm__table th, .ptm__table td {
-    padding: 8px 10px;
+    padding: 6px 6px;
+    font-size: 12px;
+    line-height: 1.2;
+    white-space: normal;
+  }
+  /* Twarde proporcje kolumn — dopasowanie do viewportu */
+  .ptm__table thead th:first-child,
+  .ptm__table tbody td.col-h {
+    width: var(--col-h);
+  }
+  .ptm__table thead th:nth-child(2),
+  .ptm__table tbody td.col-b {
+    width: var(--col-b);
+  }
+  .ptm__table thead th:nth-child(3),
+  .ptm__table tbody td.col-c {
+    width: var(--col-c);
+  }
+  .ptm__table thead th:nth-child(4),
+  .ptm__table tbody td.col-p {
+    width: var(--col-p);
+  }
+  /* Nagłówki thead mniejsze */
+  .ptm__table thead th {
+    font-size: var(--thead-fs-m);
+    padding-top: var(--thead-py-m);
+    padding-bottom: var(--thead-py-m);
+  }
+  /* Karty cen pionowo (jedna pod drugą) */
+  .ptm__prices {
+    grid-template-columns: 1fr;
+  }
+  /* absolutnie zero poziomego scrolla */
+  .ptm__body {
+    overflow-x: hidden;
+  }
+  .ptm__table-wrap {
+    overflow-x: hidden !important;
   }
 }
-@media (max-width: 744px) {
+/* ===== 5) TABLET/DESKTOP (≥ $bp-tablet) — karta 600x800, 3 karty w rzędzie ===== */
+@media (min-width: 744px) {
   .ptm {
-    width: 100%;
-    max-height: 92vh;
+    width: 600px;
+    max-height: 800px;
+    height: auto;
+    border-radius: 16px;
   }
-  .ptm__table {
-    min-width: 620px;
+  .ptm__body {
+    /* 56px nagłówek + paddingi — bezpieczny calc */
+    max-height: 712px;
+    overflow: auto;
   }
-  .col-h {
-    max-width: 260px;
+  .ptm__title-full {
+    display: inline;
+  }
+  .ptm__title-short {
+    display: none;
+  }
+  .ptm__table th, .ptm__table td {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  .ptm__prices {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: stretch;
+  }
+  /* ładniejsze łamanie bardzo długich tytułów */
+  .ptm__title-full {
+    text-wrap: balance;
   }
 }
-@media (max-width: 480px) {
-  .ptm__table {
-    min-width: 580px;
+/* ===== 6) DUŻE EKRANY (≥ $bp-laptop) – trzymamy 600x800 jak w projekcie ===== */
+@media (min-width: 1440px) {
+  .ptm {
+    width: 600px;
+    max-height: 800px;
   }
-  .ptm__title {
-    font-size: 15px;
+}
+/* ======= KARTY CEN – SKÓRKA zgodna z projektem (tylko project variables) ======= */
+/* użyte zmienne: $color-white, $color-black, $color-dark-text, $color-light-text,
+   $color-beige-bg, $color-beige-light-bg, $color-gradient-start, $color-gradient-end,
+   $color-stroke-grey, --elev-1, --elev-2                                          */
+.ptm__prices {
+  margin-top: 16px;
+  gap: 14px;
+}
+
+/* baza */
+.ptm__card {
+  position: relative;
+  padding: 14px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(151, 151, 151, 0.35);
+  background: #ffffff;
+  text-align: center;
+  box-shadow: var(--elev-1);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.ptm__card h4 {
+  margin: 0 0 8px;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #1D1F2C;
+}
+
+/* cena – mocniejsza typografia + wariant gradientowego napisu (spójny z hero) */
+.ptm__card .price {
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 1.1;
+  color: #000000;
+}
+
+/* (chcesz gradientowy napis ceny? odkomentuj):
+.ptm__card .price{
+  background: linear-gradient(90deg, $color-gradient-start, $color-gradient-end);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+*/
+.ptm__card .price small {
+  display: block;
+  margin-top: 4px;
+  font-weight: 600;
+  font-size: 11px;
+  color: #6B7280;
+}
+
+/* cienki pasek akcentu – gradient projektu */
+.ptm__card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  border-radius: 14px 14px 0 0;
+  background: linear-gradient(90deg, #DC9B59, #000000);
+  opacity: 0.75;
+}
+
+/* hover (desktop) */
+@media (hover: hover) {
+  .ptm__card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--elev-2);
+  }
+}
+/* subtelne tła zgodne z resztą strony – bez nowych kolorów */
+.ptm__prices .ptm__card:nth-child(1) {
+  background: #F6F1EA;
+}
+
+.ptm__prices .ptm__card:nth-child(2) {
+  background: #FAF7F4;
+}
+
+.ptm__prices .ptm__card:nth-child(3) {
+  background: #ffffff;
+}
+
+/* drobna różnica obramowania, żeby „premium” było wyraźniejsze, nadal w palecie */
+.ptm__prices .ptm__card:nth-child(3) {
+  border-color: rgba(151, 151, 151, 0.55);
+}
+
+/* mobile – pionowo i ciaśniej */
+@media (max-width: 743px) {
+  .ptm__card {
+    padding: 12px 10px;
+    border-radius: 12px;
   }
   .ptm__card .price {
-    font-size: 16px;
+    font-size: 15px;
+  }
+}
+/* meta/nagłówek modala – dopasowanie do stylistyki strony */
+.ptm__meta {
+  font-size: 12px;
+  color: #6B7280;
+}
+
+.ptm__title {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* ====== Subtelne kolory tabeli (spójne z paletą projektu) ====== */
+/* Header: lekko beżowe tło i delikatniejsza linia */
+.ptm__table thead th {
+  background: #FAF7F4; /* subtelny beż jak na sekcjach */
+  border-bottom-color: rgba(151, 151, 151, 0.35);
+}
+
+/* Lewa kolumna (opisy): minimalny tint dla czytelności */
+.ptm__table tbody td.col-h {
+  background: rgba(246, 241, 234, 0.35);
+}
+
+/* Zebra rows — bardzo delikatne */
+.ptm__table tbody tr:nth-child(odd) td {
+  background: rgba(250, 247, 244, 0.35);
+}
+
+/* ✓ akcentem (gradient start), „—” przygaszone */
+.ptm__check {
+  color: #DC9B59;
+}
+
+.ptm__dash {
+  color: #6B7280;
+  opacity: 0.6;
+}
+
+/* Hover na desktopie – lekkie podbicie tła wiersza */
+@media (hover: hover) {
+  .ptm__table tbody tr:hover td {
+    background: rgba(246, 241, 234, 0.55);
+  }
+}
+/* Mobile: odrobinę słabsze tła, żeby nie „puchło” wizualnie */
+@media (max-width: 743px) {
+  .ptm__table tbody td.col-h {
+    background: rgba(246, 241, 234, 0.28);
+  }
+  .ptm__table tbody tr:nth-child(odd) td {
+    background: rgba(250, 247, 244, 0.28);
   }
 }
 /* "Pusta kartka": chowamy tylko elementy do rysowania */

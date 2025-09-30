@@ -668,6 +668,8 @@
     <div class="price-vat" data-price="vat"></div>
   </section>
 `;
+// po BODY.innerHTML = `...`
+placePriceLinkAboveTiers(document.getElementById('v2-tier-details'));
 
     // ——— Inicjalizacja bloku V2 pod „Szczegóły”
     try {
@@ -753,6 +755,52 @@
     BODY.querySelector('[data-cfg="back-price"]')?.addEventListener('click', () => renderPrice(state));
   }
 
+
+// ===== Move "Tabela cenowa" above the tier buttons (all MQ) + dedupe =====
+// ===== Move "Tabela cenowa" where it belongs (price: in header row, details: above tiers) + dedupe =====
+function placePriceLinkAboveTiers(root) {
+  if (!root) return;
+
+  // We will reuse (and dedupe) the same link
+  const links = Array.from(root.querySelectorAll('[data-cfg="open-price-table"]'));
+  if (!links.length) return;
+  const primary = links[0];
+  const wrap = primary.closest('div') || primary;
+  links.slice(1).forEach(l => (l.closest('div') || l).remove()); // remove duplicates
+
+  // 1) PRICE CARD (#v2-tier): put link in the same row as "Ulepsz wycenę", on the right
+  if (root.id === 'v2-tier') {
+    const actionsRow = root.closest('.cfg-price-card')?.querySelector('[data-cfg="ai-enhance"]')?.parentElement;
+    if (actionsRow) {
+      // make the row flex and push link to the right
+      actionsRow.style.display = 'flex';
+      actionsRow.style.alignItems = 'center';
+      actionsRow.style.gap = '12px';
+      actionsRow.style.flexWrap = 'wrap';
+
+      wrap.style.margin = '0 0 0 auto';     // shove to the right
+      wrap.style.display = 'block';
+      actionsRow.appendChild(wrap);
+      return;
+    }
+  }
+
+  // 2) DETAILS (#v2-tier-details): keep it ABOVE the tier buttons
+  const tiers = root.querySelector('.price-step__tiers');
+  if (!tiers) return;
+
+  if (tiers.previousElementSibling !== wrap) {
+    tiers.parentNode.insertBefore(wrap, tiers);
+  }
+  wrap.style.display = 'flex';
+  wrap.style.justifyContent = 'flex-start';
+  wrap.style.margin = '0 0 10px';
+}
+
+
+
+
+
   function renderPrice(state) {
     // 1) stan + debug
     state = state || window.__CFG_LAST_STATE || window.__CFG_STATE || {};
@@ -807,109 +855,126 @@ window.openPriceTable = window.openPriceTable || (function () {
   function mid(a, b){ const x=+a||0,y=+b||0; return x&&y ? (x+y)/2 : (y||x||0); }
 
   // Sekcje i features (to samo co wcześniej – treść łatwo zmienisz)
-  const FEATURES = [
-    { title: 'Projekt budowlany', values: { basic: 'Standardowy projekt budowlany bez adaptacji', classic: 'Standardowy projekt budowlany bez adaptacji', premium: 'Standardowy projekt budowlany bez adaptacji' } },
-    { title: 'Zmiany w Projekcie', values: { basic: '—', classic: '✓', premium: '✓' } },
-    { sep: true, label: 'Konstrukcja' },
-    { title: 'Drewno + Płyta Fermacell', values: { basic: '✓', classic: '✓', premium: '✓' } },
-    { sep: true, label: 'Pokrycie dachu z rynnami' },
-    { title: 'Pokrycie dachu', values: { basic: 'Blacha', classic: 'Blacha', premium: 'Dachówka' } },
-    { sep: true, label: 'Elewacja' },
-    { title: 'Elewacja lamel', values: { basic: 'Impregnowana ciśnieniowo w kolorze brązowym', classic: '✓', premium: '✓' } },
-    { sep: true, label: 'Parapety zewnętrzne' },
-    { title: 'Parapety', values: { basic: 'Stalowe', classic: 'Stalowe', premium: 'Granitowe' } },
-    { sep: true, label: 'Stolarka' },
-    { title: 'Stolarka okienna i drzwiowa', values: { basic: '✓', classic: '✓', premium: '✓' } },
-    { title: 'Okna dachowe', values: { basic: '✓', classic: '✓', premium: '✓' } },
-    { sep: true, label: 'Instalacje' },
-    { title: 'Instalacja elektryczna', values: { basic: '✓', classic: '✓', premium: '✓' } },
-    { title: 'Instalacja wod.-kan.', values: { basic: '✓', classic: '✓', premium: '✓' } },
-    { title: 'Instalacja C.O.', values: { basic: '✓', classic: '✓', premium: '✓' } },
-    { title: 'Rekuperacja', values: { basic: '—', classic: '✓', premium: '✓' } },
-    { title: 'Komin', values: { basic: '—', classic: '✓', premium: '✓' } },
-    { sep: true, label: 'Ściany / Posadzki / Termika' },
-    { title: 'Płyta Fermacell / G-K', values: { basic: 'Płyta G-K', classic: 'Fermacell', premium: 'Fermacell' } },
-    { title: 'Posadzki parter', values: { basic: '✓', classic: '✓', premium: '✓' } },
-    { title: 'Termoizolacja (U)', values: { basic: 'U=0,16', classic: 'U=0,14', premium: 'U=0,11' } },
-    { title: 'Dodatkowa termoizolacja', values: { basic: '—', classic: '—', premium: '✓' } },
-    { title: 'Schody', values: { basic: 'Schody lakierowane – kolor naturalny', classic: '✓', premium: '✓' } }
-  ];
-  function featureRows() {
-    return FEATURES.map(item => {
-      if (item.sep) return `<tr class="ptm__row--section"><td colspan="4">${item.label}</td></tr>`;
-      const v = item.values||{};
-      const cell = (val) => val==='✓' ? '<span class="ptm__check" aria-label="tak">✓</span>' : (val==='—'||val==='-' ? '<span class="ptm__dash">—</span>' : (val ?? '—'));
-      return `<tr>
-        <td class="col-h">${item.title}</td>
-        <td class="col-b">${cell(v.basic)}</td>
-        <td class="col-c">${cell(v.classic)}</td>
-        <td class="col-p">${cell(v.premium)}</td>
-      </tr>`;
-    }).join('');
-  }
+const FEATURES = [
+  { title: 'Konstrukcja – Drewno', values: { basic: '✓', classic: '✓', premium: '✓' } },
+  { title: 'Konstrukcja – Płyta Fermacell (poszycie)', values: { basic: '✓', classic: '✓', premium: '✓' } },
+
+  { title: 'Pokrycie dachu z rynnami', values: { basic: 'Blacha', classic: 'blacha', premium: 'Dachówka' } },
+  { title: 'Elewacja lamel', values: { basic: '✓', classic: '✓', premium: '✓' } },
+  { title: 'Parapety zewnętrzne', values: { basic: 'Stalowe', classic: 'Stalowe', premium: 'Granitowe' } },
+
+  { title: 'Stolarka okienna i drzwiowa', values: { basic: '✓', classic: '✓', premium: '✓' } },
+  { title: 'Okna dachowe', values: { basic: '✓', classic: '✓', premium: '✓' } },
+
+  { title: 'Instalacja elektryczna', values: { basic: '✓', classic: '✓', premium: '✓' } },
+  { title: 'Instalacja wod.-kan.', values: { basic: '✓', classic: '✓', premium: '✓' } },
+  { title: 'Instalacja C.O.', values: { basic: '✓', classic: '✓', premium: '✓' } },
+  { title: 'Wentylacja (naturalna, grawitacyjna)', values: { basic: '✓', classic: '✓', premium: '✓' } },
+  { title: 'Rekuperacja', values: { basic: '—', classic: '✓', premium: '✓' } },
+  { title: 'Komin', values: { basic: '—', classic: '✓', premium: '✓' } },
+
+  { title: 'Płyta Fermacell / G-K', values: { basic: 'Płyta G-K', classic: 'Fermacell', premium: 'Fermacell' } },
+  { title: 'Posadzki parter', values: { basic: '✓', classic: '✓', premium: '✓' } },
+  { title: 'Termoizolacja (U)', values: { basic: 'U=0,16', classic: 'U=0,14', premium: 'U=0,11' } },
+  { title: 'Dodatkowa termoizolacja', values: { basic: '—', classic: '—', premium: '✓' } },
+  { title: 'Schody', values: { basic: '—', classic: '✓', premium: '✓' } }
+];
+
+function featureRows() {
+  const cell = (val) => {
+    if (val === '✓') return `<span class="ptm__check" aria-label="tak">✓</span>`;
+    if (val === '—' || val === '-') return `<span class="ptm__dash">—</span>`;
+    return String(val ?? '');
+  };
+  const rows = Array.isArray(FEATURES) ? FEATURES : [];
+
+  return rows.map((item) => {
+    // Usuwamy wsparcie dla separatorów (nie używamy już item.sep)
+    const titleFull  = item.title || '';
+    const titleShort = item.short || item.title || '';
+    const subtitle   = item.subtitle ? `<small class="ptm__sub">${item.subtitle}</small>` : '';
+
+    return `
+      <tr class="ptm__row">
+        <td class="col-h">
+          <span class="ptm__title-full">${titleFull}</span>
+          <span class="ptm__title-short">${titleShort}</span>
+          ${subtitle}
+        </td>
+        <td class="col-b">${cell(item.values?.basic)}</td>
+        <td class="col-c">${cell(item.values?.classic)}</td>
+        <td class="col-p">${cell(item.values?.premium)}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
 
   // Budowa DOM
-  function buildModal({ area_m2, includeSlab, rows }) {
-    const price = {
-      basic:   mid(rows.basic?.total_min_num,   rows.basic?.total_max_num),
-      classic: mid(rows.classic?.total_min_num, rows.classic?.total_max_num),
-      premium: mid(rows.premium?.total_min_num, rows.premium?.total_max_num)
-    };
-    const wrap = document.createElement('div');
-    wrap.className = 'ptm-overlay';                 // overlay
-    wrap.innerHTML = `
-      <div class="ptm" role="dialog" aria-modal="true" tabindex="-1" aria-label="Tabela cenowa">
-        <div class="ptm__head">
-          <div>
-            <h3 class="ptm__title">Tabela cenowa</h3>
-            <div class="ptm__meta">Metraż: <b>${nf0.format(area_m2)} m²</b> • Płyta fundamentowa: <b>${includeSlab ? 'tak' : 'nie'}</b></div>
+function buildModal({ area_m2, includeSlab, rows }) {
+  const price = {
+    basic:   mid(rows.basic?.total_min_num,   rows.basic?.total_max_num),
+    classic: mid(rows.classic?.total_min_num, rows.classic?.total_max_num),
+    premium: mid(rows.premium?.total_min_num, rows.premium?.total_max_num)
+  };
+
+  const wrap = document.createElement('div');
+  wrap.className = 'ptm-overlay';
+
+  wrap.innerHTML = `
+    <div class="ptm" role="dialog" aria-modal="true" tabindex="-1" aria-label="Tabela cenowa">
+      <div class="ptm__head">
+        <div>
+          <h3 class="ptm__title">Tabela cenowa</h3>
+          <div class="ptm__meta">
+            Metraż: <b>${nf0.format(area_m2)} m²</b> •
+            Płyta fundamentowa: <b>${includeSlab ? 'tak' : 'nie'}</b>
           </div>
-          <button class="ptm__close" type="button" data-close aria-label="Zamknij">✕</button>
         </div>
-        <div class="ptm__body">
-          <div class="ptm__table-wrap">
-            <table class="ptm__table" role="table" aria-label="Tabela pakietów">
-              <thead>
-                <tr>
-                  <th class="col-h"></th>
-                  <th class="col-b">${TIER_LABELS.basic}</th>
-                  <th class="col-c">${TIER_LABELS.classic}</th>
-                  <th class="col-p">${TIER_LABELS.premium}</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${featureRows()}
-                <tr class="ptm__row--section"><td colspan="4">Cena</td></tr>
-                <tr>
-                  <td class="col-h"></td>
-                  <td class="col-b">
-                    <div class="ptm__card">
-                      <h4>${TIER_LABELS.basic}</h4>
-                      <div class="price">${nf0.format(price.basic)} zł/netto</div>
-                    </div>
-                  </td>
-                  <td class="col-c">
-                    <div class="ptm__card">
-                      <h4>${TIER_LABELS.classic}</h4>
-                      <div class="price">${nf0.format(price.classic)} zł/netto</div>
-                    </div>
-                  </td>
-                  <td class="col-p">
-                    <div class="ptm__card">
-                      <h4>${TIER_LABELS.premium}</h4>
-                      <div class="price">${nf0.format(price.premium)} zł/netto</div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="ptm__note">Podane ceny są cenami netto: budownictwo mieszkaniowe +8% VAT.</p>
-        </div>
+        <button class="ptm__close" type="button" data-close aria-label="Zamknij">✕</button>
       </div>
-    `;
-    return wrap;
-  }
+
+      <div class="ptm__body">
+        <div class="ptm__table-wrap">
+          <table class="ptm__table" role="table" aria-label="Tabela pakietów">
+            <thead>
+              <tr>
+                <th class="col-h"></th>
+                <th class="col-b">${TIER_LABELS.basic}</th>
+                <th class="col-c">${TIER_LABELS.classic}</th>
+                <th class="col-p">${TIER_LABELS.premium}</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${featureRows()}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- KARTY CEN POD TABELĄ -->
+        <div class="ptm__prices">
+          <div class="ptm__card">
+            <h4>${TIER_LABELS.basic}</h4>
+            <div class="price">${nf0.format(price.basic)} zł/netto</div>
+          </div>
+          <div class="ptm__card">
+            <h4>${TIER_LABELS.classic}</h4>
+            <div class="price">${nf0.format(price.classic)} zł/netto</div>
+          </div>
+          <div class="ptm__card">
+            <h4>${TIER_LABELS.premium}</h4>
+            <div class="price">${nf0.format(price.premium)} zł/netto</div>
+          </div>
+        </div>
+
+        <p class="ptm__note">Podane ceny są cenami netto: budownictwo mieszkaniowe +8% VAT.</p>
+      </div>
+    </div>
+  `;
+
+  return wrap;
+}
+
 
   function open(params) {
     const area_m2 = Math.round(Number(params?.area_m2) || 100);
@@ -966,6 +1031,7 @@ window.openPriceTable = window.openPriceTable || (function () {
 
   return open;
 })();
+
 
     // 2) UI (nagłówek, progress, stopka)
     setTitle?.('Cześć! Chcesz ulepszyć wycenę?');
@@ -1038,6 +1104,31 @@ window.openPriceTable = window.openPriceTable || (function () {
   </section>
 `;
 
+// po wyrenderowaniu karty: zrób górny pasek akcji
+(function alignTopBar(){
+  const card = document.querySelector('.cfg-price-card');
+  if (!card) return;
+
+  // div z przyciskiem "Ulepsz wycenę"
+  const left = card.querySelector('[data-cfg="ai-enhance"]')?.closest('div');
+  // wrapper linku "Tabela cenowa" (po naszym earlier move helperze)
+  const right = card.querySelector('[data-cfg="open-price-table"]')?.closest('div');
+
+  if (!left || !right) return;
+
+  // stwórz wspólny pasek, jeżeli jeszcze go nie ma
+  if (!card.querySelector('.cfg-price-card__top')){
+    const bar = document.createElement('div');
+    bar.className = 'cfg-price-card__top';
+    left.replaceWith(bar);
+    bar.appendChild(left);
+    bar.appendChild(right);
+  }
+})();
+
+
+// po BODY.innerHTML = `...`
+placePriceLinkAboveTiers(document.getElementById('v2-tier'));
 
 
     // 4) handlery (raz)
@@ -1133,7 +1224,8 @@ window.openPriceTable = window.openPriceTable || (function () {
   }
 
 
-  renderPrice
+renderPrice();
+
 
 
   // ===== Utils =====
