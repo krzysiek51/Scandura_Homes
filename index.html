@@ -1,23 +1,103 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- CSS -->
   <link rel="stylesheet" href="css/style.css" />
 
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet" />
+
+  <!-- Favicon -->
   <link rel="icon" href="/photos/favicon.svg" type="image/svg+xml">
 
+  <!-- ====== SEO: Title + Meta ====== -->
+  <title>Domy szkieletowe drewniane | Scandura Homes – norweska jakość</title>
+  <meta name="description" content="Budujemy domy szkieletowe w standardzie norweskim (C24). Realna wycena — zwykle ~20% taniej niż u dużych firm. Transparentna umowa. Scandura Homes, Trójmiasto i okolice." />
+  <link rel="canonical" href="https://scandura.com.pl/" />
+  <meta name="robots" content="index,follow" />
 
-  <title>Scandura Homes</title>
+  <!-- Hreflang (jedna wersja językowa PL) -->
+  <link rel="alternate" hreflang="pl" href="https://scandura.com.pl/" />
+  <link rel="alternate" hreflang="x-default" href="https://scandura.com.pl/" />
 
+  <!-- ====== Open Graph / Social ====== -->
+  <!-- Upewnij się, że ten plik istnieje: /photos/og-cover.jpg (1200×630 px) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Scandura Homes" />
+  <meta property="og:title" content="Domy szkieletowe drewniane | Scandura Homes – norweska jakość" />
+  <meta property="og:description" content="Domy szkieletowe w standardzie norweskim. Realna wycena, ~20% taniej niż u renomowanych firm. Transparentna umowa." />
+  <meta property="og:url" content="https://scandura.com.pl/" />
+  <meta property="og:image" content="https://scandura.com.pl/photos/og-cover.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
 
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Domy szkieletowe drewniane | Scandura Homes – norweska jakość" />
+  <meta name="twitter:description" content="Domy szkieletowe w standardzie norweskim. Realna wycena i jasna umowa." />
+  <meta name="twitter:image" content="https://scandura.com.pl/photos/og-cover.jpg" />
+
+  <!-- ====== Structured Data (JSON-LD) ====== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://scandura.com.pl/#org",
+        "name": "Scandura Homes",
+        "url": "https://scandura.com.pl/",
+        "logo": "https://scandura.com.pl/photos/logo.svg",
+        "telephone": "+48 796 122 598",
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "contactType": "sales",
+            "telephone": "+48 796 122 598",
+            "areaServed": "PL",
+            "availableLanguage": ["pl","en","no"]
+          }
+        ]
+      },
+      {
+        "@type": "LocalBusiness",
+        "@id": "https://scandura.com.pl/#local",
+        "name": "Scandura Homes",
+        "image": "https://scandura.com.pl/photos/og-cover.jpg",
+        "url": "https://scandura.com.pl/",
+        "telephone": "+48 796 122 598",
+        "priceRange": "PLN",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "PL",
+          "addressLocality": "Gdańsk"
+        },
+        "areaServed": "PL"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://scandura.com.pl/#website",
+        "url": "https://scandura.com.pl/",
+        "name": "Scandura Homes",
+        "publisher": { "@id": "https://scandura.com.pl/#org" },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://scandura.com.pl/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  }
+  </script>
 </head>
+
 
 <body>
   <!-- ===== HERO STEPS — wrapper wokół istniejącego headera (bez zmiany rozmiaru) ===== -->
@@ -53,11 +133,10 @@
       </div>
 
       <div class="header__content">
-        <h1 class="header__title">Twój dom szkieletowy w cenie mieszkania</h1>
+        <h1 class="header__title">Norweski standard bez kompromisów</h1>
 
         <p class="header__description">
-          15 lat doświadczenia z Norwegii. Realna wycena, zwykle ~20% taniej niż u renomowanych firm.
-          Transparentna umowa.
+          15 lat doświadczenia w Norwegii. Prefabrykacja w hali, certyfikowane materiały C24, montaż pod pełną kontrolą jakości.
         </p>
 
         <a href="#callbackSection" class="button button--header js-callback-link">

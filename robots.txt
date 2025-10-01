@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# (Opcjonalnie) wyklucz techniczne katalogi, jeśli istnieją:
+# Disallow: /tmp/
+# Disallow: /drafts/
+# Disallow: /private/
+
+Sitemap: https://scandura.com.pl/sitemap.xml
