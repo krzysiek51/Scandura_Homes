@@ -1,76 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- ZMIEŃ URL-e jeśli Twoje podstrony są w innych katalogach -->
-<!-- Dla stron typu /about.html zostaw rozszerzenia .html -->
-<!-- Dla stron typu /about/ użyj bez .html -->
-
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  <!-- HOME -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://scandura.com.pl/</loc>
     <lastmod>2025-10-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <image:image>
-      <image:loc>https://scandura.com.pl/photos/og-cover.jpg</image:loc>
-      <image:title>Scandura Homes — domy szkieletowe</image:title>
-    </image:image>
   </url>
-
-  <!-- O MNIE / O NAS -->
   <url>
     <loc>https://scandura.com.pl/about.html</loc>
-    <!-- Jeśli masz /about/ zamiast .html, użyj: https://scandura.com.pl/about/ -->
     <lastmod>2025-10-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <!-- USŁUGI / OFERTA -->
   <url>
     <loc>https://scandura.com.pl/services.html</loc>
     <lastmod>2025-10-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <!-- REALIZACJE / PROJEKTY (jeśli masz) -->
   <url>
     <loc>https://scandura.com.pl/projects.html</loc>
     <lastmod>2025-10-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
-
-  <!-- KALKULATOR / KONFIGURATOR (jeśli to oddzielna strona; jeśli modal na home, możesz pominąć) -->
   <url>
     <loc>https://scandura.com.pl/calculator.html</loc>
     <lastmod>2025-10-01</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
-
-  <!-- REZERWACJA / BOOKING -->
   <url>
     <loc>https://scandura.com.pl/booking.html</loc>
     <lastmod>2025-10-01</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
-
-  <!-- KONTAKT -->
   <url>
     <loc>https://scandura.com.pl/contact.html</loc>
     <lastmod>2025-10-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-
-  <!-- POLITYKA PRYWATNOŚCI (jeśli masz) -->
   <url>
     <loc>https://scandura.com.pl/privacy.html</loc>
     <lastmod>2025-10-01</lastmod>
-    <changefreq>yearly</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
 </urlset>

@@ -5,13 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-
     "scss": "sass --watch scss/style.scss css/style.css",
     "scss:build": "sass scss/style.scss css/style.css --no-source-map --style=compressed",
-
     "dev": "concurrently -n SASS,GULP -c auto \"npm:scss\" \"gulp dev\"",
     "build": "npm run scss:build && gulp build",
-    "start": "npx serve dist"
+    "start": "npx serve dist",
+    "sitemap": "node scripts/generate-sitemap.js"
   },
   "keywords": [],
   "author": "",
@@ -45,6 +44,8 @@
     "type": "git",
     "url": "git+https://github.com/krzysiek51/Scandura_Homes.git"
   },
-  "bugs": { "url": "https://github.com/krzysiek51/Scandura_Homes/issues" },
+  "bugs": {
+    "url": "https://github.com/krzysiek51/Scandura_Homes/issues"
+  },
   "homepage": "https://github.com/krzysiek51/Scandura_Homes#readme"
 }
