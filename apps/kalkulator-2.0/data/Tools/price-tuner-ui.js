@@ -8,6 +8,24 @@
 (() => {
   'use strict';
 
+    // --- ADMIN GATE: tylko dla admina / w konsoli ---
+  const ADMIN_KEY = '__SC_TUNER_ADMIN__';
+  const isAdmin =
+    location.hostname === 'localhost' ||               // dev
+    localStorage.getItem(ADMIN_KEY) === '1' ||         // ręczne włączenie z konsoli
+    /\btuner=on\b/i.test(location.search);             // awaryjnie: ?tuner=on
+
+  if (!isAdmin) {
+    // Nie inicjuj niczego, nie pokazuj FAB, nie spamuj konsoli.
+    // Opcjonalnie podstawiamy „no-op”, żeby ewentualne wywołania nie rzucały błędów:
+    window.PriceTunerUI = {
+      open(){/* disabled */},
+      reset(){/* disabled */}
+    };
+    return; // ← kluczowe: kończymy wykonywanie całego pliku
+  }
+
+
   const LS_KEY = '__SC_TUNER_V1__';
 
   // --- mały helper: bezpieczne get/set w globalnych danych ---
