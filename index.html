@@ -48,57 +48,104 @@
   <meta name="twitter:image" content="https://scandura.com.pl/photos/og-cover.jpg" />
 
   <!-- ====== Structured Data (JSON-LD) ====== -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        "@id": "https://scandura.com.pl/#org",
-        "name": "Scandura Homes",
-        "url": "https://scandura.com.pl/",
-        "logo": "https://scandura.com.pl/photos/logo.svg",
-        "telephone": "+48 796 122 598",
-        "contactPoint": [
-          {
-            "@type": "ContactPoint",
-            "contactType": "sales",
-            "telephone": "+48 796 122 598",
-            "areaServed": "PL",
-            "availableLanguage": ["pl","en","no"]
-          }
-        ]
-      },
-      {
-        "@type": "LocalBusiness",
-        "@id": "https://scandura.com.pl/#local",
-        "name": "Scandura Homes",
-        "image": "https://scandura.com.pl/photos/og-cover.jpg",
-        "url": "https://scandura.com.pl/",
-        "telephone": "+48 796 122 598",
-        "priceRange": "PLN",
-        "address": {
-          "@type": "PostalAddress",
-          "addressCountry": "PL",
-          "addressLocality": "Gdańsk"
-        },
-        "areaServed": "PL"
-      },
-      {
-        "@type": "WebSite",
-        "@id": "https://scandura.com.pl/#website",
-        "url": "https://scandura.com.pl/",
-        "name": "Scandura Homes",
-        "publisher": { "@id": "https://scandura.com.pl/#org" },
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": "https://scandura.com.pl/?q={search_term_string}",
-          "query-input": "required name=search_term_string"
+ <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://scandura.com.pl/#org",
+      "name": "Scandura Homes",
+      "url": "https://scandura.com.pl/",
+      "logo": "https://scandura.com.pl/photos/logo.svg",
+      "telephone": "+48 796 122 598",
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "contactType": "sales",
+          "telephone": "+48 796 122 598",
+          "areaServed": "PL",
+          "availableLanguage": ["pl", "en", "no"]
         }
+      ]
+    },
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://scandura.com.pl/#local",
+      "name": "Scandura Homes",
+      "image": "https://scandura.com.pl/photos/og-cover.jpg",
+      "url": "https://scandura.com.pl/",
+      "telephone": "+48 796 122 598",
+      "priceRange": "PLN",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "PL",
+        "addressLocality": "Gdańsk"
+      },
+      "areaServed": "PL"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://scandura.com.pl/#website",
+      "url": "https://scandura.com.pl/",
+      "name": "Scandura Homes",
+      "publisher": { "@id": "https://scandura.com.pl/#org" },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://scandura.com.pl/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
       }
-    ]
-  }
-  </script>
+    },
+    {
+      "@type": "Product",
+      "@id": "https://scandura.com.pl/#kalkulator",
+      "name": "Dom szkieletowy – kalkulator ceny",
+      "description": "Konfigurator AI do wyceny domów prefabrykowanych Scandura. Oblicz koszt budowy domu w 3 minuty – stan surowy otwarty, zamknięty lub deweloperski.",
+      "image": "https://scandura.com.pl/photos/og-cover.jpg",
+      "url": "https://scandura.com.pl/#kalkulator",
+      "brand": {
+        "@type": "Brand",
+        "name": "Scandura Homes"
+      },
+      "sku": "SCANDURA-DOM-SZKIELETOWY",
+      "offers": {
+        "@type": "AggregateOffer",
+        "priceCurrency": "PLN",
+        "lowPrice": "450000",
+        "highPrice": "750000",
+        "offerCount": "3",
+        "availability": "https://schema.org/InStock",
+        "seller": {
+          "@type": "Organization",
+          "name": "Scandura Homes"
+        }
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5.0",
+        "reviewCount": "9"
+      },
+      "review": [
+        {
+          "@type": "Review",
+          "author": "Katarzyna",
+          "datePublished": "2025-09-12",
+          "reviewBody": "Szybka i precyzyjna wycena. Kalkulator bardzo pomocny przy planowaniu budowy.",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5" }
+        },
+        {
+          "@type": "Review",
+          "author": "Marek",
+          "datePublished": "2025-09-20",
+          "reviewBody": "Dzięki Scandura wiem, ile naprawdę kosztuje dom 120m². Polecam!",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5" }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
 
   <script type="application/ld+json">
 {
