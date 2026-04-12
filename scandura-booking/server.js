@@ -1,4 +1,4 @@
-// server.js
+﻿// server.js
 import express from 'express';
 import cors from 'cors';
 import { DateTime, Interval } from 'luxon';
@@ -26,7 +26,7 @@ const ALLOWED = (process.env.CORS_ORIGINS
 
 console.log('[CORS] allowed origins:', ALLOWED);
 
-// TWARDY middleware – ustawia nagłówki na KAŻDEJ odpowiedzi
+// TWARDY middleware â€“ ustawia nagĹ‚Ăłwki na KAĹ»DEJ odpowiedzi
 app.use((req, res, next) => {
   const origin = req.headers.origin;
   if (origin && ALLOWED.includes(origin)) {
@@ -49,9 +49,9 @@ const prisma = new PrismaClient();
 const transport = makeTransport();
 
 const TZ = 'Europe/Warsaw';
-const WORK_HOURS = { start: 9, end: 18 };  // 9:00–18:00
-const SLOT_MINUTES = 60;                    // krok slotów
-const IN_PERSON_BUFFER_MIN = 45;            // bufor przy spotkaniach na żywo
+const WORK_HOURS = { start: 9, end: 18 };  // 9:00â€“18:00
+const SLOT_MINUTES = 60;                    // krok slotĂłw
+const IN_PERSON_BUFFER_MIN = 45;            // bufor przy spotkaniach na ĹĽywo
 const LEAD_HOURS = { IN_PERSON: 24, ONLINE: 2, PHONE: 2 };
 const MAX_RANGE_DAYS = 60;
 const PUBLIC_BASE = process.env.PUBLIC_BASE || 'http://localhost:3001';
@@ -177,7 +177,7 @@ if (fs.existsSync(TOKEN_FILE)) {
   try { setStoredTokens(JSON.parse(fs.readFileSync(TOKEN_FILE, 'utf8'))); } catch { }
 }
 
-// Start OAuth – przekierowanie do Google
+// Start OAuth â€“ przekierowanie do Google
 app.get('/auth/google', (_req, res) => {
   try { return res.redirect(getAuthUrl()); }
   catch (e) {
@@ -186,14 +186,14 @@ app.get('/auth/google', (_req, res) => {
   }
 });
 
-// Callback z Google – zapis tokenów
+// Callback z Google â€“ zapis tokenĂłw
 app.get('/oauth2callback', async (req, res) => {
   try {
     const code = req.query.code?.toString();
     if (!code) return res.status(400).send('Brak code');
     const tokens = await setTokensFromCode(code);
     fs.writeFileSync(TOKEN_FILE, JSON.stringify(tokens, null, 2));
-    return res.send('✅ Google Calendar podłączony. Możesz zamknąć tę kartę.');
+    return res.send('âś… Google Calendar podĹ‚Ä…czony. MoĹĽesz zamknÄ…Ä‡ tÄ™ kartÄ™.');
   } catch (e) {
     console.error('oauth2callback error:', e);
     return res.status(500).send('OAuth callback error');
@@ -208,7 +208,7 @@ app.get('/api/slots/meta', (req, res) => {
 
   const minStart = roundUpToSlot(nowZ().plus({ hours: LEAD_HOURS[type] }));
 
-  // wyłącz cache
+  // wyĹ‚Ä…cz cache
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
   res.set('Pragma', 'no-cache');
   res.set('Expires', '0');
@@ -238,7 +238,7 @@ app.get('/api/slots', async (req, res) => {
     let cursor = roundUpToSlot(now.plus({ hours: lead }));
     const endRange = now.plus({ days });
 
-    // Klucz: pobierz istniejące z zapasem PAD_MIN (45m)
+    // Klucz: pobierz istniejÄ…ce z zapasem PAD_MIN (45m)
     const PAD_MIN = IN_PERSON_BUFFER_MIN;
     const existing = await getExistingBookings(
       cursor.minus({ minutes: PAD_MIN }),
@@ -261,7 +261,7 @@ app.get('/api/slots', async (req, res) => {
       cursor = cursor.plus({ minutes: SLOT_MINUTES });
     }
 
-    // wyłącz cache
+    // wyĹ‚Ä…cz cache
     res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
     res.set('Pragma', 'no-cache');
     res.set('Expires', '0');
@@ -339,21 +339,21 @@ app.post('/api/booking', async (req, res) => {
 
       await transport.sendMail({
         from: process.env.MAIL_FROM,
-        to: `${customer.email}, scanduranorge@gmail.com`,
-        subject: '✅ Potwierdzenie rezerwacji — Scandura Homes',
+        to: `${customer.email}, kontakt@scandura.com.pl`,
+        subject: 'âś… Potwierdzenie rezerwacji â€” Scandura Homes',
         html: `
       <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;padding:20px;border-radius:8px;border:1px solid #eee;background:#fafafa;color:#111;line-height:1.5">
         <h2 style="color:#0057b7;margin-top:0">Potwierdzenie rezerwacji</h2>
-        <p>Dziękujemy, <strong>${customer.name}</strong>!</p>
-        <p>Twoja rezerwacja została potwierdzona:</p>
+        <p>DziÄ™kujemy, <strong>${customer.name}</strong>!</p>
+        <p>Twoja rezerwacja zostaĹ‚a potwierdzona:</p>
         <table style="border-collapse:collapse;margin:16px 0">
           <tr>
             <td style="padding:6px 12px;font-weight:bold">Rodzaj:</td>
-            <td style="padding:6px 12px">${type === 'IN_PERSON' ? 'Spotkanie na żywo' : type}</td>
+            <td style="padding:6px 12px">${type === 'IN_PERSON' ? 'Spotkanie na ĹĽywo' : type}</td>
           </tr>
           <tr>
             <td style="padding:6px 12px;font-weight:bold">Data i godzina:</td>
-            <td style="padding:6px 12px">${fmtISO(start)} – ${fmtISO(end)}</td>
+            <td style="padding:6px 12px">${fmtISO(start)} â€“ ${fmtISO(end)}</td>
           </tr>
           ${address ? `
           <tr>
@@ -361,19 +361,19 @@ app.post('/api/booking', async (req, res) => {
             <td style="padding:6px 12px">${address}</td>
           </tr>` : ''}
         </table>
-        <p>W załączniku znajdziesz plik kalendarza (.ics), który możesz dodać do swojego Google/Outlook/Apple Calendar.</p>
-        <p style="margin-top:20px">Do zobaczenia!<br><strong>Zespół Scandura Homes</strong></p>
+        <p>W zaĹ‚Ä…czniku znajdziesz plik kalendarza (.ics), ktĂłry moĹĽesz dodaÄ‡ do swojego Google/Outlook/Apple Calendar.</p>
+        <p style="margin-top:20px">Do zobaczenia!<br><strong>ZespĂłĹ‚ Scandura Homes</strong></p>
       </div>
     `,
         icalEvent: { method: 'REQUEST', content: ics }
       });
     } catch (err) { console.error('MAIL SEND ERROR:', err.message); }
 
-    // Google Calendar — utwórz event i zapisz ID
+    // Google Calendar â€” utwĂłrz event i zapisz ID
     try {
       if (hasValidAuth()) {
         const eventId = await gcCreateEvent({
-          summary: `Scandura booking (${type}) – ${customer.name}`,
+          summary: `Scandura booking (${type}) â€“ ${customer.name}`,
           description: notes || '',
           location: address || '',
           startISO: start.toISO(),
@@ -382,7 +382,7 @@ app.post('/api/booking', async (req, res) => {
         });
         await prisma.booking.update({ where: { id: booking.id }, data: { googleEventId: eventId } });
       } else {
-        console.warn('Google Calendar niepodłączony — otwórz /auth/google');
+        console.warn('Google Calendar niepodĹ‚Ä…czony â€” otwĂłrz /auth/google');
       }
     } catch (err) { console.error('Google Calendar create error:', err?.message || err); }
 
@@ -393,9 +393,9 @@ app.post('/api/booking', async (req, res) => {
   }
 });
 
-// ======== RESCHEDULE / CANCEL – HELPERS & ENDPOINTS ========
+// ======== RESCHEDULE / CANCEL â€“ HELPERS & ENDPOINTS ========
 
-// (a) Generowanie i mailowanie linków (72h)
+// (a) Generowanie i mailowanie linkĂłw (72h)
 app.post('/api/booking/:id/reschedule-link', async (req, res) => {
   try {
     const { id } = req.params;
@@ -419,16 +419,16 @@ app.post('/api/booking/:id/reschedule-link', async (req, res) => {
     try {
       const html = `
         <div style="font-family:Arial,sans-serif;line-height:1.5">
-          <h2>Linki do zarządzania terminem</h2>
+          <h2>Linki do zarzÄ…dzania terminem</h2>
           <p>Witaj ${booking.customer.name},</p>
-          <p>Linki ważne 72 godziny:</p>
-          <p>Przełóż: <a href="${rescheduleUrl}">${rescheduleUrl}</a></p>
-          <p>Odwołaj: <a href="${cancelUrl}">${cancelUrl}</a></p>
+          <p>Linki waĹĽne 72 godziny:</p>
+          <p>PrzeĹ‚ĂłĹĽ: <a href="${rescheduleUrl}">${rescheduleUrl}</a></p>
+          <p>OdwoĹ‚aj: <a href="${cancelUrl}">${cancelUrl}</a></p>
         </div>`;
       await transport.sendMail({
         from: process.env.MAIL_FROM,
-        to: `${booking.customer.email}, scanduranorge@gmail.com`,
-        subject: 'Scandura — linki do przełożenia / odwołania terminu',
+        to: `${booking.customer.email}, kontakt@scandura.com.pl`,
+        subject: 'Scandura â€” linki do przeĹ‚oĹĽenia / odwoĹ‚ania terminu',
         html
       });
     } catch (err) { console.error('MAIL reschedule-link:', err.message); }
@@ -476,7 +476,7 @@ app.get('/api/reschedule-meta', async (req, res) => {
   }
 });
 
-// (c) Przełożenie
+// (c) PrzeĹ‚oĹĽenie
 app.post('/api/booking/reschedule', async (req, res) => {
   try {
     const { token, startAt, endAt } = req.body || {};
@@ -525,18 +525,18 @@ app.post('/api/booking/reschedule', async (req, res) => {
       }
     } catch (err) { console.error('Google Calendar update:', err.message); }
 
-    // mail potwierdzający
+    // mail potwierdzajÄ…cy
     try {
       const html = `
         <div style="font-family:Arial,sans-serif;line-height:1.5">
-          <h2>Termin został przełożony</h2>
+          <h2>Termin zostaĹ‚ przeĹ‚oĹĽony</h2>
           <p>${booking.customer.name}, potwierdzamy nowy termin:</p>
-          <p><strong>${fmtISO(start)} – ${fmtISO(end)}</strong> (${type})</p>
+          <p><strong>${fmtISO(start)} â€“ ${fmtISO(end)}</strong> (${type})</p>
         </div>`;
       await transport.sendMail({
         from: process.env.MAIL_FROM,
-        to: `${booking.customer.email}, scanduranorge@gmail.com`,
-        subject: 'Scandura — potwierdzenie przełożenia',
+        to: `${booking.customer.email}, kontakt@scandura.com.pl`,
+        subject: 'Scandura â€” potwierdzenie przeĹ‚oĹĽenia',
         html
       });
     } catch (err) { console.error('MAIL reschedule confirm:', err.message); }
@@ -548,7 +548,7 @@ app.post('/api/booking/reschedule', async (req, res) => {
   }
 });
 
-// (d) Odwołanie
+// (d) OdwoĹ‚anie
 app.post('/api/booking/cancel', async (req, res) => {
   try {
     const { token } = req.body || {};
@@ -572,13 +572,13 @@ app.post('/api/booking/cancel', async (req, res) => {
     try {
       const html = `
         <div style="font-family:Arial,sans-serif;line-height:1.5">
-          <h2>Spotkanie zostało odwołane</h2>
-          <p>Dziękujemy za informację. W razie potrzeby umów nowy termin na stronie.</p>
+          <h2>Spotkanie zostaĹ‚o odwoĹ‚ane</h2>
+          <p>DziÄ™kujemy za informacjÄ™. W razie potrzeby umĂłw nowy termin na stronie.</p>
         </div>`;
       await transport.sendMail({
         from: process.env.MAIL_FROM,
-        to: `${booking.customer.email}, scanduranorge@gmail.com`,
-        subject: 'Scandura — potwierdzenie odwołania',
+        to: `${booking.customer.email}, kontakt@scandura.com.pl`,
+        subject: 'Scandura â€” potwierdzenie odwoĹ‚ania',
         html
       });
     } catch (err) { console.error('MAIL cancel confirm:', err.message); }
@@ -595,3 +595,4 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Scandura booking API running on http://localhost:${PORT}`);
 });
+
